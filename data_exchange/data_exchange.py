@@ -80,23 +80,23 @@ class DataExchangeFile(h5py.File):
                 self.create_top_level_group(path[0])
 
             root = dexen.root
-            self.require_group(root)
+            self.require_group('/'.join([root, getattr(dexen, 'entry_name')]))
 
             dsets = [ds for ds in dir(dexen) if not ds.startswith('__')]
             [dsets.remove(item) for item in ['entry_name', 'root', 'docstring']]
 
             for ds_name in dsets:
                 if getattr(dexen, ds_name)['value'] is not None:
-                    ds = self[getattr(dexen, 'root')].create_dataset(ds_name, data=getattr(dexen, ds_name)['value'])
+                    if 'dataset_opts' in getattr(dexen, ds_name).keys():
+                        opts = getattr(dexen, ds_name)['dataset_opts']
+                    else:
+                        opts={}
+                    ds = self['/'.join([root, getattr(dexen, 'entry_name')])].create_dataset(ds_name, data=getattr(dexen, ds_name)['value'], **opts)
                     for key in getattr(dexen, ds_name).keys():
-                        if key in ['value', 'docstring']:
+                        if key in ['value', 'docstring','dataset_opts']:
                             pass
                         else:
                             ds.attrs[key] = getattr(dexen, ds_name)[key]
-
-        
-            
-
 
 
 class DataExchangeEntry(object):
@@ -119,10 +119,14 @@ class DataExchangeEntry(object):
                                     *This is used only for autogegnerating documentation for DataExchangeEntry.
                                     *It does not get written to the DataExchangeFile.
                 *'ENTRY':   An entry is a dataset with attributes under the 'name' group.
-                            Each 'ENTRY' should have:
+                            Each 'ENTRY' must have:
                                 * value: The dataset
+                            Each 'ENTRY' should have:
                                 * units: Units for value - an attribute of the dataset
-                                * docstring: Used for autogenerating documentation 
+                                * docstring: Used for autogenerating documentation
+                            Each 'ENTRY' can have (i.e optional):
+                                *'dataset_opts': Options passed to the create_dataset function. E.g.:
+                                *'dataset_opts': {'compression':'gzip', 'compression_opts':4}
                             Where a value is ``None`` this entry will not be added to the DataExchangeFile.
                             'ENTRY' can have any other parameter and these will be treated as HDF5 dataset attributes
         """
@@ -268,6 +272,17 @@ class DataExchangeEntry(object):
                 'value': None,
                 'units': 'text',
                 'docstring': 'User badge number.'
+            },
+        }
+
+        self._exchange = {
+            'root': 'exchange',
+            'entry_name': '',
+            'docstring': 'Used for grouping the results of the measurement',
+            'name': {
+                'value': None,
+                'units': 'text',
+                'docstring': 'Description of the data contained inside'
             },
         }
 
@@ -432,6 +447,117 @@ class DataExchangeEntry(object):
             }
         }
 
+        self._roi = {
+            'root': '/measurement/instrument/detector',
+            'entry_name': 'roi_1',
+            'docstring': 'region of interest (ROI) of the image actually collected, if smaller than the full CCD.',
+            'name': {
+                'value': None,
+                'units': 'text',
+                'docstring': 'ROI name'
+            },
+            'x1': {
+                'value': None,
+                'units': 'pixels',
+                'docstring': 'Left pixel position'
+            },
+            'x2': {
+                'value': None,
+                'units': 'pixels',
+                'docstring': 'Right pixel position'
+            },
+            'y1': {
+                'value': None,
+                'units': 'pixels',
+                'docstring': 'Top pixel position'
+            },
+            'y1': {
+                'value': None,
+                'units': 'pixels',
+                'docstring': 'Bottom pixel position'
+            }
+        }
+
+        self._objective = {
+            'root': '/measurement/instrument/detector',
+            'entry_name': 'objective',
+            'docstring': 'microscope objective lenses used.',
+            'manufacturer': {
+                'value': None,
+                'units': 'text',
+                'docstring': 'Lens manufacturer'
+            },
+            'model': {
+                'value': None,
+                'units': 'text',
+                'docstring': 'Lens model.'
+            },
+            'magnification': {
+                'value': None,
+                'units': 'dimensionless',
+                'docstring': 'Lens specified magnification'
+            },
+            'numerical_aperture': {
+                'value': None,
+                'units': 'dimensionless',
+                'docstring': 'The numerical aperture (N.A.) is a measure of the light-gathering characteristics of the lens.'
+            }
+        }
+
+        self._scintillator = {
+            'root': '/measurement/instrument/detector',
+            'entry_name': 'scintillator',
+            'docstring': 'microscope objective lenses used.',
+            'manufacturer': {
+                'value': None,
+                'units': 'text',
+                'docstring': 'Scintillator Manufacturer.'
+            },
+            'serial_number': {
+                'value': None,
+                'units': 'text',
+                'docstring': 'Scintillator serial number.'
+            },
+            'name': {
+                'value': None,
+                'units': 'dimensionless',
+                'docstring': 'Scintillator name.'
+            },
+            'scintillating_thickness': {
+                'value': None,
+                'units': 'dimensionless',
+                'docstring': 'Scintillator thickness.'
+            },
+            'substrate_thickness': {
+                'value': None,
+                'units': 'dimensionless',
+                'docstring': 'Scintillator substrate thickness.'
+            }
+        }
+
+        self._translation = {
+            'root': '/measurement/sample/geometry',
+            'entry_name': 'translation',
+            'docstring': 'This is the description for the general spatial location of a component.',
+            'distances': {
+                'value': None,
+                'units': 'm',
+                'docstring': 'x,y,zcomponents of translation.'
+            },
+        }
+
+        self._orientation = {
+            'root': '/measurement/sample/geometry',
+            'entry_name': 'orientation',
+            'docstring': 'This is the description for the orientation of a component.',
+            'distances': {
+                'value': None,
+                'units': 'm',
+                'docstring': ('Calling the local unit vectors (x0; y0; z0) and the reference unit vectors (x; y; z)'
+                    'the six numbers will be [x0 . x; x0 . y; x0 . z; y0 . x; y0 . y; y0 . z] where "."" is the scalar dot'
+                    'product (cosine of the angle between the unit vectors).')
+            },
+        }
 
     def _generate_classes(self):
 
