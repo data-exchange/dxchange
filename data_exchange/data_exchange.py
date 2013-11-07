@@ -506,7 +506,7 @@ class DataExchangeEntry(object):
                 'value': None,
                 'units': 'text',
                 'docstring': 'String HDF5 path to the exchange group where the detector output data is located.'
-            }
+            },
             'counts_per_joule': {
                 'value': None,
                 'units': 'counts',
@@ -613,7 +613,7 @@ class DataExchangeEntry(object):
         }
 
         self._translation = {
-            'root': '/measurement/sample/geometry',
+            'root': '/exchange/geometry',
             'entry_name': 'translation',
             'docstring': 'This is the description for the general spatial location of a component.',
             'distances': {
@@ -624,7 +624,7 @@ class DataExchangeEntry(object):
         }
 
         self._orientation = {
-            'root': '/measurement/sample/geometry',
+            'root': '/exchange/geometry',
             'entry_name': 'orientation',
             'docstring': 'This is the description for the orientation of a component.',
             'distances': {
