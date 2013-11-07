@@ -637,8 +637,8 @@ class DataExchangeEntry(object):
         }
 
         self._simulation = {
-            'root': '/',
-            'entry_name': 'simulation',
+            'root': '/simulation',
+            'entry_name': '',
             'docstring': 'Describes parameters used to generate simulate data.',
             'name': {
                 'value': None,
