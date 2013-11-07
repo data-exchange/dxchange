@@ -571,6 +571,18 @@ class DataExchangeEntry(object):
             },
         }
 
+        self._simulation = {
+            'root': '/',
+            'entry_name': 'simulation',
+            'docstring': 'Describes parameters used to generate simulate data.',
+            'name': {
+                'value': None,
+                'units': 'm',
+                'docstring': 'Name of the simulation'
+            },
+        }
+
+
     def _generate_classes(self):
 
         """
