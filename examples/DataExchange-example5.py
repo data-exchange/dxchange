@@ -169,12 +169,12 @@ def write_example(filename):
 
     # Create HDF5 subgroup 
     # /measurement/sample/geometry/translation
-    f.add_entry( DataExchangeEntry.translation(
+    f.add_entry( DataExchangeEntry.translation(root='/measurement/sample/geometry',
                     distances={'value':[0,0,0],'axes':'z:y:x', 'units':'m', 'dataset_opts':  {'dtype': 'd'}}
                     )
         )
     # Create HDF5 subgroup
-    # /measurement/sample/experimenter
+    # /measurement/experimenter
     f.add_entry( DataExchangeEntry.experimenter(name={'value':"John Doe"},
                                                 role={'value':"Project PI"},
                                                 affiliation={'value':"University of California, Berkeley"},
@@ -188,7 +188,7 @@ def write_example(filename):
     
 
     # Create HDF5 subgroup
-    # /measurement/sample/experiment
+    # /measurement/experiment
     f.add_entry( DataExchangeEntry.experiment(  proposal={'value':"1234"},
                                                 activity={'value':"e11218"},
                                                 safety={'value':"9876"},

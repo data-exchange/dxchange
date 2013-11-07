@@ -27,9 +27,9 @@ def write_example(filename):
     
     # Create core HDF5 dataset in exchange group for 180 deep stack of x,y
     # images /exchange/data
-    data_en = DataExchangeEntry.data(data={'value':rawdata, 'units':'counts', 'description': 'Projection Data'
+    data_en = DataExchangeEntry.data(data={'value': rawdata, 'units':'counts', 'description': 'Projection Data',
                                             'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} })
-    f.add_entry(dex_en)
+    f.add_entry(data_en)
 
     # The default location for sample in DataExchangeEntry is /measurement/sample
     # To override the default set e.g 'root'='/measurement_4/sample'

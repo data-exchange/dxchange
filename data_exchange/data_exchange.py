@@ -21,7 +21,8 @@ class DataExchangeFile(h5py.File):
         Interact with Data Exchange files.
 
 
-        :method create_top_level_group: Helper function for creating a top level group which will update the implements group automagically.
+        :method create_top_level_group: Helper function for creating a top level group which will update the ``implements`` group automagically.
+        :method add_entry: This method is used to parse DataExchangeEntry objects and add them to the DataExchangeFile.
 
 
     """
@@ -55,6 +56,12 @@ class DataExchangeFile(h5py.File):
 
 
     def create_top_level_group(self, group_name):
+        """
+        .. method:: create_top_level_group(self, group_name)
+
+            Creates a group in the file root and updates the ``implements`` group accordingly.
+            This method should ALWAYS be used to create groups in the file root.
+        """
         self.create_group(group_name)
         try:
             implements = self['/implements'].value
@@ -64,6 +71,11 @@ class DataExchangeFile(h5py.File):
             self.create_dataset('implements', data=group_name)
 
     def add_entry(self, dexen_ob):
+        """
+        .. add_entry(self, dexen_ob)
+
+            This method is used to parse DataExchangeEntry objects and add them to the DataExchangeFile.
+        """
 
         if type(dexen_ob) != list:
             dexen_ob = [dexen_ob]
@@ -560,6 +572,13 @@ class DataExchangeEntry(object):
         }
 
     def _generate_classes(self):
+
+        """
+        .. method:: generate_classes(self)
+
+            This method is used to turn the DataExchangeEntry._entry_definitions into generate_classes
+            which can be instantitated for hold data.
+        """
 
         def __init__(self, **kwargs):
             for kw in kwargs:

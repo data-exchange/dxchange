@@ -12,14 +12,14 @@ data_exchange is a wrapper for h5py that takes the hassle out of making hdf5 fil
 
 What Is Data Exchange?
 ----------------------
-The Scientific Data Exchange (or Data Exchange for short) is a set of guidelines for writing scientific data and meta-data in Hierarchical Data Format 5 (HDF5) files. The core principle of Data Exchange is that the guidelines must be simple and flexible enough that it is not necessary to use a support library beyond that supplied by the HDF Group. Since there is no library enforcing the file organization (beyond HDF5), the scientist is free to make their own choices as necessary, although the hope is that the guidelines are simple enough to follow that the end result will be more readily shared and understood data sets .
+The Scientific Data Exchange (or Data Exchange for short) is a set of guidelines for writing scientific data and meta-data in Hierarchical Data Format 5 (HDF5) files. The core principle of Data Exchange is that the guidelines must be simple and flexible enough that it is not necessary to use a support library beyond that supplied by the HDF Group. Since there is no library enforcing the file organization (beyond HDF5), the scientist is free to make their own choices as necessary, although the hope is that the guidelines are simple enough to follow that the end result will be more readily shared and understood data sets.
 
 .. toctree::
-   :maxdepth: 2
+    :maxdepth: 2
 
-   getting_started/index
-   data_exchange_api/index
-   data_exchange_api/index
+    getting_started/index
+    examples/index
+    data_exchange_api/index
 
 
 Indices and tables
