@@ -452,11 +452,76 @@ class DataExchangeEntry(object):
                 'units': 'text',
                 'docstring': 'The detector serial number.'
             },
+            'bit_depth': {
+                'value': None,
+                'units': 'dimensionless',
+                'docstring': 'The detector ADC bit depth.'
+            },
+            'x_pixel_size': {
+                'value': None,
+                'units': 'm',
+                'docstring': 'Physical detector pixel size (m).'
+            },
+            'y_pixel_size': {
+                'value': None,
+                'units': 'm',
+                'docstring': 'Physical detector pixel size (m).'
+            },
+            'x_dimension': {
+                'value': None,
+                'units': 'pixels',
+                'docstring': 'The detector horiz. dimension.'
+            },
+            'y_dimension': {
+                'value': None,
+                'units': 'text',
+                'docstring': 'The detector vertical dimension.'
+            },
+            'x_binning': {
+                'value': None,
+                'units': 'pixels',
+                'docstring': 'If the data are collected binning the detector x binning and y binning store the binning factor.'
+            },
+            'y_binning': {
+                'value': None,
+                'units': 'dimensionless',
+                'docstring': 'If the data are collected binning the detector x binning and y binning store the binning factor.'
+            },
+            'operating_temperature': {
+                'value': None,
+                'units': 'dimensionless',
+                'docstring': 'The detector operating temperature (K).'
+            },
+            'exposure_time': {
+                'value': None,
+                'units': 's',
+                'docstring': 'The detector exposure time (s).'
+            },
+            'frame_rate': {
+                'value': None,
+                'units': 'fps',
+                'docstring': 'The detector frame rate (fps).'
+            },
             'output_data': {
                 'value': None,
                 'units': 'text',
                 'docstring': 'String HDF5 path to the exchange group where the detector output data is located.'
-            }
+            },
+            'counts_per_joule': {
+                'value': None,
+                'units': 'counts',
+                'docstring': 'Number of counts recorded per each joule of energy received by the detector'
+            },
+            'basis_vectors': {
+                'value': None,
+                'units': 'fps',
+                'docstring': 'A matrix with the basis vectors of the detector data.'
+            },
+            'corner_position': {
+                'value': None,
+                'units': 'fps',
+                'docstring': 'The x, y and z coordinates of the corner of the first data element.'
+            },
         }
 
         self._roi = {
@@ -548,7 +613,7 @@ class DataExchangeEntry(object):
         }
 
         self._translation = {
-            'root': '/measurement/sample/geometry',
+            'root': '/exchange/geometry',
             'entry_name': 'translation',
             'docstring': 'This is the description for the general spatial location of a component.',
             'distances': {
@@ -559,7 +624,7 @@ class DataExchangeEntry(object):
         }
 
         self._orientation = {
-            'root': '/measurement/sample/geometry',
+            'root': '/exchange/geometry',
             'entry_name': 'orientation',
             'docstring': 'This is the description for the orientation of a component.',
             'distances': {
@@ -570,6 +635,18 @@ class DataExchangeEntry(object):
                     'product (cosine of the angle between the unit vectors).')
             },
         }
+
+        self._simulation = {
+            'root': '/simulation',
+            'entry_name': '',
+            'docstring': 'Describes parameters used to generate simulate data.',
+            'name': {
+                'value': None,
+                'units': 'm',
+                'docstring': 'Name of the simulation'
+            },
+        }
+
 
     def _generate_classes(self):
 
