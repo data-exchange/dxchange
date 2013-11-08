@@ -10,6 +10,16 @@ Dependencies
 ------------
 To use data_exchange you will need to have `h5py <https://github.com/h5py/h5py>`_ installed. ``h5py`` comes pre-installed in the Enthought Python Distribution. 
 
+To install the python data_exchange module (in unix)::
+
+	> git clone https://github.com/djvine/data_exchange.git
+	> cd data_exchange
+	> python setup.py install
+
+If it worked you should be able to open a python interpreter as run::
+	
+	>>> import data_exchange
+
 Creating Data Exchange Files
 ----------------------------
 A data_exchange file can be created::
