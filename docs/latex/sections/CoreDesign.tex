@@ -1,0 +1,138 @@
+
+\section{The Design of Data Exchange} 
+
+For various reasons, many x-ray techniques developed at synchrotron facilities
+around the world are unable to directly compare results due to their 
+inability to exchange data and software tools. The aim of Data Exchange is to
+define a simple file format offering few basic rules and allowing each
+community to extend and add technique specific components. The goal is to
+provide extensibility in defining data, meta data and
+provenance information in a simple way that can be easily adopted by various
+x-ray techniques.
+
+The Data Exchange format is implemented using Hierarchical Data Format 5
+(HDF5), which offers platform-independent binary data storage with optional
+compression, hierarchical data ordering, and self-describing tags so that one
+can examine a HDF5 file's contents with no knowledge of how the file writing
+program was coded.
+
+The aim and the scope of Data Exchange is very similar to the Coherent X-ray
+Imaging  Data Bank file format (CXI), so whenever possible we will use the
+same conventions, name tags, and reference system. This document is using a
+similar diagram definition set by Filipe R. N. C. Maia in "CXI file format"
+(\url{http://cxidb.org/cxi.html}), with a few minor modifications for Data
+Exchange definitions.
+
+The core principle of Data Exchange is that it must be simple enough that it
+is not necessary to use a support library beyond core HDF5. The simplicity of
+Data Exchange makes it easy for anyone to either look at an example file 
+using h5dump or HDFView, or to look at example code in language X, and 
+then create their own read and write routines in language Y.
+
+The simplest Data Exchange file provides information
+sufficient to share a multidimensional data array. In
+this simplest form, Data Exchange implements only one "exchange"
+group. The "exchange" definition is designed to allow for simple exchange of
+images, spectra, and other forms of beamline detector data with a minimum of
+fields. This definition is essentially a technique-agnostic format for
+exchanging data with others. Data Exchange is also designed to be extended
+to include technique-specific data and metadata.  This is
+achieved by providing optional, but clearly defined, metadata components to
+the base definition.
+
+\subsection{HDF5}
+
+The HDF5 format is the basis of the Data Exchange format. Data Exchange, like
+CXI, is not a completely new file format, but simply a set of rules designed
+to create HDF5 files with a common structure to allow a uniform and
+consistent interpretation of such files.
+
+HDF5 was chosen as the basis because it is a widely used high performance
+scientific data format which many programs can already, at least partially,
+read and write. It also brings with it the almost automatic fulfillment of the
+Data Exchange requirements, i.e. simplicity, flexibility and extensibility.
+HDF5 version 1.8 or higher is required as previous versions don't support all
+features required by Data Exchange.
+
+\subsection{Data types}
+
+Data Exchange uses the same CXI convention for data types as defined at 
+\url{http://cxidb.org/cxi.html} using HDF5 native datatypes.  The data should
+be saved in the same format as it was created/acquired. For example CCD images
+acquired as 16 bit integers should be saved using the {\tt H5T\_NATIVE\_SHORT}
+HDF5 type. In this way all cross platform big-little endian issues reading and
+writing files are eliminated.
+
+\subsection{Root Level Structure}
+\label{DataExchange}
+
+While HDF5 gives great flexibility in data storage, straightforward file
+readability and exchange requires adhering to an agreed-upon naming and
+organizational convention. To achieve this goal, Data Exchange adopts a
+layered approach by defining a set of \emph{mandatory} and
+{\tt optional} fields. 
+
+The general structure of a Data Exchange file is shown in table~\ref{tab:genrules}.
+The most basic file must have an "implements" string, and an "exchange" group at
+the root level/group of the HDF5 file. Optional "measurement" and "provenance"
+groups are also defined. Beyond this, additional groups may be added to meet
+individual needs, with guidelines suggesting the best structure.
+
+\begin{table}[h!]\sffamily
+\centering
+\footnotesize
+\caption{Data Exchange Top Level Members}
+\label{tab:genrules}
+\rowcolors{1}{white}{tableBlue}
+\begin{tabular}{l l l}
+\toprule
+\bfseries Member     & \bfseries Type & \bfseries Example \\
+\midrule
+
+\emph{implements} & string dataset & "exchange:measurement:provenance" \\
+\hyperref[sec:exchange]{\emph{exchange}} &  group  & \\
+\hyperref[table:measurement]{\tt{measurement}} &  group  & \\
+\hyperref[table:provenance]{\tt{provenance}} & group & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{description}
+\item[\emph{implements}] \hfill \\
+{Mandatory scalar string dataset in the root of the HDF5 file whose
+value is a colon separated list that shows which components are present in the
+file. All components listed in the \emph{implements} string are to be groups
+placed in the HDF5 file at the root level/group. In a minimal Data
+Exchange file, the only mandatory item in this list is \emph{exchange}. A more
+general Data Exchange file also contain {\tt{measurement}} and possibly  
+{\tt{provenance}}, in which case the implements string would be:
+"\emph{exchange}: {\tt{measurement}}: {\tt{provenance}}"}
+
+\item[\emph{exchange}] \hfill \\
+{Mandatory group containing one or more arrays that
+represent the most basic version of the data, such as raw or normalized
+optical density maps or a elemental signal map.  \emph{Exchange\_$N$} is
+used when more than one core dataset or derived datasets are saved in the file.
+The \emph{exchange} implementation for specific techniques are defined
+in separate sections in the Reference Guide.}
+
+\item[\tt measurement] \hfill \\
+{Optional group containing the measurement made on the
+sample.  {\tt Measurement} contains information about the {\tt sample}  and
+the  {\tt instrument}. {\tt Measurement\_$N$} is used when more than one
+measurement is stored in the same file.}
+
+\item[\tt provenance] \hfill \\
+{Optional group containing information about the status
+of each processing step.}
+
+\end{description}
+
+In a  Data Exchange file, each dataset has a unit defined using the
+{\tt units} attribute. {\tt units}  is not mandatory - if omitted, the default
+unit as defined in Appendix~\ref{appendix:units} is used.
+
+The detailed rules about how to store datasets within the exchange group
+are best shown through examples in the next section. Detailed reference information
+can be found in the \hyperref[sec:corereference]{Data Exchange Core Reference} section.
+

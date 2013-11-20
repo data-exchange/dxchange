@@ -1,0 +1,207 @@
+\relax 
+\providecommand\HyperFirstAtBeginDocument{\AtBeginDocument}
+\HyperFirstAtBeginDocument{\ifx\hyper@anchor\@undefined
+\global\let\oldcontentsline\contentsline
+\gdef\contentsline#1#2#3#4{\oldcontentsline{#1}{#2}{#3}}
+\global\let\oldnewlabel\newlabel
+\gdef\newlabel#1#2{\newlabelxx{#1}#2}
+\gdef\newlabelxx#1#2#3#4#5#6{\oldnewlabel{#1}{{#2}{#3}}}
+\AtEndDocument{\ifx\hyper@anchor\@undefined
+\let\contentsline\oldcontentsline
+\let\newlabel\oldnewlabel
+\fi}
+\fi}
+\global\let\hyper@last\relax 
+\gdef\HyperFirstAtBeginDocument#1{#1}
+\providecommand\HyField@AuxAddToFields[1]{}
+\gdef \LT@i {\LT@entry 
+    {1}{46.14322pt}\LT@entry 
+    {1}{85.97733pt}\LT@entry 
+    {1}{293.6821pt}}
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Version history}}{2}{table.1}}
+\newlabel{table:SI}{{1}{2}{\relax }{table.1}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}}
+\@writefile{toc}{\contentsline {section}{\numberline {2}The Design of Data Exchange}{1}{section.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.1}HDF5}{2}{subsection.2.1}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.2}Data types}{2}{subsection.2.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {2.3}Root Level Structure}{2}{subsection.2.3}}
+\newlabel{DataExchange}{{2.3}{2}{Root Level Structure\relax }{subsection.2.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Data Exchange Top Level Members\relax }}{2}{table.caption.2}}
+\providecommand*\caption@xref[2]{\@setref\relax\@undefined{#1}}
+\newlabel{tab:genrules}{{2}{2}{Data Exchange Top Level Members\relax \relax }{table.caption.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {3}Data Exchange by Example}{4}{section.3}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.1}Diagram color code}{4}{subsection.3.1}}
+\newlabel{DiagramColorCode}{{3.1}{4}{Diagram color code\relax }{subsection.3.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Explanation of the color code used in the diagrams\relax }}{4}{figure.caption.3}}
+\newlabel{fig:DiagramColorCode}{{1}{4}{Explanation of the color code used in the diagrams\relax \relax }{figure.caption.3}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.2}A minimal Data Exchange file for imaging}{4}{subsection.3.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.3}Storing and describing a multidimensional dataset}{4}{subsection.3.3}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Diagram of a minimal Data Exchange file for a single image.\relax }}{5}{figure.caption.4}}
+\newlabel{fig:Minimal1}{{2}{5}{Diagram of a minimal Data Exchange file for a single image.\relax \relax }{figure.caption.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.4}Storing projections, dark fields, and white fields}{5}{subsection.3.4}}
+\newlabel{section:minimalTomo}{{3.4}{5}{Storing projections, dark fields, and white fields\relax }{subsection.3.4}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Diagram of a minimal Data Exchange file for a single tomographic data set including raw projections, dark, and white fields.\relax }}{6}{figure.caption.5}}
+\newlabel{fig:MinimalTomo0}{{3}{6}{Diagram of a minimal Data Exchange file for a single tomographic data set including raw projections, dark, and white fields.\relax \relax }{figure.caption.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {3.5}A typical Data Exchange file for tomography}{6}{subsection.3.5}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.5.1}Sample Temperature Scan}{6}{subsubsection.3.5.1}}
+\@writefile{lof}{\contentsline {figure}{\numberline {4}{\ignorespaces Diagram of a single tomographic data set including raw projections, dark and white fields. In this case, there are additional dimension descriptor datasets theta, theta\_dark, and theta\_white that contain the positions of the rotation axis for each projection, dark, and white image. The lefthand example shows this as it would appear using the HDF5 H5DSattach\_scale function. The righthand example shows this as it would appear by manually adding an axes attribute (for cases where H5DSattach\_scale is unavailable).\relax }}{7}{figure.caption.6}}
+\newlabel{fig:MinimalTomo1}{{4}{7}{Diagram of a single tomographic data set including raw projections, dark and white fields. In this case, there are additional dimension descriptor datasets theta, theta\_dark, and theta\_white that contain the positions of the rotation axis for each projection, dark, and white image. The lefthand example shows this as it would appear using the HDF5 H5DSattach\_scale function. The righthand example shows this as it would appear by manually adding an axes attribute (for cases where H5DSattach\_scale is unavailable).\relax \relax }{figure.caption.6}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {5}{\ignorespaces Diagram of two tomographic data sets taken at two different sample temperatures (100 and 200 celsius).\relax }}{8}{figure.caption.7}}
+\newlabel{fig:MinimalTomo2}{{5}{8}{Diagram of two tomographic data sets taken at two different sample temperatures (100 and 200 celsius).\relax \relax }{figure.caption.7}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.5.2}X-ray Energy Scan}{9}{subsubsection.3.5.2}}
+\@writefile{lof}{\contentsline {figure}{\numberline {6}{\ignorespaces Diagram of two tomographic data sets taken at two different energy (10 and 20 keV).\relax }}{9}{figure.caption.8}}
+\newlabel{fig:MinimalTomo3}{{6}{9}{Diagram of two tomographic data sets taken at two different energy (10 and 20 keV).\relax \relax }{figure.caption.8}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.5.3}Detector-sample Distance Scan}{10}{subsubsection.3.5.3}}
+\@writefile{lof}{\contentsline {figure}{\numberline {7}{\ignorespaces Diagram of two tomographic data sets collected with two different detector-sample distances (5 and 9 mm). Note the use of {\tt  output\_data} dataset to associate the detector with the exchange group generated from the acquisition.\relax }}{10}{figure.caption.9}}
+\newlabel{fig:MinimalTomo4}{{7}{10}{Diagram of two tomographic data sets collected with two different detector-sample distances (5 and 9 mm). Note the use of {\tt output\_data} dataset to associate the detector with the exchange group generated from the acquisition.\relax \relax }{figure.caption.9}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {3.5.4}Series of Tomographic Measurements}{10}{subsubsection.3.5.4}}
+\@writefile{lof}{\contentsline {figure}{\numberline {8}{\ignorespaces Diagram of a file with 4 tomographic data sets from a nano tomography experiment.\relax }}{11}{figure.caption.10}}
+\newlabel{fig:NanoTomo1}{{8}{11}{Diagram of a file with 4 tomographic data sets from a nano tomography experiment.\relax \relax }{figure.caption.10}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {4}Data Exchange Core Reference}{11}{section.4}}
+\newlabel{sec:corereference}{{4}{11}{Data Exchange Core Reference\relax }{section.4}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Top level (root)}{11}{subsection.4.1}}
+\newlabel{table:top}{{4.1}{11}{Top level (root)\relax }{subsection.4.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {3}{\ignorespaces Top Level Members\relax }}{11}{table.caption.11}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Exchange}{13}{subsection.4.2}}
+\newlabel{sec:exchange}{{4.2}{13}{Exchange\relax }{subsection.4.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {4}{\ignorespaces Exchange Group Members\relax }}{13}{table.caption.12}}
+\@writefile{lot}{\contentsline {table}{\numberline {5}{\ignorespaces data attributes\relax }}{13}{table.caption.13}}
+\newlabel{data:attr}{{5}{13}{data attributes\relax \relax }{table.caption.13}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.2.1}Storing and describing a multidimensional dataset}{13}{subsubsection.4.2.1}}
+\newlabel{sec:multidims}{{4.2.1}{13}{Storing and describing a multidimensional dataset\relax }{subsubsection.4.2.1}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}Measurement}{15}{subsection.4.3}}
+\newlabel{table:measurement}{{4.3}{15}{Measurement\relax }{subsection.4.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {6}{\ignorespaces Measurement Group Members\relax }}{15}{table.caption.14}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.1}Sample}{15}{subsubsection.4.3.1}}
+\newlabel{table:sample}{{4.3.1}{15}{Sample\relax }{subsubsection.4.3.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {7}{\ignorespaces Sample Group Members\relax }}{16}{table.caption.15}}
+\newlabel{table:geometry}{{4.3.1.1}{17}{Geometry\relax }{paragraph.4.3.1.1}{}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {4.3.1.1}Geometry}{17}{paragraph.4.3.1.1}}
+\@writefile{lot}{\contentsline {table}{\numberline {8}{\ignorespaces Geometry Group Members\relax }}{17}{table.caption.16}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {4.3.1.2}Experiment}{17}{paragraph.4.3.1.2}}
+\@writefile{lot}{\contentsline {table}{\numberline {9}{\ignorespaces Experiment Group Members\relax }}{17}{table.caption.17}}
+\newlabel{table:experiment}{{9}{17}{Experiment Group Members\relax \relax }{table.caption.17}{}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {4.3.1.3}Experimenter}{17}{paragraph.4.3.1.3}}
+\@writefile{lot}{\contentsline {table}{\numberline {10}{\ignorespaces Experimenter Group Members\relax }}{18}{table.caption.18}}
+\newlabel{table:experimenter}{{10}{18}{Experimenter Group Members\relax \relax }{table.caption.18}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {4.3.2}Instrument}{18}{subsubsection.4.3.2}}
+\newlabel{table:instrument}{{4.3.2}{18}{Instrument\relax }{subsubsection.4.3.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {11}{\ignorespaces Instrument Group Members\relax }}{18}{table.caption.19}}
+\newlabel{table:source}{{4.3.2.1}{19}{Source\relax }{paragraph.4.3.2.1}{}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {4.3.2.1}Source}{19}{paragraph.4.3.2.1}}
+\@writefile{lot}{\contentsline {table}{\numberline {12}{\ignorespaces Source Group Members\relax }}{19}{table.caption.20}}
+\newlabel{table:shutter}{{4.3.2.2}{20}{Shutter\relax }{paragraph.4.3.2.2}{}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {4.3.2.2}Shutter}{20}{paragraph.4.3.2.2}}
+\@writefile{lot}{\contentsline {table}{\numberline {13}{\ignorespaces Shutter Group Members\relax }}{20}{table.caption.21}}
+\newlabel{table:attenuator}{{4.3.2.3}{20}{Attenuator\relax }{paragraph.4.3.2.3}{}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {4.3.2.3}Attenuator}{20}{paragraph.4.3.2.3}}
+\@writefile{lot}{\contentsline {table}{\numberline {14}{\ignorespaces Attenuator Group Members\relax }}{20}{table.caption.22}}
+\newlabel{table:monochromator}{{4.3.2.4}{21}{Monochromator\relax }{paragraph.4.3.2.4}{}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {4.3.2.4}Monochromator}{21}{paragraph.4.3.2.4}}
+\@writefile{lot}{\contentsline {table}{\numberline {15}{\ignorespaces Monochromator Group Members\relax }}{21}{table.caption.23}}
+\newlabel{table:detector}{{4.3.2.5}{21}{Detector\relax }{paragraph.4.3.2.5}{}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {4.3.2.5}Detector}{21}{paragraph.4.3.2.5}}
+\@writefile{lot}{\contentsline {table}{\numberline {16}{\ignorespaces Detector Group Members\relax }}{21}{table.caption.24}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Provenance}{23}{subsection.4.4}}
+\newlabel{section:provenance}{{4.4}{23}{Provenance\relax }{subsection.4.4}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {17}{\ignorespaces Process table to log actors activity\relax }}{23}{table.caption.25}}
+\newlabel{table:provenance}{{17}{23}{Process table to log actors activity\relax \relax }{table.caption.25}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {5}Data Exchange for X-ray Tomography}{25}{section.5}}
+\newlabel{exchange:tomography}{{5}{25}{Data Exchange for X-ray Tomography\relax }{section.5}{}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.1}Exchange Group for X-ray Tomography}{25}{subsection.5.1}}
+\@writefile{lot}{\contentsline {table}{\numberline {18}{\ignorespaces Exchange Group Members for Tomography\relax }}{25}{table.caption.26}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.2}Instrument Group for Tomography}{26}{subsection.5.2}}
+\newlabel{tomo:instrument}{{5.2}{26}{Instrument Group for Tomography\relax }{subsection.5.2}{}}
+\newlabel{table:tomo:instrument}{{5.2}{26}{Instrument Group for Tomography\relax }{subsection.5.2}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.2.1}Interferometer}{26}{subsubsection.5.2.1}}
+\newlabel{table:tomo:interferometer}{{5.2.1}{26}{Interferometer\relax }{subsubsection.5.2.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {19}{\ignorespaces Instrument Group for Tomography\relax }}{27}{table.caption.27}}
+\@writefile{lot}{\contentsline {table}{\numberline {20}{\ignorespaces Interferometer Group Members\relax }}{27}{table.caption.28}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.2.2}Setup and Acquisition Parameters}{27}{subsubsection.5.2.2}}
+\newlabel{table:tomo:setup}{{5.2.2}{27}{Setup and Acquisition Parameters\relax }{subsubsection.5.2.2}{}}
+\newlabel{table:tomo:acquisition}{{5.2.2}{27}{Setup and Acquisition Parameters\relax }{subsubsection.5.2.2}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.2.3}Detector Group for Tomography}{27}{subsubsection.5.2.3}}
+\newlabel{table:tomo:detector}{{5.2.3}{27}{Detector Group for Tomography\relax }{subsubsection.5.2.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {21}{\ignorespaces Detector Group Members for Tomography\relax }}{28}{table.caption.29}}
+\newlabel{table:roi}{{5.2.3.1}{29}{ROI\relax }{paragraph.5.2.3.1}{}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {5.2.3.1}ROI}{29}{paragraph.5.2.3.1}}
+\@writefile{lot}{\contentsline {table}{\numberline {22}{\ignorespaces ROI Group Members\relax }}{29}{table.caption.30}}
+\newlabel{table:objective}{{5.2.3.2}{30}{Objective\relax }{paragraph.5.2.3.2}{}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {5.2.3.2}Objective}{30}{paragraph.5.2.3.2}}
+\@writefile{lot}{\contentsline {table}{\numberline {23}{\ignorespaces Objective Group Members\relax }}{30}{table.caption.31}}
+\newlabel{table:scintillator}{{5.2.3.3}{30}{Scintillator\relax }{paragraph.5.2.3.3}{}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {5.2.3.3}Scintillator}{30}{paragraph.5.2.3.3}}
+\@writefile{lot}{\contentsline {table}{\numberline {24}{\ignorespaces Scintillator Group Members\relax }}{30}{table.caption.32}}
+\newlabel{tomo:geometry}{{5.2.3.4}{31}{Geometry\relax }{paragraph.5.2.3.4}{}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {5.2.3.4}Geometry}{31}{paragraph.5.2.3.4}}
+\@writefile{lot}{\contentsline {table}{\numberline {25}{\ignorespaces Geometry Group Members\relax }}{31}{table.caption.33}}
+\newlabel{tomo:translation}{{5.2.3.4.1}{31}{Translation\relax }{subparagraph.5.2.3.4.1}{}}
+\@writefile{toc}{\contentsline {subparagraph}{\numberline {5.2.3.4.1}Translation}{31}{subparagraph.5.2.3.4.1}}
+\@writefile{lot}{\contentsline {table}{\numberline {26}{\ignorespaces Translation Group Members\relax }}{31}{table.caption.34}}
+\newlabel{tomo:translation}{{26}{31}{Translation Group Members\relax \relax }{table.caption.34}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {27}{\ignorespaces Orientation Group Members\relax }}{32}{table.caption.35}}
+\newlabel{tomo:orientation}{{5.2.3.4.2}{32}{Orientation\relax }{subparagraph.5.2.3.4.2}{}}
+\@writefile{toc}{\contentsline {subparagraph}{\numberline {5.2.3.4.2}Orientation}{32}{subparagraph.5.2.3.4.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {5.3}Tomography Process Descriptions}{32}{subsection.5.3}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.3.1}Sinogram Process Description}{32}{subsubsection.5.3.1}}
+\newlabel{table:sinogram}{{5.3.1}{32}{Sinogram Process Description\relax }{subsubsection.5.3.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {28}{\ignorespaces Sinogram Group Members\relax }}{32}{table.caption.36}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.3.2}Ring Removal Process Description}{33}{subsubsection.5.3.2}}
+\@writefile{lot}{\contentsline {table}{\numberline {29}{\ignorespaces Ring Removal Group Members\relax }}{33}{table.caption.37}}
+\newlabel{table:ringremoval}{{29}{33}{Ring Removal Group Members\relax \relax }{table.caption.37}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {30}{\ignorespaces Reconstruction Group Members.\relax }}{34}{table.caption.38}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.3.3}Reconstruction Process Description}{34}{subsubsection.5.3.3}}
+\newlabel{table:reconstruction}{{5.3.3}{34}{Reconstruction Process Description\relax }{subsubsection.5.3.3}{}}
+\newlabel{section:algorithm}{{5.3.3.1}{34}{Algorithm\relax }{paragraph.5.3.3.1}{}}
+\@writefile{toc}{\contentsline {paragraph}{\numberline {5.3.3.1}Algorithm}{34}{paragraph.5.3.3.1}}
+\@writefile{lot}{\contentsline {table}{\numberline {31}{\ignorespaces Algorithm Group Members\relax }}{35}{table.caption.39}}
+\newlabel{table:algorithm}{{31}{35}{Algorithm Group Members\relax \relax }{table.caption.39}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.3.4}Gridftp Process Description}{36}{subsubsection.5.3.4}}
+\newlabel{table:gridftp}{{5.3.4}{36}{Gridftp Process Description\relax }{subsubsection.5.3.4}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {32}{\ignorespaces Gridftp Group Members\relax }}{36}{table.caption.40}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {5.3.5}Export Process Description}{37}{subsubsection.5.3.5}}
+\newlabel{table:export}{{5.3.5}{37}{Export Process Description\relax }{subsubsection.5.3.5}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {33}{\ignorespaces Export Group Members\relax }}{37}{table.caption.41}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Data Exchange for X-ray Coherent Diffraction Imaging}{38}{section.6}}
+\newlabel{exchange:cdi}{{6}{38}{Data Exchange for X-ray Coherent Diffraction Imaging\relax }{section.6}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {34}{\ignorespaces exchange class members for x-ray photon correlation\relax }}{38}{table.caption.42}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Instrument specific for x-ray photon correlation}{38}{subsection.6.1}}
+\newlabel{instrument:photon}{{6.1}{38}{Instrument specific for x-ray photon correlation\relax }{subsection.6.1}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.1.1}Detector}{38}{subsubsection.6.1.1}}
+\newlabel{table:detectorphoton}{{6.1.1}{38}{Detector\relax }{subsubsection.6.1.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {35}{\ignorespaces X-ray photon correlation detector class members\relax }}{39}{table.caption.43}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.1.2}Kinetics}{40}{subsubsection.6.1.2}}
+\newlabel{table:kinetics}{{6.1.2}{40}{Kinetics\relax }{subsubsection.6.1.2}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {36}{\ignorespaces kinetics class members\relax }}{40}{table.caption.44}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.1.3}Setup}{41}{subsubsection.6.1.3}}
+\newlabel{table:xpcssetup}{{6.1.3}{41}{Setup\relax }{subsubsection.6.1.3}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {37}{\ignorespaces XPCS Setup class members\relax }}{41}{table.caption.45}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}APS Sector 8 Process descriptions}{42}{subsection.6.2}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {6.2.1}XPCS}{43}{subsubsection.6.2.1}}
+\newlabel{table:xpcs}{{6.2.1}{43}{XPCS\relax }{subsubsection.6.2.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {38}{\ignorespaces XPCS class members.\relax }}{45}{table.caption.46}}
+\@writefile{toc}{\contentsline {section}{\numberline {7}Data Exchange for X-ray Photon Correlation}{46}{section.7}}
+\@writefile{toc}{\contentsline {section}{\numberline {8}Data Exchange for X-ray Fluorescence}{46}{section.8}}
+\@writefile{toc}{\contentsline {section}{\numberline {9}Code Examples}{47}{section.9}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {9.1}Creating Data Exchange files using Pyhton}{48}{subsection.9.1}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {1}Python Code for Fig. \ref  {fig:Minimal1}}{48}{lstlisting.1}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {2}Python Code for Fig. \ref  {fig:MinimalTomo0}}{50}{lstlisting.2}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {3}Python Code for Fig. \ref  {fig:MinimalTomo1} (right)}{52}{lstlisting.3}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {4}Python Code for Fig. \ref  {fig:MinimalTomo2} (right)}{54}{lstlisting.4}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {5}Python Code for Fig. \ref  {fig:MinimalTomo3} (right)}{56}{lstlisting.5}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {6}Python Code for Data Exchange full implementation for tomography}{58}{lstlisting.6}}
+\@writefile{lol}{\contentsline {lstlisting}{\numberline {7}Python Code for Data Exchange full implementation for tomography - includes provenance}{66}{lstlisting.7}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {9.2}Creating Data Exchange files using C++}{74}{subsection.9.2}}
+\@writefile{toc}{\contentsline {section}{\numberline {A}Appendix}{75}{appendix.A}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.1}Default units for Data Exchange entries}{75}{subsection.A.1}}
+\newlabel{appendix:units}{{A.1}{75}{Default units for Data Exchange entries\relax }{subsection.A.1}{}}
+\@writefile{lot}{\contentsline {table}{\numberline {39}{\ignorespaces SI (and common derived) base units for different quantities\relax }}{75}{table.caption.47}}
+\newlabel{table:SI}{{39}{75}{SI (and common derived) base units for different quantities\relax \relax }{table.caption.47}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {A.1.1}Exceptions}{75}{subsubsection.A.1.1}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {A.1.2}Times and Dates}{75}{subsubsection.A.1.2}}
+\@writefile{toc}{\contentsline {subsection}{\numberline {A.2}Geometry}{76}{subsection.A.2}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {A.2.1}Coordinate System}{76}{subsubsection.A.2.1}}
+\@writefile{lof}{\contentsline {figure}{\numberline {9}{\ignorespaces The coordinate system used by CXI. The intersection of the X-ray beam with the sample define the origin of the system. The z axis is parallel to the beam and points downstream.\relax }}{76}{figure.caption.48}}
+\newlabel{fig:CoordSystem}{{9}{76}{The coordinate system used by CXI. The intersection of the X-ray beam with the sample define the origin of the system. The z axis is parallel to the beam and points downstream.\relax \relax }{figure.caption.48}{}}
+\@writefile{toc}{\contentsline {subsubsection}{\numberline {A.2.2}The local coordinate system of objects}{76}{subsubsection.A.2.2}}
+\newlabel{OriginOfObjects}{{A.2.2}{76}{The local coordinate system of objects\relax }{subsubsection.A.2.2}{}}

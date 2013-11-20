@@ -1,0 +1,69 @@
+\BOOKMARK [1][-]{section.1}{Introduction}{}% 1
+\BOOKMARK [1][-]{section.2}{The Design of Data Exchange}{}% 2
+\BOOKMARK [2][-]{subsection.2.1}{HDF5}{section.2}% 3
+\BOOKMARK [2][-]{subsection.2.2}{Data types}{section.2}% 4
+\BOOKMARK [2][-]{subsection.2.3}{Root Level Structure}{section.2}% 5
+\BOOKMARK [1][-]{section.3}{Data Exchange by Example}{}% 6
+\BOOKMARK [2][-]{subsection.3.1}{Diagram color code}{section.3}% 7
+\BOOKMARK [2][-]{subsection.3.2}{A minimal Data Exchange file for imaging}{section.3}% 8
+\BOOKMARK [2][-]{subsection.3.3}{Storing and describing a multidimensional dataset}{section.3}% 9
+\BOOKMARK [2][-]{subsection.3.4}{Storing projections, dark fields, and white fields}{section.3}% 10
+\BOOKMARK [2][-]{subsection.3.5}{A typical Data Exchange file for tomography}{section.3}% 11
+\BOOKMARK [3][-]{subsubsection.3.5.1}{Sample Temperature Scan}{subsection.3.5}% 12
+\BOOKMARK [3][-]{subsubsection.3.5.2}{X-ray Energy Scan}{subsection.3.5}% 13
+\BOOKMARK [3][-]{subsubsection.3.5.3}{Detector-sample Distance Scan}{subsection.3.5}% 14
+\BOOKMARK [3][-]{subsubsection.3.5.4}{Series of Tomographic Measurements}{subsection.3.5}% 15
+\BOOKMARK [1][-]{section.4}{Data Exchange Core Reference}{}% 16
+\BOOKMARK [2][-]{subsection.4.1}{Top level \(root\)}{section.4}% 17
+\BOOKMARK [2][-]{subsection.4.2}{Exchange}{section.4}% 18
+\BOOKMARK [3][-]{subsubsection.4.2.1}{Storing and describing a multidimensional dataset}{subsection.4.2}% 19
+\BOOKMARK [2][-]{subsection.4.3}{Measurement}{section.4}% 20
+\BOOKMARK [3][-]{subsubsection.4.3.1}{Sample}{subsection.4.3}% 21
+\BOOKMARK [4][-]{paragraph.4.3.1.1}{Geometry}{subsubsection.4.3.1}% 22
+\BOOKMARK [4][-]{paragraph.4.3.1.2}{Experiment}{subsubsection.4.3.1}% 23
+\BOOKMARK [4][-]{paragraph.4.3.1.3}{Experimenter}{subsubsection.4.3.1}% 24
+\BOOKMARK [3][-]{subsubsection.4.3.2}{Instrument}{subsection.4.3}% 25
+\BOOKMARK [4][-]{paragraph.4.3.2.1}{Source}{subsubsection.4.3.2}% 26
+\BOOKMARK [4][-]{paragraph.4.3.2.2}{Shutter}{subsubsection.4.3.2}% 27
+\BOOKMARK [4][-]{paragraph.4.3.2.3}{Attenuator}{subsubsection.4.3.2}% 28
+\BOOKMARK [4][-]{paragraph.4.3.2.4}{Monochromator}{subsubsection.4.3.2}% 29
+\BOOKMARK [4][-]{paragraph.4.3.2.5}{Detector}{subsubsection.4.3.2}% 30
+\BOOKMARK [2][-]{subsection.4.4}{Provenance}{section.4}% 31
+\BOOKMARK [1][-]{section.5}{Data Exchange for X-ray Tomography}{}% 32
+\BOOKMARK [2][-]{subsection.5.1}{Exchange Group for X-ray Tomography}{section.5}% 33
+\BOOKMARK [2][-]{subsection.5.2}{Instrument Group for Tomography}{section.5}% 34
+\BOOKMARK [3][-]{subsubsection.5.2.1}{Interferometer}{subsection.5.2}% 35
+\BOOKMARK [3][-]{subsubsection.5.2.2}{Setup and Acquisition Parameters}{subsection.5.2}% 36
+\BOOKMARK [3][-]{subsubsection.5.2.3}{Detector Group for Tomography}{subsection.5.2}% 37
+\BOOKMARK [4][-]{paragraph.5.2.3.1}{ROI}{subsubsection.5.2.3}% 38
+\BOOKMARK [4][-]{paragraph.5.2.3.2}{Objective}{subsubsection.5.2.3}% 39
+\BOOKMARK [4][-]{paragraph.5.2.3.3}{Scintillator}{subsubsection.5.2.3}% 40
+\BOOKMARK [4][-]{paragraph.5.2.3.4}{Geometry}{subsubsection.5.2.3}% 41
+\BOOKMARK [5][-]{subparagraph.5.2.3.4.1}{Translation}{paragraph.5.2.3.4}% 42
+\BOOKMARK [5][-]{subparagraph.5.2.3.4.2}{Orientation}{paragraph.5.2.3.4}% 43
+\BOOKMARK [2][-]{subsection.5.3}{Tomography Process Descriptions}{section.5}% 44
+\BOOKMARK [3][-]{subsubsection.5.3.1}{Sinogram Process Description}{subsection.5.3}% 45
+\BOOKMARK [3][-]{subsubsection.5.3.2}{Ring Removal Process Description}{subsection.5.3}% 46
+\BOOKMARK [3][-]{subsubsection.5.3.3}{Reconstruction Process Description}{subsection.5.3}% 47
+\BOOKMARK [4][-]{paragraph.5.3.3.1}{Algorithm}{subsubsection.5.3.3}% 48
+\BOOKMARK [3][-]{subsubsection.5.3.4}{Gridftp Process Description}{subsection.5.3}% 49
+\BOOKMARK [3][-]{subsubsection.5.3.5}{Export Process Description}{subsection.5.3}% 50
+\BOOKMARK [1][-]{section.6}{Data Exchange for X-ray Coherent Diffraction Imaging}{}% 51
+\BOOKMARK [2][-]{subsection.6.1}{Instrument specific for x-ray photon correlation}{section.6}% 52
+\BOOKMARK [3][-]{subsubsection.6.1.1}{Detector}{subsection.6.1}% 53
+\BOOKMARK [3][-]{subsubsection.6.1.2}{Kinetics}{subsection.6.1}% 54
+\BOOKMARK [3][-]{subsubsection.6.1.3}{Setup}{subsection.6.1}% 55
+\BOOKMARK [2][-]{subsection.6.2}{APS Sector 8 Process descriptions}{section.6}% 56
+\BOOKMARK [3][-]{subsubsection.6.2.1}{XPCS}{subsection.6.2}% 57
+\BOOKMARK [1][-]{section.7}{Data Exchange for X-ray Photon Correlation}{}% 58
+\BOOKMARK [1][-]{section.8}{Data Exchange for X-ray Fluorescence}{}% 59
+\BOOKMARK [1][-]{section.9}{Code Examples}{}% 60
+\BOOKMARK [2][-]{subsection.9.1}{Creating Data Exchange files using Pyhton}{section.9}% 61
+\BOOKMARK [2][-]{subsection.9.2}{Creating Data Exchange files using C++}{section.9}% 62
+\BOOKMARK [1][-]{appendix.A}{Appendix}{}% 63
+\BOOKMARK [2][-]{subsection.A.1}{Default units for Data Exchange entries}{appendix.A}% 64
+\BOOKMARK [3][-]{subsubsection.A.1.1}{Exceptions}{subsection.A.1}% 65
+\BOOKMARK [3][-]{subsubsection.A.1.2}{Times and Dates}{subsection.A.1}% 66
+\BOOKMARK [2][-]{subsection.A.2}{Geometry}{appendix.A}% 67
+\BOOKMARK [3][-]{subsubsection.A.2.1}{Coordinate System}{subsection.A.2}% 68
+\BOOKMARK [3][-]{subsubsection.A.2.2}{The local coordinate system of objects}{subsection.A.2}% 69

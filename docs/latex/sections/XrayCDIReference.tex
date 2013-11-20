@@ -1,0 +1,394 @@
+%****************************************************************************
+\section{Data Exchange for X-ray Coherent Diffractive Imaging}
+\label{exchange:cdi}
+
+This section describes additions to the core Data Exchange Reference that are specific for coherent diffraction imaging (CDI) meaaurements. A minimal Data Exchange file for CDI should contain all of the information required to perform phase retrieval on its data. More extensive information can be added so that the Data Exchange file serves as an archival record of the measurement and its data.
+
+\subsection{Exchange Group for Coherent Diffractive Imaging}
+The most basic data for CDI is a single two-dimensional array of real numbers representing a single X-ray intensity measurement from an area detector. A typical scan will contain many such arrays and these should be ordered from fastest to slowest scan axes.
+It is \emph{mandatory} that there is one member in each exchange group named {\tt{data}}. The raw data should be stored in the lowest exchange group (i.e {\tt{exchange\_0}} or just {\tt{exchange}} if there is just one) and processed data stored in higher exchange groups with a description of how it was created.
+\begin{table}[h!]\sffamily \footnotesize
+\caption{Exchange Group Members for Coherent Diffractive Imaging}
+\centering
+\rowcolors{1}{white}{tableBlue}
+\begin{tabular}{l l l}
+\toprule
+\bfseries Member     & \bfseries Type & \bfseries Example/Attributes \\
+\midrule
+\tt{title}  & string dataset & "raw ptychography data   " \\
+\emph{data}  & Ptychography: 3D dataset & axes: "translation:y:x"  \\
+\tt{translation} & \hyperref[table:translation]{translation} & units: "m" \\
+\tt{data\_dark} & 3D dataset & axes: "theta\_dark:y:x" \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{description}
+\item[\tt{title}] \hfill \\
+{This is the data title.}
+
+\item[\emph{data}] \hfill \\
+{A ptychographic data set consists of a series of projections (data), dark field (data\_dark), and white field (data\_white) images. The dark and white fields must have the same projection image dimensions and can be collected at any time before, after or during the projection data collection. The angular position of the tomographic rotation axis, theta, can be used to keep track of when the dark and white images are collected.  These datasets are saved in 3D arrays using, by default, the natural HDF5 order of a multidimensional array (rotation axis, ccd y, ccd x), i.e. with the fastest changing dimension being the last dimension, and the slowest changing dimension being the first dimension. If using the default dimension order, the axes attribute "theta:y:x" can be omitted. The {\tt{axes}} attribute is mandatory if the 3D arrays use a different axes order. This could be the case when, for example, the arrays are optimized for sinogram read ({\tt{axes}} = "y:theta:x"). As no units are specified the data is assumed to be in ``counts'' with the axes (x, y) in pixels. }
+
+
+\item[\tt{data\_dark, data\_white}] \hfill \\
+{The dark field and white fields must have the same dimensions as the projection images and can be collected at any time before, during, or after the projection data collection.  To specify where dark and white images were taken, specify the axes attribute with "theta\_dark:y:x" and "theta\_white:y:x" and provide theta\_dark and theta\_white vector datasets that specify the rotation angles where they were collected.}
+
+\item[\tt{x, y}] \hfill \\
+{X and y are vectors storing the dimension scale for the second and third data array dimension. If x, y are not defined, the second and third dimensions of the data array are assumed to be in pixels.}
+
+\item[\tt{theta, theta\_dark, theta\_white}] \hfill \\
+{Theta is a vector dataset storing the projection angular positions.  If theta is not defined the projections are assumed to be collected at equally spaced angular interval between 0 and 180 degree.  The dark field and white fields can be collected at any time before, during, or after the projection data. Theta\_dark, and theta\_white store the position of the tomographic rotation axis when the corresponding dark and white images are collected. If theta\_dark and theta\_white are missing the corresponding data\_dark and data\_white are assumed to be collected all at the beginning or at the end of the projection data collection.}
+
+\item[ \tt{data\_shift\_x, data\_shift\_y}] \hfill \\{Data\_shift\_x and data\_shift\_y are the vectors storing at each projection angular positions the image relative shift in x and y.  These vectors are used in high resolution CT when at each angular position the sample x and y are moved to keep the sample in the field of view based on a pre-calibration of rotary stage runout. If the unit is not defined are assumed to be in pixels.}
+
+\end{description}
+
+\begin{table}[h!]\sffamily \footnotesize
+\caption{Data Axes for Common Types of Scans}
+\centering
+\rowcolors{1}{white}{tableBlue}
+\begin{tabular}{l l l}
+\toprule
+\bfseries Member     & \bfseries Scan Type & \bfseries Axes Attribute \\
+\midrule
+\emph{data}  & Ptychography & "translation:y:x"  \\
+\emph{data}  & Tomo-Ptychography & "orientation:translation:y:x"  \\
+\emph{data}  & Bragg CDI & "orientation:y:x"  \\
+\emph{data}  & Ptychographic Bragg CDI & "orientation:translation:y:x"  \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+
+\member{title}{This is the data title.}
+
+\member{\emph{data}}{An x-ray photon correlation data set consists of ....... }
+
+%****************************************************************************
+\subsection{Instrument specific for x-ray photon correlation}
+\label{instrument:photon}
+
+\subsubsection{Detector}
+\label{table:detectorphoton}
+
+This class holds information about the detector used during the experiment. If  more than one detector are used they will be all listed as detector\_$N$.
+
+
+\begin{table}[h!]\sffamily \footnotesize
+\caption{X-ray photon correlation detector class members}
+
+\rowcolors{1}{white}{tableBlue}
+\begin{tabular}{p{3.5cm} p{4.7cm}  p{4.5cm} }
+\toprule
+\bfseries Member     & \bfseries Type & \bfseries Example \\
+\midrule
+manufacturer & string & "CooKe Corporation" \\   
+model & string &  "pco dimax" \\
+serial\_number & string &  "1234XW2" \\  
+bit\_depth & integer & 12 \\     
+x\_pixel\_size & float & 6.7e-6 \\
+y\_pixel\_size & float & 6.7e-6 \\
+x\_dimension & integer & 2048 \\
+y\_dimension & integer & 2048 \\
+x\_binning & integer & 1 \\
+y\_binning & integer & 1 \\
+operating\_temperature & float &  270 \\     
+exposure\_time & float & 1.7e-3 \\
+exposure\_period & float & 10.0 \\   
+frame\_rate & integer &  2 \\
+distance     & float & 5.7e-3\\
+data\_flat & 3D array & variable (see Tab. \ref{table:attrib} for attrib.)  \\
+roi & \hyperref[table:roi]{roi class} & \\
+efficiency & float & 99.95 \\
+adu\_per\_photon & float & 5.0 \\
+gain & float & 1.0 \\
+basis\_vectors & float array & length \\ 
+corner\_position & 3 floats & length \\
+blemish\_mask & 2D array of integers & variable (see Tab. \ref{table:attrib} for attrib.)  \\
+kinetics & \hyperref[table:kinetics]{kinetics class} & \\
+geometry & string & "TRANSMISSION" \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\member{manufacturer}{The detector manufacturer.}
+
+\member{model}{The detector model.}
+
+\member{serial\_number}{The detector serial number .}
+     
+\member{bit\_depth}{The detector bit depth.}
+
+\member{x\_pixel\_size, y\_pixel\_size}{Physical detector pixel size (m).}
+
+\member{x\_dimension, y\_dimension}{The detector horiz./vertical dimension.}
+
+\member{x\_binning, y\_binning}{If the data are collected binning the detector x\_binning and y\_binning store the binning factor.}
+
+\member{operating\_temperature}{The detector operating temperature (K).}
+
+\member{exposure\_time}{The detector exposure time (s).}
+
+\member{exposure\_period}{Time from the beginning of an exposure to the beginning of the next exposure (s).}
+
+\member{frame\_rate}{The detector frame rate (fps). This parameter is set for fly scan}
+
+\member{distance}{The detector distance from the sample.}
+
+\member{data\_flat}{The dark field and white fields must have the same dimensions as the collected images.  Data\_flat attributes, if used, are defined in Table \ref{table:attrib}.}
+
+\member{roi}{The detector selected Region Of Interest (ROI).}
+
+\member{efficiency}{The efficiency of the detector.}
+
+\member{adu\_per\_photon}{The ADU per photon.}
+
+\member{gain}{Detector gain setting.}
+
+\member{basis\_vectors}{A matrix with the basis vectors of the
+  detector data. For more details see \ref{ccd_orientation}.
+}
+
+\member{corner\_position}{The x, y and z coordinates of the corner of the first data element. For more details see \ref{ccd_orientation}.
+}
+
+\member{blemish\_mask}{Blemish mask labeling dead pixels in the detector. It's a 2D array of the same dimensions as the full detector, with 0 labeling bad pixels and 1 labeling good pixels.}
+
+\member{kinetics}{Kinetics detector properties.}
+
+\member{geometry}{TRANSMISSION or REFLECTION.}
+
+\newpage
+\subsubsection{Kinetics}
+\label{table:kinetics}
+
+Class describing the kinetics camera mode properties. This applies only to kinetics mode cameras.
+
+\begin{table}[h!]\sffamily \footnotesize
+\caption{kinetics class members}
+
+\rowcolors{1}{white}{tableBlue}
+\begin{tabular}{p{3.5cm} p{2.5cm}  p{2.5cm} }
+\toprule
+\bfseries Member     & \bfseries Type & \bfseries Example \\
+\midrule
+name & string & "APS" \\ 
+window\_size & integer & 256  \\     
+top & integer &  1024  \\
+first\_usable\_window & integer & 1  \\
+last\_usable\_window & integer & 4  \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\member{window\_size}{Number of rows in each kinetics window.}
+
+\member{top}{Top pixel.}
+
+\member{first\_usable\_window}{The first usable kinetics window.}
+
+\member{last\_usable\_window}{The last usable kinetics window.}
+
+\newpage
+\subsubsection{Setup}
+\label{table:xpcssetup}
+
+This class stores XPCS setup parameters.
+
+\begin{table}[h!]\sffamily \footnotesize
+\caption{XPCS Setup class members}
+
+\rowcolors{1}{white}{tableBlue}
+\begin{tabular}{p{4.5cm} p{3.5cm}  p{3.5cm} }
+
+\toprule
+\bfseries Member     & \bfseries Type & \bfseries Example \\
+\midrule
+beam\_center\_x & float & 0.000 \\   
+beam\_center\_y & float & 180.000 \\     
+beam\_size\_h & float & 10.000 \\    
+beam\_size\_v & float & 18.000 \\    
+stage\_zero\_x & float & 199.0 \\    
+stage\_zero\_z & float & 185.0 \\    
+stage\_x & float & 199.0 \\  
+stage\_z & float & 185.0 \\ 
+xspec & float & 0.0 \\   
+yspec & float & 0.0 \\  
+ccdxspec & float & 0.0 \\    
+ccdyspec & float & 0.0 \\   
+x & float & 50 \\
+y & float & 50 \\
+angle & float & 50.0 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\member{beam\_center\_x}{Pixel location of beam center.}
+
+\member{beam\_center\_y}{Pixel location of beam center.}
+
+\member{beam\_center\_h}{Horizontal beam size on detector.}
+
+\member{beam\_center\_v}{Vertical beam size on detector.}
+
+\member{stage\_zero\_x}{Initial stage location.}
+
+\member{stage\_zero\_y}{Initial stage location.}
+
+\member{stage\_x}{Stage location.}
+
+\member{stage\_y}{Stage location.}
+
+\member{xspec}{...}
+
+\member{yspec}{...}
+
+\member{ccdxspec}{...}
+
+\member{ccdyspec}{...}
+
+\member{x}{...}
+
+\member{y}{...}
+
+\member{angle}{...}
+
+%****************************************************************************
+
+
+\subsection{APS Sector 8 Process descriptions}
+For the APS Sector 8 x-ray photon correlation system we define the following process descriptions:
+
+\newpage
+\subsubsection{XPCS}
+\label{table:xpcs}
+
+The XPCS class contains all information and parameters required to run a  using the APS cluster.
+
+\begin{table}[h!]\sffamily \footnotesize
+\caption{XPCS class members.}
+
+\rowcolors{1}{white}{tableBlue}
+\begin{tabular}{p{3.5cm} p{4.0cm}  p{4.5cm} }
+
+\toprule
+\bfseries Member     & \bfseries Type & \bfseries Example \\
+\midrule
+input\_file\_local &  string & "InputFile.imm" \\
+output\_file\_local &  string & "OutputFile.imm" \\
+input\_file\_remote &  string & "InputFile.imm" \\
+output\_file\_remote &  string & "OutputFile.imm" \\
+specfile & string & "Specfile.spec" \\
+specscan\_dark\_number & integer & \\
+specscan\_data\_number & integer & \\
+compression & string & "SPARSE" \\
+file\_mode & string & "MULTI" \\
+delays\_per\_level & integer & \\
+lld & float & \\
+sigma & float & \\
+analysis\_type & string & "DYNAMIC" \\
+batches & integer & "2" \\
+data\_begin & integer & "1" \\
+data\_end & integer & "99998" \\
+dark\_begin & integer & "99999" \\
+dark\_end & integer & "100000" \\
+data\_begin\_todo & integer & "1" \\
+data\_end\_todo & integer & "99998" \\
+dark\_begin\_todo & integer & "99999" \\
+dark\_end\_todo & integer & "100000" \\
+mask & 2D array of integers & variable (see Tab. \ref{table:attrib} for attrib.)  \\
+dqmap & 2D array of floats & variable (see Tab. \ref{table:attrib} for attrib.)  \\
+sqmap & 2D array of floats & variable (see Tab. \ref{table:attrib} for attrib.)  \\
+dphimap & 2D array of floats & variable (see Tab. \ref{table:attrib} for attrib.)  \\
+sphimap & 2D array of floats & variable (see Tab. \ref{table:attrib} for attrib.)  \\
+dqspan & 1D array of floats & variable (see Tab. \ref{table:attrib} for attrib.)  \\
+dphispan & 1D array of floats & variable (see Tab. \ref{table:attrib} for attrib.)  \\
+sqspan & 1D array of floats & variable (see Tab. \ref{table:attrib} for attrib.)  \\
+sphispan & 1D array of floats & variable (see Tab. \ref{table:attrib} for attrib.)  \\
+sqlist & 1D array of floats & variable (see Tab. \ref{table:attrib} for attrib.)  \\
+dqlist & 1D array of floats & variable (see Tab. \ref{table:attrib} for attrib.)  \\
+sphilist & 1D array of floats & variable (see Tab. \ref{table:attrib} for attrib.)  \\
+dphilist & 1D array of floats & variable (see Tab. \ref{table:attrib} for attrib.)  \\
+normalization\_method & string & "INCIDENT" \\
+blemish\_enabled & string & "TRUE" \\
+flatfield\_enabled & string & "TRUE" \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\member{input\_file\_locatl}{Path to the input data file.}
+
+\member{output\_file\_local}{Full path for output data file.}
+
+\member{input\_file\_local}{Path to the input data file.}
+
+\member{output\_file\_local}{Full path for output data file.}
+
+\member{specfile}{Full path to spec file.}
+
+\member{specscan\_dark\_number}{...}
+
+\member{specscan\_data\_number}{...}
+
+\member{compression}{Compression type: either SPARSE or NONSPARSE.}
+
+\member{file\_mode}{MULTI or SINGLE.}
+
+\member{delays\_per\_level}{Delays per level.}
+
+\member{lld}{LLD.}
+
+\member{sigma}{Sigma.}
+
+\member{analysis\_type}{STATIC or DYNAMIC}
+
+\member{batches}{Number of batches.}
+
+\member{data\_begin}{Index of first data frame in .imm file.}
+
+\member{data\_end}{Index of last data frame in .imm file.}
+
+\member{dark\_begin}{Index of first dark data frame in .imm file.}
+
+\member{dark\_end}{Index of last dark data frame in .imm file.}
+
+\member{data\_begin\_todo}{Index of first data frame in .imm file to analyze.}
+
+\member{data\_end\_todo}{Index of last data frame in .imm file to analyze.}
+
+\member{dark\_begin\_todo}{Index of first dark data frame in .imm file to analyze.}
+
+\member{dark\_end\_todo}{Index of last dark data frame in .imm file to analyze.}
+
+\member{mask}{Mask used to exclude image regions during analysis. It's a 2D array of the same dimensions as the collected data, with 0 labeling excluded pixels and 1 labeling included pixels.}
+
+\member{dqmap}{dqmap. 2D array of the same dimensions as the collected data.}
+
+\member{sqmap}{sqmap. 2D array of the same dimensions as the collected data.}
+
+\member{dphimap}{dphimap. 2D array of the same dimensions as the collected data.}
+
+\member{sphimap}{sphimap. 2D array of the same dimensions as the collected data.}
+
+\member{dqspan}{dqspan. 1D array.}
+
+\member{dphispan}{dphispan. 1D array.}
+
+\member{sqspan}{sqspan. 1D array.}
+
+\member{sphispan}{sphispan. 1D array.}
+
+\member{sqlist}{sqlist. 1D array.}
+
+\member{dqlist}{dqlist. 1D array.}
+
+\member{sphilist}{sphilist. 1D array.}
+
+\member{dphilist}{dphilist. 1D array.}
+
+\member{normalization\_method}{Normalization method: INCIDENT or TRANSMITTED or BOTH or NONE.}
+
+\member{blemish\_enabled}{Use detector blemish data.}
+
+\member{flatfield\_enabled}{Use detector flat field data.}

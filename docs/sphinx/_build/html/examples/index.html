@@ -1,0 +1,402 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Examples &mdash; data_exchange 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="data_exchange 0.1 documentation" href="../index.html" />
+    <link rel="next" title="Data Exchange API" href="../data_exchange_api/index.html" />
+    <link rel="prev" title="Getting Started" href="../getting_started/index.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../data_exchange_api/index.html" title="Data Exchange API"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="../getting_started/index.html" title="Getting Started"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">data_exchange 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="examples">
+<h1>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="creating-a-basic-data-exchange-file">
+<h2>Creating a Basic Data Exchange File<a class="headerlink" href="#creating-a-basic-data-exchange-file" title="Permalink to this headline">¶</a></h2>
+<p>Import the relevant modules:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="kn">from</span> <span class="nn">data_exchange</span> <span class="kn">import</span> <span class="n">DataExchangeFile</span><span class="p">,</span> <span class="n">DataExchangeEntry</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+</pre></div>
+</div>
+<p>Create some fake data:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">rawdata</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">180</span> <span class="o">*</span> <span class="mi">256</span> <span class="o">*</span> <span class="mi">256</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">uint16</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">180</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="mi">256</span><span class="p">)</span>
+
+<span class="c"># x, y and z ranges</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">256</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">256</span><span class="p">)</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">180</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Create the Data Exchange file:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">f</span> <span class="o">=</span> <span class="n">DataExchangeFile</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s">&#39;w&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Create a DataExchangeEntry under &#8216;/exchange/data&#8217; with a dataset called &#8216;data&#8217; which has an attribute called &#8216;units&#8217;:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">d</span> <span class="o">=</span> <span class="n">DataExchangeEntry</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="n">rawdata</span><span class="p">,</span> <span class="s">&#39;units&#39;</span><span class="p">:</span><span class="s">&#39;counts&#39;</span><span class="p">})</span>
+</pre></div>
+</div>
+<p>Add this entry top the file and close it:</p>
+<div class="highlight-python"><pre>    f.add_entry(d)
+f.close()</pre>
+</div>
+<p>This could also be achieved with fewer lines of code:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">f</span><span class="o">.</span><span class="n">add_entry</span><span class="p">(</span><span class="n">DataExchangeEntry</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="n">rawdata</span><span class="p">,</span> <span class="s">&#39;units&#39;</span><span class="p">:</span><span class="s">&#39;counts&#39;</span><span class="p">}))</span>
+<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="including-multiple-datasets">
+<h2>Including Multiple Datasets<a class="headerlink" href="#including-multiple-datasets" title="Permalink to this headline">¶</a></h2>
+<p>Generate more fake datasets:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">rawdata</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">180</span> <span class="o">*</span> <span class="mi">256</span> <span class="o">*</span> <span class="mi">256</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">uint16</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">180</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="mi">256</span><span class="p">)</span>
+<span class="n">rawdata_white</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="mi">256</span> <span class="o">*</span> <span class="mi">256</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">uint16</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="mi">256</span><span class="p">)</span>
+<span class="n">rawdata_dark</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">10</span> <span class="o">*</span> <span class="mi">256</span> <span class="o">*</span> <span class="mi">256</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">uint16</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="mi">256</span><span class="p">)</span>
+
+<span class="c"># x, y and z ranges</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">256</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">256</span><span class="p">)</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">180</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Create the Data Exchange file:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">f</span> <span class="o">=</span> <span class="n">DataExchangeFile</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s">&#39;w&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now add the datasets with an attribute to describe the units of the datasets:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">f</span><span class="o">.</span><span class="n">add_entry</span><span class="p">([</span>
+        <span class="n">DataExchangeEntry</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="n">rawdata</span><span class="p">,</span> <span class="s">&#39;units&#39;</span><span class="p">:</span><span class="s">&#39;counts&#39;</span><span class="p">}),</span>
+        <span class="n">DataExchangeEntry</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="n">data_dark</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="n">rawdata_dark</span><span class="p">,</span> <span class="s">&#39;units&#39;</span><span class="p">:</span><span class="s">&#39;counts&#39;</span><span class="p">}),</span>
+        <span class="n">DataExchangeEntry</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="n">data_white</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="n">rawdata_white</span><span class="p">,</span> <span class="s">&#39;units&#39;</span><span class="p">:</span><span class="s">&#39;counts&#39;</span><span class="p">})</span>
+        <span class="p">]</span>
+    <span class="p">)</span>
+
+<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="a-moe-complicated-file-structure-with-multiple-groups">
+<h2>A Moe Complicated File Structure With Multiple Groups<a class="headerlink" href="#a-moe-complicated-file-structure-with-multiple-groups" title="Permalink to this headline">¶</a></h2>
+<p>First the fake data:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">rawdata</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">180</span> <span class="o">*</span> <span class="mi">256</span> <span class="o">*</span> <span class="mi">256</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">uint16</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">180</span><span class="p">,</span> <span class="mi">256</span><span class="p">,</span> <span class="mi">256</span><span class="p">)</span>
+
+<span class="c"># x, y and z ranges</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">128</span><span class="p">)</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">128</span><span class="p">)</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">180</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Create the Data Exchange file:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">f</span> <span class="o">=</span> <span class="n">DataExchangeFile</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s">&#39;w&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Add the first dataset under &#8216;/exchange/data&#8217;:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">f</span><span class="o">.</span><span class="n">add_entry</span><span class="p">(</span> <span class="n">DataExchangeEntry</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="n">rawdata</span><span class="p">,</span> <span class="s">&#39;units&#39;</span><span class="p">:</span><span class="s">&#39;counts&#39;</span><span class="p">,</span> <span class="s">&#39;description&#39;</span><span class="p">:</span> <span class="s">&#39;Projection Data&#39;</span><span class="p">,</span>
+                                        <span class="s">&#39;dataset_opts&#39;</span><span class="p">:</span>  <span class="p">{</span><span class="s">&#39;compression&#39;</span><span class="p">:</span> <span class="s">&#39;gzip&#39;</span><span class="p">,</span> <span class="s">&#39;compression_opts&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">}</span> <span class="p">})</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Now add a group describing the sample under &#8216;/measurement/sample&#8217;:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">f</span><span class="o">.</span><span class="n">add_entry</span><span class="p">(</span> <span class="n">DataExchangeEntry</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="s">&#39;Minivirus&#39;</span><span class="p">},</span> <span class="n">temperature</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="mf">200.0</span><span class="p">,</span> <span class="s">&#39;units&#39;</span><span class="p">:</span><span class="s">&#39;celsius&#39;</span><span class="p">,</span>
+                            <span class="s">&#39;dataset_opts&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;dtype&#39;</span><span class="p">:</span> <span class="s">&#39;d&#39;</span><span class="p">}})</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>The sample has two datasets called <tt class="docutils literal"><span class="pre">name</span></tt> and <tt class="docutils literal"><span class="pre">temperature</span></tt> with values <tt class="docutils literal"><span class="pre">minivirus</span></tt> and <tt class="docutils literal"><span class="pre">200.0</span></tt> respectively. We have also added an option ensuring the temperature is stored as a double floating point number.</p>
+<p>Create an <tt class="docutils literal"><span class="pre">instrument</span></tt> group with <tt class="docutils literal"><span class="pre">name</span></tt> of <tt class="docutils literal"><span class="pre">APS</span> <span class="pre">2-BM</span></tt> in the default location <tt class="docutils literal"><span class="pre">/measurement</span></tt>:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">f</span><span class="o">.</span><span class="n">add_entry</span><span class="p">(</span> <span class="n">DataExchangeEntry</span><span class="o">.</span><span class="n">instrument</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="s">&#39;APS 2-BM&#39;</span><span class="p">})</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>Finally create an entry describing the monochromator:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">f</span><span class="o">.</span><span class="n">add_entry</span><span class="p">(</span> <span class="n">DataExchangeEntry</span><span class="o">.</span><span class="n">monochromator</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="s">&#39;DMM&#39;</span><span class="p">},</span>
+                                            <span class="n">energy</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="mf">10.00</span><span class="p">,</span> <span class="s">&#39;units&#39;</span><span class="p">:</span><span class="s">&#39;keV&#39;</span><span class="p">,</span> <span class="s">&#39;dataset_opts&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s">&#39;dtype&#39;</span><span class="p">:</span><span class="s">&#39;d&#39;</span><span class="p">}}))</span>
+
+<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="a-realistic-data-exchange-file">
+<h2>A Realistic Data Exchange File<a class="headerlink" href="#a-realistic-data-exchange-file" title="Permalink to this headline">¶</a></h2>
+<p>Generate the fake data:</p>
+<div class="highlight-python"><pre>    rawdata = np.ones(180 * 256 * 256, np.uint16).reshape(180, 256, 256)
+rawdata_white = np.ones(2 * 256 * 256, np.uint16).reshape(2, 256, 256)
+rawdata_dark = np.zeros(10 * 256 * 256, np.uint16).reshape(10, 256, 256)
+
+normalizeddata = np.ones(180 * 256 * 256, \
+                         np.float64).reshape(180, 256, 256)
+
+reconstructeddata = np.ones(256 * 256 * 256, \
+                            np.float64).reshape(256, 256, 256)
+
+x = np.arange(128)
+y = np.arange(128)
+z = np.arange(180);
+
+theta = (z / float(180)) * 180.0
+theta_white = (0.0, 180.0)
+theta_dark = (0.0, 0.0, 0.0, 0.0, 0.0, 180.0, 180.0, 180.0, 180.0, 180.0)
+
+data_shift_x = np.random.randint(-100, 100, size=180)
+data_shift_y = np.random.randint(-100, 100, size=180)</pre>
+</div>
+<p>Create a Data Exchange file:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">f</span> <span class="o">=</span> <span class="n">DataExchangeFile</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s">&#39;w&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Add the exchange data:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">f</span><span class="o">.</span><span class="n">add_entry</span><span class="p">(</span> <span class="n">DataExchangeEntry</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="n">rawdata</span><span class="p">,</span> <span class="s">&#39;units&#39;</span><span class="p">:</span><span class="s">&#39;counts&#39;</span><span class="p">,</span> <span class="s">&#39;description&#39;</span><span class="p">:</span> <span class="s">&#39;transmission&#39;</span><span class="p">,</span> <span class="s">&#39;axes&#39;</span><span class="p">:</span><span class="s">&#39;theta:y:x&#39;</span><span class="p">,</span>
+                                        <span class="s">&#39;dataset_opts&#39;</span><span class="p">:</span>  <span class="p">{</span><span class="s">&#39;compression&#39;</span><span class="p">:</span> <span class="s">&#39;gzip&#39;</span><span class="p">,</span> <span class="s">&#39;compression_opts&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">}</span> <span class="p">})</span>
+<span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">add_entry</span><span class="p">(</span> <span class="n">DataExchangeEntry</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="s">&#39;tomography_raw_projections&#39;</span><span class="p">}))</span>
+<span class="n">f</span><span class="o">.</span><span class="n">add_entry</span><span class="p">(</span> <span class="n">DataExchangeEntry</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="n">data_dark</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="n">rawdata_dark</span><span class="p">,</span> <span class="s">&#39;units&#39;</span><span class="p">:</span><span class="s">&#39;counts&#39;</span><span class="p">,</span> <span class="s">&#39;axes&#39;</span><span class="p">:</span><span class="s">&#39;theta_dark:y:x&#39;</span><span class="p">,</span>
+                                        <span class="s">&#39;dataset_opts&#39;</span><span class="p">:</span>  <span class="p">{</span><span class="s">&#39;compression&#39;</span><span class="p">:</span> <span class="s">&#39;gzip&#39;</span><span class="p">,</span> <span class="s">&#39;compression_opts&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">}</span> <span class="p">})</span>
+<span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">add_entry</span><span class="p">(</span> <span class="n">DataExchangeEntry</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="n">data_white</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="n">rawdata_white</span><span class="p">,</span> <span class="s">&#39;units&#39;</span><span class="p">:</span><span class="s">&#39;counts&#39;</span><span class="p">,</span> <span class="s">&#39;axes&#39;</span><span class="p">:</span><span class="s">&#39;theta_white:y:x&#39;</span><span class="p">,</span>
+                                        <span class="s">&#39;dataset_opts&#39;</span><span class="p">:</span>  <span class="p">{</span><span class="s">&#39;compression&#39;</span><span class="p">:</span> <span class="s">&#39;gzip&#39;</span><span class="p">,</span> <span class="s">&#39;compression_opts&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">}</span> <span class="p">})</span>
+<span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">add_entry</span><span class="p">(</span> <span class="n">DataExchangeEntry</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="n">theta</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="n">theta</span><span class="p">,</span> <span class="s">&#39;units&#39;</span><span class="p">:</span><span class="s">&#39;degrees&#39;</span><span class="p">}))</span>
+<span class="n">f</span><span class="o">.</span><span class="n">add_entry</span><span class="p">(</span> <span class="n">DataExchangeEntry</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="n">theta_dark</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="n">theta_dark</span><span class="p">,</span> <span class="s">&#39;units&#39;</span><span class="p">:</span><span class="s">&#39;degrees&#39;</span><span class="p">}))</span>
+<span class="n">f</span><span class="o">.</span><span class="n">add_entry</span><span class="p">(</span> <span class="n">DataExchangeEntry</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="n">theta_white</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="n">theta_white</span><span class="p">,</span> <span class="s">&#39;units&#39;</span><span class="p">:</span><span class="s">&#39;degrees&#39;</span><span class="p">}))</span>
+<span class="n">f</span><span class="o">.</span><span class="n">add_entry</span><span class="p">(</span> <span class="n">DataExchangeEntry</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="n">data_shift_x</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="n">data_shift_x</span><span class="p">}))</span>
+<span class="n">f</span><span class="o">.</span><span class="n">add_entry</span><span class="p">(</span> <span class="n">DataExchangeEntry</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="n">data_shift_y</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="n">data_shift_y</span><span class="p">}))</span>
+</pre></div>
+</div>
+<p>Create a second exchange group to store the normalized data:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">f</span><span class="o">.</span><span class="n">add_entry</span><span class="p">(</span> <span class="n">DataExchangeEntry</span><span class="o">.</span><span class="n">exchange</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="s">&#39;exchange_2&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="s">&#39;tomography normalized projections&#39;</span><span class="p">})</span> <span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">add_entry</span><span class="p">(</span> <span class="n">DataExchangeEntry</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="s">&#39;exchange_2&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="n">normalizeddata</span><span class="p">,</span> <span class="s">&#39;units&#39;</span><span class="p">:</span><span class="s">&#39;counts&#39;</span><span class="p">,</span> <span class="s">&#39;axes&#39;</span><span class="p">:</span><span class="s">&#39;theta:y:x&#39;</span><span class="p">,</span>
+                                        <span class="s">&#39;dataset_opts&#39;</span><span class="p">:</span>  <span class="p">{</span><span class="s">&#39;compression&#39;</span><span class="p">:</span> <span class="s">&#39;gzip&#39;</span><span class="p">,</span> <span class="s">&#39;compression_opts&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">}</span> <span class="p">})</span>
+<span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">add_entry</span><span class="p">(</span> <span class="n">DataExchangeEntry</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="s">&#39;exchange_2&#39;</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="n">theta</span><span class="p">,</span> <span class="s">&#39;units&#39;</span><span class="p">:</span><span class="s">&#39;degrees&#39;</span><span class="p">}))</span>
+</pre></div>
+</div>
+<p>Create a third exchange group to store the reconstructed data:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">f</span><span class="o">.</span><span class="n">add_entry</span><span class="p">(</span> <span class="n">DataExchangeEntry</span><span class="o">.</span><span class="n">exchange</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="s">&#39;exchange_3&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="s">&#39;tomography reconstructions&#39;</span><span class="p">})</span> <span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">add_entry</span><span class="p">(</span> <span class="n">DataExchangeEntry</span><span class="o">.</span><span class="n">data</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="s">&#39;exchange_3&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="n">reconstructeddata</span><span class="p">,</span> <span class="s">&#39;units&#39;</span><span class="p">:</span><span class="s">&#39;density&#39;</span><span class="p">,</span> <span class="s">&#39;axes&#39;</span><span class="p">:</span><span class="s">&#39;z:y:x&#39;</span><span class="p">,</span>
+                                        <span class="s">&#39;dataset_opts&#39;</span><span class="p">:</span>  <span class="p">{</span><span class="s">&#39;compression&#39;</span><span class="p">:</span> <span class="s">&#39;gzip&#39;</span><span class="p">,</span> <span class="s">&#39;compression_opts&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">}</span> <span class="p">})</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+<p>Now create an instrument group to describe the equipment used in the experiment:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">f</span><span class="o">.</span><span class="n">add_entry</span><span class="p">(</span> <span class="n">DataExchangeEntry</span><span class="o">.</span><span class="n">instrument</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="s">&#39;APS 2-BM&#39;</span><span class="p">})</span> <span class="p">)</span>
+
+<span class="n">f</span><span class="o">.</span><span class="n">add_entry</span><span class="p">(</span> <span class="n">DataExchangeEntry</span><span class="o">.</span><span class="n">source</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="s">&#39;APS&#39;</span><span class="p">},</span>
+                                    <span class="n">date_time</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="s">&quot;2012-07-31T21:15:23+0600&quot;</span><span class="p">},</span>
+                                    <span class="n">beamline</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="s">&quot;2-BM&quot;</span><span class="p">},</span>
+                                    <span class="n">current</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="mf">101.199</span><span class="p">,</span> <span class="s">&#39;units&#39;</span><span class="p">:</span> <span class="s">&#39;mA&#39;</span><span class="p">,</span> <span class="s">&#39;dataset_opts&#39;</span><span class="p">:</span>  <span class="p">{</span><span class="s">&#39;dtype&#39;</span><span class="p">:</span> <span class="s">&#39;d&#39;</span><span class="p">}},</span>
+                                    <span class="n">energy</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="mf">7.0</span><span class="p">,</span> <span class="s">&#39;units&#39;</span><span class="p">:</span><span class="s">&#39;GeV&#39;</span><span class="p">,</span> <span class="s">&#39;dataset_opts&#39;</span><span class="p">:</span>  <span class="p">{</span><span class="s">&#39;dtype&#39;</span><span class="p">:</span> <span class="s">&#39;d&#39;</span><span class="p">}},</span>
+                                    <span class="n">mode</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="s">&#39;TOPUP&#39;</span><span class="p">}</span>
+                                    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="n">f</span><span class="o">.</span><span class="n">add_entry</span><span class="p">(</span> <span class="n">DataExchangeEntry</span><span class="o">.</span><span class="n">attenuator</span><span class="p">(</span><span class="n">thickness</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="mf">1e-3</span><span class="p">,</span> <span class="s">&#39;units&#39;</span><span class="p">:</span> <span class="s">&#39;m&#39;</span><span class="p">,</span> <span class="s">&#39;dataset_opts&#39;</span><span class="p">:</span>  <span class="p">{</span><span class="s">&#39;dtype&#39;</span><span class="p">:</span> <span class="s">&#39;d&#39;</span><span class="p">}},</span>
+                                        <span class="nb">type</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="s">&#39;Al&#39;</span><span class="p">}</span>
+                                        <span class="p">)</span>
+    <span class="p">)</span>
+
+<span class="n">f</span><span class="o">.</span><span class="n">add_entry</span><span class="p">(</span> <span class="n">DataExchangeEntry</span><span class="o">.</span><span class="n">monochromator</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="s">&#39;Multilayer&#39;</span><span class="p">},</span>
+                                            <span class="n">energy</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="mf">19.26</span><span class="p">,</span> <span class="s">&#39;units&#39;</span><span class="p">:</span> <span class="s">&#39;keV&#39;</span><span class="p">,</span> <span class="s">&#39;dataset_opts&#39;</span><span class="p">:</span>  <span class="p">{</span><span class="s">&#39;dtype&#39;</span><span class="p">:</span> <span class="s">&#39;d&#39;</span><span class="p">}},</span>
+                                            <span class="n">energy_error</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="mf">1e-3</span><span class="p">,</span> <span class="s">&#39;units&#39;</span><span class="p">:</span> <span class="s">&#39;keV&#39;</span><span class="p">,</span> <span class="s">&#39;dataset_opts&#39;</span><span class="p">:</span>  <span class="p">{</span><span class="s">&#39;dtype&#39;</span><span class="p">:</span> <span class="s">&#39;d&#39;</span><span class="p">}},</span>
+                                            <span class="n">mono_stripe</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="s">&#39;Ru/C&#39;</span><span class="p">},</span>
+                                            <span class="p">)</span>
+    <span class="p">)</span>
+
+<span class="n">f</span><span class="o">.</span><span class="n">add_entry</span><span class="p">(</span> <span class="n">DataExchangeEntry</span><span class="o">.</span><span class="n">detector</span><span class="p">(</span><span class="n">manufacturer</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="s">&#39;CooKe Corporation&#39;</span><span class="p">},</span>
+                                        <span class="n">model</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="s">&#39;pco dimax&#39;</span><span class="p">},</span>
+                                        <span class="n">serial_number</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="s">&#39;1234XW2&#39;</span><span class="p">},</span>
+                                        <span class="n">bit_depth</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span> <span class="s">&#39;dataset_opts&#39;</span><span class="p">:</span>  <span class="p">{</span><span class="s">&#39;dtype&#39;</span><span class="p">:</span> <span class="s">&#39;d&#39;</span><span class="p">}},</span>
+                                        <span class="n">x_pixel_size</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="mf">6.7e-6</span><span class="p">,</span> <span class="s">&#39;dataset_opts&#39;</span><span class="p">:</span>  <span class="p">{</span><span class="s">&#39;dtype&#39;</span><span class="p">:</span> <span class="s">&#39;f&#39;</span><span class="p">}},</span>
+                                        <span class="n">y_pixel_size</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="mf">6.7e-6</span><span class="p">,</span> <span class="s">&#39;dataset_opts&#39;</span><span class="p">:</span>  <span class="p">{</span><span class="s">&#39;dtype&#39;</span><span class="p">:</span> <span class="s">&#39;f&#39;</span><span class="p">}},</span>
+                                        <span class="n">x_dimensions</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="mi">2048</span><span class="p">,</span> <span class="s">&#39;dataset_opts&#39;</span><span class="p">:</span>  <span class="p">{</span><span class="s">&#39;dtype&#39;</span><span class="p">:</span> <span class="s">&#39;i&#39;</span><span class="p">}},</span>
+                                        <span class="n">y_dimensions</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="mi">2048</span><span class="p">,</span> <span class="s">&#39;dataset_opts&#39;</span><span class="p">:</span>  <span class="p">{</span><span class="s">&#39;dtype&#39;</span><span class="p">:</span> <span class="s">&#39;i&#39;</span><span class="p">}},</span>
+                                        <span class="n">x_binning</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;dataset_opts&#39;</span><span class="p">:</span>  <span class="p">{</span><span class="s">&#39;dtype&#39;</span><span class="p">:</span> <span class="s">&#39;i&#39;</span><span class="p">}},</span>
+                                        <span class="n">y_binning</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">&#39;dataset_opts&#39;</span><span class="p">:</span>  <span class="p">{</span><span class="s">&#39;dtype&#39;</span><span class="p">:</span> <span class="s">&#39;i&#39;</span><span class="p">}},</span>
+                                        <span class="n">operating_temperature</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="mi">270</span><span class="p">,</span> <span class="s">&#39;units&#39;</span><span class="p">:</span><span class="s">&#39;K&#39;</span><span class="p">,</span> <span class="s">&#39;dataset_opts&#39;</span><span class="p">:</span>  <span class="p">{</span><span class="s">&#39;dtype&#39;</span><span class="p">:</span> <span class="s">&#39;f&#39;</span><span class="p">}},</span>
+                                        <span class="n">exposure_time</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="mi">170</span><span class="p">,</span> <span class="s">&#39;units&#39;</span><span class="p">:</span><span class="s">&#39;ms&#39;</span><span class="p">,</span> <span class="s">&#39;dataset_opts&#39;</span><span class="p">:</span>  <span class="p">{</span><span class="s">&#39;dtype&#39;</span><span class="p">:</span> <span class="s">&#39;d&#39;</span><span class="p">}},</span>
+                                        <span class="n">frame_rate</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span> <span class="s">&#39;dataset_opts&#39;</span><span class="p">:</span>  <span class="p">{</span><span class="s">&#39;dtype&#39;</span><span class="p">:</span> <span class="s">&#39;i&#39;</span><span class="p">}},</span>
+                                        <span class="n">output_data</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="s">&#39;/exchange&#39;</span><span class="p">}</span>
+                                        <span class="p">)</span>
+    <span class="p">)</span>
+
+<span class="n">f</span><span class="o">.</span><span class="n">add_entry</span><span class="p">(</span> <span class="n">DataExchangeEntry</span><span class="o">.</span><span class="n">roi</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="s">&#39;Center Third&#39;</span><span class="p">},</span>
+                                    <span class="n">x1</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="mi">256</span><span class="p">,</span> <span class="s">&#39;dataset_opts&#39;</span><span class="p">:</span>  <span class="p">{</span><span class="s">&#39;dtype&#39;</span><span class="p">:</span> <span class="s">&#39;i&#39;</span><span class="p">}},</span>
+                                    <span class="n">x2</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="mi">1792</span><span class="p">,</span> <span class="s">&#39;dataset_opts&#39;</span><span class="p">:</span>  <span class="p">{</span><span class="s">&#39;dtype&#39;</span><span class="p">:</span> <span class="s">&#39;i&#39;</span><span class="p">}},</span>
+                                    <span class="n">y1</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="mi">256</span><span class="p">,</span> <span class="s">&#39;dataset_opts&#39;</span><span class="p">:</span>  <span class="p">{</span><span class="s">&#39;dtype&#39;</span><span class="p">:</span> <span class="s">&#39;i&#39;</span><span class="p">}},</span>
+                                    <span class="n">y2</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="mi">1792</span><span class="p">,</span> <span class="s">&#39;dataset_opts&#39;</span><span class="p">:</span>  <span class="p">{</span><span class="s">&#39;dtype&#39;</span><span class="p">:</span> <span class="s">&#39;i&#39;</span><span class="p">}},</span>
+                                    <span class="p">)</span>
+    <span class="p">)</span>
+
+<span class="n">f</span><span class="o">.</span><span class="n">add_entry</span><span class="p">(</span><span class="n">DataExchangeEntry</span><span class="o">.</span><span class="n">objective</span><span class="p">(</span><span class="n">manufacturer</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="s">&#39;Zeiss&#39;</span><span class="p">},</span>
+                                        <span class="n">model</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="s">&#39;Plan-NEOFLUAR 1004-072&#39;</span><span class="p">},</span>
+                                        <span class="n">magnification</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="mi">20</span><span class="p">,</span> <span class="s">&#39;dataset_opts&#39;</span><span class="p">:</span>  <span class="p">{</span><span class="s">&#39;dtype&#39;</span><span class="p">:</span> <span class="s">&#39;d&#39;</span><span class="p">}},</span>
+                                        <span class="n">numerical_aperture</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="mf">0.5</span><span class="p">,</span> <span class="s">&#39;dataset_opts&#39;</span><span class="p">:</span>  <span class="p">{</span><span class="s">&#39;dtype&#39;</span><span class="p">:</span> <span class="s">&#39;d&#39;</span><span class="p">}},</span>
+                                    <span class="p">)</span>
+    <span class="p">)</span>
+
+<span class="n">f</span><span class="o">.</span><span class="n">add_entry</span><span class="p">(</span><span class="n">DataExchangeEntry</span><span class="o">.</span><span class="n">scintillator</span><span class="p">(</span><span class="n">manufacturer</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="s">&#39;Crytur&#39;</span><span class="p">},</span>
+                                            <span class="n">serial_number</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="s">&#39;12&#39;</span><span class="p">},</span>
+                                            <span class="n">name</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="s">&#39;YAG polished&#39;</span><span class="p">},</span>
+                                            <span class="nb">type</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="s">&#39;YAG on YAG&#39;</span><span class="p">},</span>
+                                            <span class="n">scintillating_thickness</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="mf">5e-6</span><span class="p">,</span> <span class="s">&#39;dataset_opts&#39;</span><span class="p">:</span>  <span class="p">{</span><span class="s">&#39;dtype&#39;</span><span class="p">:</span> <span class="s">&#39;d&#39;</span><span class="p">}},</span>
+                                            <span class="n">substrate_thickness</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="mf">1e-4</span><span class="p">,</span> <span class="s">&#39;dataset_opts&#39;</span><span class="p">:</span>  <span class="p">{</span><span class="s">&#39;dtype&#39;</span><span class="p">:</span> <span class="s">&#39;d&#39;</span><span class="p">}},</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<p>Now some entries to describe the sample:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">f</span><span class="o">.</span><span class="n">add_entry</span><span class="p">(</span> <span class="n">DataExchangeEntry</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span> <span class="n">name</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="s">&#39;Hornby_b&#39;</span><span class="p">},</span>
+                                        <span class="n">description</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="s">&#39;test sample&#39;</span><span class="p">},</span>
+                                        <span class="n">preparation_date</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="s">&#39;2011-07-31T21:15:23+0600&#39;</span><span class="p">},</span>
+                                        <span class="n">chemical_formula</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="s">&#39;unknown&#39;</span><span class="p">},</span>
+                                        <span class="n">mass</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="mf">0.25</span><span class="p">,</span> <span class="s">&#39;units&#39;</span><span class="p">:</span><span class="s">&#39;g&#39;</span><span class="p">,</span> <span class="s">&#39;dataset_opts&#39;</span><span class="p">:</span>  <span class="p">{</span><span class="s">&#39;dtype&#39;</span><span class="p">:</span> <span class="s">&#39;d&#39;</span><span class="p">}},</span>
+                                        <span class="n">enviroment</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="s">&#39;air&#39;</span><span class="p">},</span>
+                                        <span class="n">temperature</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="mf">120.0</span><span class="p">,</span> <span class="s">&#39;units&#39;</span><span class="p">:</span><span class="s">&#39;Celsius&#39;</span><span class="p">,</span> <span class="s">&#39;dataset_opts&#39;</span><span class="p">:</span>  <span class="p">{</span><span class="s">&#39;dtype&#39;</span><span class="p">:</span> <span class="s">&#39;d&#39;</span><span class="p">}},</span>
+                                        <span class="n">temperature_set</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="mf">130.0</span><span class="p">,</span> <span class="s">&#39;units&#39;</span><span class="p">:</span><span class="s">&#39;Celsius&#39;</span><span class="p">,</span> <span class="s">&#39;dataset_opts&#39;</span><span class="p">:</span>  <span class="p">{</span><span class="s">&#39;dtype&#39;</span><span class="p">:</span> <span class="s">&#39;d&#39;</span><span class="p">}},</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<p>Desribe the sample geometry with a <tt class="docutils literal"><span class="pre">geometry</span></tt> entry. Note the entry is not going in the default location i.e we are modifying the root value:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">f</span><span class="o">.</span><span class="n">add_entry</span><span class="p">(</span> <span class="n">DataExchangeEntry</span><span class="o">.</span><span class="n">translation</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="s">&#39;/measurement/sample/geometry&#39;</span><span class="p">,</span>
+                <span class="n">distances</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">],</span><span class="s">&#39;axes&#39;</span><span class="p">:</span><span class="s">&#39;z:y:x&#39;</span><span class="p">,</span> <span class="s">&#39;units&#39;</span><span class="p">:</span><span class="s">&#39;m&#39;</span><span class="p">,</span> <span class="s">&#39;dataset_opts&#39;</span><span class="p">:</span>  <span class="p">{</span><span class="s">&#39;dtype&#39;</span><span class="p">:</span> <span class="s">&#39;d&#39;</span><span class="p">}}</span>
+                <span class="p">)</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+<p>Describe the experimenter and experiment:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">f</span><span class="o">.</span><span class="n">add_entry</span><span class="p">(</span> <span class="n">DataExchangeEntry</span><span class="o">.</span><span class="n">experimenter</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="s">&quot;John Doe&quot;</span><span class="p">},</span>
+                                            <span class="n">role</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="s">&quot;Project PI&quot;</span><span class="p">},</span>
+                                            <span class="n">affiliation</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="s">&quot;University of California, Berkeley&quot;</span><span class="p">},</span>
+                                            <span class="n">address</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="s">&quot;EPS UC Berkeley CA 94720 4767 USA&quot;</span><span class="p">},</span>
+                                            <span class="n">phone</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="s">&quot;+1 123 456 0000&quot;</span><span class="p">},</span>
+                                            <span class="n">email</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="s">&quot;johndoe@berkeley.edu&quot;</span><span class="p">},</span>
+                                            <span class="n">facility_user_id</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="s">&quot;a123456&quot;</span><span class="p">},</span>
+
+                <span class="p">)</span>
+    <span class="p">)</span>
+
+
+<span class="n">f</span><span class="o">.</span><span class="n">add_entry</span><span class="p">(</span> <span class="n">DataExchangeEntry</span><span class="o">.</span><span class="n">experiment</span><span class="p">(</span>  <span class="n">proposal</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="s">&quot;1234&quot;</span><span class="p">},</span>
+                                            <span class="n">activity</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="s">&quot;e11218&quot;</span><span class="p">},</span>
+                                            <span class="n">safety</span><span class="o">=</span><span class="p">{</span><span class="s">&#39;value&#39;</span><span class="p">:</span><span class="s">&quot;9876&quot;</span><span class="p">},</span>
+            <span class="p">)</span>
+    <span class="p">)</span>
+
+<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Examples</a><ul>
+<li><a class="reference internal" href="#creating-a-basic-data-exchange-file">Creating a Basic Data Exchange File</a></li>
+<li><a class="reference internal" href="#including-multiple-datasets">Including Multiple Datasets</a></li>
+<li><a class="reference internal" href="#a-moe-complicated-file-structure-with-multiple-groups">A Moe Complicated File Structure With Multiple Groups</a></li>
+<li><a class="reference internal" href="#a-realistic-data-exchange-file">A Realistic Data Exchange File</a></li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="../getting_started/index.html"
+                        title="previous chapter">Getting Started</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="../data_exchange_api/index.html"
+                        title="next chapter">Data Exchange API</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/examples/index.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="../data_exchange_api/index.html" title="Data Exchange API"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="../getting_started/index.html" title="Getting Started"
+             >previous</a> |</li>
+        <li><a href="../index.html">data_exchange 0.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2013, David J. Vine.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

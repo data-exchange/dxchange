@@ -1,0 +1,69 @@
+\contentsline {section}{\numberline {1}Introduction}{1}{section.1}
+\contentsline {section}{\numberline {2}The Design of Data Exchange}{1}{section.2}
+\contentsline {subsection}{\numberline {2.1}HDF5}{2}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}Data types}{2}{subsection.2.2}
+\contentsline {subsection}{\numberline {2.3}Root Level Structure}{2}{subsection.2.3}
+\contentsline {section}{\numberline {3}Data Exchange by Example}{4}{section.3}
+\contentsline {subsection}{\numberline {3.1}Diagram color code}{4}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}A minimal Data Exchange file for imaging}{4}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.3}Storing and describing a multidimensional dataset}{4}{subsection.3.3}
+\contentsline {subsection}{\numberline {3.4}Storing projections, dark fields, and white fields}{5}{subsection.3.4}
+\contentsline {subsection}{\numberline {3.5}A typical Data Exchange file for tomography}{6}{subsection.3.5}
+\contentsline {subsubsection}{\numberline {3.5.1}Sample Temperature Scan}{6}{subsubsection.3.5.1}
+\contentsline {subsubsection}{\numberline {3.5.2}X-ray Energy Scan}{9}{subsubsection.3.5.2}
+\contentsline {subsubsection}{\numberline {3.5.3}Detector-sample Distance Scan}{10}{subsubsection.3.5.3}
+\contentsline {subsubsection}{\numberline {3.5.4}Series of Tomographic Measurements}{10}{subsubsection.3.5.4}
+\contentsline {section}{\numberline {4}Data Exchange Core Reference}{11}{section.4}
+\contentsline {subsection}{\numberline {4.1}Top level (root)}{11}{subsection.4.1}
+\contentsline {subsection}{\numberline {4.2}Exchange}{13}{subsection.4.2}
+\contentsline {subsubsection}{\numberline {4.2.1}Storing and describing a multidimensional dataset}{13}{subsubsection.4.2.1}
+\contentsline {subsection}{\numberline {4.3}Measurement}{15}{subsection.4.3}
+\contentsline {subsubsection}{\numberline {4.3.1}Sample}{15}{subsubsection.4.3.1}
+\contentsline {paragraph}{\numberline {4.3.1.1}Geometry}{17}{paragraph.4.3.1.1}
+\contentsline {paragraph}{\numberline {4.3.1.2}Experiment}{17}{paragraph.4.3.1.2}
+\contentsline {paragraph}{\numberline {4.3.1.3}Experimenter}{17}{paragraph.4.3.1.3}
+\contentsline {subsubsection}{\numberline {4.3.2}Instrument}{18}{subsubsection.4.3.2}
+\contentsline {paragraph}{\numberline {4.3.2.1}Source}{19}{paragraph.4.3.2.1}
+\contentsline {paragraph}{\numberline {4.3.2.2}Shutter}{20}{paragraph.4.3.2.2}
+\contentsline {paragraph}{\numberline {4.3.2.3}Attenuator}{20}{paragraph.4.3.2.3}
+\contentsline {paragraph}{\numberline {4.3.2.4}Monochromator}{21}{paragraph.4.3.2.4}
+\contentsline {paragraph}{\numberline {4.3.2.5}Detector}{21}{paragraph.4.3.2.5}
+\contentsline {subsection}{\numberline {4.4}Provenance}{23}{subsection.4.4}
+\contentsline {section}{\numberline {5}Data Exchange for X-ray Tomography}{25}{section.5}
+\contentsline {subsection}{\numberline {5.1}Exchange Group for X-ray Tomography}{25}{subsection.5.1}
+\contentsline {subsection}{\numberline {5.2}Instrument Group for Tomography}{26}{subsection.5.2}
+\contentsline {subsubsection}{\numberline {5.2.1}Interferometer}{26}{subsubsection.5.2.1}
+\contentsline {subsubsection}{\numberline {5.2.2}Setup and Acquisition Parameters}{27}{subsubsection.5.2.2}
+\contentsline {subsubsection}{\numberline {5.2.3}Detector Group for Tomography}{27}{subsubsection.5.2.3}
+\contentsline {paragraph}{\numberline {5.2.3.1}ROI}{29}{paragraph.5.2.3.1}
+\contentsline {paragraph}{\numberline {5.2.3.2}Objective}{30}{paragraph.5.2.3.2}
+\contentsline {paragraph}{\numberline {5.2.3.3}Scintillator}{30}{paragraph.5.2.3.3}
+\contentsline {paragraph}{\numberline {5.2.3.4}Geometry}{31}{paragraph.5.2.3.4}
+\contentsline {subparagraph}{\numberline {5.2.3.4.1}Translation}{31}{subparagraph.5.2.3.4.1}
+\contentsline {subparagraph}{\numberline {5.2.3.4.2}Orientation}{32}{subparagraph.5.2.3.4.2}
+\contentsline {subsection}{\numberline {5.3}Tomography Process Descriptions}{32}{subsection.5.3}
+\contentsline {subsubsection}{\numberline {5.3.1}Sinogram Process Description}{32}{subsubsection.5.3.1}
+\contentsline {subsubsection}{\numberline {5.3.2}Ring Removal Process Description}{33}{subsubsection.5.3.2}
+\contentsline {subsubsection}{\numberline {5.3.3}Reconstruction Process Description}{34}{subsubsection.5.3.3}
+\contentsline {paragraph}{\numberline {5.3.3.1}Algorithm}{34}{paragraph.5.3.3.1}
+\contentsline {subsubsection}{\numberline {5.3.4}Gridftp Process Description}{36}{subsubsection.5.3.4}
+\contentsline {subsubsection}{\numberline {5.3.5}Export Process Description}{37}{subsubsection.5.3.5}
+\contentsline {section}{\numberline {6}Data Exchange for X-ray Coherent Diffraction Imaging}{38}{section.6}
+\contentsline {subsection}{\numberline {6.1}Instrument specific for x-ray photon correlation}{38}{subsection.6.1}
+\contentsline {subsubsection}{\numberline {6.1.1}Detector}{38}{subsubsection.6.1.1}
+\contentsline {subsubsection}{\numberline {6.1.2}Kinetics}{40}{subsubsection.6.1.2}
+\contentsline {subsubsection}{\numberline {6.1.3}Setup}{41}{subsubsection.6.1.3}
+\contentsline {subsection}{\numberline {6.2}APS Sector 8 Process descriptions}{42}{subsection.6.2}
+\contentsline {subsubsection}{\numberline {6.2.1}XPCS}{43}{subsubsection.6.2.1}
+\contentsline {section}{\numberline {7}Data Exchange for X-ray Photon Correlation}{46}{section.7}
+\contentsline {section}{\numberline {8}Data Exchange for X-ray Fluorescence}{46}{section.8}
+\contentsline {section}{\numberline {9}Code Examples}{47}{section.9}
+\contentsline {subsection}{\numberline {9.1}Creating Data Exchange files using Pyhton}{48}{subsection.9.1}
+\contentsline {subsection}{\numberline {9.2}Creating Data Exchange files using C++}{74}{subsection.9.2}
+\contentsline {section}{\numberline {A}Appendix}{75}{appendix.A}
+\contentsline {subsection}{\numberline {A.1}Default units for Data Exchange entries}{75}{subsection.A.1}
+\contentsline {subsubsection}{\numberline {A.1.1}Exceptions}{75}{subsubsection.A.1.1}
+\contentsline {subsubsection}{\numberline {A.1.2}Times and Dates}{75}{subsubsection.A.1.2}
+\contentsline {subsection}{\numberline {A.2}Geometry}{76}{subsection.A.2}
+\contentsline {subsubsection}{\numberline {A.2.1}Coordinate System}{76}{subsubsection.A.2.1}
+\contentsline {subsubsection}{\numberline {A.2.2}The local coordinate system of objects}{76}{subsubsection.A.2.2}

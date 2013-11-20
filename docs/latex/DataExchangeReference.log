@@ -1,0 +1,3673 @@
+This is pdfTeX, Version 3.1415926-2.4-1.40.13 (TeX Live 2012/Debian) (format=pdflatex 2013.10.18)  8 NOV 2013 09:51
+entering extended mode
+ restricted \write18 enabled.
+ %&-line parsing enabled.
+**DataExchangeReference.tex
+(./DataExchangeReference.tex
+LaTeX2e <2011/06/27>
+Babel <v3.8m> and hyphenation patterns for english, dumylang, nohyphenation, lo
+aded.
+(/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
+Document Class: article 2007/10/19 v1.4h Standard LaTeX document class
+(/usr/share/texlive/texmf-dist/tex/latex/base/size11.clo
+File: size11.clo 2007/10/19 v1.4h Standard LaTeX file (size option)
+)
+\c@part=\count79
+\c@section=\count80
+\c@subsection=\count81
+\c@subsubsection=\count82
+\c@paragraph=\count83
+\c@subparagraph=\count84
+\c@figure=\count85
+\c@table=\count86
+\abovecaptionskip=\skip41
+\belowcaptionskip=\skip42
+\bibindent=\dimen102
+)
+(/usr/share/texlive/texmf-dist/tex/latex/geometry/geometry.sty
+Package: geometry 2010/09/12 v5.6 Page Geometry
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/keyval.sty
+Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
+\KV@toks@=\toks14
+)
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ifpdf.sty
+Package: ifpdf 2011/01/30 v2.3 Provides the ifpdf switch (HO)
+Package ifpdf Info: pdfTeX in PDF mode is detected.
+)
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ifvtex.sty
+Package: ifvtex 2010/03/01 v1.5 Detect VTeX and its facilities (HO)
+Package ifvtex Info: VTeX not detected.
+)
+(/usr/share/texlive/texmf-dist/tex/generic/ifxetex/ifxetex.sty
+Package: ifxetex 2010/09/12 v0.6 Provides ifxetex conditional
+)
+\Gm@cnth=\count87
+\Gm@cntv=\count88
+\c@Gm@tempcnt=\count89
+\Gm@bindingoffset=\dimen103
+\Gm@wd@mp=\dimen104
+\Gm@odd@mp=\dimen105
+\Gm@even@mp=\dimen106
+\Gm@layoutwidth=\dimen107
+\Gm@layoutheight=\dimen108
+\Gm@layouthoffset=\dimen109
+\Gm@layoutvoffset=\dimen110
+\Gm@dimlist=\toks15
+)
+(/usr/share/texlive/texmf-dist/tex/latex/listings/listings.sty
+\lst@mode=\count90
+\lst@gtempboxa=\box26
+\lst@token=\toks16
+\lst@length=\count91
+\lst@currlwidth=\dimen111
+\lst@column=\count92
+\lst@pos=\count93
+\lst@lostspace=\dimen112
+\lst@width=\dimen113
+\lst@newlines=\count94
+\lst@lineno=\count95
+\lst@maxwidth=\dimen114
+
+(/usr/share/texlive/texmf-dist/tex/latex/listings/lstmisc.sty
+File: lstmisc.sty 2007/02/22 1.4 (Carsten Heinz)
+\c@lstnumber=\count96
+\lst@skipnumbers=\count97
+\lst@framebox=\box27
+)
+(/usr/share/texlive/texmf-dist/tex/latex/listings/listings.cfg
+File: listings.cfg 2007/02/22 1.4 listings configuration
+))
+Package: listings 2007/02/22 1.4 (Carsten Heinz)
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphicx.sty
+Package: graphicx 1999/02/16 v1.0f Enhanced LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
+Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
+
+(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty
+Package: trig 1999/03/16 v1.09 sin cos tan (DPC)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/graphics.cfg
+File: graphics.cfg 2010/04/23 v1.9 graphics configuration of TeX Live
+)
+Package graphics Info: Driver file: pdftex.def on input line 91.
+
+(/usr/share/texlive/texmf-dist/tex/latex/pdftex-def/pdftex.def
+File: pdftex.def 2011/05/27 v0.06d Graphics/color for pdfTeX
+
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/infwarerr.sty
+Package: infwarerr 2010/04/08 v1.3 Providing info/warning/error messages (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/ltxcmds.sty
+Package: ltxcmds 2011/11/09 v1.22 LaTeX kernel commands for general use (HO)
+)
+\Gread@gobject=\count98
+))
+\Gin@req@height=\dimen115
+\Gin@req@width=\dimen116
+)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/longtable.sty
+Package: longtable 2004/02/01 v4.11 Multi-page Table package (DPC)
+\LTleft=\skip43
+\LTright=\skip44
+\LTpre=\skip45
+\LTpost=\skip46
+\LTchunksize=\count99
+\LTcapwidth=\dimen117
+\LT@head=\box28
+\LT@firsthead=\box29
+\LT@foot=\box30
+\LT@lastfoot=\box31
+\LT@cols=\count100
+\LT@rows=\count101
+\c@LT@tables=\count102
+\c@LT@chunks=\count103
+\LT@p@ftn=\toks17
+)
+(/usr/share/texmf/tex/latex/xcolor/xcolor.sty
+Package: xcolor 2007/01/21 v2.11 LaTeX color extensions (UK)
+
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/color.cfg
+File: color.cfg 2007/01/18 v1.5 color configuration of teTeX/TeXLive
+)
+Package xcolor Info: Driver file: pdftex.def on input line 225.
+
+(/usr/share/texlive/texmf-dist/tex/latex/colortbl/colortbl.sty
+Package: colortbl 2012/02/13 v1.0a Color table columns (DPC)
+
+(/usr/share/texlive/texmf-dist/tex/latex/tools/array.sty
+Package: array 2008/09/09 v2.4c Tabular extension package (FMi)
+\col@sep=\dimen118
+\extrarowheight=\dimen119
+\NC@list=\toks18
+\extratabsurround=\skip47
+\backup@length=\skip48
+)
+\everycr=\toks19
+\minrowclearance=\skip49
+)
+\rownum=\count104
+Package xcolor Info: Model `cmy' substituted by `cmy0' on input line 1337.
+Package xcolor Info: Model `hsb' substituted by `rgb' on input line 1341.
+Package xcolor Info: Model `RGB' extended on input line 1353.
+Package xcolor Info: Model `HTML' substituted by `rgb' on input line 1355.
+Package xcolor Info: Model `Hsb' substituted by `hsb' on input line 1356.
+Package xcolor Info: Model `tHsb' substituted by `hsb' on input line 1357.
+Package xcolor Info: Model `HSB' substituted by `hsb' on input line 1358.
+Package xcolor Info: Model `Gray' substituted by `gray' on input line 1359.
+Package xcolor Info: Model `wave' substituted by `hsb' on input line 1360.
+)
+(/usr/share/texlive/texmf-dist/tex/latex/placeins/placeins.sty
+Package: placeins 2005/04/18  v 2.2
+)
+(/usr/share/texlive/texmf-dist/tex/latex/booktabs/booktabs.sty
+Package: booktabs 2005/04/14 v1.61803 publication quality tables
+\heavyrulewidth=\dimen120
+\lightrulewidth=\dimen121
+\cmidrulewidth=\dimen122
+\belowrulesep=\dimen123
+\belowbottomsep=\dimen124
+\aboverulesep=\dimen125
+\abovetopsep=\dimen126
+\cmidrulesep=\dimen127
+\cmidrulekern=\dimen128
+\defaultaddspace=\dimen129
+\@cmidla=\count105
+\@cmidlb=\count106
+\@aboverulesep=\dimen130
+\@belowrulesep=\dimen131
+\@thisruleclass=\count107
+\@lastruleclass=\count108
+\@thisrulewidth=\dimen132
+)
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/newcent.sty
+Package: newcent 2005/04/12 PSNFSS-v9.2a (SPQR) 
+)
+(/usr/share/texlive/texmf-dist/tex/latex/sectsty/sectsty.sty
+Package: sectsty 2002/02/25 v2.0.2 Commands to change all sectional heading sty
+les
+)
+(/usr/share/texlive/texmf-dist/tex/latex/fancyhdr/fancyhdr.sty
+\fancy@headwidth=\skip50
+\f@ncyO@elh=\skip51
+\f@ncyO@erh=\skip52
+\f@ncyO@olh=\skip53
+\f@ncyO@orh=\skip54
+\f@ncyO@elf=\skip55
+\f@ncyO@erf=\skip56
+\f@ncyO@olf=\skip57
+\f@ncyO@orf=\skip58
+)
+(/usr/share/texlive/texmf-dist/tex/latex/tools/calc.sty
+Package: calc 2007/08/22 v4.3 Infix arithmetic (KKT,FJ)
+\calc@Acount=\count109
+\calc@Bcount=\count110
+\calc@Adimen=\dimen133
+\calc@Bdimen=\dimen134
+\calc@Askip=\skip59
+\calc@Bskip=\skip60
+LaTeX Info: Redefining \setlength on input line 76.
+LaTeX Info: Redefining \addtolength on input line 77.
+\calc@Ccount=\count111
+\calc@Cskip=\skip61
+)
+(/usr/share/texmf/tex/latex/pgf/frontendlayer/tikz.sty
+(/usr/share/texmf/tex/latex/pgf/basiclayer/pgf.sty
+(/usr/share/texmf/tex/latex/pgf/utilities/pgfrcs.sty
+(/usr/share/texmf/tex/generic/pgf/utilities/pgfutil-common.tex
+\pgfutil@everybye=\toks20
+)
+(/usr/share/texmf/tex/generic/pgf/utilities/pgfutil-latex.def
+\pgfutil@abb=\box32
+
+(/usr/share/texlive/texmf-dist/tex/latex/ms/everyshi.sty
+Package: everyshi 2001/05/15 v3.00 EveryShipout Package (MS)
+))
+(/usr/share/texmf/tex/generic/pgf/utilities/pgfrcs.code.tex
+Package: pgfrcs 2010/10/25 v2.10 (rcs-revision 1.24)
+))
+Package: pgf 2008/01/15 v2.10 (rcs-revision 1.12)
+
+(/usr/share/texmf/tex/latex/pgf/basiclayer/pgfcore.sty
+(/usr/share/texmf/tex/latex/pgf/systemlayer/pgfsys.sty
+(/usr/share/texmf/tex/generic/pgf/systemlayer/pgfsys.code.tex
+Package: pgfsys 2010/06/30 v2.10 (rcs-revision 1.37)
+
+(/usr/share/texmf/tex/generic/pgf/utilities/pgfkeys.code.tex
+\pgfkeys@pathtoks=\toks21
+\pgfkeys@temptoks=\toks22
+
+(/usr/share/texmf/tex/generic/pgf/utilities/pgfkeysfiltered.code.tex
+\pgfkeys@tmptoks=\toks23
+))
+\pgf@x=\dimen135
+\pgf@y=\dimen136
+\pgf@xa=\dimen137
+\pgf@ya=\dimen138
+\pgf@xb=\dimen139
+\pgf@yb=\dimen140
+\pgf@xc=\dimen141
+\pgf@yc=\dimen142
+\w@pgf@writea=\write3
+\r@pgf@reada=\read1
+\c@pgf@counta=\count112
+\c@pgf@countb=\count113
+\c@pgf@countc=\count114
+\c@pgf@countd=\count115
+
+(/usr/share/texmf/tex/generic/pgf/systemlayer/pgf.cfg
+File: pgf.cfg 2008/05/14  (rcs-revision 1.7)
+)
+Package pgfsys Info: Driver file for pgf: pgfsys-pdftex.def on input line 900.
+
+(/usr/share/texmf/tex/generic/pgf/systemlayer/pgfsys-pdftex.def
+File: pgfsys-pdftex.def 2009/05/22  (rcs-revision 1.26)
+
+(/usr/share/texmf/tex/generic/pgf/systemlayer/pgfsys-common-pdf.def
+File: pgfsys-common-pdf.def 2008/05/19  (rcs-revision 1.10)
+)))
+(/usr/share/texmf/tex/generic/pgf/systemlayer/pgfsyssoftpath.code.tex
+File: pgfsyssoftpath.code.tex 2008/07/18  (rcs-revision 1.7)
+\pgfsyssoftpath@smallbuffer@items=\count116
+\pgfsyssoftpath@bigbuffer@items=\count117
+)
+(/usr/share/texmf/tex/generic/pgf/systemlayer/pgfsysprotocol.code.tex
+File: pgfsysprotocol.code.tex 2006/10/16  (rcs-revision 1.4)
+))
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcore.code.tex
+Package: pgfcore 2010/04/11 v2.10 (rcs-revision 1.7)
+
+(/usr/share/texmf/tex/generic/pgf/math/pgfmath.code.tex
+(/usr/share/texmf/tex/generic/pgf/math/pgfmathcalc.code.tex
+(/usr/share/texmf/tex/generic/pgf/math/pgfmathutil.code.tex)
+(/usr/share/texmf/tex/generic/pgf/math/pgfmathparser.code.tex
+\pgfmath@dimen=\dimen143
+\pgfmath@count=\count118
+\pgfmath@box=\box33
+\pgfmath@toks=\toks24
+\pgfmath@stack@operand=\toks25
+\pgfmath@stack@operation=\toks26
+)
+(/usr/share/texmf/tex/generic/pgf/math/pgfmathfunctions.code.tex
+(/usr/share/texmf/tex/generic/pgf/math/pgfmathfunctions.basic.code.tex)
+(/usr/share/texmf/tex/generic/pgf/math/pgfmathfunctions.trigonometric.code.tex)
+(/usr/share/texmf/tex/generic/pgf/math/pgfmathfunctions.random.code.tex)
+(/usr/share/texmf/tex/generic/pgf/math/pgfmathfunctions.comparison.code.tex)
+(/usr/share/texmf/tex/generic/pgf/math/pgfmathfunctions.base.code.tex)
+(/usr/share/texmf/tex/generic/pgf/math/pgfmathfunctions.round.code.tex)
+(/usr/share/texmf/tex/generic/pgf/math/pgfmathfunctions.misc.code.tex)))
+(/usr/share/texmf/tex/generic/pgf/math/pgfmathfloat.code.tex
+\c@pgfmathroundto@lastzeros=\count119
+))
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcorepoints.code.tex
+File: pgfcorepoints.code.tex 2010/04/09  (rcs-revision 1.20)
+\pgf@picminx=\dimen144
+\pgf@picmaxx=\dimen145
+\pgf@picminy=\dimen146
+\pgf@picmaxy=\dimen147
+\pgf@pathminx=\dimen148
+\pgf@pathmaxx=\dimen149
+\pgf@pathminy=\dimen150
+\pgf@pathmaxy=\dimen151
+\pgf@xx=\dimen152
+\pgf@xy=\dimen153
+\pgf@yx=\dimen154
+\pgf@yy=\dimen155
+\pgf@zx=\dimen156
+\pgf@zy=\dimen157
+)
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcorepathconstruct.code.tex
+File: pgfcorepathconstruct.code.tex 2010/08/03  (rcs-revision 1.24)
+\pgf@path@lastx=\dimen158
+\pgf@path@lasty=\dimen159
+)
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcorepathusage.code.tex
+File: pgfcorepathusage.code.tex 2008/04/22  (rcs-revision 1.12)
+\pgf@shorten@end@additional=\dimen160
+\pgf@shorten@start@additional=\dimen161
+)
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcorescopes.code.tex
+File: pgfcorescopes.code.tex 2010/09/08  (rcs-revision 1.34)
+\pgfpic=\box34
+\pgf@hbox=\box35
+\pgf@layerbox@main=\box36
+\pgf@picture@serial@count=\count120
+)
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcoregraphicstate.code.tex
+File: pgfcoregraphicstate.code.tex 2008/04/22  (rcs-revision 1.9)
+\pgflinewidth=\dimen162
+)
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcoretransformations.code.tex
+File: pgfcoretransformations.code.tex 2009/06/10  (rcs-revision 1.11)
+\pgf@pt@x=\dimen163
+\pgf@pt@y=\dimen164
+\pgf@pt@temp=\dimen165
+)
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcorequick.code.tex
+File: pgfcorequick.code.tex 2008/10/09  (rcs-revision 1.3)
+)
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcoreobjects.code.tex
+File: pgfcoreobjects.code.tex 2006/10/11  (rcs-revision 1.2)
+)
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcorepathprocessing.code.tex
+File: pgfcorepathprocessing.code.tex 2008/10/09  (rcs-revision 1.8)
+)
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcorearrows.code.tex
+File: pgfcorearrows.code.tex 2008/04/23  (rcs-revision 1.11)
+)
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcoreshade.code.tex
+File: pgfcoreshade.code.tex 2008/11/23  (rcs-revision 1.13)
+\pgf@max=\dimen166
+\pgf@sys@shading@range@num=\count121
+)
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcoreimage.code.tex
+File: pgfcoreimage.code.tex 2010/03/25  (rcs-revision 1.16)
+
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcoreexternal.code.tex
+File: pgfcoreexternal.code.tex 2010/09/01  (rcs-revision 1.17)
+\pgfexternal@startupbox=\box37
+))
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcorelayers.code.tex
+File: pgfcorelayers.code.tex 2010/08/27  (rcs-revision 1.2)
+)
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcoretransparency.code.tex
+File: pgfcoretransparency.code.tex 2008/01/17  (rcs-revision 1.2)
+)
+(/usr/share/texmf/tex/generic/pgf/basiclayer/pgfcorepatterns.code.tex
+File: pgfcorepatterns.code.tex 2009/07/02  (rcs-revision 1.3)
+)))
+(/usr/share/texmf/tex/generic/pgf/modules/pgfmoduleshapes.code.tex
+File: pgfmoduleshapes.code.tex 2010/09/09  (rcs-revision 1.13)
+\pgfnodeparttextbox=\box38
+)
+(/usr/share/texmf/tex/generic/pgf/modules/pgfmoduleplot.code.tex
+File: pgfmoduleplot.code.tex 2010/10/22  (rcs-revision 1.8)
+)
+(/usr/share/texmf/tex/latex/pgf/compatibility/pgfcomp-version-0-65.sty
+Package: pgfcomp-version-0-65 2007/07/03 v2.10 (rcs-revision 1.7)
+\pgf@nodesepstart=\dimen167
+\pgf@nodesepend=\dimen168
+)
+(/usr/share/texmf/tex/latex/pgf/compatibility/pgfcomp-version-1-18.sty
+Package: pgfcomp-version-1-18 2007/07/23 v2.10 (rcs-revision 1.1)
+))
+(/usr/share/texmf/tex/latex/pgf/utilities/pgffor.sty
+(/usr/share/texmf/tex/latex/pgf/utilities/pgfkeys.sty
+(/usr/share/texmf/tex/generic/pgf/utilities/pgfkeys.code.tex))
+(/usr/share/texmf/tex/generic/pgf/utilities/pgffor.code.tex
+Package: pgffor 2010/03/23 v2.10 (rcs-revision 1.18)
+\pgffor@iter=\dimen169
+\pgffor@skip=\dimen170
+\pgffor@stack=\toks27
+\pgffor@toks=\toks28
+))
+(/usr/share/texmf/tex/generic/pgf/frontendlayer/tikz/tikz.code.tex
+Package: tikz 2010/10/13 v2.10 (rcs-revision 1.76)
+
+(/usr/share/texmf/tex/generic/pgf/libraries/pgflibraryplothandlers.code.tex
+File: pgflibraryplothandlers.code.tex 2010/05/31 v2.10 (rcs-revision 1.15)
+\pgf@plot@mark@count=\count122
+\pgfplotmarksize=\dimen171
+)
+\tikz@lastx=\dimen172
+\tikz@lasty=\dimen173
+\tikz@lastxsaved=\dimen174
+\tikz@lastysaved=\dimen175
+\tikzleveldistance=\dimen176
+\tikzsiblingdistance=\dimen177
+\tikz@figbox=\box39
+\tikz@tempbox=\box40
+\tikztreelevel=\count123
+\tikznumberofchildren=\count124
+\tikznumberofcurrentchild=\count125
+\tikz@fig@count=\count126
+
+(/usr/share/texmf/tex/generic/pgf/modules/pgfmodulematrix.code.tex
+File: pgfmodulematrix.code.tex 2010/08/24  (rcs-revision 1.4)
+\pgfmatrixcurrentrow=\count127
+\pgfmatrixcurrentcolumn=\count128
+\pgf@matrix@numberofcolumns=\count129
+)
+\tikz@expandcount=\count130
+
+(/usr/share/texmf/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibrarytopat
+hs.code.tex
+File: tikzlibrarytopaths.code.tex 2008/06/17 v2.10 (rcs-revision 1.2)
+))) (/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsmath.sty
+Package: amsmath 2000/07/18 v2.13 AMS math features
+\@mathmargin=\skip62
+
+For additional information on amsmath, use the `?' option.
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amstext.sty
+Package: amstext 2000/06/29 v2.01
+
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsgen.sty
+File: amsgen.sty 1999/11/30 v2.0
+\@emptytoks=\toks29
+\ex@=\dimen178
+))
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsbsy.sty
+Package: amsbsy 1999/11/29 v1.2d
+\pmbraise@=\dimen179
+)
+(/usr/share/texlive/texmf-dist/tex/latex/amsmath/amsopn.sty
+Package: amsopn 1999/12/14 v2.01 operator names
+)
+\inf@bad=\count131
+LaTeX Info: Redefining \frac on input line 211.
+\uproot@=\count132
+\leftroot@=\count133
+LaTeX Info: Redefining \overline on input line 307.
+\classnum@=\count134
+\DOTSCASE@=\count135
+LaTeX Info: Redefining \ldots on input line 379.
+LaTeX Info: Redefining \dots on input line 382.
+LaTeX Info: Redefining \cdots on input line 467.
+\Mathstrutbox@=\box41
+\strutbox@=\box42
+\big@size=\dimen180
+LaTeX Font Info:    Redeclaring font encoding OML on input line 567.
+LaTeX Font Info:    Redeclaring font encoding OMS on input line 568.
+\macc@depth=\count136
+\c@MaxMatrixCols=\count137
+\dotsspace@=\muskip10
+\c@parentequation=\count138
+\dspbrk@lvl=\count139
+\tag@help=\toks30
+\row@=\count140
+\column@=\count141
+\maxfields@=\count142
+\andhelp@=\toks31
+\eqnshift@=\dimen181
+\alignsep@=\dimen182
+\tagshift@=\dimen183
+\tagwidth@=\dimen184
+\totwidth@=\dimen185
+\lineht@=\dimen186
+\@envbody=\toks32
+\multlinegap=\skip63
+\multlinetaggap=\skip64
+\mathdisplay@stack=\toks33
+LaTeX Info: Redefining \[ on input line 2666.
+LaTeX Info: Redefining \] on input line 2667.
+)
+
+Package Fancyhdr Warning: \fancyheadoffset's `E' option without twoside option 
+is useless on input line 65.
+
+
+Package Fancyhdr Warning: \fancyfootoffset's `E' option without twoside option 
+is useless on input line 66.
+
+
+Package Fancyhdr Warning: \fancyhead's `E' option without twoside option is use
+less on input line 68.
+
+(/usr/share/texlive/texmf-dist/tex/latex/setspace/setspace.sty
+Package: setspace 2011/12/19 v6.7a set line spacing
+)
+(/usr/share/texlive/texmf-dist/tex/latex/caption/caption.sty
+Package: caption 2012/02/19 v3.2f Customizing captions (AR)
+
+(/usr/share/texlive/texmf-dist/tex/latex/caption/caption3.sty
+Package: caption3 2012/01/12 v1.4b caption3 kernel (AR)
+\captionmargin=\dimen187
+\captionmargin@=\dimen188
+\captionwidth=\dimen189
+\caption@indent=\dimen190
+\caption@parindent=\dimen191
+\caption@hangindent=\dimen192
+)
+\c@ContinuedFloat=\count143
+Package caption Info: listings package is loaded.
+Package caption Info: longtable package is loaded.
+
+(/usr/share/texlive/texmf-dist/tex/latex/caption/ltcaption.sty
+Package: ltcaption 2011/09/12 v1.3 longtable captions (AR)
+))
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hyperref.sty
+Package: hyperref 2012/05/13 v6.82q Hypertext links for LaTeX
+
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/hobsub-hyperref.sty
+Package: hobsub-hyperref 2012/05/28 v1.13 Bundle oberdiek, subset hyperref (HO)
+
+
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/hobsub-generic.sty
+Package: hobsub-generic 2012/05/28 v1.13 Bundle oberdiek, subset generic (HO)
+Package: hobsub 2012/05/28 v1.13 Construct package bundles (HO)
+Package hobsub Info: Skipping package `infwarerr' (already loaded).
+Package hobsub Info: Skipping package `ltxcmds' (already loaded).
+Package: ifluatex 2010/03/01 v1.3 Provides the ifluatex switch (HO)
+Package ifluatex Info: LuaTeX not detected.
+Package hobsub Info: Skipping package `ifvtex' (already loaded).
+Package: intcalc 2007/09/27 v1.1 Expandable calculations with integers (HO)
+Package hobsub Info: Skipping package `ifpdf' (already loaded).
+Package: etexcmds 2011/02/16 v1.5 Avoid name clashes with e-TeX commands (HO)
+Package etexcmds Info: Could not find \expanded.
+(etexcmds)             That can mean that you are not using pdfTeX 1.50 or
+(etexcmds)             that some package has redefined \expanded.
+(etexcmds)             In the latter case, load this package earlier.
+Package: kvsetkeys 2012/04/25 v1.16 Key value parser (HO)
+Package: kvdefinekeys 2011/04/07 v1.3 Define keys (HO)
+Package: pdftexcmds 2011/11/29 v0.20 Utility functions of pdfTeX for LuaTeX (HO
+)
+Package pdftexcmds Info: LuaTeX not detected.
+Package pdftexcmds Info: \pdf@primitive is available.
+Package pdftexcmds Info: \pdf@ifprimitive is available.
+Package pdftexcmds Info: \pdfdraftmode found.
+Package: pdfescape 2011/11/25 v1.13 Implements pdfTeX's escape features (HO)
+Package: bigintcalc 2012/04/08 v1.3 Expandable calculations on big integers (HO
+)
+Package: bitset 2011/01/30 v1.1 Handle bit-vector datatype (HO)
+Package: uniquecounter 2011/01/30 v1.2 Provide unlimited unique counter (HO)
+)
+Package hobsub Info: Skipping package `hobsub' (already loaded).
+Package: letltxmacro 2010/09/02 v1.4 Let assignment for LaTeX macros (HO)
+Package: hopatch 2012/05/28 v1.2 Wrapper for package hooks (HO)
+Package: xcolor-patch 2011/01/30 xcolor patch
+Package: atveryend 2011/06/30 v1.8 Hooks at the very end of document (HO)
+Package atveryend Info: \enddocument detected (standard20110627).
+Package: atbegshi 2011/10/05 v1.16 At begin shipout hook (HO)
+Package: refcount 2011/10/16 v3.4 Data extraction from label references (HO)
+Package: hycolor 2011/01/30 v1.7 Color options for hyperref/bookmark (HO)
+)
+(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/kvoptions.sty
+Package: kvoptions 2011/06/30 v3.11 Key value format for package options (HO)
+)
+\@linkdim=\dimen193
+\Hy@linkcounter=\count144
+\Hy@pagecounter=\count145
+
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/pd1enc.def
+File: pd1enc.def 2012/05/13 v6.82q Hyperref: PDFDocEncoding definition (HO)
+)
+\Hy@SavedSpaceFactor=\count146
+
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/hyperref.cfg
+File: hyperref.cfg 2002/06/06 v1.2 hyperref configuration of TeXLive
+)
+Package hyperref Info: Option `colorlinks' set `true' on input line 3941.
+Package hyperref Info: Hyper figures OFF on input line 4062.
+Package hyperref Info: Link nesting OFF on input line 4067.
+Package hyperref Info: Hyper index ON on input line 4070.
+Package hyperref Info: Plain pages OFF on input line 4077.
+Package hyperref Info: Backreferencing OFF on input line 4082.
+Package hyperref Info: Implicit mode ON; LaTeX internals redefined.
+Package hyperref Info: Bookmarks ON on input line 4300.
+\c@Hy@tempcnt=\count147
+
+(/usr/share/texlive/texmf-dist/tex/latex/url/url.sty
+\Urlmuskip=\muskip11
+Package: url 2006/04/12  ver 3.3  Verb mode for urls, etc.
+)
+LaTeX Info: Redefining \url on input line 4653.
+\Fld@menulength=\count148
+\Field@Width=\dimen194
+\Fld@charsize=\dimen195
+Package hyperref Info: Hyper figures OFF on input line 5773.
+Package hyperref Info: Link nesting OFF on input line 5778.
+Package hyperref Info: Hyper index ON on input line 5781.
+Package hyperref Info: backreferencing OFF on input line 5788.
+Package hyperref Info: Link coloring ON on input line 5791.
+Package hyperref Info: Link coloring with OCG OFF on input line 5798.
+Package hyperref Info: PDF/A mode OFF on input line 5803.
+LaTeX Info: Redefining \ref on input line 5843.
+LaTeX Info: Redefining \pageref on input line 5847.
+\Hy@abspage=\count149
+\c@Item=\count150
+\c@Hfootnote=\count151
+)
+
+Package hyperref Message: Driver (autodetected): hpdftex.
+
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/hpdftex.def
+File: hpdftex.def 2012/05/13 v6.82q Hyperref driver for pdfTeX
+\Fld@listcount=\count152
+\c@bookmark@seq@number=\count153
+
+(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/rerunfilecheck.sty
+Package: rerunfilecheck 2011/04/15 v1.7 Rerun checks for auxiliary files (HO)
+Package uniquecounter Info: New unique counter `rerunfilecheck' on input line 2
+82.
+)
+\Hy@SectionHShift=\skip65
+)
+
+LaTeX Warning: Unused global option(s):
+    [usletter].
+
+No file DataExchangeReference.aux.
+\openout1 = `DataExchangeReference.aux'.
+
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 113.
+LaTeX Font Info:    ... okay on input line 113.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 113.
+LaTeX Font Info:    ... okay on input line 113.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 113.
+LaTeX Font Info:    ... okay on input line 113.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 113.
+LaTeX Font Info:    ... okay on input line 113.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 113.
+LaTeX Font Info:    ... okay on input line 113.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 113.
+LaTeX Font Info:    ... okay on input line 113.
+LaTeX Font Info:    Checking defaults for PD1/pdf/m/n on input line 113.
+LaTeX Font Info:    ... okay on input line 113.
+LaTeX Font Info:    Try loading font information for OT1+pnc on input line 113.
+
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1pnc.fd
+File: ot1pnc.fd 2001/06/04 font definitions for OT1/pnc.
+)
+*geometry* driver: auto-detecting
+*geometry* detected driver: pdftex
+*geometry* verbose mode - [ preamble ] result:
+* driver: pdftex
+* paper: <default>
+* layout: <same size as paper>
+* layoutoffset:(h,v)=(0.0pt,0.0pt)
+* modes: 
+* h-part:(L,W,R)=(101.17755pt, 411.9399pt, 101.17755pt)
+* v-part:(T,H,B)=(101.17755pt, 592.61488pt, 101.17755pt)
+* \paperwidth=614.295pt
+* \paperheight=794.96999pt
+* \textwidth=411.9399pt
+* \textheight=592.61488pt
+* \oddsidemargin=28.90756pt
+* \evensidemargin=28.90756pt
+* \topmargin=-8.09244pt
+* \headheight=12.0pt
+* \headsep=25.0pt
+* \topskip=11.0pt
+* \footskip=30.0pt
+* \marginparwidth=59.0pt
+* \marginparsep=10.0pt
+* \columnsep=10.0pt
+* \skip\footins=10.0pt plus 4.0pt minus 2.0pt
+* \hoffset=0.0pt
+* \voffset=0.0pt
+* \mag=1000
+* \@twocolumnfalse
+* \@twosidefalse
+* \@mparswitchfalse
+* \@reversemarginfalse
+* (1in=72.27pt=25.4mm, 1cm=28.453pt)
+
+\c@lstlisting=\count154
+(/usr/share/texlive/texmf-dist/tex/context/base/supp-pdf.mkii
+[Loading MPS to PDF converter (version 2006.09.02).]
+\scratchcounter=\count155
+\scratchdimen=\dimen196
+\scratchbox=\box43
+\nofMPsegments=\count156
+\nofMParguments=\count157
+\everyMPshowfont=\toks34
+\MPscratchCnt=\count158
+\MPscratchDim=\dimen197
+\MPnumerator=\count159
+\makeMPintoPDFobject=\count160
+\everyMPtoPDFconversion=\toks35
+) (/usr/share/texlive/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
+Package: epstopdf-base 2010/02/09 v2.5 Base part for package epstopdf
+
+(/usr/share/texlive/texmf-dist/tex/latex/oberdiek/grfext.sty
+Package: grfext 2010/08/19 v1.1 Manage graphics extensions (HO)
+)
+Package grfext Info: Graphics extension search list:
+(grfext)             [.png,.pdf,.jpg,.mps,.jpeg,.jbig2,.jb2,.PNG,.PDF,.JPG,.JPE
+G,.JBIG2,.JB2,.eps]
+(grfext)             \AppendGraphicsExtensions on input line 452.
+
+(/usr/share/texlive/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
+File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Liv
+e
+))
+ABD: EveryShipout initializing macros
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: hyperref package is loaded.
+Package caption Info: End \AtBeginDocument code.
+\AtBeginShipoutBox=\box44
+Package hyperref Info: Link coloring ON on input line 113.
+
+(/usr/share/texlive/texmf-dist/tex/latex/hyperref/nameref.sty
+Package: nameref 2010/04/30 v2.40 Cross-referencing by name of section
+
+(/usr/share/texlive/texmf-dist/tex/generic/oberdiek/gettitlestring.sty
+Package: gettitlestring 2010/12/03 v1.4 Cleanup title references (HO)
+)
+\c@section@level=\count161
+)
+LaTeX Info: Redefining \ref on input line 113.
+LaTeX Info: Redefining \pageref on input line 113.
+LaTeX Info: Redefining \nameref on input line 113.
+\@outlinefile=\write4
+\openout4 = `DataExchangeReference.out'.
+
+LaTeX Font Info:    Try loading font information for OT1+pag on input line 123.
+
+
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1pag.fd
+File: ot1pag.fd 2001/06/04 font definitions for OT1/pag.
+)
+LaTeX Font Info:    Try loading font information for OT1+pcr on input line 129.
+
+
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/ot1pcr.fd
+File: ot1pcr.fd 2001/06/04 font definitions for OT1/pcr.
+) [1
+
+{/home/david/.texmf-var/fonts/map/pdftex/updmap/pdftex.map}] (./sections/Versio
+nHistory.tex
+LaTeX Font Info:    Font shape `OT1/pnc/bx/n' in size <9> not available
+(Font)              Font shape `OT1/pnc/b/n' tried instead on input line 3.
+LaTeX Font Info:    Font shape `OT1/pnc/bx/n' in size <10.95> not available
+(Font)              Font shape `OT1/pnc/b/n' tried instead on input line 4.
+
+Overfull \hbox (9.04332pt too wide) in paragraph at lines 4--4
+[]|\OT1/pnc/b/n/10.95 Version| 
+ []
+
+
+Overfull \hbox (13.86275pt too wide) in alignment at lines 2--5
+ [] [] [] 
+ []
+
+
+Underfull \hbox (badness 3989) in paragraph at lines 9--10
+[]|\OT1/pnc/m/n/10.95 de carlo: added Python ex-am-ples and cor-rected
+ []
+
+
+Overfull \hbox (13.86275pt too wide) in alignment at lines 5--14
+ [] [] [] 
+ []
+
+
+Underfull \vbox (badness 10000) detected at line 14
+ []
+
+) [2]
+LaTeX Font Info:    Font shape `OT1/pnc/bx/n' in size <14.4> not available
+(Font)              Font shape `OT1/pnc/b/n' tried instead on input line 146.
+LaTeX Font Info:    Font shape `OT1/pag/b/n' in size <14.4> not available
+(Font)              Font shape `OT1/pag/db/n' tried instead on input line 146.
+\tf@toc=\write5
+\openout5 = `DataExchangeReference.toc'.
+
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+<figures/dx_logo_header.pdf, id=22, 202.90605pt x 21.02725pt>
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 150.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [1 <./figures/dx_logo_header.pdf>]
+(./sections/CoreDesign.tex
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 43.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+pdfTeX warning (ext4): destination with the same identifier (name{page.1}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.43 \subsection
+                {HDF5} [1]
+LaTeX Font Info:    Font shape `OT1/pnc/bx/n' in size <12> not available
+(Font)              Font shape `OT1/pnc/b/n' tried instead on input line 43.
+LaTeX Font Info:    Font shape `OT1/pag/b/n' in size <12> not available
+(Font)              Font shape `OT1/pag/db/n' tried instead on input line 43.
+
+Overfull \hbox (0.77335pt too wide) in paragraph at lines 59--65
+\OT1/pcr/m/n/10.95 / / cxidb . org / cxi . html$[][] \OT1/pnc/m/n/10.95 us-ing 
+HDF5 na-tive datatypes. The data should be saved
+ []
+
+
+LaTeX Warning: Reference `tab:genrules' on page 2 undefined on input line 75.
+
+LaTeX Font Info:    Font shape `OT1/pag/bx/n' in size <9> not available
+(Font)              Font shape `OT1/pag/b/n' tried instead on input line 89.
+LaTeX Font Info:    Font shape `OT1/pag/b/n' in size <9> not available
+(Font)              Font shape `OT1/pag/db/n' tried instead on input line 89.
+LaTeX Font Info:    Font shape `OT1/pag/m/it' in size <9> not available
+(Font)              Font shape `OT1/pag/m/sl' tried instead on input line 92.
+
+LaTeX Warning: Hyper reference `sec:exchange' on page 2 undefined on input line
+ 93.
+
+
+LaTeX Warning: Hyper reference `table:measurement' on page 2 undefined on input
+ line 94.
+
+
+LaTeX Warning: Hyper reference `table:provenance' on page 2 undefined on input 
+line 95.
+
+LaTeX Font Info:    Font shape `OT1/pnc/bx/it' in size <10.95> not available
+(Font)              Font shape `OT1/pnc/b/it' tried instead on input line 101.
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 110.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+pdfTeX warning (ext4): destination with the same identifier (name{page.2}) has 
+been already used, duplicate ignored
+<to be read again> 
+                   \relax 
+l.110 
+       [2]
+Overfull \hbox (17.84421pt too wide) in paragraph at lines 119--124
+\OT1/pnc/m/n/10.95 Optional group con-tain-ing the mea-sure-ment made on the sa
+m-ple. \OT1/pcr/m/n/10.95 Measurement
+ []
+
+
+Overfull \hbox (12.49596pt too wide) in paragraph at lines 119--124
+\OT1/pnc/m/n/10.95 con-tains in-for-ma-tion about the \OT1/pcr/m/n/10.95 sample
+ \OT1/pnc/m/n/10.95 and the \OT1/pcr/m/n/10.95 instrument\OT1/pnc/m/n/10.95 . \
+OT1/pcr/m/n/10.95 Measurement[]$\OML/cmm/m/it/10.95 N$
+ []
+
+
+LaTeX Warning: Reference `appendix:units' on page 3 undefined on input line 133
+.
+
+
+LaTeX Warning: Hyper reference `sec:corereference' on page 3 undefined on input
+ line 137.
+
+)
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 172.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [3] (./sections/ByExample.tex
+
+LaTeX Warning: Reference `sec:corereference' on page 4 undefined on input line 
+6.
+
+
+LaTeX Warning: Reference `fig:DiagramColorCode' on page 4 undefined on input li
+ne 10.
+
+<figures/dx_DiagramColorCode.pdf, id=72, 336.38374pt x 165.75125pt>
+File: figures/dx_DiagramColorCode.pdf Graphic file (type pdf)
+
+<use figures/dx_DiagramColorCode.pdf>
+Package pdftex.def Info: figures/dx_DiagramColorCode.pdf used on input line 19.
+
+(pdftex.def)             Requested size: 205.96994pt x 101.49252pt.
+LaTeX Font Info:    Font shape `OT1/pnc/bx/n' in size <10> not available
+(Font)              Font shape `OT1/pnc/b/n' tried instead on input line 20.
+
+
+LaTeX Warning: Reference `fig:Minimal1' on page 4 undefined on input line 25.
+
+<figures/dx_Minimal1.pdf, id=73, 284.73074pt x 174.23294pt>
+File: figures/dx_Minimal1.pdf Graphic file (type pdf)
+
+<use figures/dx_Minimal1.pdf>
+Package pdftex.def Info: figures/dx_Minimal1.pdf used on input line 32.
+(pdftex.def)             Requested size: 205.96994pt x 126.04047pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 48.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [4 <./figures/dx_DiagramColorCode.pdf>]
+Overfull \hbox (25.02528pt too wide) in paragraph at lines 57--65
+\OT1/pnc/m/n/10.95 through two mech-a-nisms. The HDF5 li-braries con-tain a fun
+c-tion call H5DSattach[]scale
+ []
+
+
+Overfull \hbox (3.07106pt too wide) in paragraph at lines 57--65
+\OT1/pnc/m/n/10.95 to "at-tach" a di-men-sion de-scrip-tor dataset to a given d
+i-men-sion of the main dataset.
+ []
+
+
+LaTeX Warning: Reference `fig:MinimalTomo0' on page 5 undefined on input line 6
+9.
+
+
+LaTeX Warning: Reference `fig:MinimalTomo1' on page 5 undefined on input line 6
+9.
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 70.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [5 <./figures/dx_Minimal1.pdf>]
+<figures/dx_MinimalTomo0.pdf, id=166, 304.58492pt x 272.07043pt>
+File: figures/dx_MinimalTomo0.pdf Graphic file (type pdf)
+
+<use figures/dx_MinimalTomo0.pdf>
+Package pdftex.def Info: figures/dx_MinimalTomo0.pdf used on input line 75.
+(pdftex.def)             Requested size: 205.96994pt x 183.98418pt.
+
+<figures/dx_MinimalTomo1.pdf, id=167, 633.29199pt x 614.19968pt>
+File: figures/dx_MinimalTomo1.pdf Graphic file (type pdf)
+
+<use figures/dx_MinimalTomo1.pdf>
+Package pdftex.def Info: figures/dx_MinimalTomo1.pdf used on input line 82.
+(pdftex.def)             Requested size: 329.55316pt x 319.61996pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+LaTeX Warning: Reference `fig:MinimalTomo2' on page 6 undefined on input line 9
+6.
+
+
+LaTeX Warning: Reference `fig:MinimalTomo3' on page 6 undefined on input line 9
+7.
+
+
+LaTeX Warning: Reference `fig:MinimalTomo4' on page 6 undefined on input line 9
+7.
+
+LaTeX Font Info:    Font shape `OT1/pag/b/n' in size <10.95> not available
+(Font)              Font shape `OT1/pag/db/n' tried instead on input line 100.
+<figures/dx_MinimalTomo2.pdf, id=168, 670.03725pt x 288.18968pt>
+File: figures/dx_MinimalTomo2.pdf Graphic file (type pdf)
+
+<use figures/dx_MinimalTomo2.pdf>
+Package pdftex.def Info: figures/dx_MinimalTomo2.pdf used on input line 103.
+(pdftex.def)             Requested size: 411.9399pt x 177.17622pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 108.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [6 <./figures/dx_MinimalTomo0.pdf>]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 108.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [7 <./figures/dx_MinimalTomo1.pdf>]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 108.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [8 <./figures/dx_MinimalTomo2.pdf>]
+<figures/dx_MinimalTomo3.pdf, id=514, 665.21124pt x 480.55634pt>
+File: figures/dx_MinimalTomo3.pdf Graphic file (type pdf)
+
+<use figures/dx_MinimalTomo3.pdf>
+Package pdftex.def Info: figures/dx_MinimalTomo3.pdf used on input line 112.
+(pdftex.def)             Requested size: 329.55316pt x 238.07776pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 117.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [9
+
+ <./figures/dx_MinimalTomo3.pdf>]
+<figures/dx_MinimalTomo4.pdf, id=673, 881.26039pt x 591.34323pt>
+File: figures/dx_MinimalTomo4.pdf Graphic file (type pdf)
+
+<use figures/dx_MinimalTomo4.pdf>
+Package pdftex.def Info: figures/dx_MinimalTomo4.pdf used on input line 121.
+(pdftex.def)             Requested size: 329.55316pt x 221.13057pt.
+
+
+LaTeX Warning: Reference `fig:NanoTomo1' on page 10 undefined on input line 128
+.
+
+<figures/dx_NanoTomo1.pdf, id=674, 651.11156pt x 600.43524pt>
+File: figures/dx_NanoTomo1.pdf Graphic file (type pdf)
+
+<use figures/dx_NanoTomo1.pdf>
+Package pdftex.def Info: figures/dx_NanoTomo1.pdf used on input line 134.
+(pdftex.def)             Requested size: 370.74338pt x 341.89433pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+)
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 178.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [10
+
+ <./figures/dx_MinimalTomo4.pdf>]
+(./sections/CoreReference.tex
+
+LaTeX Warning: Hyper reference `exchange:tomography' on page 11 undefined on in
+put line 23.
+
+
+LaTeX Warning: Hyper reference `table:measurement' on page 11 undefined on inpu
+t line 24.
+
+
+LaTeX Warning: Hyper reference `table:provenance' on page 11 undefined on input
+ line 25.
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 37.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [11 <./figures/dx_NanoTomo1.pdf>]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 49.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [12]
+
+LaTeX Warning: Hyper reference `data:attr' on page 13 undefined on input line 7
+5.
+
+
+LaTeX Warning: Reference `sec:multidims' on page 13 undefined on input line 88.
+
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 118.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [13
+
+]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 134.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [14]
+
+LaTeX Warning: Hyper reference `table:sample' on page 15 undefined on input lin
+e 153.
+
+
+LaTeX Warning: Hyper reference `table:instrument' on page 15 undefined on input
+ line 154.
+
+
+LaTeX Warning: Hyper reference `table:geometry' on page 15 undefined on input l
+ine 195.
+
+
+LaTeX Warning: Hyper reference `table:experiment' on page 15 undefined on input
+ line 196.
+
+
+LaTeX Warning: Hyper reference `table:experimenter' on page 15 undefined on inp
+ut line 197.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 220.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [15]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 247.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [16]
+Overfull \hbox (9.49023pt too wide) in paragraph at lines 281--283
+[] \OT1/pag/db/n/10.95 4.3.1.2 Ex-per-i-ment[][][] \OT1/pnc/m/n/10.95 This pro-
+vides ref-er-ences to fa-cil-ity ids for the pro-posal, sched-
+ []
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 343.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [17]
+
+LaTeX Warning: Hyper reference `table:source' on page 18 undefined on input lin
+e 371.
+
+
+LaTeX Warning: Hyper reference `table:shutter' on page 18 undefined on input li
+ne 372.
+
+
+LaTeX Warning: Hyper reference `table:attenuator' on page 18 undefined on input
+ line 373.
+
+
+LaTeX Warning: Hyper reference `table:monochromator' on page 18 undefined on in
+put line 374.
+
+
+LaTeX Warning: Hyper reference `table:detector' on page 18 undefined on input l
+ine 375.
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 392.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [18]
+
+LaTeX Warning: Hyper reference `table:geometry' on page 19 undefined on input l
+ine 424.
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 453.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [19]
+
+LaTeX Warning: Hyper reference `table:geometry' on page 20 undefined on input l
+ine 479.
+
+
+LaTeX Warning: Hyper reference `table:geometry' on page 20 undefined on input l
+ine 510.
+
+
+Overfull \hbox (34.892pt too wide) in paragraph at lines 520--523
+\OT1/pnc/m/n/10.95 The nom-i-nal amount of the beam that gets through (trans-mi
+t-ted in-ten-sity)/(incident
+ []
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 526.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [20]
+
+LaTeX Warning: Hyper reference `table:geometry' on page 21 undefined on input l
+ine 545.
+
+
+LaTeX Warning: Hyper reference `table:geometry' on page 21 undefined on input l
+ine 584.
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 599.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [21]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 604.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [22]
+Overfull \hbox (86.67598pt too wide) in paragraph at lines 628--644
+[][]
+ []
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 674.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [23])
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 184.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [24] (./sections/XrayTomoReference.tex
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 44.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [25]
+Overfull \hbox (10.30971pt too wide) in paragraph at lines 48--50
+\OT1/pnc/m/n/10.95 axis when the cor-re-spond-ing dark and white im-ages are co
+l-lected. If theta[]dark
+ []
+
+
+LaTeX Warning: Reference `table:tomo:instrument' on page 26 undefined on input 
+line 59.
+
+
+Overfull \hbox (1.67097pt too wide) in paragraph at lines 59--60
+\OT1/pnc/m/n/10.95 The in-stru-ment group for X-ray to-mog-ra-phy in-tro-duces 
+an ex-tended de-tec-tor group
+ []
+
+
+LaTeX Warning: Hyper reference `table:source' on page 26 undefined on input lin
+e 71.
+
+
+LaTeX Warning: Hyper reference `table:shutter' on page 26 undefined on input li
+ne 72.
+
+
+LaTeX Warning: Hyper reference `table:attenuator' on page 26 undefined on input
+ line 73.
+
+
+LaTeX Warning: Hyper reference `table:monochromator' on page 26 undefined on in
+put line 74.
+
+
+LaTeX Warning: Hyper reference `table:tomo:interferometer' on page 26 undefined
+ on input line 75.
+
+
+LaTeX Warning: Hyper reference `table:tomo:setup' on page 26 undefined on input
+ line 76.
+
+
+LaTeX Warning: Hyper reference `table:tomo:acquisition' on page 26 undefined on
+ input line 77.
+
+
+LaTeX Warning: Hyper reference `table:tomo:detector' on page 26 undefined on in
+put line 78.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+LaTeX Warning: Hyper reference `tomo:geometry' on page 26 undefined on input li
+ne 103.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 117.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [26]
+
+LaTeX Warning: Hyper reference `table:roi' on page 27 undefined on input line 1
+58.
+
+
+LaTeX Warning: Hyper reference `table:objective' on page 27 undefined on input 
+line 159.
+
+
+LaTeX Warning: Hyper reference `table:scintillator' on page 27 undefined on inp
+ut line 160.
+
+
+LaTeX Warning: Hyper reference `tomo:geometry' on page 27 undefined on input li
+ne 164.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 172.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [27]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 196.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [28]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 255.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [29]
+
+LaTeX Warning: Hyper reference `tomo:geometry' on page 30 undefined on input li
+ne 277.
+
+
+LaTeX Warning: Hyper reference `tomo:geometry' on page 30 undefined on input li
+ne 315.
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 323.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [30]
+
+LaTeX Warning: Hyper reference `tomo:translation' on page 31 undefined on input
+ line 351.
+
+
+LaTeX Warning: Hyper reference `tomo:orientation' on page 31 undefined on input
+ line 352.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 420.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [31]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 469.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [32]
+Underfull \hbox (badness 10000) in paragraph at lines 513--515
+
+ []
+
+
+LaTeX Warning: Hyper reference `table:algorithm' on page 33 undefined on input 
+line 538.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 547.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [33]
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 614.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [34]
+Overfull \hbox (84.23907pt too wide) in paragraph at lines 623--625
+\OT1/pnc/m/n/10.95 iteration[]max, pro-jec-tion[]threshold, dif-fer-ence[]thres
+hold[]percent, dif-fer-ence[]threshold[]value. 
+ []
+
+
+Overfull \hbox (30.00998pt too wide) in paragraph at lines 632--634
+\OT1/pnc/m/n/10.95 The thresh-old of re-con-struc-tion dif-fer-ence to stop the
+ it-er-a-tions as $\OML/cmm/m/it/10.95 p$ \OT1/pnc/m/n/10.95 in $\OMS/cmsy/m/n/
+10.95 j\OML/cmm/m/it/10.95 x[]\OMS/cmsy/m/n/10.95 j\OML/cmm/m/it/10.95 =\OMS/cm
+sy/m/n/10.95 j\OML/cmm/m/it/10.95 x[]\OMS/cmsy/m/n/10.95 j \OML/cmm/m/it/10.95 
+<
+ []
+
+
+Overfull \hbox (3.49432pt too wide) in paragraph at lines 635--637
+\OT1/pnc/m/n/10.95 The thresh-old of re-con-struc-tion dif-fer-ence to stop the
+ it-er-a-tions as $\OML/cmm/m/it/10.95 p$ \OT1/pnc/m/n/10.95 in $\OMS/cmsy/m/n/
+10.95 j\OML/cmm/m/it/10.95 x[]\OMS/cmsy/m/n/10.95 j ^^@
+ []
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 637.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [35]
+Underfull \hbox (badness 10000) in paragraph at lines 653--655
+
+ []
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 697.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [36]
+Underfull \hbox (badness 10000) in paragraph at lines 739--741
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 742--744
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 745--747
+
+ []
+
+)
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 190.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [37] (./sections/XrayCDIReference.tex
+
+LaTeX Warning: Reference `table:attribphoton' on page 38 undefined on input lin
+e 16.
+
+
+Overfull \hbox (1.6644pt too wide) in paragraph at lines 53--53
+[]|\OT1/pag/m/n/9 operating[]temperature| 
+ []
+
+
+LaTeX Warning: Reference `table:attrib' on page 38 undefined on input line 58.
+
+
+Underfull \hbox (badness 2229) in paragraph at lines 58--59
+[]|\OT1/pag/m/n/9 variable (see Tab. [] for
+ []
+
+
+LaTeX Warning: Hyper reference `table:roi' on page 38 undefined on input line 5
+9.
+
+
+LaTeX Warning: Reference `table:attrib' on page 38 undefined on input line 65.
+
+
+Underfull \hbox (badness 2229) in paragraph at lines 65--66
+[]|\OT1/pag/m/n/9 variable (see Tab. [] for
+ []
+
+
+LaTeX Warning: Hyper reference `table:kinetics' on page 38 undefined on input l
+ine 66.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+LaTeX Warning: Reference `table:attrib' on page 38 undefined on input line 96.
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 103.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [38]
+
+LaTeX Warning: Reference `ccd_orientation' on page 39 undefined on input line 1
+08.
+
+
+LaTeX Warning: Reference `ccd_orientation' on page 39 undefined on input line 1
+11.
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 119.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [39]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 150.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [40]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 220.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [41]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 220.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [42]
+Overfull \hbox (2.96928pt too wide) in paragraph at lines 240--240
+[]|\OT1/pag/m/n/9 specscan[]dark[]number| 
+ []
+
+
+Overfull \hbox (4.7604pt too wide) in paragraph at lines 241--241
+[]|\OT1/pag/m/n/9 specscan[]data[]number| 
+ []
+
+
+LaTeX Warning: Reference `table:attrib' on page 43 undefined on input line 257.
+
+
+
+Underfull \hbox (badness 2229) in paragraph at lines 257--258
+[]|\OT1/pag/m/n/9 variable (see Tab. [] for
+ []
+
+
+LaTeX Warning: Reference `table:attrib' on page 43 undefined on input line 258.
+
+
+
+Underfull \hbox (badness 2229) in paragraph at lines 258--259
+[]|\OT1/pag/m/n/9 variable (see Tab. [] for
+ []
+
+
+LaTeX Warning: Reference `table:attrib' on page 43 undefined on input line 259.
+
+
+
+Underfull \hbox (badness 2229) in paragraph at lines 259--260
+[]|\OT1/pag/m/n/9 variable (see Tab. [] for
+ []
+
+
+LaTeX Warning: Reference `table:attrib' on page 43 undefined on input line 260.
+
+
+
+Underfull \hbox (badness 2229) in paragraph at lines 260--261
+[]|\OT1/pag/m/n/9 variable (see Tab. [] for
+ []
+
+
+LaTeX Warning: Reference `table:attrib' on page 43 undefined on input line 261.
+
+
+
+Underfull \hbox (badness 2229) in paragraph at lines 261--262
+[]|\OT1/pag/m/n/9 variable (see Tab. [] for
+ []
+
+
+LaTeX Warning: Reference `table:attrib' on page 43 undefined on input line 262.
+
+
+
+Underfull \hbox (badness 2229) in paragraph at lines 262--263
+[]|\OT1/pag/m/n/9 variable (see Tab. [] for
+ []
+
+
+LaTeX Warning: Reference `table:attrib' on page 43 undefined on input line 263.
+
+
+
+Underfull \hbox (badness 2229) in paragraph at lines 263--264
+[]|\OT1/pag/m/n/9 variable (see Tab. [] for
+ []
+
+
+LaTeX Warning: Reference `table:attrib' on page 43 undefined on input line 264.
+
+
+
+Underfull \hbox (badness 2229) in paragraph at lines 264--265
+[]|\OT1/pag/m/n/9 variable (see Tab. [] for
+ []
+
+
+LaTeX Warning: Reference `table:attrib' on page 43 undefined on input line 265.
+
+
+
+Underfull \hbox (badness 2229) in paragraph at lines 265--266
+[]|\OT1/pag/m/n/9 variable (see Tab. [] for
+ []
+
+
+LaTeX Warning: Reference `table:attrib' on page 43 undefined on input line 266.
+
+
+
+Underfull \hbox (badness 2229) in paragraph at lines 266--267
+[]|\OT1/pag/m/n/9 variable (see Tab. [] for
+ []
+
+
+LaTeX Warning: Reference `table:attrib' on page 43 undefined on input line 267.
+
+
+
+Underfull \hbox (badness 2229) in paragraph at lines 267--268
+[]|\OT1/pag/m/n/9 variable (see Tab. [] for
+ []
+
+
+LaTeX Warning: Reference `table:attrib' on page 43 undefined on input line 268.
+
+
+
+Underfull \hbox (badness 2229) in paragraph at lines 268--269
+[]|\OT1/pag/m/n/9 variable (see Tab. [] for
+ []
+
+
+LaTeX Warning: Reference `table:attrib' on page 43 undefined on input line 269.
+
+
+
+Underfull \hbox (badness 2229) in paragraph at lines 269--270
+[]|\OT1/pag/m/n/9 variable (see Tab. [] for
+ []
+
+
+LaTeX Warning: Float too large for page by 12.58511pt on input line 275.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 332.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [43])
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 201.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [44]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 201.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [45]
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 216.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [46
+
+] (./sections/CodeExamples.tex
+
+LaTeX Warning: Reference `fig:Minimal1' on page 47 undefined on input line 5.
+
+
+LaTeX Warning: Reference `fig:MinimalTomo0' on page 47 undefined on input line 
+5.
+
+
+LaTeX Warning: Reference `fig:MinimalTomo1' on page 47 undefined on input line 
+5.
+
+
+LaTeX Warning: Reference `fig:MinimalTomo2' on page 47 undefined on input line 
+5.
+
+
+LaTeX Warning: Reference `fig:MinimalTomo3' on page 47 undefined on input line 
+5.
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 12.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [47]
+
+LaTeX Warning: Reference `fig:Minimal1' on page 48 undefined on input line 16.
+
+
+Overfull \hbox (6.0pt too wide) in paragraph at lines 16--16
+[][][][][][][] 
+ []
+
+(./code/python/DataExchange-example0.py
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 1--2
+[][][][] 
+ []
+
+
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 6--8
+[][][][] 
+ []
+
+LaTeX Font Info:    Try loading font information for OMS+pnc on input line 16.
+(/usr/share/texlive/texmf-dist/tex/latex/psnfss/omspnc.fd
+File: omspnc.fd 
+)
+LaTeX Font Info:    Font shape `OMS/pnc/m/n' in size <10.95> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 16.
+
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 16--18
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (28.25366pt too wide) in paragraph at lines 37--38
+[][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 42.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [48]
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 48--49
+[][][][] 
+ []
+
+)
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 50--16
+[][][][] 
+ []
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 19.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [49]
+
+LaTeX Warning: Reference `fig:MinimalTomo0' on page 50 undefined on input line 
+21.
+
+
+Overfull \hbox (6.0pt too wide) in paragraph at lines 21--21
+[][][][][][][] 
+ []
+
+(./code/python/DataExchange-example1.py
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 1--2
+[][][][] 
+ []
+
+
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 6--8
+[][][][] 
+ []
+
+
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 16--17
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (74.24403pt too wide) in paragraph at lines 17--18
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (87.38414pt too wide) in paragraph at lines 18--20
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (28.25366pt too wide) in paragraph at lines 39--40
+[][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 44.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [50]
+Overfull \hbox (41.39377pt too wide) in paragraph at lines 46--47
+[][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (54.53387pt too wide) in paragraph at lines 51--52
+[][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 60--61
+[][][][] 
+ []
+
+)
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 62--21
+[][][][] 
+ []
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 23.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [51]
+
+LaTeX Warning: Reference `fig:MinimalTomo1' on page 52 undefined on input line 
+25.
+
+
+Overfull \hbox (6.0pt too wide) in paragraph at lines 25--25
+[][][][][][][] 
+ []
+
+(./code/python/DataExchange-example2.py
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 1--2
+[][][][] 
+ []
+
+
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 6--8
+[][][][] 
+ []
+
+
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 16--17
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (74.24403pt too wide) in paragraph at lines 17--18
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (87.38414pt too wide) in paragraph at lines 18--20
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (93.9542pt too wide) in paragraph at lines 28--30
+[][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 44.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [52]
+Overfull \hbox (28.25366pt too wide) in paragraph at lines 44--45
+[][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (41.39377pt too wide) in paragraph at lines 52--53
+[][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (54.53387pt too wide) in paragraph at lines 58--59
+[][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (34.82372pt too wide) in paragraph at lines 69--70
+[][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (47.96382pt too wide) in paragraph at lines 74--75
+[][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 82--83
+[][][][] 
+ []
+
+)
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 84--25
+[][][][] 
+ []
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 27.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [53]
+
+LaTeX Warning: Reference `fig:MinimalTomo2' on page 54 undefined on input line 
+29.
+
+
+Overfull \hbox (6.0pt too wide) in paragraph at lines 29--29
+[][][][][][][] 
+ []
+
+(./code/python/DataExchange-example3.py
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 1--2
+[][][][] 
+ []
+
+
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 6--8
+[][][][] 
+ []
+
+
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 16--18
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (47.96382pt too wide) in paragraph at lines 29--31
+[][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (74.24403pt too wide) in paragraph at lines 37--38
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (80.81409pt too wide) in paragraph at lines 40--42
+[][][][][][][][][][][] 
+ []
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 45.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [54]
+Overfull \hbox (8.5435pt too wide) in paragraph at lines 52--53
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (87.38414pt too wide) in paragraph at lines 53--54
+[][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 62--63
+[][][][] 
+ []
+
+)
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 64--29
+[][][][] 
+ []
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 31.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [55]
+
+LaTeX Warning: Reference `fig:MinimalTomo3' on page 56 undefined on input line 
+33.
+
+
+Overfull \hbox (6.0pt too wide) in paragraph at lines 33--33
+[][][][][][][] 
+ []
+
+(./code/python/DataExchange-example4.py
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 1--2
+[][][][] 
+ []
+
+
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 6--8
+[][][][] 
+ []
+
+
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 16--18
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (47.96382pt too wide) in paragraph at lines 29--31
+[][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (74.24403pt too wide) in paragraph at lines 37--38
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (80.81409pt too wide) in paragraph at lines 40--42
+[][][][][][][][][][][] 
+ []
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 45.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [56]
+Overfull \hbox (8.5435pt too wide) in paragraph at lines 52--53
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (87.38414pt too wide) in paragraph at lines 53--54
+[][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (21.68361pt too wide) in paragraph at lines 59--61
+[][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (21.68361pt too wide) in paragraph at lines 63--64
+[][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (8.5435pt too wide) in paragraph at lines 64--65
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (93.9542pt too wide) in paragraph at lines 65--66
+[][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 74--75
+[][][][] 
+ []
+
+)
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 76--33
+[][][][] 
+ []
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 35.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [57]
+Overfull \hbox (6.0pt too wide) in paragraph at lines 37--37
+[][][][][][][] 
+ []
+
+(./code/python/DataExchange-example5.py
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 1--2
+[][][][] 
+ []
+
+
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 6--8
+[][][][] 
+ []
+
+
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 16--17
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (74.24403pt too wide) in paragraph at lines 17--18
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (87.38414pt too wide) in paragraph at lines 18--20
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (1.97345pt too wide) in paragraph at lines 22--24
+[][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (21.68361pt too wide) in paragraph at lines 26--28
+[][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (93.9542pt too wide) in paragraph at lines 36--38
+[][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 44.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [58]
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 49--51
+[][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (28.25366pt too wide) in paragraph at lines 57--58
+[][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (80.81409pt too wide) in paragraph at lines 60--62
+[][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (67.67398pt too wide) in paragraph at lines 66--68
+[][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (80.81409pt too wide) in paragraph at lines 72--73
+[][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (80.81409pt too wide) in paragraph at lines 80--81
+[][][][][][][][][][][] 
+ []
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 87.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [59]
+Overfull \hbox (34.82372pt too wide) in paragraph at lines 91--92
+[][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (47.96382pt too wide) in paragraph at lines 96--97
+[][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (93.9542pt too wide) in paragraph at lines 99--100
+[][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 102--103
+[][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 103--106
+[][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (54.53387pt too wide) in paragraph at lines 111--113
+[][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (28.25366pt too wide) in paragraph at lines 113--114
+[][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (41.39377pt too wide) in paragraph at lines 115--116
+[][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 130.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [60]
+Overfull \hbox (74.24403pt too wide) in paragraph at lines 130--132
+[][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (74.24403pt too wide) in paragraph at lines 132--133
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (8.5435pt too wide) in paragraph at lines 135--136
+[][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (139.94456pt too wide) in paragraph at lines 153--155
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (1.97345pt too wide) in paragraph at lines 155--156
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (74.24403pt too wide) in paragraph at lines 156--157
+[][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (41.39377pt too wide) in paragraph at lines 158--159
+[][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (28.25366pt too wide) in paragraph at lines 165--166
+[][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (21.68361pt too wide) in paragraph at lines 171--172
+[][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (54.53387pt too wide) in paragraph at lines 172--173
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 173.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [61]
+Overfull \hbox (34.82372pt too wide) in paragraph at lines 173--174
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (67.67398pt too wide) in paragraph at lines 176--177
+[][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 179--181
+[][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (15.11356pt too wide) in paragraph at lines 187--188
+[][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (21.68361pt too wide) in paragraph at lines 188--189
+[][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 189--190
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 190--192
+[][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (47.96382pt too wide) in paragraph at lines 192--193
+[][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (47.96382pt too wide) in paragraph at lines 194--195
+[][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (47.96382pt too wide) in paragraph at lines 196--197
+[][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (34.82372pt too wide) in paragraph at lines 198--199
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (34.82372pt too wide) in paragraph at lines 200--201
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (54.53387pt too wide) in paragraph at lines 202--203
+[][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 203--205
+[][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (15.11356pt too wide) in paragraph at lines 207--208
+[][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (1.97345pt too wide) in paragraph at lines 210--211
+[][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (41.39377pt too wide) in paragraph at lines 211--212
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (67.67398pt too wide) in paragraph at lines 215--216
+[][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 216.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [62]
+Overfull \hbox (67.67398pt too wide) in paragraph at lines 216--218
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (1.97345pt too wide) in paragraph at lines 219--220
+[][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (47.96382pt too wide) in paragraph at lines 226--227
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (54.53387pt too wide) in paragraph at lines 228--229
+[][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (74.24403pt too wide) in paragraph at lines 236--237
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (54.53387pt too wide) in paragraph at lines 237--238
+[][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 238--239
+[][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (47.96382pt too wide) in paragraph at lines 239--240
+[][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (47.96382pt too wide) in paragraph at lines 240--241
+[][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (15.11356pt too wide) in paragraph at lines 241--242
+[][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (21.68361pt too wide) in paragraph at lines 242--243
+[][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (15.11356pt too wide) in paragraph at lines 243--246
+[][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (1.97345pt too wide) in paragraph at lines 249--250
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (67.67398pt too wide) in paragraph at lines 250--251
+[][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (54.53387pt too wide) in paragraph at lines 252--253
+[][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (74.24403pt too wide) in paragraph at lines 253--254
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (34.82372pt too wide) in paragraph at lines 254--255
+[][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (8.5435pt too wide) in paragraph at lines 256--257
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (28.25366pt too wide) in paragraph at lines 257--258
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 259.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [63]
+Overfull \hbox (54.53387pt too wide) in paragraph at lines 260--261
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (47.96382pt too wide) in paragraph at lines 272--273
+[][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (47.96382pt too wide) in paragraph at lines 279--280
+[][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 280--281
+[][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (34.82372pt too wide) in paragraph at lines 282--283
+[][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (28.25366pt too wide) in paragraph at lines 284--285
+[][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (15.11356pt too wide) in paragraph at lines 289--290
+[][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (28.25366pt too wide) in paragraph at lines 295--296
+[][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (41.39377pt too wide) in paragraph at lines 296--297
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (15.11356pt too wide) in paragraph at lines 297--299
+[][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 302.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [64]
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 305--306
+[][][][] 
+ []
+
+)
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 307--37
+[][][][] 
+ []
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 39.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [65]
+Overfull \hbox (6.0pt too wide) in paragraph at lines 41--41
+[][][][][][][] 
+ []
+
+(./code/python/DataExchange-example6.py
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 1--2
+[][][][] 
+ []
+
+
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 6--8
+[][][][] 
+ []
+
+
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 16--17
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (74.24403pt too wide) in paragraph at lines 17--18
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (87.38414pt too wide) in paragraph at lines 18--20
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (1.97345pt too wide) in paragraph at lines 22--24
+[][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (21.68361pt too wide) in paragraph at lines 26--28
+[][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (93.9542pt too wide) in paragraph at lines 39--41
+[][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 43.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [66]
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 48--50
+[][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (28.25366pt too wide) in paragraph at lines 56--57
+[][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (80.81409pt too wide) in paragraph at lines 59--61
+[][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (67.67398pt too wide) in paragraph at lines 65--67
+[][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (80.81409pt too wide) in paragraph at lines 71--72
+[][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (80.81409pt too wide) in paragraph at lines 79--80
+[][][][][][][][][][][] 
+ []
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 86.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [67]
+Overfull \hbox (34.82372pt too wide) in paragraph at lines 90--91
+[][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (47.96382pt too wide) in paragraph at lines 95--96
+[][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (54.53387pt too wide) in paragraph at lines 103--105
+[][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (28.25366pt too wide) in paragraph at lines 105--106
+[][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (41.39377pt too wide) in paragraph at lines 107--108
+[][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (74.24403pt too wide) in paragraph at lines 122--124
+[][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (120.2344pt too wide) in paragraph at lines 124--125
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (8.5435pt too wide) in paragraph at lines 127--128
+[][][][][][][][][][][][] 
+ []
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 129.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [68]
+Overfull \hbox (139.94456pt too wide) in paragraph at lines 145--147
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (1.97345pt too wide) in paragraph at lines 147--148
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (74.24403pt too wide) in paragraph at lines 148--149
+[][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (41.39377pt too wide) in paragraph at lines 150--151
+[][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (28.25366pt too wide) in paragraph at lines 157--158
+[][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (21.68361pt too wide) in paragraph at lines 163--164
+[][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (54.53387pt too wide) in paragraph at lines 164--165
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (34.82372pt too wide) in paragraph at lines 165--166
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (67.67398pt too wide) in paragraph at lines 168--169
+[][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 171--173
+[][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 173.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [69]
+Overfull \hbox (15.11356pt too wide) in paragraph at lines 179--180
+[][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (21.68361pt too wide) in paragraph at lines 180--181
+[][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 181--182
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 182--184
+[][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (47.96382pt too wide) in paragraph at lines 184--185
+[][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (47.96382pt too wide) in paragraph at lines 186--187
+[][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (47.96382pt too wide) in paragraph at lines 188--189
+[][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (34.82372pt too wide) in paragraph at lines 190--191
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (34.82372pt too wide) in paragraph at lines 192--193
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (54.53387pt too wide) in paragraph at lines 194--195
+[][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 195--197
+[][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (15.11356pt too wide) in paragraph at lines 199--200
+[][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (1.97345pt too wide) in paragraph at lines 202--203
+[][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (41.39377pt too wide) in paragraph at lines 203--204
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (67.67398pt too wide) in paragraph at lines 207--208
+[][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (67.67398pt too wide) in paragraph at lines 208--210
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (1.97345pt too wide) in paragraph at lines 211--212
+[][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 215.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [70]
+Overfull \hbox (47.96382pt too wide) in paragraph at lines 218--219
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (54.53387pt too wide) in paragraph at lines 220--221
+[][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (74.24403pt too wide) in paragraph at lines 228--229
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (54.53387pt too wide) in paragraph at lines 229--230
+[][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 230--231
+[][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (47.96382pt too wide) in paragraph at lines 231--232
+[][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (47.96382pt too wide) in paragraph at lines 232--233
+[][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (15.11356pt too wide) in paragraph at lines 233--234
+[][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (21.68361pt too wide) in paragraph at lines 234--235
+[][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (15.11356pt too wide) in paragraph at lines 235--238
+[][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (1.97345pt too wide) in paragraph at lines 241--242
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (67.67398pt too wide) in paragraph at lines 242--243
+[][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (54.53387pt too wide) in paragraph at lines 244--245
+[][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (74.24403pt too wide) in paragraph at lines 245--246
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (34.82372pt too wide) in paragraph at lines 246--247
+[][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (8.5435pt too wide) in paragraph at lines 248--249
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (28.25366pt too wide) in paragraph at lines 249--250
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (54.53387pt too wide) in paragraph at lines 252--253
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 258.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [71]
+Overfull \hbox (47.96382pt too wide) in paragraph at lines 264--265
+[][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (47.96382pt too wide) in paragraph at lines 271--272
+[][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 272--273
+[][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (34.82372pt too wide) in paragraph at lines 274--275
+[][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (28.25366pt too wide) in paragraph at lines 276--277
+[][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (15.11356pt too wide) in paragraph at lines 281--282
+[][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (28.25366pt too wide) in paragraph at lines 287--288
+[][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (41.39377pt too wide) in paragraph at lines 288--289
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (15.11356pt too wide) in paragraph at lines 289--291
+[][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (994.05147pt too wide) in paragraph at lines 297--298
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
+][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]
+[][][][][][][][] 
+ []
+
+
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 298--299
+[][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (731.24934pt too wide) in paragraph at lines 299--300
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
+][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (731.24934pt too wide) in paragraph at lines 300--301
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
+][][][][][][][][][] 
+ []
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 301.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [72]
+Overfull \hbox (619.55844pt too wide) in paragraph at lines 301--302
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
+][][][][][][][] 
+ []
+
+
+Overfull \hbox (599.84828pt too wide) in paragraph at lines 302--303
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
+][][][][][] 
+ []
+
+
+Overfull \hbox (658.97876pt too wide) in paragraph at lines 303--304
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
+][][][][][] 
+ []
+
+
+Overfull \hbox (488.15738pt too wide) in paragraph at lines 304--305
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
+][] 
+ []
+
+
+Overfull \hbox (310.76595pt too wide) in paragraph at lines 305--307
+[][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][
+][] 
+ []
+
+
+Overfull \hbox (1.97345pt too wide) in paragraph at lines 310--311
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (28.25366pt too wide) in paragraph at lines 313--314
+[][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (28.25366pt too wide) in paragraph at lines 315--317
+[][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (28.25366pt too wide) in paragraph at lines 320--321
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (8.5435pt too wide) in paragraph at lines 321--322
+[][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (67.67398pt too wide) in paragraph at lines 322--323
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (87.38414pt too wide) in paragraph at lines 323--325
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (54.53387pt too wide) in paragraph at lines 328--329
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (21.68361pt too wide) in paragraph at lines 329--330
+[][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (93.9542pt too wide) in paragraph at lines 330--331
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (100.52425pt too wide) in paragraph at lines 331--332
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (67.67398pt too wide) in paragraph at lines 332--333
+[][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (54.53387pt too wide) in paragraph at lines 334--335
+[][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (8.5435pt too wide) in paragraph at lines 335--336
+[][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (34.82372pt too wide) in paragraph at lines 337--339
+[][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (15.11356pt too wide) in paragraph at lines 340--341
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (8.5435pt too wide) in paragraph at lines 341--342
+[][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (21.68361pt too wide) in paragraph at lines 342--343
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (67.67398pt too wide) in paragraph at lines 343--345
+[][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 345.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [73]
+Overfull \hbox (28.25366pt too wide) in paragraph at lines 348--349
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 350--351
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (107.0943pt too wide) in paragraph at lines 351--352
+[][][][][][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (67.67398pt too wide) in paragraph at lines 352--353
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (15.11356pt too wide) in paragraph at lines 353--354
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (15.11356pt too wide) in paragraph at lines 355--356
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (8.5435pt too wide) in paragraph at lines 356--358
+[][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (1.97345pt too wide) in paragraph at lines 361--362
+[][][][][][][][][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (28.25366pt too wide) in paragraph at lines 364--365
+[][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (28.25366pt too wide) in paragraph at lines 366--368
+[][][][][][][][][][][][][][][] 
+ []
+
+
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 374--375
+[][][][] 
+ []
+
+)
+Overfull \hbox (61.10393pt too wide) in paragraph at lines 376--41
+[][][][] 
+ []
+
+)
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 223.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [74] (./sections/Appendix.tex
+
+LaTeX Warning: Reference `table:SI' on page 75 undefined on input line 8.
+
+LaTeX Font Info:    Font shape `OT1/pag/bx/n' in size <10> not available
+(Font)              Font shape `OT1/pag/b/n' tried instead on input line 19.
+LaTeX Font Info:    Font shape `OT1/pag/b/n' in size <10> not available
+(Font)              Font shape `OT1/pag/db/n' tried instead on input line 19.
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 53.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [75]
+
+LaTeX Warning: Reference `fig:CoordSystem' on page 76 undefined on input line 5
+7.
+
+<figures/dx_CoordSystem.pdf, id=2430, 128.78271pt x 65.75447pt>
+File: figures/dx_CoordSystem.pdf Graphic file (type pdf)
+
+<use figures/dx_CoordSystem.pdf>
+Package pdftex.def Info: figures/dx_CoordSystem.pdf used on input line 61.
+(pdftex.def)             Requested size: 247.16644pt x 126.19997pt.
+)
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 229.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [76
+
+ <./figures/dx_CoordSystem.pdf>]
+\tf@lof=\write6
+\openout6 = `DataExchangeReference.lof'.
+
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 235.
+
+
+Package Fancyhdr Warning: \headheight is too small (12.0pt): 
+ Make it at least 13.59999pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+File: figures/dx_logo_header.pdf Graphic file (type pdf)
+<use figures/dx_logo_header.pdf>
+Package pdftex.def Info: figures/dx_logo_header.pdf used on input line 235.
+(pdftex.def)             Requested size: 144.18147pt x 14.9426pt.
+ [77]
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 235.
+ (./DataExchangeReference.aux)
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 235.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 235.
+
+
+Package rerunfilecheck Warning: File `DataExchangeReference.out' has changed.
+(rerunfilecheck)                Rerun to get outlines right
+(rerunfilecheck)                or use package `bookmark'.
+
+Package rerunfilecheck Info: Checksums for `DataExchangeReference.out':
+(rerunfilecheck)             Before: <no file>
+(rerunfilecheck)             After:  065279C23E455F17D7C08E77E89B1177;5228.
+
+LaTeX Warning: There were undefined references.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 235.
+ ) 
+Here is how much of TeX's memory you used:
+ 18531 strings out of 495059
+ 317527 string characters out of 3182029
+ 458335 words of memory out of 3000000
+ 20101 multiletter control sequences out of 15000+200000
+ 46546 words of font info for 89 fonts, out of 3000000 for 9000
+ 14 hyphenation exceptions out of 8191
+ 56i,15n,55p,1226b,1609s stack positions out of 5000i,500n,10000p,200000b,50000s
+{/usr/share/texlive/texmf-dist/fonts/enc/dvips/base/8r.enc}</usr/share/texliv
+e/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/share/texlive/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/
+fonts/type1/public/amsfonts/cm/cmmi9.pfb></usr/share/texlive/texmf-dist/fonts/t
+ype1/public/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/pu
+blic/amsfonts/cm/cmr8.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/ams
+fonts/cm/cmsy10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/
+cm/cmsy8.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/avantgar/uagd8a.pfb
+></usr/share/texlive/texmf-dist/fonts/type1/urw/avantgar/uagk8a.pfb></usr/share
+/texlive/texmf-dist/fonts/type1/urw/avantgar/uagko8a.pfb></usr/share/texlive/te
+xmf-dist/fonts/type1/urw/courier/ucrr8a.pfb></usr/share/texlive/texmf-dist/font
+s/type1/urw/ncntrsbk/uncb8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/
+ncntrsbk/uncbi8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/ncntrsbk/un
+cr8a.pfb></usr/share/texlive/texmf-dist/fonts/type1/urw/ncntrsbk/uncri8a.pfb>
+Output written on DataExchangeReference.pdf (80 pages, 1225717 bytes).
+PDF statistics:
+ 2762 PDF objects out of 2984 (max. 8388607)
+ 2189 compressed objects within 22 object streams
+ 1224 named destinations out of 1440 (max. 500000)
+ 63 words of extra memory for PDF output out of 10000 (max. 10000000)
+

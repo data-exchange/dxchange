@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 15.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1"
+	 id="svg2" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" inkscape:version="0.48.0 r9654" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:svg="http://www.w3.org/2000/svg" xmlns:cc="http://creativecommons.org/ns#" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" sodipodi:docname="diagram_labels.svg"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="202.148px"
+	 height="20.949px" viewBox="0 0 202.148 20.949" enable-background="new 0 0 202.148 20.949" xml:space="preserve">
+<sodipodi:namedview  id="base" inkscape:zoom="5.6" bordercolor="#666666" inkscape:cy="888.80508" inkscape:window-x="-1" inkscape:cx="238.45928" inkscape:current-layer="layer1" inkscape:pageopacity="0.0" inkscape:window-width="1680" inkscape:window-y="0" inkscape:document-units="px" inkscape:pageshadow="2" showgrid="true" inkscape:window-height="1002" pagecolor="#ffffff" borderopacity="1.0" inkscape:window-maximized="0">
+	<inkscape:grid  type="xygrid" id="grid3803"></inkscape:grid>
+</sodipodi:namedview>
+<g id="layer2" inkscape:label="Layer" inkscape:groupmode="layer">
+</g>
+<path id="rect3777" fill="#9F723C" stroke="#E9B980" stroke-linecap="round" stroke-linejoin="round" d="M1.956,0.5h55.643
+	c1.08,0,1.956,0.875,1.956,1.955v16.037c0,1.08-0.876,1.955-1.956,1.955H1.956C0.876,20.448,0,19.573,0,18.493V2.456
+	C0,1.375,0.876,0.5,1.956,0.5z"/>
+<text transform="matrix(1 0 0 1 17.9333 14.3228)" fill="#FFFFFF" font-family="'CenturyGothic'" font-size="12.056">DX</text>
+<text transform="matrix(1 0 0 1 69.5535 14.8657)" font-family="'CenturyGothic'" font-size="12">Data Exchange</text>
+</svg>
