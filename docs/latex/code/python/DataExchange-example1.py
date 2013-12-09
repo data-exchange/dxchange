@@ -1,11 +1,11 @@
 #=======================================================================
 # Sample Python code to write Data Exchange Format
 #
-# Date: 2013-04-21
+# Date: 2013-11-05
 # 
 #=======================================================================
 
-import h5py
+from data_exchange import DataExchangeFile, DataExchangeEntry
 import numpy as np
 
 def write_example(filename):
@@ -24,39 +24,24 @@ def write_example(filename):
       
     # --- create file ---
 
-    # Open HDF5 file
-    f = h5py.File(filename, 'w')
-        
-    # Create basic definitions in root
-    ds = f.create_dataset('implements', data = "exchange")
-    
-    # --- exchange definition --- 
-    
-    # Exchange HDF5 group
-    # /exchange
-    exchangeGrp = f.create_group("exchange")
+    # Open DataExchangeFile file
+    f = DataExchangeFile(filename, mode='w')
     
     # Create core HDF5 dataset in exchange group for 180 deep stack
     # of x,y images /exchange/data
-    ds = exchangeGrp.create_dataset('data', data = rawdata)
-    ds.attrs['units'] = "counts"
-    
-    # Create HDF5 dataset in exchange group for dark data
-    # /exchange/data_dark
-    ds = exchangeGrp.create_dataset('data_dark', data = rawdata_dark)
-    ds.attrs['units'] = "counts"
-
-    # Create HDF5 dataset in exchange group for white data
-    # /exchange/data_white
-    ds = exchangeGrp.create_dataset('data_white', data = rawdata_white)
-    ds.attrs['units'] = "counts"
+    f.add_entry([
+            DataExchangeEntry.data(data={'value':rawdata, 'units':'counts'}),
+            DataExchangeEntry.data(data_dark={'value':rawdata_dark, 'units':'counts'}),
+            DataExchangeEntry.data(data_white={'value':rawdata_white, 'units':'counts'})
+            ]
+        )
                       
     # --- All done ---
     f.close()
 
 if __name__ == '__main__':
     
-    write_example('/tmp/python/DataExchange-example1.h5')
+    write_example('./examples/DataExchange-example1.h5')
 #=======================================================================
 #
 #=======================================================================

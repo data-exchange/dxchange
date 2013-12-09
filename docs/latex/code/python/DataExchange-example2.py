@@ -5,7 +5,7 @@
 # 
 #=======================================================================
 
-import h5py
+from data_exchange import DataExchangeFile, DataExchangeEntry
 import numpy as np
 
 def write_example(filename):
@@ -30,55 +30,23 @@ def write_example(filename):
     # --- create file ---
 
     # Open HDF5 file
-    f = h5py.File(filename, 'w')
-        
-    # Create basic definitions in root
-    ds = f.create_dataset('implements', data = "exchange")
-    
-    # --- exchange definition --- 
-    
-    # Exchange HDF5 group
-    # /exchange
-    exchangeGrp = f.create_group("exchange")
-    
-    # Create core HDF5 dataset in exchange group for 180 deep stack
-    # of x,y images /exchange/data
-    ds = exchangeGrp.create_dataset('data', data = rawdata)
-    ds.attrs['units'] = "counts"
-    ds.attrs['axes'] = "theta:y:x"
-    
-    # Create HDF5 dataset in exchange group for dark data
-    # /exchange/data_dark
-    ds = exchangeGrp.create_dataset('data_dark', data = rawdata_dark)
-    ds.attrs['units'] = "counts"
-    ds.attrs['axes'] = "theta_dark:y:x"
+    f = DataExchangeFile(filename, mode='w')
 
-    # Create HDF5 dataset in exchange group for white data
-    # /exchange/data_white
-    ds = exchangeGrp.create_dataset('data_white', data = rawdata_white)
-    ds.attrs['units'] = "counts"
-    ds.attrs['axes'] = "theta_white:y:x"
-    
-    # Create HDF5 dataset in exchange group for theta
-    # /exchange/theta
-    ds = exchangeGrp.create_dataset('theta', data = theta)
-    ds.attrs['units'] = "degrees"
-
-    # Create HDF5 dataset in exchange group for theta_dark
-    # /exchange/theta_dark
-    ds = exchangeGrp.create_dataset('theta_dark', data = theta_dark)
-    ds.attrs['units'] = "degrees"
-
-    # Create HDF5 dataset in exchange group for theta_white
-    # /exchange/theta_white
-    ds = exchangeGrp.create_dataset('theta_white', data = theta_white)
-    ds.attrs['units'] = "degrees"
+    #Create HDF5 dataset in exchange group for data, data_dark & data_white, theta, theta_dark, theta_white under /exchange
+    f.add_entry([
+            DataExchangeEntry.data(data={'value':rawdata, 'units':'counts', 'axes': 'theta:y:x'}),
+            DataExchangeEntry.data(data_dark={'value':rawdata_dark, 'units':'counts', 'axes': 'theta:y:x'}),
+            DataExchangeEntry.data(data_white={'value':rawdata_white, 'units':'counts', 'axes': 'theta:y:x'}),
+            DataExchangeEntry.data(theta={'value':theta, 'units':'degrees'}),
+            DataExchangeEntry.data(theta_dark={'value':theta_dark, 'units':'degrees'}),
+            DataExchangeEntry.data(theta_white={'value':theta_white, 'units':'degrees'})
+        ])
                   
     # --- All done ---
     f.close()
 
 if __name__ == '__main__':
-    write_example('/tmp/python/DataExchange-example2.h5')
+    write_example('./examples/DataExchange-example2.h5')
 #=======================================================================
 #
 #=======================================================================
