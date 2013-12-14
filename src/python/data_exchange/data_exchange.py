@@ -220,13 +220,13 @@ class DataExchangeEntry(object):
         }
 
         self._geometry = {
-            'root': '/measurement',
+            'root': '/measurement/sample',
             'entry_name': 'geometry',
             'docstring': 'The general position and orientation of a component'
         }
 
         self._experiment = {
-            'root': '/measurement',
+            'root': '/measurement/sample',
             'entry_name': 'experiment',
             'docstring': 'This provides references to facility ids for the proposal, scheduled activity, and safety form.',
             'proposal': {
@@ -247,7 +247,7 @@ class DataExchangeEntry(object):
         }
 
         self._experimenter = {
-            'root': '/measurement',
+            'root': '/measurement/sample',
             'entry_name': 'experimenter',
             'docstring': 'Description of a single experimenter.',
             'name': {
@@ -679,12 +679,3 @@ class DataExchangeEntry(object):
 
 
 DataExchangeEntry()
-        
-
-
-
-
-
-
-
-
