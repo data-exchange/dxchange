@@ -41,6 +41,8 @@ def write_example(filename):
 
     # --- create file ---
 
+    print filename
+    
     # Open DataExchange file
     f = DataExchangeFile(filename, mode='w') 
         
@@ -66,7 +68,7 @@ def write_example(filename):
     # Exchange HDF5 group
     # /exchange_2
     # this will be the out_put of the normalization process
-    f.add_entry( DataExchangeEntry.exchange(root='exchange_2', name={'value': 'tomography normalized projections'}) )
+    f.add_entry( DataExchangeEntry.data(root='exchange_2', title={'value': 'tomography normalized projections'}) )
     f.add_entry( DataExchangeEntry.data(root='exchange_2', data={'value': normalizeddata, 'units':'counts', 'axes':'theta:y:x',
                                             'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} })
     )
@@ -75,7 +77,7 @@ def write_example(filename):
     # Exchange HDF5 group
     # /exchange_3
     # this will be the out_put of the reconstruction process
-    f.add_entry( DataExchangeEntry.exchange(root='exchange_3', name={'value': 'tomography reconstructions'}) )
+    f.add_entry( DataExchangeEntry.data(root='exchange_3', title={'value': 'tomography reconstructions'}) )
     f.add_entry( DataExchangeEntry.data(root='exchange_3', data={'value': reconstructeddata, 'units':'density', 'axes':'z:y:x',
                                             'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} })
     )
@@ -200,7 +202,8 @@ def write_example(filename):
 
 if __name__ == '__main__':
     
-    write_example('./examples/DataExchange-example5.h5')
+    write_example('DataExchange-example5.h5')
+#    write_example('./examples/DataExchange-example5.h5')
 #=======================================================================
 #
 #=======================================================================

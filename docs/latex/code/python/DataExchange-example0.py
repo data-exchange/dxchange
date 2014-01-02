@@ -1,11 +1,10 @@
 #=======================================================================
 # Sample Python code to write Data Exchange Format
 #
-# Date: 2011-09-01
-# Updated: 2013-04-21
+# Date: 2013-11-05
+# 
 #=======================================================================
-
-import h5py
+from data_exchange import DataExchangeFile, DataExchangeEntry
 import numpy as np
 
 def write_example(filename):
@@ -22,29 +21,16 @@ def write_example(filename):
        
     # --- create file ---
 
-    # Open HDF5 file
-    f = h5py.File(filename, 'w')
+    # Open DataExchange file
+    f = DataExchangeFile(filename, mode='w')
         
-    # Create basic definitions in root
-    ds = f.create_dataset('implements', data = "exchange")
-    
-    # --- exchange definition --- 
-    
-    # Exchange HDF5 group
-    # /exchange
-    exchangeGrp = f.create_group("exchange")
-    
-    # Create core HDF5 dataset in exchange group for 180 deep stack
-    # of x,y images /exchange/data
-    ds = exchangeGrp.create_dataset('data', data = rawdata)
-    ds.attrs['units'] = "counts"
+    # Create a DataExchangeEntry and dd the entry to the data exchange file.
+    f.add_entry(DataExchangeEntry.data(data={'value':rawdata, 'units':'counts'}))
                   
     # --- All done ---
     f.close()
 
 if __name__ == '__main__':
     
-    write_example('/tmp/python/DataExchange-example0.h5')
-#=======================================================================
-#
-#=======================================================================
+    write_example('./examples/DataExchange-example0.h5')
+

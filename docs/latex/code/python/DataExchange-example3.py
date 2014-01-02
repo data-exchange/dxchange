@@ -5,7 +5,7 @@
 # 
 #=======================================================================
 
-import h5py
+from data_exchange import DataExchangeFile, DataExchangeEntry
 import numpy as np
 
 def write_example(filename):
@@ -22,43 +22,27 @@ def write_example(filename):
    
     # --- create file ---
 
-    # Open HDF5 file
-    f = h5py.File(filename, 'w')
-        
-    # Create basic definitions in root
-    ds = f.create_dataset('implements', data = "measurement:exchange")
-      
-    # --- exchange definition --- 
-    
-    # Exchange HDF5 group
-    # /exchange
-    exchangeGrp = f.create_group("exchange")
+    # Open DataExchange file
+    f = DataExchangeFile(filename, mode='w')
     
     # Create core HDF5 dataset in exchange group for 180 deep stack of x,y
     # images /exchange/data
-    ds = exchangeGrp.create_dataset('data', data = rawdata, \
-                                    compression='gzip', compression_opts=4)
- 
-    ds.attrs['description'] = "Projection data"
-    ds.attrs['units'] = "counts"
-    
-    # Create HDF5 group measurement
-    # /measurement
-    measurementGrp = f.create_group("measurement")
+    data_en = DataExchangeEntry.data(data={'value': rawdata, 'units':'counts', 'description': 'Projection Data',
+                                            'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} })
+    f.add_entry(data_en)
 
-    # Create HDF5 subgroup 
-    # /measurement/sample
-    sampleGrp = measurementGrp.create_group("sample")
-    sads1 = sampleGrp.create_dataset('name', data = "Minivirus")
-    sads8 = sampleGrp.create_dataset('temperature', data = 200.0, dtype='d')
-    sads8.attrs['units'] = "celsius"
+    # The default location for sample in DataExchangeEntry is /measurement/sample
+    # To override the default set e.g 'root'='/measurement_4/sample'
+    sample_en = DataExchangeEntry.sample(name={'value': 'Minivirus'}, temperature={'value': 200.0, 'units':'celsius',
+                                'dataset_opts': {'dtype': 'd'}})
+    f.add_entry(sample_en)
 
     # --- All done ---
     f.close()
 
 if __name__ == '__main__':
     
-    write_example('/tmp/python/DataExchange-example3.h5')
+    write_example('./examples/DataExchange-example3.h5')
 #=======================================================================
 #
 #=======================================================================
