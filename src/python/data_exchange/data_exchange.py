@@ -144,7 +144,7 @@ class DataExchangeEntry(object):
         """
         self._data = {
             'root': '/exchange',
-            'entry_name': 'data',
+            'entry_name': '',
             'docstring': 'The result of the measurement.',
             'data': {
                 'value': None,
@@ -378,6 +378,27 @@ class DataExchangeEntry(object):
                 'value': None,
                 'units': 'text',
                 'docstring': '"OPEN" or "CLOSED" or "NORMAL"'
+            },
+        }
+
+        self._amplifier = {
+            'root': '/measurement/instrument',
+            'entry_name': 'amplifier',
+            'docstring': 'The shutter being used',
+            'name': {
+                'value': None,
+                'units': 'text',
+                'docstring': 'Name of the amplifier.'
+            },
+            'gain': {
+                'value': None,
+                'units': 'text',
+                'docstring': 'Amplifier gain setting'
+            },
+            'gain units': {
+                'value': None,
+                'units': 'text',
+                'docstring': 'Amplifier gain units'
             },
         }
 
