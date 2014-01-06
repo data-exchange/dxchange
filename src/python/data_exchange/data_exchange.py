@@ -381,6 +381,27 @@ class DataExchangeEntry(object):
             },
         }
 
+        self._amplifier = {
+            'root': '/measurement/instrument',
+            'entry_name': 'amplifier',
+            'docstring': 'Amplifier settings.',
+            'name': {
+                'value': None,
+                'units': 'text',
+                'docstring': 'Name of the amplifier.'
+            },
+            'gain': {
+                'value': None,
+                'units': 'text',
+                'docstring': 'The gain of the amplifier.'
+            },
+            'current': {
+                'value': None,
+                'units': 'text',
+                'docstring': 'The current recorded by the amplifier.'
+            },
+        }
+
         self._attenuator = {
             'root': '/measurement/instrument',
             'entry_name': 'attenuator',
