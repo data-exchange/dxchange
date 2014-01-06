@@ -1,4 +1,3 @@
-README
 setup.py
 data_exchange/__init__.py
 data_exchange/data_exchange.py

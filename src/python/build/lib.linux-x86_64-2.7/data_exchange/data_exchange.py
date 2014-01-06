@@ -65,8 +65,9 @@ class DataExchangeFile(h5py.File):
         self.create_group(group_name)
         try:
             implements = self['/implements'].value
-            del self['implements']
-            self.create_dataset('implements', data=':'.join([implements, group_name]))
+            if group_name not in implements.split(':'):
+                del self['implements']
+                self.create_dataset('implements', data=':'.join([implements, group_name]))
         except KeyError:
             self.create_dataset('implements', data=group_name)
 
@@ -144,7 +145,7 @@ class DataExchangeEntry(object):
         """
         self._data = {
             'root': '/exchange',
-            'entry_name': 'data',
+            'entry_name': '',
             'docstring': 'The result of the measurement.',
             'data': {
                 'value': None,
@@ -220,13 +221,13 @@ class DataExchangeEntry(object):
         }
 
         self._geometry = {
-            'root': '/measurement',
+            'root': '/measurement/sample',
             'entry_name': 'geometry',
             'docstring': 'The general position and orientation of a component'
         }
 
         self._experiment = {
-            'root': '/measurement',
+            'root': '/measurement/sample',
             'entry_name': 'experiment',
             'docstring': 'This provides references to facility ids for the proposal, scheduled activity, and safety form.',
             'proposal': {
@@ -247,7 +248,7 @@ class DataExchangeEntry(object):
         }
 
         self._experimenter = {
-            'root': '/measurement',
+            'root': '/measurement/sample',
             'entry_name': 'experimenter',
             'docstring': 'Description of a single experimenter.',
             'name': {
@@ -381,6 +382,27 @@ class DataExchangeEntry(object):
             },
         }
 
+        self._amplifier = {
+            'root': '/measurement/instrument',
+            'entry_name': 'amplifier',
+            'docstring': 'Amplifier settings.',
+            'name': {
+                'value': None,
+                'units': 'text',
+                'docstring': 'Name of the amplifier.'
+            },
+            'gain': {
+                'value': None,
+                'units': 'text',
+                'docstring': 'The gain of the amplifier.'
+            },
+            'current': {
+                'value': None,
+                'units': 'text',
+                'docstring': 'The current recorded by the amplifier.'
+            },
+        }
+
         self._attenuator = {
             'root': '/measurement/instrument',
             'entry_name': 'attenuator',
@@ -435,7 +457,7 @@ class DataExchangeEntry(object):
 
         self._detector = {
             'root': '/measurement/instrument',
-            'entry_name': '_detector',
+            'entry_name': 'detector',
             'docstring': 'X-ray detector.',
             'manufacturer': {
                 'value': None,
@@ -679,12 +701,3 @@ class DataExchangeEntry(object):
 
 
 DataExchangeEntry()
-        
-
-
-
-
-
-
-
-

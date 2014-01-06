@@ -65,8 +65,9 @@ class DataExchangeFile(h5py.File):
         self.create_group(group_name)
         try:
             implements = self['/implements'].value
-            del self['implements']
-            self.create_dataset('implements', data=':'.join([implements, group_name]))
+            if group_name not in implements.split(':'):
+                del self['implements']
+                self.create_dataset('implements', data=':'.join([implements, group_name]))
         except KeyError:
             self.create_dataset('implements', data=group_name)
 
