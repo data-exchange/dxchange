@@ -65,8 +65,9 @@ class DataExchangeFile(h5py.File):
         self.create_group(group_name)
         try:
             implements = self['/implements'].value
-            del self['implements']
-            self.create_dataset('implements', data=':'.join([implements, group_name]))
+            if group_name not in implements.split(':'):
+                del self['implements']
+                self.create_dataset('implements', data=':'.join([implements, group_name]))
         except KeyError:
             self.create_dataset('implements', data=group_name)
 
@@ -384,7 +385,11 @@ class DataExchangeEntry(object):
         self._amplifier = {
             'root': '/measurement/instrument',
             'entry_name': 'amplifier',
+<<<<<<< HEAD
             'docstring': 'The shutter being used',
+=======
+            'docstring': 'Amplifier settings.',
+>>>>>>> 37bfdcf91f8238ab7a1790bb48669687d46ea7a6
             'name': {
                 'value': None,
                 'units': 'text',
@@ -393,12 +398,21 @@ class DataExchangeEntry(object):
             'gain': {
                 'value': None,
                 'units': 'text',
+<<<<<<< HEAD
                 'docstring': 'Amplifier gain setting'
             },
             'gain units': {
                 'value': None,
                 'units': 'text',
                 'docstring': 'Amplifier gain units'
+=======
+                'docstring': 'The gain of the amplifier.'
+            },
+            'current': {
+                'value': None,
+                'units': 'text',
+                'docstring': 'The current recorded by the amplifier.'
+>>>>>>> 37bfdcf91f8238ab7a1790bb48669687d46ea7a6
             },
         }
 
