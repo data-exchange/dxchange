@@ -1,9 +1,0 @@
-README
-setup.py
-data_exchange/__init__.py
-data_exchange/data_exchange.py
-data_exchange.egg-info/PKG-INFO
-data_exchange.egg-info/SOURCES.txt
-data_exchange.egg-info/dependency_links.txt
-data_exchange.egg-info/requires.txt
-data_exchange.egg-info/top_level.txt
