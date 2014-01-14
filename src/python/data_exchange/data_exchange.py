@@ -11,7 +11,7 @@ from functools import wraps
 import h5py
 import os
 import sys
-import pdb
+import ipdb
 py3 = sys.version_info[0] == 3
 
 
@@ -29,8 +29,9 @@ class DataExchangeFile(h5py.File):
     def __init__(self, *args, **kwargs):
         super(DataExchangeFile, self).__init__(*args, **kwargs)
         
-        if kwargs['mode'] == 'w': #New File
-            self.create_top_level_group('exchange')
+        if kwargs['mode'] in ['w', 'a']: #New File
+            if not 'exchange' in self.keys():
+                self.create_top_level_group('exchange')
         else:
             # Verify this file conforms to Data Exchange guidelines
             try:
@@ -104,12 +105,23 @@ class DataExchangeFile(h5py.File):
                         opts = getattr(dexen, ds_name)['dataset_opts']
                     else:
                         opts={}
-                    ds = self['/'.join([root, getattr(dexen, 'entry_name')])].create_dataset(ds_name, data=getattr(dexen, ds_name)['value'], **opts)
-                    for key in getattr(dexen, ds_name).keys():
-                        if key in ['value', 'docstring','dataset_opts']:
-                            pass
+                    try:
+                        ds = self['/'.join([root, getattr(dexen, 'entry_name')])].create_dataset(ds_name, data=getattr(dexen, ds_name)['value'], **opts)
+                        for key in getattr(dexen, ds_name).keys():
+                            if key in ['value', 'docstring','dataset_opts']:
+                                pass
+                            else:
+                                ds.attrs[key] = getattr(dexen, ds_name)[key]
+                    except RuntimeError:
+                        # Likely cause of runtime error is dataset already existing in file
+                        dataset_exists = ds_name in self['/'.join([root, getattr(dexen, 'entry_name')])].keys()
+                        if dataset_exists:
+                            print 'WARNING: Dataset {:s} already exists. This entry has been skipped.'.format(ds_name)
                         else:
-                            ds.attrs[key] = getattr(dexen, ds_name)[key]
+                            raise
+
+
+
 
 
 class DataExchangeEntry(object):
@@ -385,11 +397,7 @@ class DataExchangeEntry(object):
         self._amplifier = {
             'root': '/measurement/instrument',
             'entry_name': 'amplifier',
-<<<<<<< HEAD
-            'docstring': 'The shutter being used',
-=======
             'docstring': 'Amplifier settings.',
->>>>>>> 37bfdcf91f8238ab7a1790bb48669687d46ea7a6
             'name': {
                 'value': None,
                 'units': 'text',
@@ -398,21 +406,17 @@ class DataExchangeEntry(object):
             'gain': {
                 'value': None,
                 'units': 'text',
-<<<<<<< HEAD
                 'docstring': 'Amplifier gain setting'
             },
             'gain units': {
                 'value': None,
                 'units': 'text',
                 'docstring': 'Amplifier gain units'
-=======
-                'docstring': 'The gain of the amplifier.'
             },
             'current': {
                 'value': None,
                 'units': 'text',
                 'docstring': 'The current recorded by the amplifier.'
->>>>>>> 37bfdcf91f8238ab7a1790bb48669687d46ea7a6
             },
         }
 
