@@ -1,7 +1,7 @@
 """
-.. module:: main_convert_APS_13BM.py
+.. module:: main_convert_Diamond.py
    :platform: Unix
-   :synopsis: Convert APS 13-BM SPE files in data exchange.
+   :synopsis: Convert Diamond JEEP (I12) NeXus files in data exchange.
 
 .. moduleauthor:: Francesco De Carlo <decarlof@gmail.com>
 
