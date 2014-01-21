@@ -16,12 +16,12 @@ import scipy
 import re
 
 import logging
-logging.basicConfig(filename='convert_APS_13BM.log',level=logging.DEBUG)
+logging.basicConfig(filename='convert_Diamond_I12.log',level=logging.DEBUG)
 
 def main():
 
-    file_name = '/local/data/databank/APS_13_BM/run2_soln1_2_.SPE'
-    hdf5_file_name = '/local/data/databank/dataExchange/microCT/run2_soln1_2.h5'
+    file_name = '/local/data/databank/Diamond/projections_13429.hdf'
+    hdf5_file_name = '/local/data/databank/dataExchange/microCT/Diamond.h5'
 
     verbose = True
 
@@ -31,15 +31,16 @@ def main():
     mydata = Convert()
     # Create minimal hdf5 file
     if verbose: print "Reading data ... "
-    mydata.multiple_stack(file_name,
+    mydata.nexus(file_name,
                         hdf5_file_name = hdf5_file_name,
-                        projections_start=2,
-                        projections_end=7,
-                        projections_step=2,
-                        white_start=1,
-                        white_end=8,
-                        white_step=2,
-                        sample_name = 'Stripe_Solder_Sample_Tip1'
+                        projections_start=20,
+                        projections_end=1820,
+                        projections_step=1,
+                        white_start=11,
+                        white_end=20,
+                        dark_start=1,
+                        dark_end=3,
+                        sample_name = 'unknown'
                    )
     if verbose: print "Done reading data ... "
     
@@ -50,19 +51,19 @@ def main():
 
     # Create HDF5 subgroup
     # /measurement/instrument
-    f.add_entry( DataExchangeEntry.instrument(name={'value': 'APS 13-BM'}) )
+    f.add_entry( DataExchangeEntry.instrument(name={'value': 'Diamond I12'}) )
 
     ### Create HDF5 subgroup
     ### /measurement/instrument/source
-    f.add_entry( DataExchangeEntry.source(name={'value': "Advanced Photon Source"},
+    f.add_entry( DataExchangeEntry.source(name={'value': "Diamond Light Source"},
                                         date_time={'value': "2013-11-30T19:17:04+0100"},
-                                        beamline={'value': "13-BM"},
+                                        beamline={'value': "JEEP I12"},
                                         )
     )
 
     # Create HDF5 subgroup
     # /measurement/experimenter
-    f.add_entry( DataExchangeEntry.experimenter(name={'value':"Mark Rivers"},
+    f.add_entry( DataExchangeEntry.experimenter(name={'value':"Michael Drakopoulos"},
                                                 role={'value':"Project PI"},
                     )
         )

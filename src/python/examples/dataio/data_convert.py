@@ -719,3 +719,137 @@ class Convert():
             if (hdf5_file_extension == False):
                 print "HDF file extension must be .h5 or .hdf"
 
+    def nexus(self, file_name,
+                  hdf5_file_name,
+                  projections_start=None,
+                  projections_end=None,
+                  projections_step=None,
+                  slices_start=None,
+                  slices_end=None,
+                  slices_step=None,
+                  pixels_start=None,
+                  pixels_end=None,
+                  pixels_step=None,
+                  white_start=None,
+                  white_end=None,
+                  dark_start=None,
+                  dark_end=None,
+                  array_name='entry/instrument/detector/data',
+                  sample_name=None,
+                  dtype='float32'):
+        """ Read Data Exchange HDF5 file.
+
+        Parameters
+        ----------
+        file_name : str
+            Input file.
+
+        projections_start, projections_end, projections_step : scalar, optional
+            Values of the start, end and step of the projections to
+            be used for slicing for the whole ndarray.
+
+        slices_start, slices_end, slices_step : scalar, optional
+            Values of the start, end and step of the slices to
+            be used for slicing for the whole ndarray.
+
+        pixels_start, pixels_end, pixels_step : scalar, optional
+            Values of the start, end and step of the pixels to
+            be used for slicing for the whole ndarray.
+
+        white_start, white_end : scalar, optional
+            Values of the start, end and step of the
+            slicing for the whole white field shots.
+
+        dark_start, dark_end : scalar, optional
+            Values of the start, end and step of the
+            slicing for the whole dark field shots.
+
+        dtype : str, optional
+            Desired output data type.
+        """
+        print "Reading NeXus file ..."
+        self.file_name = file_name
+
+        # Initialize f to null.
+        f = None
+
+        # Get the file_name in lower case.
+        lFn = file_name.lower()
+
+        # Split the string with the delimeter '.'
+        end = lFn.split('.')
+
+        # If the string has an extension.
+        if len(end) > 1:
+            # Check.
+            if end[len(end) - 1] == 'h5' or end[len(end) - 1] == 'hdf':
+                f = Hdf5()
+
+        # If f != None the call read on it.
+        if not f == None:
+            # Read data from exchange group.
+            self.data = f.read(file_name,
+                                array_name=array_name,
+                                x_start=projections_start,
+                                x_end=projections_end,
+                                x_step=projections_step,
+                                y_start=slices_start,
+                                y_end=slices_end,
+                                y_step=slices_step,
+                                z_start=pixels_start,
+                                z_end=pixels_end,
+                                z_step=pixels_step).astype(dtype)
+
+            # Read white field data from exchange group.
+            print white_start, white_end, slices_start, slices_end
+            self.white = f.read(file_name,
+                                array_name=array_name,
+                                x_start=white_start,
+                                x_end=white_end,
+                                y_start=slices_start,
+                                y_end=slices_end,
+                                y_step=slices_step,
+                                z_start=pixels_start,
+                                z_end=pixels_end,
+                                z_step=pixels_step).astype(dtype)
+
+            # Read dark field data from exchange group.
+            self.dark = f.read(file_name,
+                                array_name=array_name,
+                                x_start=dark_start,
+                                x_end=dark_end,
+                                y_start=slices_start,
+                                y_end=slices_end,
+                                y_step=slices_step,
+                                z_start=pixels_start,
+                                z_end=pixels_end,
+                                z_step=pixels_step).astype(dtype)
+
+            # Assign the rotation center.
+            self.center = self.data.shape[2] / 2
+
+            # Write HDF5 file.
+            # Open DataExchange file
+            f = DataExchangeFile(hdf5_file_name, mode='w') 
+
+            logger.info("Writing the HDF5 file")
+            # Create core HDF5 dataset in exchange group for projections_theta_range
+            # deep stack of x,y images /exchange/data
+            f.add_entry( DataExchangeEntry.data(data={'value': self.data, 'units':'counts', 'description': 'transmission', 'axes':'theta:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
+            f.add_entry( DataExchangeEntry.data(theta={'value': self.theta, 'units':'degrees'}))
+            f.add_entry( DataExchangeEntry.data(data_dark={'value': self.dark, 'units':'counts', 'axes':'theta_dark:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
+            f.add_entry( DataExchangeEntry.data(data_white={'value': self.white, 'units':'counts', 'axes':'theta_white:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
+            f.add_entry( DataExchangeEntry.data(title={'value': 'tomography_raw_projections'}))
+            logger.info("Sample name = %s", sample_name)
+            if (sample_name == None):
+                sample_name = end[0]
+                f.add_entry( DataExchangeEntry.sample( name={'value':sample_name}, description={'value':'Sample name was assigned by the HDF5 converter and based on the HDF5 fine name'}))
+                logger.info("Assigned default file name: %s", end[0])
+            else:
+                f.add_entry( DataExchangeEntry.sample( name={'value':sample_name}, description={'value':'Sample name was read from the user log file'}))
+                logger.info("Assigned file name from user log")                    
+            
+            f.close()
+
+        else:
+            print 'Unsupported file.'
