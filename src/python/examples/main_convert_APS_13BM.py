@@ -39,7 +39,8 @@ def main():
 ##                        white_start=1,
 ##                        white_end=2,
 ##                        white_step=2,
-##                        sample_name = 'Stripe_Solder_Sample_Tip1'
+##                        sample_name = 'Stripe_Solder_Sample_Tip1',
+##                        verbose=True
 ##                   )
 
     mydata.multiple_stack(file_name,
