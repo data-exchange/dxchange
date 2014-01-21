@@ -6,6 +6,9 @@ import h5py
 from dataio.file_types import Tiff, Hdf4, Hdf5, Txrm, Xrm, Spe
 from data_exchange import DataExchangeFile, DataExchangeEntry
 import dataio.data_spe as spe
+import logging
+logger = logging.getLogger(__name__)
+
 
 class Convert():
     def __init__(self, data=None, white=None, dark=None,
@@ -537,7 +540,8 @@ class Convert():
 
         .. See also:: http://docs.scipy.org/doc/numpy/user/basics.types.html
         """
-        
+
+        logger.info("Call to multiple_stack")
         # Initialize f to null.
         hdf5_file_extension = False
 
@@ -614,9 +618,9 @@ class Convert():
                         break
                 if os.path.isfile(fileName):
                     spe_data = spe.PrincetonSPEFile(fileName)
-                    if verbose: print spe_data
+                    logger.info(spe_data)
 
-                    if verbose: print 'Reading projections file: ' + os.path.realpath(fileName)
+                    logger.info('Reading projections file: %s', os.path.realpath(fileName))
                     if verbose: print 'data type: ', data_type
                     if (data_type is 'spe'):
                         f = Spe()
