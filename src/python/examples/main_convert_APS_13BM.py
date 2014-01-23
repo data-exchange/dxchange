@@ -25,8 +25,8 @@ def main():
 
     verbose = True
 
-    print "Input files base name: ", file_name
-    print "Output data exchange file name: ", hdf5_file_name
+    if verbose: print "Input files base name: ", file_name
+    if verbose: print "Output data exchange file name: ", hdf5_file_name
 
     mydata = Convert()
     # Create minimal hdf5 file
@@ -68,7 +68,7 @@ def main():
         )
 
     f.close()
-    print "Done creating data exchange file: ", hdf5_file_name
+    if verbose: print "Done creating data exchange file: ", hdf5_file_name
 
 if __name__ == "__main__":
     main()

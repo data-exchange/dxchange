@@ -21,7 +21,7 @@ logging.basicConfig(filename='convert_Diamond_I12.log',level=logging.DEBUG)
 def main():
 
     file_name = '/local/data/databank/Diamond/projections_13429.hdf'
-    hdf5_file_name = '/local/data/databank/dataExchange/microCT/Diamond.h5'
+    hdf5_file_name = '/local/data/databank/dataExchange/microCT/Diamond_2bin.h5'
 
     verbose = True
 
@@ -35,7 +35,7 @@ def main():
                         hdf5_file_name = hdf5_file_name,
                         projections_start=20,
                         projections_end=1820,
-                        projections_step=1,
+                        projections_step=2,
                         white_start=11,
                         white_end=20,
                         dark_start=1,

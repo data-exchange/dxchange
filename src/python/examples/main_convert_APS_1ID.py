@@ -8,7 +8,7 @@
 
 
 """ 
-from dataio.data_exchange import DataExchangeFile, DataExchangeEntry
+from data_exchange import DataExchangeFile, DataExchangeEntry
 from dataio.data_convert import Convert
 
 import re
@@ -99,7 +99,7 @@ mydata.series_of_images(file_name,
                  white_end = white_end,
                  dark_start = dark_start,
                  dark_end = dark_end,
-                 digits = 6,
+                 projections_digits = 6,
                  verbose = False
                  )
 
