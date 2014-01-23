@@ -38,7 +38,9 @@ class Convert():
                 dark_start=0,
                 dark_end=0,
                 dark_step=1,
-                digits=4,
+                projections_digits=4,
+                white_digits=-1,
+                dark_digits=-1,
                 zeros=True,
                 dtype='uint16',
                 data_type='tiff',
@@ -82,12 +84,12 @@ class Convert():
         dark_start, dark_end : scalar, optional
             start and end index for the dark field Tiff files to load. Use step define a stride.
 
-        digits : scalar, optional
-            Number of digits used for file indexing.
+        projections_digits : scalar, optional
+            Number of projections_digits used for file indexing.
             For example if 4: test_XXXX.hdf
 
         zeros : bool, optional
-            If ``True`` assumes all indexing uses four digits
+            If ``True`` assumes all indexing uses four projections_digits
             (0001, 0002, ..., 9999). If ``False`` omits zeros in
             indexing (1, 2, ..., 9999)
 
@@ -143,6 +145,14 @@ class Convert():
             logger.info("File Name White = %s", white_file_name)
             logger.info("File Name Dark = %s", dark_file_name)
 
+            # Set default digits.
+            if white_digits == -1:
+                    white_digits = projection_digits
+                    logger.info("White digits = %s", white_digits)
+            if dark_digits == -1:
+                    dark_digits = projections_digits
+                    logger.info("Dark digits= %s", dark_digits)
+
             if (data_type is 'hdf4'):
                 if file_name.endswith('h4') or \
                    file_name.endswith('hdf'):
@@ -169,24 +179,40 @@ class Convert():
                    dark_file_name.endswith('tiff'):
                     dataFileDark = dark_file_name.split('.')[-2]
                     dataExtensionDark = dark_file_name.split('.')[-1]
+            
+            projections_file_index = ["" for x in range(projections_digits)]
 
-            fileIndex = ["" for x in range(digits)]
-
-            for m in range(digits):
+            for m in range(projections_digits):
                 if zeros is True:
-                   fileIndex[m] = '0' * (digits - m - 1)
+                   projections_file_index[m] = '0' * (projections_digits - m - 1)
 
                 elif zeros is False:
-                   fileIndex[m] = ''
+                   projections_file_index[m] = ''
+
+            white_file_index = ["" for x in range(white_digits)]
+            for m in range(white_digits):
+                if zeros is True:
+                   white_file_index[m] = '0' * (white_digits - m - 1)
+
+                elif zeros is False:
+                   white_file_index[m] = ''
+
+            dark_file_index = ["" for x in range(dark_digits)]
+            for m in range(dark_digits):
+                if zeros is True:
+                   dark_file_index[m] = '0' * (dark_digits - m - 1)
+
+                elif zeros is False:
+                   dark_file_index[m] = ''
                    
             # Reading projections.
             ind = range(projections_start, projections_end)
             logger.info("projections: Start = %d, End = %d, Step = %d", projections_start, projections_end, projections_step)
             for m in range(len(ind)):
-                for n in range(digits):
+                for n in range(projections_digits):
                     logger.info("n = %d, ind[m] %d < %d", n, ind[m], np.power(10, n + 1))
                     if ind[m] < np.power(10, n + 1):
-                        fileName = dataFile + fileIndex[n] + str(ind[m]) + '.' + dataExtension
+                        fileName = dataFile + projections_file_index[n] + str(ind[m]) + '.' + dataExtension
                         logger.info("Generating file names: %s", fileName)
                         break
 
@@ -223,10 +249,10 @@ class Convert():
             ind = range(white_start, white_end, white_step)
             logger.info("white: Start = %d, End = %d, Step = %d", white_start, white_end, white_step)
             for m in range(len(ind)):
-                for n in range(digits):
+                for n in range(white_digits):
                     logger.info("n = %d, ind[m] %d < %d", n, ind[m], np.power(10, n + 1))
                     if ind[m] < np.power(10, n + 1):
-                        fileName = dataFileWhite + fileIndex[n] + str(ind[m]) + '.' + dataExtension
+                        fileName = dataFileWhite + white_file_index[n] + str(ind[m]) + '.' + dataExtension
                         logger.info(fileName)
                         break
 
@@ -263,9 +289,9 @@ class Convert():
             ind = range(dark_start, dark_end, dark_step)
             logger.info("dark: Start = %d, End = %d, Step = %d", dark_start, dark_end, dark_step)
             for m in range(len(ind)):
-                for n in range(digits):
+                for n in range(dark_digits):
                     if ind[m] < np.power(10, n + 1):
-                        fileName = dataFileDark + fileIndex[n] + str(ind[m]) + '.' + dataExtension
+                        fileName = dataFileDark + dark_file_index[n] + str(ind[m]) + '.' + dataExtension
                         logger.info(fileName)
                         break
 
@@ -469,7 +495,9 @@ class Convert():
                 dark_start=0,
                 dark_end=0,
                 dark_step=1,
-                digits=4,
+                projections_digits=4,
+                white_digits=-1,
+                dark_digits=-1,
                 zeros=False,
                 data_type='spe',
                 sample_name=None,
@@ -506,12 +534,12 @@ class Convert():
             start and end index for the dark field Tiff files to load. 
             dark_step defines the stride.
 
-        digits : scalar, optional
-            Number of digits used for file indexing.
+        projections_digits : scalar, optional
+            Number of projections_digits used for file indexing.
             For example if 4: test_XXXX.hdf
 
         zeros : bool, optional
-            If ``True`` assumes all indexing uses four digits
+            If ``True`` assumes all indexing uses four projections_digits
             (0001, 0002, ..., 9999). If ``False`` omits zeros in
             indexing (1, 2, ..., 9999)
 
@@ -567,6 +595,14 @@ class Convert():
             logger.info("File Name White = %s", white_file_name)
             logger.info("File Name Dark = %s", dark_file_name)
 
+            # Set default digits.
+            if white_digits == -1:
+                    white_digits = projection_digits
+                    logger.info("White digits = %s", white_digits)
+            if dark_digits == -1:
+                    dark_digits = projections_digits
+                    logger.info("Dark digits= %s", dark_digits)
+
             if (data_type is 'spe'):
                 if file_name.endswith('SPE') or \
                    file_name.endswith('spe'):
@@ -581,24 +617,39 @@ class Convert():
                     dataFileDark = dark_file_name.split('.')[-2]
                     dataExtensionDark = dark_file_name.split('.')[-1]
 
-            fileIndex = ["" for x in range(digits)]
-
-            for m in range(digits):
+            projections_file_index = ["" for x in range(projections_digits)]
+            for m in range(projections_digits):
                 if zeros is True:
-                   fileIndex[m] = '0' * (digits - m - 1)
+                   projections_file_index[m] = '0' * (projections_digits - m - 1)
 
                 elif zeros is False:
-                   fileIndex[m] = ''
+                   projections_file_index[m] = ''
+
+            white_file_index = ["" for x in range(white_digits)]
+            for m in range(white_digits):
+                if zeros is True:
+                   white_file_index[m] = '0' * (white_digits - m - 1)
+
+                elif zeros is False:
+                   white_file_index[m] = ''
+
+            dark_file_index = ["" for x in range(dark_digits)]
+            for m in range(dark_digits):
+                if zeros is True:
+                   dark_file_index[m] = '0' * (dark_digits - m - 1)
+
+                elif zeros is False:
+                   dark_file_index[m] = ''
 
             # Reading projections.
             fileName = ''
             ind = range(projections_start, projections_end, projections_step)
             logger.info("projections: Start = %d, End = %d, Step = %d", projections_start, projections_end, projections_step)
             for m in range(len(ind)):
-                for n in range(digits):
+                for n in range(projections_digits):
                     logger.info("n = %d, ind[m] %d < %d", n, ind[m], np.power(10, n + 1))
                     if ind[m] < np.power(10, n + 1):
-                        fileName = dataFile + fileIndex[n] + str(ind[m]) + '.' + dataExtension
+                        fileName = dataFile + projections_file_index[n] + str(ind[m]) + '.' + dataExtension
                         logger.info("Generating file names: %s", fileName)
                         break
                 if os.path.isfile(fileName):
@@ -627,9 +678,9 @@ class Convert():
             ind = range(white_start, white_end, white_step)
             logger.info("white: Start = %d, End = %d, Step = %d", white_start, white_end, white_step)
             for m in range(len(ind)):
-                for n in range(digits):
+                for n in range(white_digits):
                     if ind[m] < np.power(10, n + 1):
-                        fileName = dataFile + fileIndex[n] + str(ind[m]) + '.' + dataExtension
+                        fileName = dataFile + white_file_index[n] + str(ind[m]) + '.' + dataExtension
                         logger.info("Generating file names: %s", fileName)
                         break
                 if os.path.isfile(fileName):
@@ -661,10 +712,10 @@ class Convert():
             ind = range(dark_start, dark_end, dark_step)
             logger.info("dark: Start = %d, End = %d, Step = %d", dark_start, dark_end, dark_step)
             for m in range(len(ind)):
-                for n in range(digits):
+                for n in range(dark_digits):
                     logger.info("n = %d, ind[m] %d < %d", n, ind[m], np.power(10, n + 1))
                     if ind[m] < np.power(10, n + 1):
-                        fileName = dataFile + fileIndex[n] + str(ind[m]) + '.' + dataExtension
+                        fileName = dataFile + dark_file_index[n] + str(ind[m]) + '.' + dataExtension
                         logger.info("Generating file names: %s", fileName)
                         break
                 if os.path.isfile(fileName):
