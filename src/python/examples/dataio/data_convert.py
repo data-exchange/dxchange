@@ -147,7 +147,7 @@ class Convert():
 
             # Set default digits.
             if white_digits == -1:
-                    white_digits = projection_digits
+                    white_digits = projections_digits
                     logger.info("White digits = %s", white_digits)
             if dark_digits == -1:
                     dark_digits = projections_digits
@@ -229,6 +229,7 @@ class Convert():
                                          )
                     else:
                         f = Tiff()
+                        print fileName
                         tmpdata = f.read(fileName,
                                             x_start=slices_start,
                                             x_end=slices_end,
@@ -597,7 +598,7 @@ class Convert():
 
             # Set default digits.
             if white_digits == -1:
-                    white_digits = projection_digits
+                    white_digits = projections_digits
                     logger.info("White digits = %s", white_digits)
             if dark_digits == -1:
                     dark_digits = projections_digits
