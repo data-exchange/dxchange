@@ -229,7 +229,6 @@ class Convert():
                                          )
                     else:
                         f = Tiff()
-                        print fileName
                         tmpdata = f.read(fileName,
                                             x_start=slices_start,
                                             x_end=slices_end,
