@@ -22,7 +22,7 @@ def main():
     file_name = '//local/data/esrf/scan.edf'
     dark_file_name = '/local/data/esrf/dark.edf'
     white_file_name = '/local/data/esrf/flat.edf'
-    hdf5_file_name = '/local/data/esrf_XX.h5'
+    hdf5_file_name = '/local/data/esrf_test.h5'
     sample_name = 'esrf'
 
     verbose = True
@@ -59,7 +59,7 @@ def main():
     # Create HDF5 subgroup
     # /measurement/instrument/source
     f.add_entry( DataExchangeEntry.source(name={'value': 'ESRF'},
-                                        date_time={'value': "2011-25-05T19:42:13+0100"},
+                                        date_time={'value': "2014-12-05T19:42:13+0100"},
                                         beamline={'value': "ID-19"},
                                         )
     )
