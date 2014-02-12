@@ -3,7 +3,7 @@
 import numpy as np
 import os
 import h5py
-from dataio.file_types import Tiff, Hdf4, Hdf5, Txrm, Xrm, Spe
+from dataio.file_types import Tiff, Hdf4, Hdf5, Txrm, Xrm, Spe, Esrf
 from data_exchange import DataExchangeFile, DataExchangeEntry
 import dataio.data_spe as spe
 import logging
@@ -904,3 +904,142 @@ class Convert():
 
         else:
             print 'Unsupported file.'
+
+    def stack(self, file_name,
+                hdf5_file_name,
+                projections_data_type='txrm',
+                white_file_name='',
+                white_data_type='xrm',
+                dark_file_name='',
+                dark_data_type='xrm',
+                sample_name=None,
+                verbose=True):
+        """Read a stack xradia files. This consists of up to 3 files:
+            txrm: one mandatory file, containing the projections
+            xrm: two optional files contating white and dark images
+
+        Parameters
+        ----------
+        file_name : str
+            Name of the txrm file containing the projections.
+            
+        hdf5_file_name : str
+            HDF5/data exchange file name
+
+        white_file_name, dark_file_name : str, optional
+            Name of the xrm fileS containing the white and dark images
+
+        projection_data_type, white_data_type, dark_data_type : str, optional
+
+        Returns
+        -------
+        inputData : list of hdf files contating projections, white and dark images
+
+        Output : saves the data as HDF5 in hdf5_file_name
+
+        .. See also:: http://docs.scipy.org/doc/numpy/user/basics.types.html
+        """
+
+        # Initialize f to null.
+        hdf5_file_extension = False
+
+        # Get the file_name in lower case.
+        lFn = hdf5_file_name.lower()
+
+        # Split the string with the delimeter '.'
+        end = lFn.split('.')
+        logger.info(end)
+        # If the string has an extension.
+        if len(end) > 1:
+            # Check.
+            if end[len(end) - 1] == 'h5' or end[len(end) - 1] == 'hdf':
+                hdf5_file_extension = True
+                logger.info("HDF file extension is .h5 or .hdf")
+            else:
+                hdf5_file_extension = False
+                logger.info("HDF file extension must be .h5 or .hdf")
+                
+        # If the extension is correct and the file does not exists then convert
+        if (hdf5_file_extension and (os.path.isfile(hdf5_file_name) == False)):
+            # Create new folder.
+            dirPath = os.path.dirname(hdf5_file_name)
+            if not os.path.exists(dirPath):
+                os.makedirs(dirPath)
+
+            logger.info("File Name Projections = %s", file_name)
+            logger.info("File Name White = %s", white_file_name)
+            logger.info("File Name Dark = %s", dark_file_name)
+
+            if os.path.isfile(file_name):
+                logger.info("Reading projections file: %s", os.path.realpath(file_name))
+                logger.info("data type: %s", projections_data_type)
+                if (projections_data_type is 'txrm'):
+                    f = Txrm()
+                    tmpdata = f.read(file_name)
+                    self.data = tmpdata
+                if (projections_data_type is 'edf'):
+                    f = Esrf()
+                    tmpdata = f.read(file_name)
+                    self.data = tmpdata
+                
+            if os.path.isfile(white_file_name):
+                logger.info("Reading white file: %s", os.path.realpath(white_file_name))
+                logger.info("data type: %s", white_data_type)
+                if (white_data_type is 'xrm'):
+                    f = Xrm()
+                    tmpdata = f.read(white_file_name)
+                    #inputData[m, :, :] = tmpdata
+                    self.white = tmpdata
+                if (white_data_type is 'edf'):
+                    f = Esrf()
+                    tmpdata = f.read(white_file_name)
+                    #inputData[m, :, :] = tmpdata
+                    self.white = tmpdata
+            else:
+                nx, ny, nz = np.shape(self.data)
+                self.dark = np.ones((nx,ny,1))
+
+            if os.path.isfile(dark_file_name):
+                logger.info("Reading dark file: %s", os.path.realpath(dark_file_name))
+                logger.info("data type: %s", dark_data_type)
+                if (white_data_type is 'xrm'):
+                    f = Xrm()
+                    tmpdata = f.read(dark_file_name)
+                    #inputData[m, :, :] = tmpdata
+                    self.dark = tmpdata
+                if (white_data_type is 'edf'):
+                    f = Esrf()
+                    tmpdata = f.read(dark_file_name)
+                    #inputData[m, :, :] = tmpdata
+                    self.dark = tmpdata
+            else:
+                nx, ny, nz = np.shape(self.data)
+                self.dark = np.zeros((nx,ny,1))
+
+            # Write HDF5 file.
+            # Open DataExchange file
+            f = DataExchangeFile(hdf5_file_name, mode='w') 
+
+            logger.info("Writing the HDF5 file")
+            # Create core HDF5 dataset in exchange group for projections_theta_range
+            # deep stack of x,y images /exchange/data
+            f.add_entry( DataExchangeEntry.data(data={'value': self.data, 'units':'counts', 'description': 'transmission', 'axes':'theta:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
+            f.add_entry( DataExchangeEntry.data(theta={'value': self.theta, 'units':'degrees'}))
+            f.add_entry( DataExchangeEntry.data(data_dark={'value': self.dark, 'units':'counts', 'axes':'theta_dark:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
+            f.add_entry( DataExchangeEntry.data(data_white={'value': self.white, 'units':'counts', 'axes':'theta_white:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
+            f.add_entry( DataExchangeEntry.data(title={'value': 'tomography_raw_projections'}))
+            logger.info("Sample name = %s", sample_name)
+            if (sample_name == None):
+                sample_name = end[0]
+                f.add_entry( DataExchangeEntry.sample( name={'value':sample_name}, description={'value':'Sample name was assigned by the HDF5 converter and based on the HDF5 fine name'}))
+                logger.info("Assigned default file name: %s", end[0])
+            else:
+                f.add_entry( DataExchangeEntry.sample( name={'value':sample_name}, description={'value':'Sample name was read from the user log file'}))
+                logger.info("Assigned file name from user log")
+                                
+            f.close()
+        else:
+            if os.path.isfile(hdf5_file_name):
+                print 'HDF5 already exists. Nothing to do ...'
+            if (hdf5_file_extension == False):
+                print "HDF file extension must be .h5 or .hdf"

@@ -7,6 +7,7 @@ from scipy import misc
 import PIL.Image as Image
 from pyhdf import SD
 from file_interface import FileInterface
+from dataio.esrf.EdfFile import EdfFile
 
 import dataio.xradia.xradia_xrm as xradia
 import dataio.xradia.data_struct as dstruct
@@ -546,6 +547,96 @@ class Spe(FileInterface):
         dataset = array[x_start:x_end:x_step,
                           y_start:y_end:y_step,
                           z_start:z_end:z_step]
+        return dataset
+
+    def write(self):
+        pass
+
+class Esrf(FileInterface):
+    def read(self, file_name,
+             x_start=None,
+             x_end=None,
+             x_step=None,
+             y_start=None,
+             y_end=None,
+             y_step=None,
+             z_start=None,
+             z_end=None,
+             z_step=None
+             ):
+        """ Read 3-D tomographic data from a txrm file and the background/reference image for an xrm files.
+
+        Opens ``file_name`` and copy into an array its content;
+                this is can be a series/scan of tomographic projections (if file_name extension is ``txrm``) or
+                a series of backgroud/reference images if the file_name extension is ``xrm``
+        
+        Parameters
+        ----------
+        file_name : str
+            Input txrm or xrm file.
+            
+        x_start, x_end, x_step : scalar, optional
+            Values of the start, end and step of the
+            slicing for the whole array.
+
+        y_start, y_end, y_step : scalar, optional
+            Values of the start, end and step of the
+            slicing for the whole array.
+
+        z_start, z_end, z_step : scalar, optional
+            Values of the start, end and step of the
+            slicing for the whole array.
+
+        Returns
+        -------
+        out : array
+            Returns the data as a matrix.
+        """
+        verbose = True
+
+        # Read data from file.
+        if file_name.endswith('edf'):
+            if verbose: print "reading projections ... "
+            f = EdfFile(file_name, access='r')
+            dic = f.GetStaticHeader(0)
+            tmpdata = np.empty((f.NumImages, int(dic['Dim_2']), int(dic['Dim_1'])))
+#            tmpdata = np.empty((5, int(dic['Dim_2']), int(dic['Dim_1'])))
+
+            for (i, ar) in enumerate(tmpdata):
+                print i, ar
+                tmpdata[:] = f.GetData(i)
+
+
+            #reader.read_txrm(file_name,array)
+            num_z, num_y, num_x = np.shape(tmpdata)
+            if verbose:
+                print "done reading ", num_z, " projections images of (", num_x,"x", num_y, ") pixels"
+
+        # Select desired y from whole data.
+        # num_x, num_y, num_z = hdfdata.shape
+        if x_start is None:
+            x_start = 0
+        if x_end is None:
+            x_end = num_x
+        if x_step is None:
+            x_step = 1
+        if y_start is None:
+            y_start = 0
+        if y_end is None:
+            y_end = num_y
+        if y_step is None:
+            y_step = 1
+        if z_start is None:
+            z_start = 0
+        if z_end is None:
+            z_end = num_z
+        if z_step is None:
+            z_step = 1
+
+        # Construct dataset from desired y.
+        dataset = tmpdata[z_start:z_end:z_step,
+                          y_start:y_end:y_step,
+                          x_start:x_end:x_step]
         return dataset
 
     def write(self):
