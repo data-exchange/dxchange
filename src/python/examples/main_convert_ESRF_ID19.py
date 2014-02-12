@@ -22,7 +22,7 @@ def main():
     file_name = '//local/data/esrf/scan.edf'
     dark_file_name = '/local/data/esrf/dark.edf'
     white_file_name = '/local/data/esrf/flat.edf'
-    hdf5_file_name = '/local/data/esrf_1.h5'
+    hdf5_file_name = '/local/data/esrf_XX.h5'
     sample_name = 'esrf'
 
     verbose = True

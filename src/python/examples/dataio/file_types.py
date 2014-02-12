@@ -604,7 +604,7 @@ class Esrf(FileInterface):
 
             for (i, ar) in enumerate(tmpdata):
                 print i, ar
-                tmpdata[:] = f.GetData(i)
+                tmpdata[i::] = f.GetData(i)
 
 
             #reader.read_txrm(file_name,array)
