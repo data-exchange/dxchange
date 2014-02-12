@@ -564,7 +564,7 @@ class Esrf(FileInterface):
              z_end=None,
              z_step=None
              ):
-        """ Read 3-D tomographic data from a txrm file and the background/reference image for an xrm files.
+        """ Read 3-D tomographic data from a xradia (txrm) and ESRF (edf) file and the background/reference image for an xrm files.
 
         Opens ``file_name`` and copy into an array its content;
                 this is can be a series/scan of tomographic projections (if file_name extension is ``txrm``) or

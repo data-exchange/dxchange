@@ -40,6 +40,8 @@ def main():
                    white_file_name = white_file_name,
                    dark_file_name = dark_file_name,
                    projections_data_type = 'edf',
+                   white_data_type = 'edf',
+                   dark_data_type = 'edf',
                    sample_name = sample_name
                    )
     if verbose: print "Done reading data ... "
