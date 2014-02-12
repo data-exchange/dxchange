@@ -798,7 +798,7 @@ class Convert():
 
             ESRF ID-19 data:
                 edf: one mandatory file, containing the projections
-                edf: two optional files contating white and dark images
+                edf: two optional files containing white and dark images
 
         Parameters
         ----------
