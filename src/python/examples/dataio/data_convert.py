@@ -3,7 +3,7 @@
 import numpy as np
 import os
 import h5py
-from dataio.file_types import Tiff, Hdf4, Hdf5, Txrm, Xrm, Spe, Esrf
+from dataio.file_types import Tiff, Hdf4, Hdf5, Txrm, Xrm, Spe, Esrf, Tiffc
 from data_exchange import DataExchangeFile, DataExchangeEntry
 import dataio.data_spe as spe
 import logging
@@ -97,7 +97,10 @@ class Convert():
             Corresponding Numpy data type of the HDF-4 or TIFF file.
 
         data_type : str, optional
-            if 'hdf4q m    ' will convert HDF-4 files (old 2-BM), deafult is 'tiff'
+            supported options are:
+                    hdf4: HDF-4 files used on old detector at APS 2-BM
+                    compressed_tiff: tiff files used at elettra 
+                    tiff: uncompressed regualar tiff files
 
         Returns
         -------
@@ -227,6 +230,15 @@ class Convert():
                                             x_step=slices_step,
                                             array_name = 'data'
                                          )
+
+                    if (data_type is 'compressed_tiff'):
+                        f = Tiffc()
+                        tmpdata = f.read(fileName,
+                                            x_start=slices_start,
+                                            x_end=slices_end,
+                                            x_step=slices_step,
+                                            dtype=dtype
+                                         )
                     else:
                         f = Tiff()
                         tmpdata = f.read(fileName,
@@ -267,6 +279,14 @@ class Convert():
                                             x_step=slices_step,
                                             array_name = 'data'
                                          )
+                    if (data_type is 'compressed_tiff'):
+                        f = Tiffc()
+                        tmpdata = f.read(fileName,
+                                            x_start=slices_start,
+                                            x_end=slices_end,
+                                            x_step=slices_step,
+                                            dtype=dtype
+                                         )
                     else:
                         f = Tiff()
                         tmpdata = f.read(fileName,
@@ -305,6 +325,14 @@ class Convert():
                                             x_end=slices_end,
                                             x_step=slices_step,
                                             array_name = 'data'
+                                         )
+                    if (data_type is 'compressed_tiff'):
+                        f = Tiffc()
+                        tmpdata = f.read(fileName,
+                                            x_start=slices_start,
+                                            x_end=slices_end,
+                                            x_step=slices_step,
+                                            dtype=dtype
                                          )
                     else:
                         f = Tiff()
@@ -798,7 +826,7 @@ class Convert():
 
             ESRF ID-19 data:
                 edf: one mandatory file, containing the projections
-                edf: two optional files containing white and dark images
+                edf: two optional files contating white and dark images
 
         Parameters
         ----------

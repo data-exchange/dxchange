@@ -12,6 +12,7 @@ from dataio.esrf.EdfFile import EdfFile
 import dataio.xradia.xradia_xrm as xradia
 import dataio.xradia.data_struct as dstruct
 import dataio.data_spe as spe
+from dataio.elettra.tifffile import TiffFile
 
 
 class Hdf5(FileInterface):
@@ -234,6 +235,119 @@ class Tiff(FileInterface):
             y_end = num_y
         if y_step is None:
             y_step = 1
+        return out[x_start:x_end:x_step,
+                   y_start:y_end:y_step]
+
+    def write(self, dataset,
+              file_name,
+              x_start=None,
+              x_end=None,
+              digits=5):
+        """ Write reconstructed x to a stack
+        of 2-D 32-bit TIFF images.
+
+        Parameters
+        -----------
+        dataset : ndarray
+            Reconstructed values as a 3-D ndarray.
+
+        file_name : str
+            Generic name for all TIFF images. Index will
+            be added to the end of the name.
+
+        x_start : scalar, optional
+            First index of the data on first dimension
+            of the array.
+
+        x_end : scalar, optional
+            Last index of the data on first dimension
+            of the array.
+
+        digits : scalar, optional
+            Number of digits used for file indexing.
+            For example if 4: test_XXXX.tiff
+        """
+        # Create new folders.
+        dir_path = os.path.dirname(file_name)
+        if not os.path.exists(dir_path):
+            os.makedirs(dir_path)
+
+        # Remove TIFF extension.
+        if file_name.endswith('tiff'):
+            output_file = file_name.split(".")[-2]
+
+        # Select desired x from whole data.
+        num_x, num_y, num_z = dataset.shape
+        if x_start is None:
+            x_start = 0
+        if x_end is None:
+            x_end = x_start+num_x
+
+        # Write data.
+        file_index = ["" for x in range(digits)]
+        for m in range(digits):
+            file_index[m] = '0' * (digits - m - 1)
+        ind = range(x_start, x_end)
+        for m in range(len(ind)):
+            for n in range(digits):
+                if ind[m] < np.power(10, n + 1):
+                    file_name = output_file + file_index[n] + str(ind[m]) + '.tiff'
+                    break
+            img = misc.toimage(dataset[m, :, :])
+            #img = misc.toimage(dataset[m, :, :], mode='F')
+            img.save(file_name)
+
+class Tiffc(FileInterface):
+    def read(self, file_name, dtype='uint16',
+             x_start=None,
+             x_end=None,
+             x_step=None,
+             y_start=None,
+             y_end=None,
+             y_step=None):
+        """Read TIFF files.
+
+        Parameters
+        ----------
+        file_name : str
+            Name of the input TIFF file.
+
+        dtype : str, optional
+            Corresponding Numpy data type of the TIFF file.
+
+        x_start, x_end, x_step : scalar, optional
+            Values of the start, end and step of the
+            slicing for the whole ndarray.
+
+        y_start, y_end, y_step : scalar, optional
+            Values of the start, end and step of the
+            slicing for the whole ndarray.
+
+        Returns
+        -------
+        out : ndarray
+            Output 2-D matrix as numpy array.
+
+        .. See also:: http://docs.scipy.org/doc/numpy/user/basics.types.html
+        """
+        im = TiffFile(file_name)
+        out = im[0].asarray()
+
+        # Select desired x from whole data.
+        num_x, num_y = out.shape
+        if x_start is None:
+            x_start = 0
+        if x_end is None:
+            x_end = num_x
+        if x_step is None:
+            x_step = 1
+        if y_start is None:
+            y_start = 0
+        if y_end is None:
+            y_end = num_y
+        if y_step is None:
+            y_step = 1
+        im.close()
         return out[x_start:x_end:x_step,
                    y_start:y_end:y_step]
 
