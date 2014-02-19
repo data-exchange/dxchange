@@ -17,7 +17,6 @@ import logging
 logging.basicConfig(filename='convert_Elettra.log',level=logging.DEBUG)
 
 import PIL.Image as Image
-from dataio.elettra.tifffile import TiffFile
 
 def main():
 
@@ -60,49 +59,8 @@ def main():
                      sample_name = sample_name
                      )
 
-##    dark_file_name = '/Users/decarlo/data/elettra/Volcanic_rock/tomo/dark_.tif'
-##    white_file_name = '/Users/decarlo/data/elettra/Volcanic_rock/tomo/flat_.tif'
-##    hdf5_file_name = '/Users/decarlo/data/elettra/elettra.h5'
-##
-##    projections_start = 1
-##    projections_end = 6
-##    white_start = 1
-##    white_end = 6
-##    white_step = 1
-##    dark_start = 1
-##    dark_end = 6
-##    dark_step = 1
-##
     verbose = True
-##
-##    if verbose: print "Input projection base name: ", file_name
-##    if verbose: print "Input white base name: ", white_file_name
-##    if verbose: print "Input dark base name: ", dark_file_name
-##    if verbose: print "Output data exchange file name: ", hdf5_file_name
-##
-##    mydata = Convert()
-##    # Create minimal hdf5 file
-##    mydata.series_of_images(file_name,
-##                     hdf5_file_name,
-##                     projections_start,
-##                     projections_end,
-##                     white_file_name = white_file_name,
-##                     white_start = white_start,
-##                     white_end = white_end,
-##                     white_step = white_step,
-##                     dark_file_name = dark_file_name,
-##                     dark_start = dark_start,
-##                     dark_end = dark_end,
-##                     dark_step = dark_step,
-##                     sample_name = sample_name,
-##                     projections_digits = 4,
-##                     white_digits = 1,
-##                     dark_digits = 1,
-##                     projections_zeros = True,
-##                     verbose = False
-##                     )
-##    if verbose: print "Done reading data ... "
-##     
+
     # Add extra metadata if available
 
     # Open DataExchange file
