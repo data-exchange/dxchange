@@ -119,7 +119,7 @@ def main():
                      dark_step = dark_step,
                      sample_name = sample_name,
                      projections_digits = 5,
-                     zeros = True,
+                     projections_zeros = True,
                      verbose = False
                      )
 

@@ -102,7 +102,7 @@ def main():
                      dark_start = dark_start,
                      dark_end = dark_end,
                      dark_step = dark_step,
-                     zeros = False,
+                     projections_zeros = False,
                      verbose = False
                      )
 

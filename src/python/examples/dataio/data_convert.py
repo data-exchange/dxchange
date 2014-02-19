@@ -41,7 +41,9 @@ class Convert():
                 projections_digits=4,
                 white_digits=-1,
                 dark_digits=-1,
-                zeros=True,
+                projections_zeros=True,
+                white_zeros=True,
+                dark_zeros=True,
                 dtype='uint16',
                 data_type='tiff',
                 sample_name=None,
@@ -88,9 +90,9 @@ class Convert():
             Number of projections_digits used for file indexing.
             For example if 4: test_XXXX.hdf
 
-        zeros : bool, optional
+        projections_zeros, white_zeros, dark_zeros : bool, optional
             If ``True`` assumes all indexing uses four projections_digits
-            (0001, 0002, ..., 9999). If ``False`` omits zeros in
+            (0001, 0002, ..., 9999). If ``False`` omits projections_zeros in
             indexing (1, 2, ..., 9999)
 
         dtype : str, optional
@@ -186,26 +188,26 @@ class Convert():
             projections_file_index = ["" for x in range(projections_digits)]
 
             for m in range(projections_digits):
-                if zeros is True:
+                if projections_zeros is True:
                    projections_file_index[m] = '0' * (projections_digits - m - 1)
 
-                elif zeros is False:
+                elif projections_zeros is False:
                    projections_file_index[m] = ''
 
             white_file_index = ["" for x in range(white_digits)]
             for m in range(white_digits):
-                if zeros is True:
+                if white_zeros is True:
                    white_file_index[m] = '0' * (white_digits - m - 1)
 
-                elif zeros is False:
+                elif white_zeros is False:
                    white_file_index[m] = ''
 
             dark_file_index = ["" for x in range(dark_digits)]
             for m in range(dark_digits):
-                if zeros is True:
+                if dark_zeros is True:
                    dark_file_index[m] = '0' * (dark_digits - m - 1)
 
-                elif zeros is False:
+                elif dark_zeros is False:
                    dark_file_index[m] = ''
                    
             # Reading projections.
@@ -372,7 +374,7 @@ class Convert():
             logger.info("Sample name = %s", sample_name)
             if (sample_name == None):
                 sample_name = end[0]
-                f.add_entry( DataExchangeEntry.sample( name={'value':sample_name}, description={'value':'Sample name was assigned by the HDF5 converter and based on the HDF5 fine name'}))
+                f.add_entry( DataExchangeEntry.sample( name={'value':sample_name}, description={'value':'Sample name was assigned by the HDF5 converter and based on the HDF5 file name'}))
                 logger.info("Assigned default file name: %s", end[0])
             else:
                 f.add_entry( DataExchangeEntry.sample( name={'value':sample_name}, description={'value':'Sample name was read from the user log file'}))
@@ -401,7 +403,9 @@ class Convert():
                 projections_digits=4,
                 white_digits=-1,
                 dark_digits=-1,
-                zeros=False,
+                projections_zeros=False,
+                white_zeros=False,
+                dark_zeros=False,
                 data_type='spe',
                 sample_name=None,
                 verbose=False):
@@ -441,9 +445,9 @@ class Convert():
             Number of projections_digits used for file indexing.
             For example if 4: test_XXXX.hdf
 
-        zeros : bool, optional
+        projections_zeros, white_zero, dark_zeros : bool, optional
             If ``True`` assumes all indexing uses four projections_digits
-            (0001, 0002, ..., 9999). If ``False`` omits zeros in
+            (0001, 0002, ..., 9999). If ``False`` omits projections_zeros in
             indexing (1, 2, ..., 9999)
 
         data_type : str, optional
@@ -522,26 +526,26 @@ class Convert():
 
             projections_file_index = ["" for x in range(projections_digits)]
             for m in range(projections_digits):
-                if zeros is True:
+                if projections_zeros is True:
                    projections_file_index[m] = '0' * (projections_digits - m - 1)
 
-                elif zeros is False:
+                elif projections_zeros is False:
                    projections_file_index[m] = ''
 
             white_file_index = ["" for x in range(white_digits)]
             for m in range(white_digits):
-                if zeros is True:
+                if white_zeros is True:
                    white_file_index[m] = '0' * (white_digits - m - 1)
 
-                elif zeros is False:
+                elif white_zeros is False:
                    white_file_index[m] = ''
 
             dark_file_index = ["" for x in range(dark_digits)]
             for m in range(dark_digits):
-                if zeros is True:
+                if dark_zeros is True:
                    dark_file_index[m] = '0' * (dark_digits - m - 1)
 
-                elif zeros is False:
+                elif dark_zeros is False:
                    dark_file_index[m] = ''
 
             # Reading projections.
@@ -660,7 +664,7 @@ class Convert():
             logger.info("Sample name = %s", sample_name)
             if (sample_name == None):
                 sample_name = end[0]
-                f.add_entry( DataExchangeEntry.sample( name={'value':sample_name}, description={'value':'Sample name was assigned by the HDF5 converter and based on the HDF5 fine name'}))
+                f.add_entry( DataExchangeEntry.sample( name={'value':sample_name}, description={'value':'Sample name was assigned by the HDF5 converter and based on the HDF5 file name'}))
                 logger.info("Assigned default file name: %s", end[0])
             else:
                 f.add_entry( DataExchangeEntry.sample( name={'value':sample_name}, description={'value':'Sample name was read from the user log file'}))
@@ -797,7 +801,7 @@ class Convert():
             logger.info("Sample name = %s", sample_name)
             if (sample_name == None):
                 sample_name = end[0]
-                f.add_entry( DataExchangeEntry.sample( name={'value':sample_name}, description={'value':'Sample name was assigned by the HDF5 converter and based on the HDF5 fine name'}))
+                f.add_entry( DataExchangeEntry.sample( name={'value':sample_name}, description={'value':'Sample name was assigned by the HDF5 converter and based on the HDF5 file name'}))
                 logger.info("Assigned default file name: %s", end[0])
             else:
                 f.add_entry( DataExchangeEntry.sample( name={'value':sample_name}, description={'value':'Sample name was read from the user log file'}))
@@ -941,7 +945,7 @@ class Convert():
             logger.info("Sample name = %s", sample_name)
             if (sample_name == None):
                 sample_name = end[0]
-                f.add_entry( DataExchangeEntry.sample( name={'value':sample_name}, description={'value':'Sample name was assigned by the HDF5 converter and based on the HDF5 fine name'}))
+                f.add_entry( DataExchangeEntry.sample( name={'value':sample_name}, description={'value':'Sample name was assigned by the HDF5 converter and based on the HDF5 file name'}))
                 logger.info("Assigned default file name: %s", end[0])
             else:
                 f.add_entry( DataExchangeEntry.sample( name={'value':sample_name}, description={'value':'Sample name was read from the user log file'}))

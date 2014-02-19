@@ -58,7 +58,7 @@ def main():
                      projections_digits = 4,
                      #white_digits = 2,
                      #dark_digits = 2,
-                     zeros = True,
+                     projections_zeros = True,
                      verbose = False
                      )
     if verbose: print "Done reading data ... "
