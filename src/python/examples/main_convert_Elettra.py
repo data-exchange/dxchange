@@ -20,14 +20,14 @@ import PIL.Image as Image
 
 def main():
 
-    file_name = '/local/data/databank/elettra/Volcanic_rock/tomo/tomo_.tif'
-    dark_file_name = '/local/data/databank/elettra/Volcanic_rock/tomo/dark_.tif'
-    white_file_name = '/local/data/databank/elettra/Volcanic_rock/tomo/flat_.tif'
+    file_name = '/local/data/databank/elettra/Volcanic_rock/tomo_.tif'
+    dark_file_name = '/local/data/databank/elettra/Volcanic_rock/dark_.tif'
+    white_file_name = '/local/data/databank/elettra/Volcanic_rock/flat_.tif'
 
     hdf5_file_name = '/local/data/databank/elettra/Volcanic_rock/elettra_Volcanic_rock.h5'
 
     projections_start = 1
-    projections_end = 482
+    projections_end = 1441
     white_start = 1
     white_end = 10
     white_step = 1
