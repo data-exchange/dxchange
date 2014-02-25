@@ -29,7 +29,7 @@ def main():
     white_file_name = '/local/data/databank/ALS_2011/Hornby/raw/hornbyALSbak_.tif'
     log_file = '/local/data/databank/ALS_2011/Hornby/raw/hornbyALS.sct'
 
-    hdf5_file_name = '/local/data/databank/dataExchange/microCT/Hornby_ALS_2011_tmp.h5'
+    hdf5_file_name = '/local/data/databank/dataExchange/microCT/Hornby_ALS_2011_tmp2.h5'
 
     verbose = True
 
@@ -79,8 +79,8 @@ def main():
     projections_start = 0
     projections_end = int(Angles[0])
 
-    if verbose: print dark_start, dark_end
-    if verbose: print white_start, white_end
+    if verbose: print dark_start, dark_end, dark_step
+    if verbose: print white_start, white_end, white_step
     if verbose: print projections_start, projections_end
 
     ### if testing uncomment
