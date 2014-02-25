@@ -18,87 +18,15 @@ logging.basicConfig(filename='convert_APS_2BM.log',level=logging.DEBUG)
 
 def main():
 
-    ##file_name = '/local/data/databank/APS_2_BM/Sam18_hornby/raw/Hornby_19keV_10x_.hdf'
-    ##log_file = '/local/data/databank/APS_2_BM/Sam18_hornby/raw/Hornby.log'
-    ##
-    ##hdf5_file_name = '/local/data/databank/dataExchange/microCT/Hornby_APS_2011.h5'
-
     file_name = '/local/data/databank/APS_2_BM/Sam19_blakely/raw/Blakely_19keV_10x_.hdf'
-    log_file = '/local/data/databank/APS_2_BM/Sam19_blakely/raw/Blakely.log'
-
     hdf5_file_name = '/local/data/databank/dataExchange/microCT/Blakely_APS_2011.h5'
 
-    verbose = True
-
-    if verbose: print file_name
-    if verbose: print log_file
-    if verbose: print hdf5_file_name
-
-
-
-    #Read input SLS data
-    file = open(log_file, 'r')
-    if verbose: print '###############################'
-    for line in file:
-        if 'Number of darks' in line:
-            NumberOfDarks = re.findall(r'\d+', line)
-            if verbose: print 'Number of Darks', NumberOfDarks[0]
-        if 'Number of flats' in line:
-            NumberOfFlats = re.findall(r'\d+', line)
-            if verbose: print 'Number of Flats', NumberOfFlats[0]
-        if 'Number of projections' in line:
-            NumberOfProjections = re.findall(r'\d+', line)
-            if verbose: print 'Number of Projections', NumberOfProjections[0]
-        if 'Number of inter-flats' in line:
-            NumberOfInterFlats = re.findall(r'\d+', line)
-            if verbose: print 'Number of inter-flats', NumberOfInterFlats[0]
-        if 'Inner scan flag' in line:
-            InnerScanFlag = re.findall(r'\d+', line)
-            if verbose: print 'Inner scan flag', InnerScanFlag[0]
-        if 'Flat frequency' in line:
-            FlatFrequency = re.findall(r'\d+', line)
-            if verbose: print 'Flat frequency', FlatFrequency[0]
-        if 'Rot Y min' in line:
-            RotYmin = re.findall(r'\d+.\d+', line)
-            if verbose: print 'Rot Y min', RotYmin[0]
-        if 'Rot Y max' in line:
-            RotYmax = re.findall(r'\d+.\d+', line)
-            if verbose: print 'Rot Y max', RotYmax[0]
-        if 'Angular step' in line:
-            AngularStep = re.findall(r'\d+.\d+', line)
-            if verbose: print 'Angular step', AngularStep[0]
-    if verbose: print '###############################'
-    file.close()
-
-    dark_start = 1
-    dark_end = int(NumberOfDarks[0]) + 1
-    white_start = dark_end
-    white_end = white_start + int(NumberOfFlats[0])
-    projections_start = white_end
-    projections_end = projections_start + int(NumberOfProjections[0])
-
-    if verbose: print dark_start, dark_end
-    if verbose: print white_start, white_end
-    if verbose: print projections_start, projections_end
-
-    dark_start = 1504
-    dark_end = 1505
     white_start = 1
     white_end = 2
     projections_start = 2
     projections_end = 1503
-
-    ### if testing uncomment
-    ##dark_start = 1
-    ##dark_end = 3
-    ##white_start = 10
-    ##white_end = 12
-    ##projections_start = 20
-    ##projections_end = 23
-
-    if verbose: print dark_start, dark_end
-    if verbose: print white_start, white_end
-    if verbose: print projections_start, projections_end
+    dark_start = 1504
+    dark_end = 1505
 
     mydata = Convert()
     # Create minimal hdf5 file
@@ -112,11 +40,10 @@ def main():
                      dark_end = dark_end,
                      projections_digits = 5,
                      data_type = 'hdf4',
-                     #verbose = False
                  )
 
      
-    # Add extra metadata if available
+    # Add extra metadata if available / desired
 
     # Open DataExchange file
     f = DataExchangeFile(hdf5_file_name, mode='a') 

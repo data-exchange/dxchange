@@ -1,5 +1,5 @@
 #=======================================================================
-# Sample Python code to write add Data Exchange links to a Nexus file
+# Sample Python code to add Data Exchange links to a Nexus file
 #
 # Date: 2014-01-26
 # 
@@ -64,9 +64,9 @@ def main():
     ref_dataset_white = f.create_dataset("exchange/data_white", (1,), dtype=ref_dtype)
 
     # set the reference to the object
-    ref_dataset[0] = ref_data
-    ref_dataset_dark[0] = ref_data_dark
-    ref_dataset_white[0] = ref_data_white
+    ref_dataset[...] = ref_data
+    ref_dataset_dark[...] = ref_data_dark
+    ref_dataset_white[...] = ref_data_white
 
 ##    f["exchange"] = h5py.SoftLink('/entry/instrument/detector')
 
