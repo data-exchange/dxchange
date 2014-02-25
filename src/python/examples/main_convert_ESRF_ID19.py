@@ -9,8 +9,8 @@
 
 """ 
 from data_exchange import DataExchangeFile, DataExchangeEntry
-from dataio.data_convert import Convert
-from dataio.esrf.EdfFile import EdfFile
+from data_exchange.data_convert import Convert
+from data_exchange.esrf.EdfFile import EdfFile
 import numpy as np
 
 import re

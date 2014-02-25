@@ -9,7 +9,7 @@
 
 """ 
 from data_exchange import DataExchangeFile, DataExchangeEntry
-from dataio.data_convert import Convert
+from data_exchange.data_convert import Convert
 
 import re
 import logging
@@ -29,7 +29,7 @@ def main():
     white_file_name = '/local/data/databank/ALS_2011/Hornby/raw/hornbyALSbak_.tif'
     log_file = '/local/data/databank/ALS_2011/Hornby/raw/hornbyALS.sct'
 
-    hdf5_file_name = '/local/data/databank/dataExchange/microCT/Hornby_ALS_2011.h5'
+    hdf5_file_name = '/local/data/databank/dataExchange/microCT/Hornby_ALS_2011_tmp.h5'
 
     verbose = True
 

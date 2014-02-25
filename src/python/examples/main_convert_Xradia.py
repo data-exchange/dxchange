@@ -8,12 +8,12 @@
 
 
 """ 
-import dataio.xradia.xradia_xrm as xradia
-import dataio.xradia.data_stack_sim as dstack
-import dataio.xradia.data_struct as dstruct
+import data_exchange.xradia.xradia_xrm as xradia
+import data_exchange.xradia.data_stack_sim as dstack
+import data_exchange.xradia.data_struct as dstruct
 
 from data_exchange import DataExchangeFile, DataExchangeEntry
-from dataio.data_convert import Convert
+from data_exchange.data_convert import Convert
 
 import numpy as np
 import os

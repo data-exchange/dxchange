@@ -9,7 +9,7 @@
 
 """ 
 from data_exchange import DataExchangeFile, DataExchangeEntry
-from dataio.data_convert import Convert
+from data_exchange.data_convert import Convert
 
 import re
 import logging
