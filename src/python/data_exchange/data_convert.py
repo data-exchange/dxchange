@@ -5,7 +5,7 @@ import os
 import h5py
 from file_types import Tiff, Hdf4, Hdf5, Txrm, Xrm, Spe, Esrf, Tiffc
 from data_exchange import DataExchangeFile, DataExchangeEntry
-import data_spe as spe
+# import data_spe as spe
 import logging
 logger = logging.getLogger(__name__)
 
@@ -560,8 +560,8 @@ class Convert():
                         logger.info("Generating file names: %s", fileName)
                         break
                 if os.path.isfile(fileName):
-                    spe_data = spe.PrincetonSPEFile(fileName)
-                    logger.info(spe_data)
+                    # spe_data = spe.PrincetonSPEFile(fileName)
+                    # logger.info(spe_data)
 
                     logger.info("Reading projections file: %s", os.path.realpath(fileName))
                     logger.info("data type: %s", data_type)
@@ -591,8 +591,8 @@ class Convert():
                         logger.info("Generating file names: %s", fileName)
                         break
                 if os.path.isfile(fileName):
-                    spe_data = spe.PrincetonSPEFile(fileName)
-                    logger.info(spe_data)
+                    # spe_data = spe.PrincetonSPEFile(fileName)
+                    # logger.info(spe_data)
 
                     logger.info("Reading white file: %s", os.path.realpath(fileName))
                     logger.info("data type: %s", data_type)
@@ -626,8 +626,8 @@ class Convert():
                         logger.info("Generating file names: %s", fileName)
                         break
                 if os.path.isfile(fileName):
-                    spe_data = spe.PrincetonSPEFile(fileName)
-                    logger.info(spe_data)
+                    # spe_data = spe.PrincetonSPEFile(fileName)
+                    # logger.info(spe_data)
 
                     logger.info("Reading dark file: %s", os.path.realpath(fileName))
                     logger.info("data type: %s", data_type)

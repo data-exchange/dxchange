@@ -11,7 +11,7 @@ from esrf.EdfFile import EdfFile
 
 import xradia.xradia_xrm as xradia
 import xradia.data_struct as dstruct
-import data_spe as spe
+import aps_13bm.data_spe as spe
 from elettra.tifffile import TiffFile
 
 

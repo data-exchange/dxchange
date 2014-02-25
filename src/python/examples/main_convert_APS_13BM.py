@@ -8,7 +8,7 @@
 
 """ 
 from data_exchange import DataExchangeFile, DataExchangeEntry
-from dataio.data_convert import Convert
+from data_exchange.data_convert import Convert
 
 import numpy as np
 import os
@@ -21,7 +21,7 @@ logging.basicConfig(filename='convert_APS_13BM.log',level=logging.DEBUG)
 def main():
 
     file_name = '/local/data/databank/APS_13_BM/run2_soln1_2_.SPE'
-    hdf5_file_name = '/local/data/databank/dataExchange/microCT/run2_soln1_2.h5'
+    hdf5_file_name = '/local/data/databank/dataExchange/microCT/run2_soln1_2_ZZZ.h5'
 
     verbose = True
 
