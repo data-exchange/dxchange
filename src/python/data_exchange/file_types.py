@@ -7,12 +7,12 @@ from scipy import misc
 import PIL.Image as Image
 from pyhdf import SD
 from file_interface import FileInterface
-from dataio.esrf.EdfFile import EdfFile
+from esrf.EdfFile import EdfFile
 
-import dataio.xradia.xradia_xrm as xradia
-import dataio.xradia.data_struct as dstruct
-import dataio.data_spe as spe
-from dataio.elettra.tifffile import TiffFile
+import xradia.xradia_xrm as xradia
+import xradia.data_struct as dstruct
+import data_spe as spe
+from elettra.tifffile import TiffFile
 
 
 class Hdf5(FileInterface):

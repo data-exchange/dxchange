@@ -8,8 +8,8 @@
 
 
 """ 
-from data_exchange import DataExchangeFile, DataExchangeEntry
-from dataio.data_convert import Convert
+from data_exchange.data_exchange import DataExchangeFile, DataExchangeEntry
+from data_exchange.data_convert import Convert
 
 import re
 
@@ -24,10 +24,10 @@ def main():
     dark_file_name = '/local/data/databank/elettra/Volcanic_rock/dark_.tif'
     white_file_name = '/local/data/databank/elettra/Volcanic_rock/flat_.tif'
 
-    hdf5_file_name = '/local/data/databank/elettra/Volcanic_rock/elettra_Volcanic_rock.h5'
+    hdf5_file_name = '/local/data/databank/elettra/Volcanic_rock/elettra_Volcanic_rock_01.h5'
 
     projections_start = 1
-    projections_end = 1441
+    projections_end = 14 #41
     white_start = 1
     white_end = 10
     white_step = 1

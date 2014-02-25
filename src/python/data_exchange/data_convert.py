@@ -3,9 +3,9 @@
 import numpy as np
 import os
 import h5py
-from dataio.file_types import Tiff, Hdf4, Hdf5, Txrm, Xrm, Spe, Esrf, Tiffc
+from file_types import Tiff, Hdf4, Hdf5, Txrm, Xrm, Spe, Esrf, Tiffc
 from data_exchange import DataExchangeFile, DataExchangeEntry
-import dataio.data_spe as spe
+import data_spe as spe
 import logging
 logger = logging.getLogger(__name__)
 
