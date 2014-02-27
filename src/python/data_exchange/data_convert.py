@@ -306,6 +306,9 @@ class Convert():
                     inputData[m, :, :] = tmpdata
             if len(ind) > 0:
                 self.white = inputData
+            else:
+                nx, ny, nz = np.shape(self.data)
+                self.white = np.ones((nx,ny,1))
                 
             # Reading dark fields.
             ind = range(dark_start, dark_end, dark_step)
@@ -353,6 +356,9 @@ class Convert():
                     inputData[m, :, :] = tmpdata
             if len(ind) > 0:
                 self.dark = inputData
+            else:
+                nx, ny, nz = np.shape(self.data)
+                self.dark = np.zeros((nx,ny,1))
                 
             # Fabricate theta values.
             z = np.arange(projections_end - projections_start);
@@ -911,17 +917,17 @@ class Convert():
                     self.white = tmpdata
             else:
                 nx, ny, nz = np.shape(self.data)
-                self.dark = np.ones((nx,ny,1))
+                self.white = np.ones((nx,ny,1))
 
             if os.path.isfile(dark_file_name):
                 logger.info("Reading dark file: %s", os.path.realpath(dark_file_name))
                 logger.info("data type: %s", dark_data_type)
-                if (white_data_type is 'xrm'):
+                if (dark_data_type is 'xrm'):
                     f = Xrm()
                     tmpdata = f.read(dark_file_name)
                     #inputData[m, :, :] = tmpdata
                     self.dark = tmpdata
-                if (white_data_type is 'edf'):
+                if (dark_data_type is 'edf'):
                     f = Esrf()
                     tmpdata = f.read(dark_file_name)
                     #inputData[m, :, :] = tmpdata
