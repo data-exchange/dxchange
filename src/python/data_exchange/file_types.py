@@ -160,6 +160,8 @@ class Hdf4(FileInterface):
         hdfdata = sds.get()
         hdfdata = hdfdata.reshape(hdfdata.shape[0],
                                   hdfdata.shape[1])
+        sds.endaccess()
+        f.end()
 
         # Select desired x from whole data.
         num_x, num_y = hdfdata.shape
@@ -177,9 +179,9 @@ class Hdf4(FileInterface):
             y_step = 1
 
         # Construct dataset from desired x.
-        dataset = hdfdata[x_start:x_end:x_step,
-                          y_start:y_end:y_step]
-        return dataset
+        dataset = hdfdata[y_start:y_end:y_step,
+                          x_start:x_end:x_step]
+        return dataset.astype(float, copy = False)
 
     def write(self):
         pass
