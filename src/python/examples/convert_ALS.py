@@ -17,13 +17,6 @@ logging.basicConfig(filename='convert_ALS.log',level=logging.DEBUG)
 
 def main():
 
-    ##file_name = '/local/data/databank/ALS_2011/Blakely/blakely_raw/blakelyALS_.tif'
-    ##dark_file_name = '/local/data/databank/ALS_2011/Blakely/blakely_raw/blakelyALSdrk_.tif'
-    ##white_file_name = '/local/data/databank/ALS_2011/Blakely/blakely_raw/blakelyALSbak_.tif'
-    ##log_file = '/local/data/databank/ALS_2011/Blakely/blakely_raw/blakelyALS.sct'
-    ##
-    ##hdf5_file_name = '/local/data/databank/dataExchange/microCT/Blakely_ALS_2011.h5'
-
     file_name = '/local/data/databank/ALS_2011/Hornby/raw/hornbyALS_.tif'
     dark_file_name = '/local/data/databank/ALS_2011/Hornby/raw/hornbyALSdrk_.tif'
     white_file_name = '/local/data/databank/ALS_2011/Hornby/raw/hornbyALSbak_.tif'
@@ -31,15 +24,7 @@ def main():
 
     hdf5_file_name = '/local/data/databank/dataExchange/microCT/Hornby_ALS_2011_tmp2.h5'
 
-    verbose = True
-
-    if verbose: print file_name
-    if verbose: print log_file
-    if verbose: print hdf5_file_name
-
-
-
-    #Read input ALS data
+    # Read ALS log file data
     file = open(log_file, 'r')
     if verbose: print '###############################'
     for line in file:
@@ -67,7 +52,6 @@ def main():
             WhiteStep = re.findall(r'\s+\d+', line)
             if verbose: print 'White Step', WhiteStep[0]
 
-    if verbose: print '###############################'
     file.close()
 
     dark_start = 0
@@ -78,15 +62,6 @@ def main():
     white_step = int(WhiteStep[0])
     projections_start = 0
     projections_end = int(Angles[0])
-
-    if verbose: print dark_start, dark_end, dark_step
-    if verbose: print white_start, white_end, white_step
-    if verbose: print projections_start, projections_end
-
-    ### if testing uncomment
-    ##dark_end = 2
-    ##white_end = 361
-    ##projections_end = 2
 
     mydata = Convert()
     # Create minimal hdf5 file
@@ -107,7 +82,7 @@ def main():
                      )
 
      
-    # Add extra metadata if available
+    # Add extra metadata if available / desired
 
     # Open DataExchange file
     f = DataExchangeFile(hdf5_file_name, mode='a') 
@@ -170,7 +145,7 @@ def main():
         )
 
     f.close()
-    if verbose: print "Done converting ", file_name
+    print "Done creating data exchange file: ", hdf5_file_name
 
 if __name__ == "__main__":
     main()

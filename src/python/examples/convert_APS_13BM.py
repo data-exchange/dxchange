@@ -23,27 +23,28 @@ def main():
     file_name = '/local/data/databank/APS_13_BM/run2_soln1_2_.SPE'
     hdf5_file_name = '/local/data/databank/dataExchange/microCT/run2_soln1_2_ZZZ.h5'
 
-    verbose = True
-
-    if verbose: print "Input files base name: ", file_name
-    if verbose: print "Output data exchange file name: ", hdf5_file_name
+    white_start = 1
+    white_end = 8
+    white_step = 2
+    projections_start = 2
+    projections_end = 7
+    projections_step = 2
 
     mydata = Convert()
     # Create minimal hdf5 file
     if verbose: print "Reading data ... "
     mydata.multiple_stack(file_name,
                         hdf5_file_name = hdf5_file_name,
-                        projections_start=2,
-                        projections_end=7,
-                        projections_step=2,
-                        white_start=1,
-                        white_end=8,
-                        white_step=2,
+                        projections_start = projections_start,
+                        projections_end = projections_end,
+                        projections_step = projections_step,
+                        white_start = white_start,
+                        white_end = white_end,
+                        white_step = white_step,
                         sample_name = 'Stripe_Solder_Sample_Tip1'
                    )
-    if verbose: print "Done reading data ... "
     
-    # Add extra metadata if available
+    # Add extra metadata if available / desired
 
     # Open DataExchange file
     f = DataExchangeFile(hdf5_file_name, mode='a') 
@@ -68,7 +69,7 @@ def main():
         )
 
     f.close()
-    if verbose: print "Done creating data exchange file: ", hdf5_file_name
+    print "Done creating data exchange file: ", hdf5_file_name
 
 if __name__ == "__main__":
     main()

@@ -51,7 +51,7 @@ def main():
                      dark_start = dark_start,
                      dark_end = dark_end,
                      dark_step = dark_step,
-                     data_type =  'compressed_tiff',
+                     data_type =  'compressed_tiff', # comment this line if regular tiff
                      projections_zeros = True,
                      white_zeros = False,
                      dark_zeros = True,
@@ -59,9 +59,7 @@ def main():
                      sample_name = sample_name
                      )
 
-    verbose = True
-
-    # Add extra metadata if available
+    # Add extra metadata if available / desired
 
     # Open DataExchange file
     f = DataExchangeFile(hdf5_file_name, mode='a') 
@@ -90,7 +88,7 @@ def main():
         )
 
     f.close()
-    if verbose: print "Done creating data exchange file: ", hdf5_file_name
+    print "Done creating data exchange file: ", hdf5_file_name
 
 if __name__ == "__main__":
     main()

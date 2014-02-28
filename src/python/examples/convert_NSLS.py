@@ -24,20 +24,11 @@ def main():
 
     hdf5_file_name = '/local/data/databank/dataExchange/microCT/NSLS_06.h5'
 
-    verbose = True
-
-    if verbose: print file_name
-    if verbose: print hdf5_file_name
-
     white_start = 0
     white_end = 1200
     white_step = 30
     projections_start = 0
     projections_end = 1200
-
-#    if verbose: print dark_start, dark_end, dark_step
-    if verbose: print white_start, white_end, white_step
-    if verbose: print projections_start, projections_end
 
     mydata = Convert()
     # Create minimal hdf5 file
@@ -57,6 +48,7 @@ def main():
                      verbose = False
                      )
 
+    print "Done creating data exchange file: ", hdf5_file_name
      
 
 if __name__ == "__main__":

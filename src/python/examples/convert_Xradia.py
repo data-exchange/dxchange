@@ -32,13 +32,6 @@ def main():
     hdf5_file_name = '/local/data/databank/dataExchange/TXM/20130731_004_Stripe_Solder_Sample_Tip1_nx.h5'
     log_file = '/local/data/databank/dataExchange/TXM/20130731_004_Stripe_Solder_Sample_Tip1.log'
 
-    verbose = True
-
-    if verbose: print file_name
-    if verbose: print white_file_name
-    if verbose: print hdf5_file_name
-    if verbose: print log_file
-
     mydata = Convert()
     # Create minimal hdf5 file
     if verbose: print "Reading data ... "
@@ -47,12 +40,9 @@ def main():
                    white_file_name = white_file_name,
                    sample_name = 'Stripe_Solder_Sample_Tip1'
                    )
-    if verbose: print "Done reading data ... "
+    
+    # Add extra metadata if available / desired
 
-     
-    # Add extra metadata if available
-
-    if verbose: print "Adding extra metadata ..."
     reader = xradia.xrm()
     array = dstruct
     reader.read_txrm(file_name,array)
@@ -62,7 +52,6 @@ def main():
     if verbose: print "Done reading ", n_angles, " angles"
     theta = np.zeros(n_angles)
     theta = array.exchange.angles[:]
-
 
     # Save any other available metadata in a log file
     f = open(log_file,'w')
@@ -144,7 +133,7 @@ def main():
     f.add_entry( DataExchangeEntry.data(theta={'value': theta, 'units':'degrees'}))
 
     f.close()
-    if verbose: print "Done converting ", file_name
+    print "Done creating data exchange file: ", hdf5_file_name
 
 if __name__ == "__main__":
     main()

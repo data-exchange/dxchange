@@ -14,7 +14,7 @@ from data_exchange.data_convert import Convert
 import re
 
 import logging
-logging.basicConfig(filename='convert_Australian.log',level=logging.DEBUG)
+logging.basicConfig(filename='convert_APS_26ID.log',level=logging.DEBUG)
 
 def main():
 

@@ -25,13 +25,6 @@ def main():
     hdf5_file_name = '/local/data/esrf_test.h5'
     sample_name = 'esrf'
 
-    verbose = True
-
-    if verbose: print file_name
-    if verbose: print white_file_name
-    if verbose: print hdf5_file_name
-#    if verbose: print log_file
-
     mydata = Convert()
     # Create minimal hdf5 file
     if verbose: print "Reading data ... "
@@ -44,10 +37,8 @@ def main():
                    dark_data_type = 'edf',
                    sample_name = sample_name
                    )
-    if verbose: print "Done reading data ... "
 
-     
-    # Add extra metadata if available
+    # Add extra metadata if available / desired
 
     # Open DataExchange file
     f = DataExchangeFile(hdf5_file_name, mode='a') 
@@ -71,7 +62,7 @@ def main():
         )
 
     f.close()
-    if verbose: print "Done converting ", file_name
+    print "Done creating data exchange file: ", hdf5_file_name
 
 if __name__ == "__main__":
     main()

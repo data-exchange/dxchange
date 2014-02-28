@@ -18,25 +18,12 @@ logging.basicConfig(filename='convert_SLS.log',level=logging.DEBUG)
 
 def main():
 
-    ##file_name = '/local/data/databank/SLS_2011/Blakely_SLS/Blakely.tif'
-    ##log_file = '/local/data/databank/SLS_2011/Blakely_SLS/Blakely.log'
-    ##
-    ##hdf5_file_name = '/local/data/databank/dataExchange/microCT/Blakely_SLS_2011.h5'
-
     file_name = '/local/data/databank/SLS_2011/Hornby_SLS/Hornby_b.tif'
     log_file = '/local/data/databank/SLS_2011/Hornby_SLS/Hornby.log'
 
     hdf5_file_name = '/local/data/databank/dataExchange/microCT/Hornby_SLS_2011.h5'
 
-    verbose = True
-
-    if verbose: print file_name
-    if verbose: print log_file
-    if verbose: print hdf5_file_name
-
-
-
-    #Read input SLS data
+    #Read SLS log file data
     file = open(log_file, 'r')
     if verbose: print '###############################'
     for line in file:
@@ -77,21 +64,12 @@ def main():
     projections_start = white_end
     projections_end = projections_start + int(NumberOfProjections[0])
 
-    if verbose: print dark_start, dark_end
-    if verbose: print white_start, white_end
-    if verbose: print projections_start, projections_end
-
     dark_start = 1
     dark_end = 21
     white_start = 21
     white_end = 221
     projections_start = 221
     projections_end = 1662
-
-    ### if testing uncomment
-    ##dark_end = 4
-    ##white_end = 24
-    ##projections_end = 224
 
     mydata = Convert()
     # Create minimal hdf5 file
@@ -107,7 +85,7 @@ def main():
                      )
 
      
-    # Add extra metadata if available
+    # Add extra metadata if available / desired
 
     # Open DataExchange file
     f = DataExchangeFile(hdf5_file_name, mode='a') 
@@ -179,7 +157,7 @@ def main():
                 )
         )
     f.close()
-    if verbose: print "Done converting ", file_name
+    print "Done creating data exchange file: ", hdf5_file_name
 
 if __name__ == "__main__":
     main()

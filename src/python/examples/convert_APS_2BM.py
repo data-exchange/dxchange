@@ -19,12 +19,12 @@ logging.basicConfig(filename='convert_APS_2BM.log',level=logging.DEBUG)
 def main():
 
     file_name = '/local/data/Hornby_APS/Hornby_19keV_10x_.hdf'
-    hdf5_file_name = '/local/data/Hornby_APS/Hornby_19keV_10x_APS_2011_04.h5'
+    hdf5_file_name = '/local/data/Hornby_APS/Hornby_19keV_10x_APS_2011.h5'
 
     white_start = 1
     white_end = 2
     projections_start = 2
-    projections_end = 15 #03
+    projections_end = 1503
     dark_start = 1504
     dark_end = 1505
 
@@ -111,7 +111,6 @@ def main():
                                                 safety={'value':"106491-49734"},
                 )
         )
-
 
     f.close()
     print "Done converting ", hdf5_file_name

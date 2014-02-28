@@ -79,29 +79,6 @@ def main():
     dark_end = 20
     dark_step = 1
 
-    ##### if testing uncomment
-    ##projections_start = 0
-    ##projections_end = 5
-    ##white_start = 0
-    ##white_end = 5
-    ##white_step = 1
-    ##dark_start = 0
-    ##dark_end = 5
-    ##dark_step = 1
-
-
-    verbose = True
-
-    if verbose: print file_name
-    if verbose: print hdf5_file_name
-    if verbose: print sample_name
-
-
-    if verbose: print "Dark start, end", dark_start, dark_end
-    if verbose: print "White start, end", white_start, white_end
-    if verbose: print "Projections start, end", projections_start, projections_end
-
-
     mydata = Convert()
     # Create minimal hdf5 file
     mydata.series_of_images(file_name,
@@ -124,7 +101,7 @@ def main():
                      )
 
      
-    # Add extra metadata if available
+    # Add extra metadata if available / desired
 
     # Open DataExchange file
     f = DataExchangeFile(hdf5_file_name, mode='a') 
@@ -148,7 +125,7 @@ def main():
         )
 
     f.close()
-    if verbose: print "Done converting ", file_name
+    print "Done creating data exchange file: ", hdf5_file_name
 
 if __name__ == "__main__":
     main()

@@ -23,11 +23,6 @@ def main():
     file_name = '/local/data/databank/Diamond/projections_13429.hdf'
     hdf5_file_name = '/local/data/databank/dataExchange/microCT/Diamond_2bin.h5'
 
-    verbose = True
-
-    print "Input files base name: ", file_name
-    print "Output data exchange file name: ", hdf5_file_name
-
     mydata = Convert()
     # Create minimal hdf5 file
     if verbose: print "Reading data ... "
@@ -42,9 +37,8 @@ def main():
                         dark_end=3,
                         sample_name = 'unknown'
                    )
-    if verbose: print "Done reading data ... "
     
-    # Add extra metadata if available
+    # Add extra metadata if available / desired
 
     # Open DataExchange file
     f = DataExchangeFile(hdf5_file_name, mode='a') 

@@ -1,10 +1,12 @@
-#=======================================================================
-# Sample Python code to add Data Exchange links to a Nexus file
-#
-# Date: 2014-01-26
-# 
-#=======================================================================
+"""
+.. module:: main_convert_Diamond2.py
+   :platform: Unix
+   :synopsis: Convert Diamond JEEP (I12) NeXus files in data exchange by adding links to sub array
 
+.. moduleauthor:: Francesco De Carlo <decarlof@gmail.com>
+
+
+""" 
 import h5py
 import numpy as np
 
@@ -83,6 +85,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-#=======================================================================
-#
-#=======================================================================
