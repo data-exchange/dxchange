@@ -18,13 +18,13 @@ logging.basicConfig(filename='convert_APS_2BM.log',level=logging.DEBUG)
 
 def main():
 
-    file_name = '/local/data/databank/APS_2_BM/Sam19_blakely/raw/Blakely_19keV_10x_.hdf'
-    hdf5_file_name = '/local/data/databank/dataExchange/microCT/Blakely_APS_2011.h5'
+    file_name = '/local/data/Hornby_APS/Hornby_19keV_10x_.hdf'
+    hdf5_file_name = '/local/data/Hornby_APS/Hornby_19keV_10x_APS_2011_04.h5'
 
     white_start = 1
     white_end = 2
     projections_start = 2
-    projections_end = 1503
+    projections_end = 15 #03
     dark_start = 1504
     dark_end = 1505
 
@@ -114,7 +114,7 @@ def main():
 
 
     f.close()
-    if verbose: print "Done converting ", file_name
+    print "Done converting ", hdf5_file_name
 
 if __name__ == "__main__":
     main()

@@ -164,7 +164,7 @@ class Hdf4(FileInterface):
         f.end()
 
         # Select desired x from whole data.
-        num_x, num_y = hdfdata.shape
+        num_y, num_x = hdfdata.shape
         if x_start is None:
             x_start = 0
         if x_end is None:

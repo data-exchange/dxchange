@@ -233,7 +233,7 @@ class Convert():
                                             array_name = 'data'
                                          )
 
-                    if (data_type is 'compressed_tiff'):
+                    elif (data_type is 'compressed_tiff'):
                         f = Tiffc()
                         tmpdata = f.read(fileName,
                                             x_start=slices_start,
@@ -281,7 +281,7 @@ class Convert():
                                             x_step=slices_step,
                                             array_name = 'data'
                                          )
-                    if (data_type is 'compressed_tiff'):
+                    elif (data_type is 'compressed_tiff'):
                         f = Tiffc()
                         tmpdata = f.read(fileName,
                                             x_start=slices_start,
@@ -331,7 +331,7 @@ class Convert():
                                             x_step=slices_step,
                                             array_name = 'data'
                                          )
-                    if (data_type is 'compressed_tiff'):
+                    elif (data_type is 'compressed_tiff'):
                         f = Tiffc()
                         tmpdata = f.read(fileName,
                                             x_start=slices_start,
