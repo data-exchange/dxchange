@@ -10,7 +10,7 @@ Data Exchange readers handles tomographic datasets collected at all major synchr
 ## Python Dependencies:
 
 
-## Installing Data Exchange
+## Installing Data Exchange:
 
 Make sure you have [Python 2.6](http://www.python.org/download/releases/2.6/ "tsss...") or [2.7](http://www.python.org/download/releases/2.7/ "tsss...") and the above dependencies installed in your system. 
 
