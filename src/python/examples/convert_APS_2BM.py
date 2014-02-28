@@ -34,6 +34,7 @@ def main():
                      hdf5_file_name,
                      projections_start,
                      projections_end,
+                     projections_step = 2,
                      white_start = white_start,
                      white_end = white_end,
                      dark_start = dark_start,
