@@ -26,7 +26,6 @@ def main():
 
     # Read ALS log file data
     file = open(log_file, 'r')
-    if verbose: print '###############################'
     for line in file:
         if '-scanner' in line:
             Source = re.sub(r'-scanner ', "", line)
