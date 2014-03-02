@@ -9,6 +9,9 @@ Data Exchange is a Python toolbox for reading and writing Data Exchange files. I
 
 ## Python Dependencies:
 
+- [NumPy 1.8.0](http://www.numpy.org "numpy")
+- [H5Py 2.2.1](http://www.h5py.org "h5py")
+- [PyWt 0.2.2](http://www.pybytes.com/pywavelets/ "pywt")
 - [tifffile.py](http://www.lfd.uci.edu/~gohlke/code/tifffile.py.html), a Python module to read and write image data from and to TIFF files.
 
 ## Installing Data Exchange:
