@@ -11,14 +11,13 @@ Data Exchange is a Python toolbox for reading and writing Data Exchange files. I
 
 - [NumPy 1.8.0](http://www.numpy.org "numpy")
 - [H5Py 2.2.1](http://www.h5py.org "h5py")
-- [PyWt 0.2.2](http://www.pybytes.com/pywavelets/ "pywt")
 - [tifffile.py](http://www.lfd.uci.edu/~gohlke/code/tifffile.py.html), a Python module to read and write image data from and to TIFF files.
 
 ## Installing Data Exchange:
 
 Make sure you have [Python 2.6](http://www.python.org/download/releases/2.6/ "tsss...") or [2.7](http://www.python.org/download/releases/2.7/ "tsss...") and the above dependencies installed in your system. 
 
-- To build and install from source, download the [latest source tarball](https://github.com/data-exchange/data-exchange/archive/master.zip), open shell prompt and change directory where the `setup.py` resides `data-exchange/src/python/` then type `python setup.py install` or `python setup.py install --user`.
+- To build and install from source, download the [latest source tarball](https://github.com/data-exchange/data-exchange/archive/master.zip), open a shell prompt and change directory where the `setup.py` resides `data-exchange/src/python/` then type `python setup.py install` or `python setup.py install --user`.
 
 To test if the installation was succesfull, open a new shell and try:
 
@@ -26,7 +25,7 @@ To test if the installation was succesfull, open a new shell and try:
 
 ## Using Data Exchange:
 
-- In `data-exchange/src/python/examples` there are readers to handle tomographic datasets collected at all major synchrotron facilities.
+- In [`data-exchange/src/python/examples`](https://github.com/data-exchange/data-exchange/tree/master/src/python/examples) there are readers to handle tomographic datasets collected at all major synchrotron facilities.
 
 
 
