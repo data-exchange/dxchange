@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-.. module:: main_convert_ALS.py
+.. module:: convert_ALS.py
    :platform: Unix
    :synopsis: Convert ALS TIFF files in data exchange.
 
@@ -8,21 +8,21 @@
 
 
 """ 
-from data_exchange import DataExchangeFile, DataExchangeEntry
-from data_exchange.data_convert import Convert
+
+import data_exchange as dx
 
 import re
-import logging
-logging.basicConfig(filename='convert_ALS.log',level=logging.DEBUG)
 
 def main():
 
-    file_name = '/local/data/databank/ALS_2011/Hornby/raw/hornbyALS_.tif'
-    dark_file_name = '/local/data/databank/ALS_2011/Hornby/raw/hornbyALSdrk_.tif'
-    white_file_name = '/local/data/databank/ALS_2011/Hornby/raw/hornbyALSbak_.tif'
-    log_file = '/local/data/databank/ALS_2011/Hornby/raw/hornbyALS.sct'
+    file_name = '/Users/decarlo/data/ALS/blakely_raw/blakelyALS_.tif'
+    dark_file_name = '//Users/decarlo/data/ALS/blakely_raw/blakelyALSdrk_.tif'
+    white_file_name = '/Users/decarlo/data/ALS/blakely_raw/blakelyALSbak_.tif'
+    log_file = '/Users/decarlo/data/ALS/blakely_raw/blakelyALS.sct'
 
-    hdf5_file_name = '/local/data/databank/dataExchange/microCT/Hornby_ALS_2011_tmp2.h5'
+    hdf5_file_name = '/Users/decarlo/data/ALS/blakely_ALS_2011_01.h5'
+
+    verbose = True
 
     # Read ALS log file data
     file = open(log_file, 'r')
@@ -62,7 +62,7 @@ def main():
     projections_start = 0
     projections_end = int(Angles[0])
 
-    mydata = Convert()
+    mydata = dx.Convert()
     # Create minimal hdf5 file
     mydata.series_of_images(file_name,
                      hdf5_file_name,
@@ -77,73 +77,11 @@ def main():
                      dark_end = dark_end,
                      dark_step = dark_step,
                      projections_zeros = False,
-                     verbose = False
+                     white_zeros = False,
+                     dark_zeros = False,
+                     log='ERROR'
                      )
 
-     
-    # Add extra metadata if available / desired
-
-    # Open DataExchange file
-    f = DataExchangeFile(hdf5_file_name, mode='a') 
-
-    # Create HDF5 subgroup
-    # /measurement/instrument
-    f.add_entry( DataExchangeEntry.instrument(name={'value': 'ALS'}) )
-
-    # Create HDF5 subgroup
-    # /measurement/instrument/source
-    f.add_entry( DataExchangeEntry.source(name={'value': Source},
-                                        date_time={'value': "2011-25-05T19:42:13+0100"},
-                                        beamline={'value': "ALS Tomo"},
-                                        current={'value': float(Current[0]), 'units': 'mA', 'dataset_opts': {'dtype': 'd'}},
-                                        )
-    )
-
-    # Create HDF5 subgroup
-    # /measurement/instrument/monochromator
-    f.add_entry( DataExchangeEntry.monochromator(type={'value': 'Unknown'},
-                                                energy={'value': float(Energy[0]), 'units': 'eV', 'dataset_opts': {'dtype': 'd'}},
-                                                mono_stripe={'value': 'Unknown'},
-                                                )
-        )
-
-    # Create HDF5 subgroup
-    # /measurement/experimenter
-    f.add_entry( DataExchangeEntry.experimenter(name={'value':"Jane Waruntorn"},
-                                                role={'value':"Project PI"},
-                    )
-        )
-
-    # Create HDF5 subgroup
-    # /measurement/instrument/detector
-    f.add_entry( DataExchangeEntry.detector(manufacturer={'value':'CooKe Corporation'},
-                                            model={'value': 'pco dimax'},
-                                            serial_number={'value': '1234XW2'},
-                                            bit_depth={'value': 12, 'dataset_opts':  {'dtype': 'd'}},
-                                            x_pixel_size={'value': 6.7e-6, 'dataset_opts':  {'dtype': 'f'}},
-                                            y_pixel_size={'value': 6.7e-6, 'dataset_opts':  {'dtype': 'f'}},
-                                            x_dimensions={'value': 2048, 'dataset_opts':  {'dtype': 'i'}},
-                                            y_dimensions={'value': 2048, 'dataset_opts':  {'dtype': 'i'}},
-                                            x_binning={'value': 1, 'dataset_opts':  {'dtype': 'i'}},
-                                            y_binning={'value': 1, 'dataset_opts':  {'dtype': 'i'}},
-                                            operating_temperature={'value': 270, 'units':'K', 'dataset_opts':  {'dtype': 'f'}},
-                                            exposure_time={'value': 170, 'units':'ms', 'dataset_opts':  {'dtype': 'd'}},
-                                            frame_rate={'value': 3, 'dataset_opts':  {'dtype': 'i'}},
-                                            output_data={'value':'/exchange'}
-                                            )
-        )
-
-    f.add_entry(DataExchangeEntry.objective(magnification={'value':10, 'dataset_opts': {'dtype': 'd'}},
-                                        )
-        )
-
-    f.add_entry(DataExchangeEntry.scintillator(name={'value':'LuAg '},
-                                                type={'value':'LuAg'},
-                                                scintillating_thickness={'value':20e-6, 'dataset_opts': {'dtype': 'd'}},
-            )
-        )
-
-    f.close()
     print "Done creating data exchange file: ", hdf5_file_name
 
 if __name__ == "__main__":

@@ -25,7 +25,8 @@ setup(
         version='0.0.1',
 
         packages = find_packages(),
-        include_package_data = True,
+        
+        # include_package_data = True,
 
         # Specify C/C++ file paths. They will be compiled and put into tomopy.lib:
         # ext_modules=[ext_fftw, ext_gridrec],
