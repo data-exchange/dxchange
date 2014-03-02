@@ -27,7 +27,7 @@ def main():
     hdf5_file_name = '/Users/decarlo/data/elettra/Volcanic_rock/elettra_Volcanic_rock.h5'
 
     projections_start = 1
-    projections_end = 17 #1441
+    projections_end = 1441
     white_start = 1
     white_end = 11
     white_step = 1
