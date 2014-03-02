@@ -20,11 +20,11 @@ import PIL.Image as Image
 
 def main():
 
-    file_name = '/local/data/databank/elettra/Volcanic_rock/tomo_.tif'
-    dark_file_name = '/local/data/databank/elettra/Volcanic_rock/dark_.tif'
-    white_file_name = '/local/data/databank/elettra/Volcanic_rock/flat_.tif'
+    file_name = '/Users/decarlo/data/elettra/Volcanic_rock/tomo_.tif'
+    dark_file_name = '/Users/decarlo/data/elettra/Volcanic_rock/dark_.tif'
+    white_file_name = '/Users/decarlo/data/elettra/Volcanic_rock/flat_.tif'
 
-    hdf5_file_name = '/local/data/databank/elettra/Volcanic_rock/elettra_Volcanic_rock_02.h5'
+    hdf5_file_name = '/Users/decarlo/data/elettra/Volcanic_rock/elettra_Volcanic_rock_AH.h5'
 
     projections_start = 1
     projections_end = 25 # 1441
@@ -54,7 +54,7 @@ def main():
                      data_type =  'compressed_tiff', # comment this line if regular tiff
                      projections_zeros = True,
                      white_zeros = False,
-                     dark_zeros = True,
+                     dark_zeros = False,
                      verbose = False,
                      sample_name = sample_name
                      )
