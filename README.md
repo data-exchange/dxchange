@@ -17,5 +17,16 @@ Data Exchange readers handles tomographic datasets collected at all major synchr
 
 Make sure you have [Python 2.6](http://www.python.org/download/releases/2.6/ "tsss...") or [2.7](http://www.python.org/download/releases/2.7/ "tsss...") and the above dependencies installed in your system. 
 
+- To build and install from source, download the [latest source tarball](https://github.com/data-exchange/data-exchange/archive/master.zip), open shell prompt and change directory where the `setup.py` resides (../data-exchange/src/python/) then type `python setup.py install` or as user typy `python setup.py install --user`.
+
+To test if installation was succesfull, open a new shell and try:
+
+- ``python -c "import data_exchange"``
+
+If it doesn't complain you are good to go!
+
+
+
+
 
 
