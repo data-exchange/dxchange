@@ -17,7 +17,7 @@ Data Exchange is a Python toolbox for reading and writing Data Exchange files. I
 
 Make sure you have [Python 2.6](http://www.python.org/download/releases/2.6/ "tsss...") or [2.7](http://www.python.org/download/releases/2.7/ "tsss...") and the above dependencies installed in your system. 
 
-- To build and install from source, download the [latest source tarball](https://github.com/data-exchange/data-exchange/archive/master.zip), open a shell prompt and change directory where the `setup.py` resides `data-exchange/src/python/` then type `python setup.py install` or `python setup.py install --user`.
+- To build and install from source, download the [latest source tarball](https://github.com/data-exchange/data-exchange/archive/master.zip), open a shell prompt and change directory where the `setup.py` resides [`data-exchange/src/python/`](https://github.com/data-exchange/data-exchange/tree/master/src/python) then type `python setup.py install` or `python setup.py install --user`.
 
 To test if the installation was succesfull, open a new shell and try:
 
