@@ -1,6 +1,6 @@
 ## About Data Exchange
 
-[Data Exchange](http://www.aps.anl.gov/DataExchange/) is a Python toolbox for reading and writing Data Exchange files. It provides an interface between tomographic raw datasets collected at different synchrotron facilities and [tomoPy](https://github.com/tomopy/tomopy/ "tomoPy"), a Python toolbox to perform tomographic data processing and image reconstruction tasks developed at the [Advanced Photon Source](http://www.aps.anl.gov/ "APS").
+Data Exchange is a Python toolbox for reading and writing  [Data Exchange](http://www.aps.anl.gov/DataExchange/) files. It provides an interface between tomographic raw datasets collected at different synchrotron facilities and [tomoPy](https://github.com/tomopy/tomopy/ "tomoPy"), a Python toolbox to perform tomographic data processing and image reconstruction tasks developed at the [Advanced Photon Source](http://www.aps.anl.gov/ "APS").
 
 ## External Dependencies:
 - [tifffile.c](http://www.lfd.uci.edu/~gohlke/code/tifffile.c.html), a Python C extension module used by [tifffile.py](http://www.lfd.uci.edu/~gohlke/code/tifffile.py.html) for decoding PackBits and LZW encoded TIFF data
