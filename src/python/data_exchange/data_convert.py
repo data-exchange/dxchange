@@ -214,12 +214,6 @@ class Convert():
             ind = range(projections_start, projections_end, projections_step)
             logger.info("projections: Start = %d, End = %d, Step = %d", projections_start, projections_end, projections_step)
 
-            print "###########################"
-            print ind
-            print len(ind)
-            print range(len(ind))
-            print range(projections_digits)
-
             for m in range(len(ind)):
                 for n in range(projections_digits):
                     logger.info("n = %d, ind[m] %d < %d", n, ind[m], np.power(10, n + 1))
@@ -269,12 +263,6 @@ class Convert():
             # Reading white fields.
             ind = range(white_start, white_end, white_step)
             logger.info("white: Start = %d, End = %d, Step = %d", white_start, white_end, white_step)
-
-            print "###########################"
-            print ind
-            print len(ind)
-            print range(len(ind))
-            print range(white_digits)
             
             for m in range(len(ind)):
                 for n in range(white_digits):
@@ -312,11 +300,6 @@ class Convert():
                                             dtype=dtype
                                          )
                     if m == 0: # Get resolution once.
-##                        inputData = np.empty(((white_end - white_start)/white_step + 1,
-##                                            tmpdata.shape[0],
-##                                            tmpdata.shape[1]),
-##                                            dtype=dtype
-##                                        )
                         inputData = np.empty((len(ind),
                                             tmpdata.shape[0],
                                             tmpdata.shape[1]),
@@ -332,12 +315,6 @@ class Convert():
             # Reading dark fields.
             ind = range(dark_start, dark_end, dark_step)
             logger.info("dark: Start = %d, End = %d, Step = %d", dark_start, dark_end, dark_step)
-
-            print "###########################"
-            print ind
-            print len(ind)
-            print range(len(ind))
-            print range(dark_digits)
             
             for m in range(len(ind)):
                 for n in range(dark_digits):

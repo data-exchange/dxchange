@@ -24,15 +24,15 @@ def main():
     dark_file_name = '/Users/decarlo/data/elettra/Volcanic_rock/dark_.tif'
     white_file_name = '/Users/decarlo/data/elettra/Volcanic_rock/flat_.tif'
 
-    hdf5_file_name = '/Users/decarlo/data/elettra/Volcanic_rock/elettra_Volcanic_rock_AH.h5'
+    hdf5_file_name = '/Users/decarlo/data/elettra/Volcanic_rock/elettra_Volcanic_rock.h5'
 
     projections_start = 1
-    projections_end = 25 # 1441
+    projections_end = 17 #1441
     white_start = 1
-    white_end = 10
+    white_end = 11
     white_step = 1
     dark_start = 1
-    dark_end = 10
+    dark_end = 11
     dark_step = 1
 
     sample_name = 'Volcanic_rock'
