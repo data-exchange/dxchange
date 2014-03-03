@@ -14,7 +14,6 @@ import xradia.data_struct as dstruct
 import aps_13bm.data_spe as spe
 from elettra.tifffile import TiffFile
 
-
 class Hdf5(FileInterface):
     def read(self, file_name,
              array_name=None,
@@ -240,64 +239,8 @@ class Tiff(FileInterface):
         return out[x_start:x_end:x_step,
                    y_start:y_end:y_step]
 
-    def write(self, dataset,
-              file_name,
-              x_start=None,
-              x_end=None,
-              digits=5):
-        """ Write reconstructed x to a stack
-        of 2-D 32-bit TIFF images.
-
-        Parameters
-        -----------
-        dataset : ndarray
-            Reconstructed values as a 3-D ndarray.
-
-        file_name : str
-            Generic name for all TIFF images. Index will
-            be added to the end of the name.
-
-        x_start : scalar, optional
-            First index of the data on first dimension
-            of the array.
-
-        x_end : scalar, optional
-            Last index of the data on first dimension
-            of the array.
-
-        digits : scalar, optional
-            Number of digits used for file indexing.
-            For example if 4: test_XXXX.tiff
-        """
-        # Create new folders.
-        dir_path = os.path.dirname(file_name)
-        if not os.path.exists(dir_path):
-            os.makedirs(dir_path)
-
-        # Remove TIFF extension.
-        if file_name.endswith('tiff'):
-            output_file = file_name.split(".")[-2]
-
-        # Select desired x from whole data.
-        num_x, num_y, num_z = dataset.shape
-        if x_start is None:
-            x_start = 0
-        if x_end is None:
-            x_end = x_start+num_x
-
-        # Write data.
-        file_index = ["" for x in range(digits)]
-        for m in range(digits):
-            file_index[m] = '0' * (digits - m - 1)
-        ind = range(x_start, x_end)
-        for m in range(len(ind)):
-            for n in range(digits):
-                if ind[m] < np.power(10, n + 1):
-                    file_name = output_file + file_index[n] + str(ind[m]) + '.tiff'
-                    break
-            img = misc.toimage(dataset[m, :, :])
-            #img = misc.toimage(dataset[m, :, :], mode='F')
-            img.save(file_name)
+    def write(self):
+        pass
 
 class Tiffc(FileInterface):
     def read(self, file_name, dtype='uint16',
@@ -353,64 +296,8 @@ class Tiffc(FileInterface):
         return out[x_start:x_end:x_step,
                    y_start:y_end:y_step]
 
-    def write(self, dataset,
-              file_name,
-              x_start=None,
-              x_end=None,
-              digits=5):
-        """ Write reconstructed x to a stack
-        of 2-D 32-bit TIFF images.
-
-        Parameters
-        -----------
-        dataset : ndarray
-            Reconstructed values as a 3-D ndarray.
-
-        file_name : str
-            Generic name for all TIFF images. Index will
-            be added to the end of the name.
-
-        x_start : scalar, optional
-            First index of the data on first dimension
-            of the array.
-
-        x_end : scalar, optional
-            Last index of the data on first dimension
-            of the array.
-
-        digits : scalar, optional
-            Number of digits used for file indexing.
-            For example if 4: test_XXXX.tiff
-        """
-        # Create new folders.
-        dir_path = os.path.dirname(file_name)
-        if not os.path.exists(dir_path):
-            os.makedirs(dir_path)
-
-        # Remove TIFF extension.
-        if file_name.endswith('tiff'):
-            output_file = file_name.split(".")[-2]
-
-        # Select desired x from whole data.
-        num_x, num_y, num_z = dataset.shape
-        if x_start is None:
-            x_start = 0
-        if x_end is None:
-            x_end = x_start+num_x
-
-        # Write data.
-        file_index = ["" for x in range(digits)]
-        for m in range(digits):
-            file_index[m] = '0' * (digits - m - 1)
-        ind = range(x_start, x_end)
-        for m in range(len(ind)):
-            for n in range(digits):
-                if ind[m] < np.power(10, n + 1):
-                    file_name = output_file + file_index[n] + str(ind[m]) + '.tiff'
-                    break
-            img = misc.toimage(dataset[m, :, :])
-            #img = misc.toimage(dataset[m, :, :], mode='F')
-            img.save(file_name)
+    def write(self):
+        pass
 
 class Txrm(FileInterface):
     def read(self, file_name,
@@ -708,25 +595,18 @@ class Esrf(FileInterface):
         out : array
             Returns the data as a matrix.
         """
-        verbose = True
-
+ 
         # Read data from file.
         if file_name.endswith('edf'):
-            if verbose: print "reading projections ... "
             f = EdfFile(file_name, access='r')
             dic = f.GetStaticHeader(0)
             tmpdata = np.empty((f.NumImages, int(dic['Dim_2']), int(dic['Dim_1'])))
-#            tmpdata = np.empty((5, int(dic['Dim_2']), int(dic['Dim_1'])))
 
             for (i, ar) in enumerate(tmpdata):
-                print i, ar
                 tmpdata[i::] = f.GetData(i)
 
 
-            #reader.read_txrm(file_name,array)
             num_z, num_y, num_x = np.shape(tmpdata)
-            if verbose:
-                print "done reading ", num_z, " projections images of (", num_x,"x", num_y, ") pixels"
 
         # Select desired y from whole data.
         # num_x, num_y, num_z = hdfdata.shape

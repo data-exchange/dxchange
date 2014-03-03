@@ -878,12 +878,12 @@ class Convert():
             print 'Unsupported file.'
 
     def stack(TomoObj, file_name,
-                hdf5_file_name,
                 projections_data_type='txrm',
                 white_file_name='',
                 white_data_type='xrm',
                 dark_file_name='',
                 dark_data_type='xrm',
+                hdf5_file_name='dummy',
                 sample_name=None,
                 log='INFO'):
         """Read a stack of tomographic data consisting of up to 3 files.
@@ -919,31 +919,34 @@ class Convert():
         .. See also:: http://docs.scipy.org/doc/numpy/user/basics.types.html
         """
 
-        # Initialize f to null.
+        # Logging init.
+        TomoObj._log_level = str(log).upper()
+        TomoObj._init_log()
+        
+        # Initialize Data Exchange file extension to false.
         hdf5_file_extension = False
 
-        # Get the file_name in lower case.
-        lFn = hdf5_file_name.lower()
+        logger.info("###############################################")
+        logger.info("####      read stack of [%s] images       ####", projections_data_type)
+        logger.info("###############################################")
+        logger.info("projections file name= [%s]", file_name)
+        logger.info("projections data type [%s]", projections_data_type)
+        logger.info("white file name [%s]", white_file_name)
+        logger.info("white data type [%s]", white_data_type)
+        logger.info("dark file name [%s]", dark_file_name)
+        logger.info("dark data type [%s]", dark_data_type)
+        logger.info("hdf5 file name [%s]", hdf5_file_name)
+        logger.info("sample name [%s]", sample_name)
+        logger.info("log [%s]", log)
+        logger.info("Does the HDF file exist?  [%s]", os.path.isfile(hdf5_file_name))
+        logger.info("#########################################")
 
-        # Split the string with the delimeter '.'
-        end = lFn.split('.')
-        logger.info(end)
-        # If the string has an extension.
-        if len(end) > 1:
-            # Check.
-            if end[len(end) - 1] == 'h5' or end[len(end) - 1] == 'hdf':
-                hdf5_file_extension = True
-                logger.info("HDF file extension is .h5 or .hdf")
-            else:
-                hdf5_file_extension = False
-                logger.info("HDF file extension must be .h5 or .hdf")
-                
-        # If the extension is correct and the file does not exists then convert
-        if (hdf5_file_extension and (os.path.isfile(hdf5_file_name) == False)):
-            # Create new folder.
-            dirPath = os.path.dirname(hdf5_file_name)
-            if not os.path.exists(dirPath):
-                os.makedirs(dirPath)
+        if os.path.isfile(hdf5_file_name):
+                logger.info("Data Exchange file [%s] already exists. Nothing to do!", hdf5_file_name)
+                logger.info("Please use the Data Exchange reader instead")
+
+        else:
+            # Read the series of files and load them in TomoObj.data, TomoObj.data_white, TomoObj.data_dark
 
             logger.info("File Name Projections = [%s]", file_name)
             logger.info("File Name White = [%s]", white_file_name)
@@ -995,33 +998,62 @@ class Convert():
                 nx, ny, nz = np.shape(TomoObj.data)
                 TomoObj.data_dark = np.zeros((nx,ny,1))
 
-            # Write HDF5 file.
-            # Open DataExchange file
-            f = DataExchangeFile(hdf5_file_name, mode='w') 
+            # Getting ready to save the Data Exchange file
 
-            logger.info("Writing the HDF5 file")
-            # Create core HDF5 dataset in exchange group for projections_theta_range
-            # deep stack of x,y images /exchange/data
-            f.add_entry( DataExchangeEntry.data(data={'value': TomoObj.data, 'units':'counts', 'description': 'transmission', 'axes':'theta:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
-            f.add_entry( DataExchangeEntry.data(theta={'value': TomoObj.theta, 'units':'degrees'}))
-            f.add_entry( DataExchangeEntry.data(data_dark={'value': TomoObj.data_dark, 'units':'counts', 'axes':'theta_dark:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
-            f.add_entry( DataExchangeEntry.data(data_white={'value': TomoObj.data_white, 'units':'counts', 'axes':'theta_white:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
-            f.add_entry( DataExchangeEntry.data(title={'value': 'tomography_raw_projections'}))
-            logger.info("Sample name = [%s]", sample_name)
-            if (sample_name == None):
-                sample_name = end[0]
-                f.add_entry( DataExchangeEntry.sample( name={'value':sample_name}, description={'value':'Sample name was assigned by the HDF5 converter and based on the HDF5 file name'}))
-                logger.info("Assigned default file name: [%s]", end[0])
+            if (hdf5_file_name != 'dummy'):
+                logger.info("Data Exchange file is set to [%s]", hdf5_file_name)
+
+                # Get the file_name in lower case.
+                lFn = hdf5_file_name.lower()
+
+                # Split the string with the delimeter '.'
+                end = lFn.split('.')
+                logger.info(end)
+                # If the string has an extension.
+                if len(end) > 1:
+                    # Check.
+                    if end[len(end) - 1] == 'h5' or end[len(end) - 1] == 'hdf':
+                        hdf5_file_extension = True
+                        logger.info("HDF5 file extension is .h5 or .hdf")
+                    else:
+                        hdf5_file_extension = False
+                        logger.warning("HDF5 file saved with an extension that is not .h5 or .hdf")
+
+                # Create new folder.
+                dirPath = os.path.dirname(hdf5_file_name)
+                if not os.path.exists(dirPath):
+                    os.makedirs(dirPath)
+
+                # Write the Data Exchange HDF5 file.
+                # Open DataExchange file
+                f = DataExchangeFile(hdf5_file_name, mode='w') 
+
+                logger.info("Creating Data Exchange File [%s]", hdf5_file_name)
+
+                # Create core HDF5 dataset in exchange group for projections_theta_range
+                # deep stack of x,y images /exchange/data
+                logger.info("Adding projections to  Data Exchange File [%s]", hdf5_file_name)
+                f.add_entry( DataExchangeEntry.data(data={'value': TomoObj.data, 'units':'counts', 'description': 'transmission', 'axes':'theta:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
+                f.add_entry( DataExchangeEntry.data(theta={'value': TomoObj.theta, 'units':'degrees'}))
+                logger.info("Adding dark fields to  Data Exchange File [%s]", hdf5_file_name)
+                f.add_entry( DataExchangeEntry.data(data_dark={'value': TomoObj.data_dark, 'units':'counts', 'axes':'theta_dark:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
+                logger.info("Adding white fields to  Data Exchange File [%s]", hdf5_file_name)
+                f.add_entry( DataExchangeEntry.data(data_white={'value': TomoObj.data_white, 'units':'counts', 'axes':'theta_white:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
+                f.add_entry( DataExchangeEntry.data(title={'value': 'tomography_raw_projections'}))
+                if (sample_name == None):
+                    sample_name = end[0]
+                    f.add_entry( DataExchangeEntry.sample( name={'value':sample_name}, description={'value':'Sample name was assigned by the HDF5 converter and based on the HDF5 file name'}))
+                    logger.info("Sample name assigned by HDF5 converter using the file name [%s]", end[0])
+                else:
+                    f.add_entry( DataExchangeEntry.sample( name={'value':sample_name}, description={'value':'Sample name was read from the user log file'}))
+                    logger.info("Sample name assigned by user")
+                logger.info("Sample name = [%s]", sample_name)
+                                   
+                logger.info("Closing Data Exchange File [%s]", hdf5_file_name)
+                f.close()
+                logger.info("DONE!!!!. Created Data Exchange File [%s]", hdf5_file_name)
             else:
-                f.add_entry( DataExchangeEntry.sample( name={'value':sample_name}, description={'value':'Sample name was read from the user log file'}))
-                logger.info("Assigned file name from user log")
-                                
-            f.close()
-        else:
-            if os.path.isfile(hdf5_file_name):
-                print 'HDF5 already exists. Nothing to do ...'
-            if (hdf5_file_extension == False):
-                print "HDF file extension must be .h5 or .hdf"
+                logger.warning("Data Exchange file name was not set => read series of files in memory only.")
 
     def _init_log(TomoObj):
         # Top-level log setup.
