@@ -8,13 +8,7 @@
 
 
 """ 
-from data_exchange import DataExchangeFile, DataExchangeEntry
-from data_exchange.data_convert import Convert
-
-import re
-
-import logging
-logging.basicConfig(filename='convert_APS_1ID.log',level=logging.DEBUG)
+import data_exchange as dx
 
 def main():
 
@@ -23,6 +17,7 @@ def main():
 
     hdf5_file_name = '/local/data/databank/dataExchange/microCT/CAT4B_2.h5'
 
+    # not tested need to add log_file parser
     projections_start = 943
     projections_end = 1853
     white_start = 1844
@@ -30,61 +25,19 @@ def main():
     dark_start = 1854
     dark_end = 1863
 
-    mydata = Convert()
+    mydata = dx.Convert()
     # Create minimal hdf5 file
     mydata.series_of_images(file_name,
-                     hdf5_file_name,
-                     projections_start,
-                     projections_end,
-                     white_start = white_start,
-                     white_end = white_end,
-                     dark_start = dark_start,
-                     dark_end = dark_end,
-                     projections_digits = 6,
-                     verbose = False
-                     )
-
-     
-    # Add extra metadata if available / desired
-
-    # Open DataExchange file
-    f = DataExchangeFile(hdf5_file_name, mode='a') 
-
-    # Create HDF5 subgroup
-    # /measurement/instrument
-    f.add_entry( DataExchangeEntry.instrument(name={'value': 'APS 1-ID Tomography'}) )
-
-    # Create HDF5 subgroup
-    # /measurement/instrument/source
-    f.add_entry( DataExchangeEntry.source(name={'value': 'Advanced Photon Source'},
-                                        date_time={'value': "2012-07-08T15:42:56+0100"},
-                                        beamline={'value': "1-ID"},
-                                        current={'value': 100.96, 'units': 'mA', 'dataset_opts': {'dtype': 'd'}},
-                                        )
-    )
-
-    # Create HDF5 subgroup
-    # /measurement/instrument/monochromator
-    f.add_entry( DataExchangeEntry.monochromator(type={'value': 'unknow'},
-                                                energy={'value': 65, 'units': 'keV', 'dataset_opts': {'dtype': 'd'}},
-                                                mono_stripe={'value': 'unknow'},
-                                                )
-        )
-
-    # Create HDF5 subgroup
-    # /measurement/experimenter
-    f.add_entry( DataExchangeEntry.experimenter(name={'value':"Peter Kenesei"},
-                                                role={'value':"Project PI"},
-                                                affiliation={'value':"Advanced Photon Source"},
-                                                phone={'value':"+1 630 252-0133"},
-                                                email={'value':"kenesei@aps.anl.gov"},
-
-                    )
-        )
-
-
-    f.close()
-    print "Done creating data exchange file: ", hdf5_file_name
+                            hdf5_file_name = hdf5_file_name,
+                            projections_start = projections_start,
+                            projections_end = projections_end,
+                            white_start = white_start,
+                            white_end = white_end,
+                            dark_start = dark_start,
+                            dark_end = dark_end,
+                            projections_digits = 6,
+                            log='WARNING'
+                            )
 
 if __name__ == "__main__":
     main()

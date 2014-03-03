@@ -20,7 +20,7 @@ def main():
     white_file_name = '/Users/decarlo/data/ALS/blakely_raw/blakelyALSbak_.tif'
     log_file = '/Users/decarlo/data/ALS/blakely_raw/blakelyALS.sct'
 
-    hdf5_file_name = '/Users/decarlo/data/ALS/blakely_ALS_2011_01.h5'
+    hdf5_file_name = '/Users/decarlo/data/ALS/blakely_ALS_2011.h5'
 
     verbose = True
 
@@ -65,24 +65,22 @@ def main():
     mydata = dx.Convert()
     # Create minimal hdf5 file
     mydata.series_of_images(file_name,
-                     hdf5_file_name,
-                     projections_start,
-                     projections_end,
-                     white_file_name = white_file_name,
-                     white_start = white_start,
-                     white_end = white_end,
-                     white_step = white_step,
-                     dark_file_name = dark_file_name,
-                     dark_start = dark_start,
-                     dark_end = dark_end,
-                     dark_step = dark_step,
-                     projections_zeros = False,
-                     white_zeros = False,
-                     dark_zeros = False,
-                     log='ERROR'
-                     )
-
-    print "Done creating data exchange file: ", hdf5_file_name
+                            hdf5_file_name = hdf5_file_name,
+                            projections_start = projections_start,
+                            projections_end = projections_end,
+                            white_file_name = white_file_name,
+                            white_start = white_start,
+                            white_end = white_end,
+                            white_step = white_step,
+                            dark_file_name = dark_file_name,
+                            dark_start = dark_start,
+                            dark_end = dark_end,
+                            dark_step = dark_step,
+                            projections_zeros = False,
+                            white_zeros = False,
+                            dark_zeros = False,
+                            log='WARNING'
+                            )
 
 if __name__ == "__main__":
     main()

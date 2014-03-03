@@ -8,13 +8,7 @@
 
 
 """ 
-from data_exchange import DataExchangeFile, DataExchangeEntry
-from data_exchange.data_convert import Convert
-
-import re
-
-import logging
-logging.basicConfig(filename='convert_Australian.log',level=logging.DEBUG)
+import data_exchange as dx
 
 def main():
 
@@ -33,53 +27,28 @@ def main():
     dark_end = 10
     dark_step = 1
 
-    mydata = Convert()
+    mydata = dx.Convert()
     # Create minimal hdf5 file
     mydata.series_of_images(file_name,
-                     hdf5_file_name,
-                     projections_start,
-                     projections_end,
-                     white_file_name = white_file_name,
-                     white_start = white_start,
-                     white_end = white_end,
-                     white_step = white_step,
-                     dark_file_name = dark_file_name,
-                     dark_start = dark_start,
-                     dark_end = dark_end,
-                     dark_step = dark_step,
-                     sample_name = sample_name,
-                     projections_digits = 4,
-                     white_digits = 2,
-                     dark_digits = 2,
-                     projections_zeros = True,
-                     verbose = False
-                     )
+                            hdf5_file_name = hdf5_file_name,
+                            projections_start = projections_start,
+                            projections_end = projections_end,
+                            white_file_name = white_file_name,
+                            white_start = white_start,
+                            white_end = white_end,
+                            white_step = white_step,
+                            dark_file_name = dark_file_name,
+                            dark_start = dark_start,
+                            dark_end = dark_end,
+                            dark_step = dark_step,
+                            sample_name = sample_name,
+                            projections_digits = 4,
+                            white_digits = 2,
+                            dark_digits = 2,
+                            projections_zeros = True,
+                            log='WARNING'
+                            )
      
-    # Add extra metadata if available / desired
-
-    # Open DataExchange file
-    f = DataExchangeFile(hdf5_file_name, mode='a') 
-
-    # Create HDF5 subgroup
-    # /measurement/instrument
-    f.add_entry( DataExchangeEntry.instrument(name={'value': 'Australian Synchrotron Facility'}) )
-
-    # Create HDF5 subgroup
-    # /measurement/instrument/source
-    f.add_entry( DataExchangeEntry.source(name={'value': 'Australian Synchrotron FacilityI'},
-                                        date_time={'value': "2013-10-19T22:22:13+0100"},
-                                        beamline={'value': "Tomography"},
-                                        )
-    )
-
-    # /measurement/experimenter
-    f.add_entry( DataExchangeEntry.experimenter(name={'value':"Sherry Mayo"},
-                                                role={'value':"Project PI"},
-                    )
-        )
-
-    f.close()
-    print "Done creating data exchange file: ", hdf5_file_name
 
 if __name__ == "__main__":
     main()

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-.. module:: main_convert_SLS.py
+.. module:: convert_SLS.py
    :platform: Unix
    :synopsis: Convert SLS Tomcat TIFF files in data exchange.
 
@@ -8,53 +8,39 @@
 
 
 """ 
-from data_exchange import DataExchangeFile, DataExchangeEntry
-from data_exchange.data_convert import Convert
+import data_exchange as dx
 
 import re
 
-import logging
-logging.basicConfig(filename='convert_SLS.log',level=logging.DEBUG)
-
 def main():
 
-    file_name = '/local/data/databank/SLS_2011/Hornby_SLS/Hornby_b.tif'
-    log_file = '/local/data/databank/SLS_2011/Hornby_SLS/Hornby.log'
+    file_name = '/Users/decarlo/data/SLS/Blakely/Blakely.tif'
+    log_file = '/Users/decarlo/data/SLS/Blakely/Blakely.log'
 
-    hdf5_file_name = '/local/data/databank/dataExchange/microCT/Hornby_SLS_2011.h5'
+    hdf5_file_name = '/Users/decarlo/data/SLS/Blakely_SLS_2011.h5'
 
     #Read SLS log file data
     file = open(log_file, 'r')
-    if verbose: print '###############################'
+
     for line in file:
         if 'Number of darks' in line:
             NumberOfDarks = re.findall(r'\d+', line)
-            if verbose: print 'Number of Darks', NumberOfDarks[0]
         if 'Number of flats' in line:
             NumberOfFlats = re.findall(r'\d+', line)
-            if verbose: print 'Number of Flats', NumberOfFlats[0]
         if 'Number of projections' in line:
             NumberOfProjections = re.findall(r'\d+', line)
-            if verbose: print 'Number of Projections', NumberOfProjections[0]
         if 'Number of inter-flats' in line:
             NumberOfInterFlats = re.findall(r'\d+', line)
-            if verbose: print 'Number of inter-flats', NumberOfInterFlats[0]
         if 'Inner scan flag' in line:
             InnerScanFlag = re.findall(r'\d+', line)
-            if verbose: print 'Inner scan flag', InnerScanFlag[0]
         if 'Flat frequency' in line:
             FlatFrequency = re.findall(r'\d+', line)
-            if verbose: print 'Flat frequency', FlatFrequency[0]
         if 'Rot Y min' in line:
             RotYmin = re.findall(r'\d+.\d+', line)
-            if verbose: print 'Rot Y min', RotYmin[0]
         if 'Rot Y max' in line:
             RotYmax = re.findall(r'\d+.\d+', line)
-            if verbose: print 'Rot Y max', RotYmax[0]
         if 'Angular step' in line:
             AngularStep = re.findall(r'\d+.\d+', line)
-            if verbose: print 'Angular step', AngularStep[0]
-    if verbose: print '###############################'
     file.close()
 
     dark_start = 1
@@ -63,101 +49,27 @@ def main():
     white_end = white_start + int(NumberOfFlats[0])
     projections_start = white_end
     projections_end = projections_start + int(NumberOfProjections[0])
-
+ 
+    # for testing .... 
     dark_start = 1
     dark_end = 21
     white_start = 21
-    white_end = 221
+    white_end = 32# 221
     projections_start = 221
-    projections_end = 1662
+    projections_end = 232
 
-    mydata = Convert()
+    mydata = dx.Convert()
     # Create minimal hdf5 file
     mydata.series_of_images(file_name,
-                     hdf5_file_name,
-                     projections_start,
-                     projections_end,
-                     white_start = white_start,
-                     white_end = white_end,
-                     dark_start = dark_start,
-                     dark_end = dark_end,
-                     verbose = False
-                     )
-
-     
-    # Add extra metadata if available / desired
-
-    # Open DataExchange file
-    f = DataExchangeFile(hdf5_file_name, mode='a') 
-
-    # Create HDF5 subgroup
-    # /measurement/instrument
-    f.add_entry( DataExchangeEntry.instrument(name={'value': 'Tomcat'}) )
-
-    # Create HDF5 subgroup
-    # /measurement/instrument/source
-    f.add_entry( DataExchangeEntry.source(name={'value': 'Swiss Light Source'},
-                                        date_time={'value': "2010-11-08T14:51:56+0100"},
-                                        beamline={'value': "Tomcat"},
-                                        current={'value': 401.96, 'units': 'mA', 'dataset_opts': {'dtype': 'd'}},
-                                        )
-    )
-
-    # Create HDF5 subgroup
-    # /measurement/instrument/monochromator
-    f.add_entry( DataExchangeEntry.monochromator(type={'value': 'Multilayer'},
-                                                energy={'value': 19.260, 'units': 'keV', 'dataset_opts': {'dtype': 'd'}},
-                                                mono_stripe={'value': 'Ru/C'},
-                                                )
-        )
-
-    # Create HDF5 subgroup
-    # /measurement/experimenter
-    f.add_entry( DataExchangeEntry.experimenter(name={'value':"Federica Marone"},
-                                                role={'value':"Project PI"},
-                                                affiliation={'value':"Swiss Light Source"},
-                                                phone={'value':"+41 56 310 5318"},
-                                                email={'value':"federica.marone@psi.ch"},
-
-                    )
-        )
-
-    # Create HDF5 subgroup
-    # /measurement/instrument/detector
-    f.add_entry( DataExchangeEntry.detector(manufacturer={'value':'CooKe Corporation'},
-                                            model={'value': 'pco dimax'},
-                                            serial_number={'value': '1234XW2'},
-                                            bit_depth={'value': 12, 'dataset_opts':  {'dtype': 'd'}},
-                                            x_pixel_size={'value': 6.7e-6, 'dataset_opts':  {'dtype': 'f'}},
-                                            y_pixel_size={'value': 6.7e-6, 'dataset_opts':  {'dtype': 'f'}},
-                                            x_dimensions={'value': 2048, 'dataset_opts':  {'dtype': 'i'}},
-                                            y_dimensions={'value': 2048, 'dataset_opts':  {'dtype': 'i'}},
-                                            x_binning={'value': 1, 'dataset_opts':  {'dtype': 'i'}},
-                                            y_binning={'value': 1, 'dataset_opts':  {'dtype': 'i'}},
-                                            operating_temperature={'value': 270, 'units':'K', 'dataset_opts':  {'dtype': 'f'}},
-                                            exposure_time={'value': 170, 'units':'ms', 'dataset_opts':  {'dtype': 'd'}},
-                                            frame_rate={'value': 3, 'dataset_opts':  {'dtype': 'i'}},
-                                            output_data={'value':'/exchange'}
-                                            )
-        )
-
-    f.add_entry(DataExchangeEntry.objective(magnification={'value':10, 'dataset_opts': {'dtype': 'd'}},
-                                        )
-        )
-
-    f.add_entry(DataExchangeEntry.scintillator(name={'value':'LuAg '},
-                                                type={'value':'LuAg'},
-                                                scintillating_thickness={'value':20e-6, 'dataset_opts': {'dtype': 'd'}},
-            )
-        )
-
-    # Create HDF5 subgroup
-    # /measurement/experiment
-    f.add_entry( DataExchangeEntry.experiment( proposal={'value':"e11218"},
-                )
-        )
-    f.close()
-    print "Done creating data exchange file: ", hdf5_file_name
+                            hdf5_file_name = hdf5_file_name,
+                            projections_start = projections_start,
+                            projections_end = projections_end,
+                            white_start = white_start,
+                            white_end = white_end,
+                            dark_start = dark_start,
+                            dark_end = dark_end,
+                            log='WARNING'
+                            )
 
 if __name__ == "__main__":
     main()

@@ -28,7 +28,6 @@ class Convert():
         logger.debug("Data Exchange initialization [ok]")
     
     def series_of_images(TomoObj, file_name,
-                hdf5_file_name,
                 projections_start=0,
                 projections_end=0,
                 projections_step=1,
@@ -55,6 +54,7 @@ class Convert():
                 dark_zeros=True,
                 dtype='uint16',
                 data_type='tiff',
+                hdf5_file_name='dummy',
                 sample_name=None,
                 log='INFO'):
         """Read a stack of HDF-4 or TIFF files in a folder.
@@ -121,55 +121,68 @@ class Convert():
 
         .. See also:: http://docs.scipy.org/doc/numpy/user/basics.types.html
         """
-
+        
         # Logging init.
         TomoObj._log_level = str(log).upper()
         TomoObj._init_log()
         
-        # Initialize f to null.
+        # Initialize Data Exchange file extension to false.
         hdf5_file_extension = False
 
-        # Get the file_name in lower case.
-        lFn = hdf5_file_name.lower()
+        logger.info("###############################################")
+        logger.info("####      read series of [%s] images     ####", data_type)
+        logger.info("###############################################")
+        logger.info("projections file name= [%s]", file_name)
+        logger.info("projections start [%d]", projections_start)
+        logger.info("projections end [%d]", projections_end)
+        logger.info("projections step [%d]", projections_step)
+        logger.info("projections angle range [%d]", projections_angle_range)
+        logger.info("white start [%d]", white_start)
+        logger.info("white end [%d]", white_end)
+        logger.info("white step [%d]", white_step)
+        logger.info("dark start [%d]", dark_start)
+        logger.info("dark end [%d]", dark_end)
+        logger.info("dark step [%d]", dark_step)
+        logger.info("projections digits [%d]", projections_digits)
+        logger.info("white digits [%d]", white_digits)
+        logger.info("dark digits [%d]", dark_digits)
+        logger.info("projections zeros [%d]", projections_zeros)
+        logger.info("white zeros [%d]", white_zeros)
+        logger.info("dark zeros [%d]", dark_zeros)
+        logger.info("dtype [%s]", dtype)
+        logger.info("data type [%s]", data_type)
+        logger.info("hdf5 file name [%s]", hdf5_file_name)
+        logger.info("sample name [%s]", sample_name)
+        logger.info("log [%s]", log)
+        logger.info("Does the HDF file exist?  [%s]", os.path.isfile(hdf5_file_name))
+        logger.info("#########################################")
 
-        # Split the string with the delimeter '.'
-        end = lFn.split('.')
-        logger.info(end)
-        # If the string has an extension.
-        if len(end) > 1:
-            # Check.
-            if end[len(end) - 1] == 'h5' or end[len(end) - 1] == 'hdf':
-                hdf5_file_extension = True
-                logger.info("HDF file extension is .h5 or .hdf")
-            else:
-                hdf5_file_extension = False
-                logger.info("HDF file extension must be .h5 or .hdf")
-               
-        # If the extension is correct and the file does not exists then convert
-        if (hdf5_file_extension and (os.path.isfile(hdf5_file_name) == False)):
-            # Create new folder.
-            dirPath = os.path.dirname(hdf5_file_name)
-            if not os.path.exists(dirPath):
-                os.makedirs(dirPath)
-            # Prepare hdf file names to be read.
+        if os.path.isfile(hdf5_file_name):
+                logger.info("Data Exchange file [%s] already exists. Nothing to do!", hdf5_file_name)
+                logger.info("Please use the Data Exchange reader instead")
+
+        else:
+            # Read the series of files and load them in TomoObj.data, TomoObj.data_white, TomoObj.data_dark
+            
+            # Set default prefix for white and dark.
             if white_file_name == None:
                     white_file_name = file_name
-                    logger.info("File Name White = %s", white_file_name)
+                    logger.info("Default file name white set [%s]", white_file_name)
             if dark_file_name == None:
                     dark_file_name = file_name
-                    logger.info("File Name Dark = %s", dark_file_name)
+                    logger.info("Default file name dark set [%s]", dark_file_name)
 
-            logger.info("File Name Projections = %s", file_name)
-            logger.info("File Name White = %s", white_file_name)
-            logger.info("File Name Dark = %s", dark_file_name)
+            logger.info("File Name Projections = [%s]", file_name)
+            logger.info("File Name White = [%s]", white_file_name)
+            logger.info("File Name Dark = [%s]", dark_file_name)
 
             # Set default digits.
             if white_digits == -1:
                     white_digits = projections_digits
-                    logger.info("White digits = %s", white_digits)
+                    logger.info("White digits = [%s]", white_digits)
             if dark_digits == -1:
                     dark_digits = projections_digits
-                    logger.info("Dark digits= %s", dark_digits)
+                    logger.info("Dark digits= [%s]", dark_digits)
 
             if (data_type is 'hdf4'):
                 if file_name.endswith('h4') or \
@@ -225,19 +238,19 @@ class Convert():
                    
             # Reading projections.
             ind = range(projections_start, projections_end, projections_step)
-            logger.info("projections: Start = %d, End = %d, Step = %d", projections_start, projections_end, projections_step)
+            logger.info("projections: Start = [%d], End = [%d], Step = [%d]", projections_start, projections_end, projections_step)
 
             for m in range(len(ind)):
                 for n in range(projections_digits):
-                    logger.info("n = %d, ind[m] %d < %d", n, ind[m], np.power(10, n + 1))
+                    logger.info("n = [%d], ind[m] [%d] < [%d]", n, ind[m], np.power(10, n + 1))
                     if ind[m] < np.power(10, n + 1):
                         fileName = dataFile + projections_file_index[n] + str(ind[m]) + '.' + dataExtension
-                        logger.info("Generating file names: %s", fileName)
+                        logger.info("Generating file names: [%s]", fileName)
                         break
 
                 if os.path.isfile(fileName):
-                    logger.info("Reading projection file: %s", os.path.realpath(fileName))
-                    logger.info("data type: %s", data_type)
+                    logger.info("Reading projection file: [%s]", os.path.realpath(fileName))
+                    logger.info("data type: [%s]", data_type)
                     if (data_type is 'hdf4'):
                         f = Hdf4()
                         tmpdata = f.read(fileName,
@@ -275,19 +288,19 @@ class Convert():
 
             # Reading white fields.
             ind = range(white_start, white_end, white_step)
-            logger.info("white: Start = %d, End = %d, Step = %d", white_start, white_end, white_step)
+            logger.info("white: Start = [%d], End = [%d], Step = [%d]", white_start, white_end, white_step)
             
             for m in range(len(ind)):
                 for n in range(white_digits):
-                    logger.info("n = %d, ind[m] %d < %d", n, ind[m], np.power(10, n + 1))
+                    logger.info("n = [%d], ind[m] [%d] < [%d]", n, ind[m], np.power(10, n + 1))
                     if ind[m] < np.power(10, n + 1):
                         fileName = dataFileWhite + white_file_index[n] + str(ind[m]) + '.' + dataExtension
                         logger.info(fileName)
                         break
 
                 if os.path.isfile(fileName):
-                    logger.info("Reading white file: %s", os.path.realpath(fileName))
-                    logger.info("data type: %s", data_type)
+                    logger.info("Reading white file: [%s]", os.path.realpath(fileName))
+                    logger.info("data type: [%s]", data_type)
                     if (data_type is 'hdf4'):
                         f = Hdf4()
                         tmpdata = f.read(fileName,
@@ -322,23 +335,25 @@ class Convert():
             if len(ind) > 0:
                 TomoObj.data_white = inputData
             else:
+                # Fabricate a one white field
                 nx, ny, nz = np.shape(TomoObj.data)
                 TomoObj.data_white = np.ones((nx,ny,1))
                 
             # Reading dark fields.
             ind = range(dark_start, dark_end, dark_step)
-            logger.info("dark: Start = %d, End = %d, Step = %d", dark_start, dark_end, dark_step)
+            logger.info("dark: Start = [%d], End = [%d], Step = [%d]", dark_start, dark_end, dark_step)
             
             for m in range(len(ind)):
                 for n in range(dark_digits):
+                    logger.info("n = [%d], ind[m] [%d] < [%d]", n, ind[m], np.power(10, n + 1))
                     if ind[m] < np.power(10, n + 1):
                         fileName = dataFileDark + dark_file_index[n] + str(ind[m]) + '.' + dataExtension
                         logger.info(fileName)
                         break
 
                 if os.path.isfile(fileName):
-                    logger.info("Reading dark file: %s", os.path.realpath(fileName))
-                    logger.info("data type: %s", data_type)
+                    logger.info("Reading dark file: [%s]", os.path.realpath(fileName))
+                    logger.info("data type: [%s]", data_type)
                     if (data_type is 'hdf4'):
                         f = Hdf4()
                         tmpdata = f.read(fileName,
@@ -373,6 +388,7 @@ class Convert():
             if len(ind) > 0:
                 TomoObj.data_dark = inputData
             else:
+                # Fabricate a zero dark field
                 nx, ny, nz = np.shape(TomoObj.data)
                 TomoObj.data_dark = np.zeros((nx,ny,1))
                 
@@ -382,32 +398,62 @@ class Convert():
             # Fabricate theta values
             TomoObj.theta = (z * float(projections_angle_range) / (len(z) - 1))
 
-            # Write HDF5 file.
-            # Open DataExchange file
-            f = DataExchangeFile(hdf5_file_name, mode='w') 
+            # Getting ready to save the Data Exchange file
 
-            # Create core HDF5 dataset in exchange group for projections_theta_range
-            # deep stack of x,y images /exchange/data
-            f.add_entry( DataExchangeEntry.data(data={'value': TomoObj.data, 'units':'counts', 'description': 'transmission', 'axes':'theta:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
-            f.add_entry( DataExchangeEntry.data(theta={'value': TomoObj.theta, 'units':'degrees'}))
-            f.add_entry( DataExchangeEntry.data(data_dark={'value': TomoObj.data_dark, 'units':'counts', 'axes':'theta_dark:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
-            f.add_entry( DataExchangeEntry.data(data_white={'value': TomoObj.data_white, 'units':'counts', 'axes':'theta_white:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
-            f.add_entry( DataExchangeEntry.data(title={'value': 'tomography_raw_projections'}))
-            logger.info("Sample name = %s", sample_name)
-            if (sample_name == None):
-                sample_name = end[0]
-                f.add_entry( DataExchangeEntry.sample( name={'value':sample_name}, description={'value':'Sample name was assigned by the HDF5 converter and based on the HDF5 file name'}))
-                logger.info("Assigned default file name: %s", end[0])
+            if (hdf5_file_name != 'dummy'):
+                logger.info("Data Exchange file is set to [%s]", hdf5_file_name)
+
+                # Get the file_name in lower case.
+                lFn = hdf5_file_name.lower()
+
+                # Split the string with the delimeter '.'
+                end = lFn.split('.')
+                logger.info(end)
+                # If the string has an extension.
+                if len(end) > 1:
+                    # Check.
+                    if end[len(end) - 1] == 'h5' or end[len(end) - 1] == 'hdf':
+                        hdf5_file_extension = True
+                        logger.info("HDF5 file extension is .h5 or .hdf")
+                    else:
+                        hdf5_file_extension = False
+                        logger.warning("HDF5 file saved with an extension that is not .h5 or .hdf")
+
+                # Create new folder.
+                dirPath = os.path.dirname(hdf5_file_name)
+                if not os.path.exists(dirPath):
+                    os.makedirs(dirPath)
+
+                # Write the Data Exchange HDF5 file.
+                # Open DataExchange file
+                f = DataExchangeFile(hdf5_file_name, mode='w') 
+
+                logger.info("Creating Data Exchange File [%s]", hdf5_file_name)
+
+                # Create core HDF5 dataset in exchange group for projections_theta_range
+                # deep stack of x,y images /exchange/data
+                logger.info("Adding projections to  Data Exchange File [%s]", hdf5_file_name)
+                f.add_entry( DataExchangeEntry.data(data={'value': TomoObj.data, 'units':'counts', 'description': 'transmission', 'axes':'theta:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
+                f.add_entry( DataExchangeEntry.data(theta={'value': TomoObj.theta, 'units':'degrees'}))
+                logger.info("Adding dark fields to  Data Exchange File [%s]", hdf5_file_name)
+                f.add_entry( DataExchangeEntry.data(data_dark={'value': TomoObj.data_dark, 'units':'counts', 'axes':'theta_dark:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
+                logger.info("Adding white fields to  Data Exchange File [%s]", hdf5_file_name)
+                f.add_entry( DataExchangeEntry.data(data_white={'value': TomoObj.data_white, 'units':'counts', 'axes':'theta_white:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
+                f.add_entry( DataExchangeEntry.data(title={'value': 'tomography_raw_projections'}))
+                if (sample_name == None):
+                    sample_name = end[0]
+                    f.add_entry( DataExchangeEntry.sample( name={'value':sample_name}, description={'value':'Sample name was assigned by the HDF5 converter and based on the HDF5 file name'}))
+                    logger.info("Sample name assigned by HDF5 converter using the file name [%s]", end[0])
+                else:
+                    f.add_entry( DataExchangeEntry.sample( name={'value':sample_name}, description={'value':'Sample name was read from the user log file'}))
+                    logger.info("Sample name assigned by user")
+                logger.info("Sample name = [%s]", sample_name)
+                                   
+                logger.info("Closing Data Exchange File [%s]", hdf5_file_name)
+                f.close()
+                logger.info("DONE!!!!. Created Data Exchange File [%s]", hdf5_file_name)
             else:
-                f.add_entry( DataExchangeEntry.sample( name={'value':sample_name}, description={'value':'Sample name was read from the user log file'}))
-                logger.info("Assigned file name from user log")
-                               
-            f.close()
-        else:
-            if os.path.isfile(hdf5_file_name):
-                print 'HDF5 already exists. Nothing to do ...'
-            if (hdf5_file_extension == False):
-                print "HDF file extension must be .h5 or .hdf"
+                logger.warning("Data Exchange file name was not set => read series of files in memory only.")
 
     def multiple_stack(TomoObj, file_name,
                 hdf5_file_name,
@@ -515,22 +561,22 @@ class Convert():
             # Prepare hdf file names to be read.
             if white_file_name == None:
                     white_file_name = file_name
-                    logger.info("File Name White = %s", white_file_name)
+                    logger.info("File Name White = [%s]", white_file_name)
             if dark_file_name == None:
                     dark_file_name = file_name
-                    logger.info("File Name Dark = %s", dark_file_name)
+                    logger.info("File Name Dark = [%s]", dark_file_name)
 
-            logger.info("File Name Projections = %s", file_name)
-            logger.info("File Name White = %s", white_file_name)
-            logger.info("File Name Dark = %s", dark_file_name)
+            logger.info("File Name Projections = [%s]", file_name)
+            logger.info("File Name White = [%s]", white_file_name)
+            logger.info("File Name Dark = [%s]", dark_file_name)
 
             # Set default digits.
             if white_digits == -1:
                     white_digits = projections_digits
-                    logger.info("White digits = %s", white_digits)
+                    logger.info("White digits = [%s]", white_digits)
             if dark_digits == -1:
                     dark_digits = projections_digits
-                    logger.info("Dark digits= %s", dark_digits)
+                    logger.info("Dark digits= [%s]", dark_digits)
 
             if (data_type is 'spe'):
                 if file_name.endswith('SPE') or \
@@ -573,65 +619,65 @@ class Convert():
             # Reading projections.
             fileName = ''
             ind = range(projections_start, projections_end, projections_step)
-            logger.info("projections: Start = %d, End = %d, Step = %d", projections_start, projections_end, projections_step)
+            logger.info("projections: Start = [%d], End = [%d], Step = [%d]", projections_start, projections_end, projections_step)
             for m in range(len(ind)):
                 for n in range(projections_digits):
-                    logger.info("n = %d, ind[m] %d < %d", n, ind[m], np.power(10, n + 1))
+                    logger.info("n = [%d], ind[m] [%d] < [%d]", n, ind[m], np.power(10, n + 1))
                     if ind[m] < np.power(10, n + 1):
                         fileName = dataFile + projections_file_index[n] + str(ind[m]) + '.' + dataExtension
-                        logger.info("Generating file names: %s", fileName)
+                        logger.info("Generating file names: [%s]", fileName)
                         break
                 if os.path.isfile(fileName):
                     # spe_data = spe.PrincetonSPEFile(fileName)
                     # logger.info(spe_data)
 
-                    logger.info("Reading projections file: %s", os.path.realpath(fileName))
-                    logger.info("data type: %s", data_type)
+                    logger.info("Reading projections file: [%s]", os.path.realpath(fileName))
+                    logger.info("data type: [%s]", data_type)
                     if (data_type is 'spe'):
                         f = Spe()
                         tmpdata = f.read(fileName)
-                        logger.info("tmpData: %d, %d, %d", tmpdata.shape[0], tmpdata.shape[1], tmpdata.shape[2])  
+                        logger.info("tmpData: [%d], [%d], [%d]", tmpdata.shape[0], tmpdata.shape[1], tmpdata.shape[2])  
                         if m == 0: # Get resolution once.
                             inputData = np.vstack([tmpdata])
                         else:
                             inputData = np.concatenate((inputData, tmpdata), axis=0)
-                            logger.info("InputData: %d, %d, %d", inputData.shape[0], inputData.shape[1], inputData.shape[2])
+                            logger.info("InputData: [%d], [%d], [%d]", inputData.shape[0], inputData.shape[1], inputData.shape[2])
 
             if len(ind) > 0:
                 TomoObj.data = inputData
                 logger.info("Done loading projections")
-                logger.info("Data: %d, %d, %d", TomoObj.data.shape[0], TomoObj.data.shape[1], TomoObj.data.shape[2])  
+                logger.info("Data: [%d], [%d], [%d]", TomoObj.data.shape[0], TomoObj.data.shape[1], TomoObj.data.shape[2])  
 
             # Reading white.
             fileName = ''
             ind = range(white_start, white_end, white_step)
-            logger.info("white: Start = %d, End = %d, Step = %d", white_start, white_end, white_step)
+            logger.info("white: Start = [%d], End = [%d], Step = [%d]", white_start, white_end, white_step)
             for m in range(len(ind)):
                 for n in range(white_digits):
                     if ind[m] < np.power(10, n + 1):
                         fileName = dataFile + white_file_index[n] + str(ind[m]) + '.' + dataExtension
-                        logger.info("Generating file names: %s", fileName)
+                        logger.info("Generating file names: [%s]", fileName)
                         break
                 if os.path.isfile(fileName):
                     # spe_data = spe.PrincetonSPEFile(fileName)
                     # logger.info(spe_data)
 
-                    logger.info("Reading white file: %s", os.path.realpath(fileName))
-                    logger.info("data type: %s", data_type)
+                    logger.info("Reading white file: [%s]", os.path.realpath(fileName))
+                    logger.info("data type: [%s]", data_type)
                     if (data_type is 'spe'):
                         f = Spe()
                         tmpdata = f.read(fileName)
-                        logger.info("tmpData: %d, %d, %d", tmpdata.shape[0], tmpdata.shape[1], tmpdata.shape[2])  
+                        logger.info("tmpData: [%d], [%d], [%d]", tmpdata.shape[0], tmpdata.shape[1], tmpdata.shape[2])  
                         if m == 0: # Get resolution once.
                             inputData = np.vstack([tmpdata])
                         else:
                             inputData = np.concatenate((inputData, tmpdata), axis=0)
-                            logger.info("InputData: %d, %d, %d", inputData.shape[0], inputData.shape[1], inputData.shape[2])
+                            logger.info("InputData: [%d], [%d], [%d]", inputData.shape[0], inputData.shape[1], inputData.shape[2])
 
             if len(ind) > 0:
                 TomoObj.data_white = inputData
                 logger.info("Done loading white")
-                logger.info("WhiteData: %d, %d, %d", TomoObj.data_white.shape[0], TomoObj.data_white.shape[1], TomoObj.data_white.shape[2])
+                logger.info("WhiteData: [%d], [%d], [%d]", TomoObj.data_white.shape[0], TomoObj.data_white.shape[1], TomoObj.data_white.shape[2])
             else:
                 nx, ny, nz = np.shape(TomoObj.data)
                 TomoObj.data_white = np.ones((1, ny, nx))
@@ -639,29 +685,29 @@ class Convert():
             # Reading dark.
             fileName = ''
             ind = range(dark_start, dark_end, dark_step)
-            logger.info("dark: Start = %d, End = %d, Step = %d", dark_start, dark_end, dark_step)
+            logger.info("dark: Start = [%d], End = [%d], Step = [%d]", dark_start, dark_end, dark_step)
             for m in range(len(ind)):
                 for n in range(dark_digits):
-                    logger.info("n = %d, ind[m] %d < %d", n, ind[m], np.power(10, n + 1))
+                    logger.info("n = [%d], ind[m] [%d] < [%d]", n, ind[m], np.power(10, n + 1))
                     if ind[m] < np.power(10, n + 1):
                         fileName = dataFile + dark_file_index[n] + str(ind[m]) + '.' + dataExtension
-                        logger.info("Generating file names: %s", fileName)
+                        logger.info("Generating file names: [%s]", fileName)
                         break
                 if os.path.isfile(fileName):
                     # spe_data = spe.PrincetonSPEFile(fileName)
                     # logger.info(spe_data)
 
-                    logger.info("Reading dark file: %s", os.path.realpath(fileName))
-                    logger.info("data type: %s", data_type)
+                    logger.info("Reading dark file: [%s]", os.path.realpath(fileName))
+                    logger.info("data type: [%s]", data_type)
                     if (data_type is 'spe'):
                         f = Spe()
                         tmpdata = f.read(fileName)
-                        logger.info("tmpData: %d, %d, %d", tmpdata.shape[0], tmpdata.shape[1], tmpdata.shape[2])  
+                        logger.info("tmpData: [%d], [%d], [%d]", tmpdata.shape[0], tmpdata.shape[1], tmpdata.shape[2])  
                         if m == 0: # Get resolution once.
                             inputData = np.vstack([tmpdata])
                         else:
                             inputData = np.concatenate((inputData, tmpdata), axis=0)
-                            logger.info("InputData: %d, %d, %d", inputData.shape[0], inputData.shape[1], inputData.shape[2])
+                            logger.info("InputData: [%d], [%d], [%d]", inputData.shape[0], inputData.shape[1], inputData.shape[2])
 
             if len(ind) > 0:
                 TomoObj.data_dark = inputData
@@ -683,11 +729,11 @@ class Convert():
             f.add_entry( DataExchangeEntry.data(data_dark={'value': TomoObj.data_dark, 'units':'counts', 'axes':'theta_dark:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
             f.add_entry( DataExchangeEntry.data(data_white={'value': TomoObj.data_white, 'units':'counts', 'axes':'theta_white:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
             f.add_entry( DataExchangeEntry.data(title={'value': 'tomography_raw_projections'}))
-            logger.info("Sample name = %s", sample_name)
+            logger.info("Sample name = [%s]", sample_name)
             if (sample_name == None):
                 sample_name = end[0]
                 f.add_entry( DataExchangeEntry.sample( name={'value':sample_name}, description={'value':'Sample name was assigned by the HDF5 converter and based on the HDF5 file name'}))
-                logger.info("Assigned default file name: %s", end[0])
+                logger.info("Assigned default file name: [%s]", end[0])
             else:
                 f.add_entry( DataExchangeEntry.sample( name={'value':sample_name}, description={'value':'Sample name was read from the user log file'}))
                 logger.info("Assigned file name from user log")                    
@@ -817,11 +863,11 @@ class Convert():
             f.add_entry( DataExchangeEntry.data(data_dark={'value': TomoObj.data_dark, 'units':'counts', 'axes':'theta_dark:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
             f.add_entry( DataExchangeEntry.data(data_white={'value': TomoObj.data_white, 'units':'counts', 'axes':'theta_white:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
             f.add_entry( DataExchangeEntry.data(title={'value': 'tomography_raw_projections'}))
-            logger.info("Sample name = %s", sample_name)
+            logger.info("Sample name = [%s]", sample_name)
             if (sample_name == None):
                 sample_name = end[0]
                 f.add_entry( DataExchangeEntry.sample( name={'value':sample_name}, description={'value':'Sample name was assigned by the HDF5 converter and based on the HDF5 file name'}))
-                logger.info("Assigned default file name: %s", end[0])
+                logger.info("Assigned default file name: [%s]", end[0])
             else:
                 f.add_entry( DataExchangeEntry.sample( name={'value':sample_name}, description={'value':'Sample name was read from the user log file'}))
                 logger.info("Assigned file name from user log")                    
@@ -899,13 +945,13 @@ class Convert():
             if not os.path.exists(dirPath):
                 os.makedirs(dirPath)
 
-            logger.info("File Name Projections = %s", file_name)
-            logger.info("File Name White = %s", white_file_name)
-            logger.info("File Name Dark = %s", dark_file_name)
+            logger.info("File Name Projections = [%s]", file_name)
+            logger.info("File Name White = [%s]", white_file_name)
+            logger.info("File Name Dark = [%s]", dark_file_name)
 
             if os.path.isfile(file_name):
-                logger.info("Reading projections file: %s", os.path.realpath(file_name))
-                logger.info("data type: %s", projections_data_type)
+                logger.info("Reading projections file: [%s]", os.path.realpath(file_name))
+                logger.info("data type: [%s]", projections_data_type)
                 if (projections_data_type is 'txrm'):
                     f = Txrm()
                     tmpdata = f.read(file_name)
@@ -916,8 +962,8 @@ class Convert():
                     TomoObj.data = tmpdata
                 
             if os.path.isfile(white_file_name):
-                logger.info("Reading white file: %s", os.path.realpath(white_file_name))
-                logger.info("data type: %s", white_data_type)
+                logger.info("Reading white file: [%s]", os.path.realpath(white_file_name))
+                logger.info("data type: [%s]", white_data_type)
                 if (white_data_type is 'xrm'):
                     f = Xrm()
                     tmpdata = f.read(white_file_name)
@@ -933,8 +979,8 @@ class Convert():
                 TomoObj.data_white = np.ones((nx,ny,1))
 
             if os.path.isfile(dark_file_name):
-                logger.info("Reading dark file: %s", os.path.realpath(dark_file_name))
-                logger.info("data type: %s", dark_data_type)
+                logger.info("Reading dark file: [%s]", os.path.realpath(dark_file_name))
+                logger.info("data type: [%s]", dark_data_type)
                 if (dark_data_type is 'xrm'):
                     f = Xrm()
                     tmpdata = f.read(dark_file_name)
@@ -961,11 +1007,11 @@ class Convert():
             f.add_entry( DataExchangeEntry.data(data_dark={'value': TomoObj.data_dark, 'units':'counts', 'axes':'theta_dark:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
             f.add_entry( DataExchangeEntry.data(data_white={'value': TomoObj.data_white, 'units':'counts', 'axes':'theta_white:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
             f.add_entry( DataExchangeEntry.data(title={'value': 'tomography_raw_projections'}))
-            logger.info("Sample name = %s", sample_name)
+            logger.info("Sample name = [%s]", sample_name)
             if (sample_name == None):
                 sample_name = end[0]
                 f.add_entry( DataExchangeEntry.sample( name={'value':sample_name}, description={'value':'Sample name was assigned by the HDF5 converter and based on the HDF5 file name'}))
-                logger.info("Assigned default file name: %s", end[0])
+                logger.info("Assigned default file name: [%s]", end[0])
             else:
                 f.add_entry( DataExchangeEntry.sample( name={'value':sample_name}, description={'value':'Sample name was read from the user log file'}))
                 logger.info("Assigned file name from user log")
