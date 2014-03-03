@@ -14,10 +14,10 @@ import re
 
 def main():
 
-    file_name = '/Users/decarlo/data/SLS/Blakely/Blakely.tif'
-    log_file = '/Users/decarlo/data/SLS/Blakely/Blakely.log'
+    file_name = '/local/data/Blakely_SLS/Blakely.tif'
+    log_file = '/local/data/Blakely_SLS/Blakely.log'
 
-    hdf5_file_name = '/Users/decarlo/data/SLS/Blakely_SLS_2011.h5'
+    hdf5_file_name = '/local/data/Blakely_SLS/Blakely_SLS_2011_01.h5'
 
     #Read SLS log file data
     file = open(log_file, 'r')

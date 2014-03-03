@@ -13,7 +13,7 @@ import data_exchange as dx
 def main():
 
     file_name = '/local/data/Hornby_APS/Hornby_19keV_10x_.hdf'
-    hdf5_file_name = '/local/data/Hornby_APS/Hornby_19keV_10x_APS_2011.h5'
+    hdf5_file_name = '/local/data/Hornby_APS/Hornby_19keV_10x_APS_2011_01.h5'
 
     white_start = 1
     white_end = 2
@@ -33,7 +33,7 @@ def main():
                             dark_start = dark_start,
                             dark_end = dark_end,
                             projections_digits = 5,
-                            data_type = 'hdf4'
+                            data_type = 'hdf4',
                             log='WARNING'
                             )
 if __name__ == "__main__":

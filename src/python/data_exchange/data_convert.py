@@ -238,11 +238,11 @@ class Convert():
                    
             # Reading projections.
             ind = range(projections_start, projections_end, projections_step)
-            logger.info("projections: Start = [%d], End = [%d], Step = [%d]", projections_start, projections_end, projections_step)
+            #logger.info("projections: Start = [%d], End = [%d], Step = [%d]", projections_start, projections_end, projections_step)
 
             for m in range(len(ind)):
                 for n in range(projections_digits):
-                    logger.info("n = [%d], ind[m] [%d] < [%d]", n, ind[m], np.power(10, n + 1))
+                    #logger.info("n = [%d], ind[m] [%d] < [%d]", n, ind[m], np.power(10, n + 1))
                     if ind[m] < np.power(10, n + 1):
                         fileName = dataFile + projections_file_index[n] + str(ind[m]) + '.' + dataExtension
                         logger.info("Generating file names: [%s]", fileName)
@@ -288,11 +288,11 @@ class Convert():
 
             # Reading white fields.
             ind = range(white_start, white_end, white_step)
-            logger.info("white: Start = [%d], End = [%d], Step = [%d]", white_start, white_end, white_step)
+            #logger.info("white: Start = [%d], End = [%d], Step = [%d]", white_start, white_end, white_step)
             
             for m in range(len(ind)):
                 for n in range(white_digits):
-                    logger.info("n = [%d], ind[m] [%d] < [%d]", n, ind[m], np.power(10, n + 1))
+                    #logger.info("n = [%d], ind[m] [%d] < [%d]", n, ind[m], np.power(10, n + 1))
                     if ind[m] < np.power(10, n + 1):
                         fileName = dataFileWhite + white_file_index[n] + str(ind[m]) + '.' + dataExtension
                         logger.info(fileName)
@@ -341,11 +341,11 @@ class Convert():
                 
             # Reading dark fields.
             ind = range(dark_start, dark_end, dark_step)
-            logger.info("dark: Start = [%d], End = [%d], Step = [%d]", dark_start, dark_end, dark_step)
+            #logger.info("dark: Start = [%d], End = [%d], Step = [%d]", dark_start, dark_end, dark_step)
             
             for m in range(len(ind)):
                 for n in range(dark_digits):
-                    logger.info("n = [%d], ind[m] [%d] < [%d]", n, ind[m], np.power(10, n + 1))
+                    #logger.info("n = [%d], ind[m] [%d] < [%d]", n, ind[m], np.power(10, n + 1))
                     if ind[m] < np.power(10, n + 1):
                         fileName = dataFileDark + dark_file_index[n] + str(ind[m]) + '.' + dataExtension
                         logger.info(fileName)
