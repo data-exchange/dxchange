@@ -12,10 +12,10 @@ import data_exchange as dx
 
 def main():
 
-    file_name = '/local/data/databank/AS/Mayo_tooth_AS/SAMPLE_T_.tif'
-    dark_file_name = '/local/data/databank/AS/Mayo_tooth_AS/BG__AFTER_.tif'
-    white_file_name = '/local/data/databank/AS/Mayo_tooth_AS/BG__BEFORE_.tif'
-    hdf5_file_name = '/local/data/databank/dataExchange/microCT/Australian.h5'
+    file_name = '/Users/decarlo/data/databank/AS/Mayo_tooth_AS/SAMPLE_T_.tif'
+    dark_file_name = '/Users/decarlo/data/databank/AS/Mayo_tooth_AS/DF__AFTER_.tif'
+    white_file_name = '/Users/decarlo/data/databank/AS/Mayo_tooth_AS/BG__BEFORE_.tif'
+    hdf5_file_name = '/Users/decarlo/data/databank/dataExchange/microCT/Australian_01.h5'
     sample_name = 'Teeth'
 
     projections_start = 0

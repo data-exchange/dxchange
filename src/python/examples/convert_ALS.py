@@ -16,7 +16,7 @@ import re
 def main():
 
     file_name = '/Users/decarlo/data/ALS/blakely_raw/blakelyALS_.tif'
-    dark_file_name = '//Users/decarlo/data/ALS/blakely_raw/blakelyALSdrk_.tif'
+    dark_file_name = '/Users/decarlo/data/ALS/blakely_raw/blakelyALSdrk_.tif'
     white_file_name = '/Users/decarlo/data/ALS/blakely_raw/blakelyALSbak_.tif'
     log_file = '/Users/decarlo/data/ALS/blakely_raw/blakelyALS.sct'
 

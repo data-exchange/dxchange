@@ -12,10 +12,10 @@ import data_exchange as dx
 
 def main():
 
-    file_name = '/local/data/databank/APS_1_ID/APS1ID_Cat4B_2/CAT4B_2_.tif'
-    log_file = '/local/data/databank/APS_1_ID/APS1ID_Cat4B_2/CAT4B_2_TomoStillScan.dat'
+    file_name = '/Users/decarlo/data/databank/APS_1_ID/APS1ID_Cat4B_2/CAT4B_2_.tif'
+    log_file = '/Users/decarlo/data/databank/APS_1_ID/APS1ID_Cat4B_2/CAT4B_2_TomoStillScan.dat'
 
-    hdf5_file_name = '/local/data/databank/dataExchange/microCT/CAT4B_2.h5'
+    hdf5_file_name = '/Users/decarlo/data/databank/dataExchange/microCT/CAT4B_2.h5'
 
     # not tested need to add log_file parser
     projections_start = 943
