@@ -10,24 +10,24 @@ import logging
 logger = logging.getLogger("data_exchange")
 
 class Convert():
-    def __init__(TomoObj, data=None, data_white=None, data_dark=None,
+    def __init__(self, data=None, data_white=None, data_dark=None,
                  theta=None, log='INFO'):
         
-        TomoObj.data = data
-        TomoObj.data_white = data_white
-        TomoObj.data_dark = data_dark
-        TomoObj.theta = theta
+        self.data = data
+        self.data_white = data_white
+        self.data_dark = data_dark
+        self.theta = theta
 
         # Logging init.
-        TomoObj._log_level = str(log).upper()
-        TomoObj._init_log()
+        self._log_level = str(log).upper()
+        self._init_log()
 
         # Prepare logging file.
-        TomoObj._set_log_file()
+        self._set_log_file()
 
         logger.debug("Data Exchange initialization [ok]")
     
-    def series_of_images(TomoObj, file_name,
+    def series_of_images(self, file_name,
                 projections_start=0,
                 projections_end=0,
                 projections_step=1,
@@ -123,8 +123,8 @@ class Convert():
         """
         
         # Logging init.
-        TomoObj._log_level = str(log).upper()
-        TomoObj._init_log()
+        self._log_level = str(log).upper()
+        self._init_log()
         
         # Initialize Data Exchange file extension to false.
         hdf5_file_extension = False
@@ -162,7 +162,7 @@ class Convert():
                 logger.info("Please use the Data Exchange reader instead")
 
         else:
-            # Read the series of files and load them in TomoObj.data, TomoObj.data_white, TomoObj.data_dark
+            # Read the series of files and load them in self.data, self.data_white, self.data_dark
             
             # Set default prefix for white and dark.
             if white_file_name == None:
@@ -284,7 +284,7 @@ class Convert():
                                     )
                     inputData[m, :, :] = tmpdata
             if len(ind) > 0:
-                TomoObj.data = inputData
+                self.data = inputData
 
             # Reading white fields.
             ind = range(white_start, white_end, white_step)
@@ -333,11 +333,11 @@ class Convert():
                                         )
                     inputData[m, :, :] = tmpdata
             if len(ind) > 0:
-                TomoObj.data_white = inputData
+                self.data_white = inputData
             else:
                 # Fabricate a one white field
-                nx, ny, nz = np.shape(TomoObj.data)
-                TomoObj.data_white = np.ones((nx,ny,1))
+                nx, ny, nz = np.shape(self.data)
+                self.data_white = np.ones((nx,ny,1))
                 
             # Reading dark fields.
             ind = range(dark_start, dark_end, dark_step)
@@ -386,17 +386,17 @@ class Convert():
                                         )
                     inputData[m, :, :] = tmpdata
             if len(ind) > 0:
-                TomoObj.data_dark = inputData
+                self.data_dark = inputData
             else:
                 # Fabricate a zero dark field
-                nx, ny, nz = np.shape(TomoObj.data)
-                TomoObj.data_dark = np.zeros((nx,ny,1))
+                nx, ny, nz = np.shape(self.data)
+                self.data_dark = np.zeros((nx,ny,1))
                 
             # Fabricate theta values.
             z = np.arange(projections_end - projections_start);
                 
             # Fabricate theta values
-            TomoObj.theta = (z * float(projections_angle_range) / (len(z) - 1))
+            self.theta = (z * float(projections_angle_range) / (len(z) - 1))
 
             # Getting ready to save the Data Exchange file
 
@@ -433,12 +433,12 @@ class Convert():
                 # Create core HDF5 dataset in exchange group for projections_theta_range
                 # deep stack of x,y images /exchange/data
                 logger.info("Adding projections to  Data Exchange File [%s]", hdf5_file_name)
-                f.add_entry( DataExchangeEntry.data(data={'value': TomoObj.data, 'units':'counts', 'description': 'transmission', 'axes':'theta:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
-                f.add_entry( DataExchangeEntry.data(theta={'value': TomoObj.theta, 'units':'degrees'}))
+                f.add_entry( DataExchangeEntry.data(data={'value': self.data, 'units':'counts', 'description': 'transmission', 'axes':'theta:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
+                f.add_entry( DataExchangeEntry.data(theta={'value': self.theta, 'units':'degrees'}))
                 logger.info("Adding dark fields to  Data Exchange File [%s]", hdf5_file_name)
-                f.add_entry( DataExchangeEntry.data(data_dark={'value': TomoObj.data_dark, 'units':'counts', 'axes':'theta_dark:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
+                f.add_entry( DataExchangeEntry.data(data_dark={'value': self.data_dark, 'units':'counts', 'axes':'theta_dark:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
                 logger.info("Adding white fields to  Data Exchange File [%s]", hdf5_file_name)
-                f.add_entry( DataExchangeEntry.data(data_white={'value': TomoObj.data_white, 'units':'counts', 'axes':'theta_white:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
+                f.add_entry( DataExchangeEntry.data(data_white={'value': self.data_white, 'units':'counts', 'axes':'theta_white:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
                 f.add_entry( DataExchangeEntry.data(title={'value': 'tomography_raw_projections'}))
                 if (sample_name == None):
                     sample_name = end[0]
@@ -455,7 +455,7 @@ class Convert():
             else:
                 logger.warning("Data Exchange file name was not set => read series of files in memory only.")
 
-    def multiple_stack(TomoObj, file_name,
+    def multiple_stack(self, file_name,
                 hdf5_file_name,
                 projections_start=0,
                 projections_end=1,
@@ -644,9 +644,9 @@ class Convert():
                             logger.info("InputData: [%d], [%d], [%d]", inputData.shape[0], inputData.shape[1], inputData.shape[2])
 
             if len(ind) > 0:
-                TomoObj.data = inputData
+                self.data = inputData
                 logger.info("Done loading projections")
-                logger.info("Data: [%d], [%d], [%d]", TomoObj.data.shape[0], TomoObj.data.shape[1], TomoObj.data.shape[2])  
+                logger.info("Data: [%d], [%d], [%d]", self.data.shape[0], self.data.shape[1], self.data.shape[2])  
 
             # Reading white.
             fileName = ''
@@ -675,12 +675,12 @@ class Convert():
                             logger.info("InputData: [%d], [%d], [%d]", inputData.shape[0], inputData.shape[1], inputData.shape[2])
 
             if len(ind) > 0:
-                TomoObj.data_white = inputData
+                self.data_white = inputData
                 logger.info("Done loading white")
-                logger.info("WhiteData: [%d], [%d], [%d]", TomoObj.data_white.shape[0], TomoObj.data_white.shape[1], TomoObj.data_white.shape[2])
+                logger.info("WhiteData: [%d], [%d], [%d]", self.data_white.shape[0], self.data_white.shape[1], self.data_white.shape[2])
             else:
-                nx, ny, nz = np.shape(TomoObj.data)
-                TomoObj.data_white = np.ones((1, ny, nx))
+                nx, ny, nz = np.shape(self.data)
+                self.data_white = np.ones((1, ny, nx))
 
             # Reading dark.
             fileName = ''
@@ -710,12 +710,12 @@ class Convert():
                             logger.info("InputData: [%d], [%d], [%d]", inputData.shape[0], inputData.shape[1], inputData.shape[2])
 
             if len(ind) > 0:
-                TomoObj.data_dark = inputData
+                self.data_dark = inputData
                 logger.info("Done loading dark")
-                logger.info(TomoObj.data_dark.shape[0], TomoObj.data_dark.shape[1], TomoObj.data_dark.shape[2])  
+                logger.info(self.data_dark.shape[0], self.data_dark.shape[1], self.data_dark.shape[2])  
             else:
-                nx, ny, nz = np.shape(TomoObj.data)
-                TomoObj.data_dark = np.zeros((1, ny, nx))
+                nx, ny, nz = np.shape(self.data)
+                self.data_dark = np.zeros((1, ny, nx))
 
             # Write HDF5 file.
             # Open DataExchange file
@@ -724,10 +724,10 @@ class Convert():
             logger.info("Writing the HDF5 file")
             # Create core HDF5 dataset in exchange group for projections_theta_range
             # deep stack of x,y images /exchange/data
-            f.add_entry( DataExchangeEntry.data(data={'value': TomoObj.data, 'units':'counts', 'description': 'transmission', 'axes':'theta:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
-            f.add_entry( DataExchangeEntry.data(theta={'value': TomoObj.theta, 'units':'degrees'}))
-            f.add_entry( DataExchangeEntry.data(data_dark={'value': TomoObj.data_dark, 'units':'counts', 'axes':'theta_dark:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
-            f.add_entry( DataExchangeEntry.data(data_white={'value': TomoObj.data_white, 'units':'counts', 'axes':'theta_white:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
+            f.add_entry( DataExchangeEntry.data(data={'value': self.data, 'units':'counts', 'description': 'transmission', 'axes':'theta:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
+            f.add_entry( DataExchangeEntry.data(theta={'value': self.theta, 'units':'degrees'}))
+            f.add_entry( DataExchangeEntry.data(data_dark={'value': self.data_dark, 'units':'counts', 'axes':'theta_dark:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
+            f.add_entry( DataExchangeEntry.data(data_white={'value': self.data_white, 'units':'counts', 'axes':'theta_white:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
             f.add_entry( DataExchangeEntry.data(title={'value': 'tomography_raw_projections'}))
             logger.info("Sample name = [%s]", sample_name)
             if (sample_name == None):
@@ -745,7 +745,7 @@ class Convert():
             if (hdf5_file_extension == False):
                 print "HDF file extension must be .h5 or .hdf"
 
-    def nexus(TomoObj, file_name,
+    def nexus(self, file_name,
                   hdf5_file_name,
                   projections_start=None,
                   projections_end=None,
@@ -794,7 +794,7 @@ class Convert():
             Desired output data type.
         """
         print "Reading NeXus file ..."
-        TomoObj.file_name = file_name
+        self.file_name = file_name
 
         # Initialize f to null.
         f = None
@@ -814,7 +814,7 @@ class Convert():
         # If f != None the call read on it.
         if not f == None:
             # Read data from exchange group.
-            TomoObj.data = f.read(file_name,
+            self.data = f.read(file_name,
                                 array_name=array_name,
                                 x_start=projections_start,
                                 x_end=projections_end,
@@ -828,7 +828,7 @@ class Convert():
 
             # Read white field data from exchange group.
             print white_start, white_end, slices_start, slices_end
-            TomoObj.data_white = f.read(file_name,
+            self.data_white = f.read(file_name,
                                 array_name=array_name,
                                 x_start=white_start,
                                 x_end=white_end,
@@ -840,7 +840,7 @@ class Convert():
                                 z_step=pixels_step).astype(dtype)
 
             # Read dark field data from exchange group.
-            TomoObj.data_dark = f.read(file_name,
+            self.data_dark = f.read(file_name,
                                 array_name=array_name,
                                 x_start=dark_start,
                                 x_end=dark_end,
@@ -858,10 +858,10 @@ class Convert():
             logger.info("Writing the HDF5 file")
             # Create core HDF5 dataset in exchange group for projections_theta_range
             # deep stack of x,y images /exchange/data
-            f.add_entry( DataExchangeEntry.data(data={'value': TomoObj.data, 'units':'counts', 'description': 'transmission', 'axes':'theta:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
-            f.add_entry( DataExchangeEntry.data(theta={'value': TomoObj.theta, 'units':'degrees'}))
-            f.add_entry( DataExchangeEntry.data(data_dark={'value': TomoObj.data_dark, 'units':'counts', 'axes':'theta_dark:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
-            f.add_entry( DataExchangeEntry.data(data_white={'value': TomoObj.data_white, 'units':'counts', 'axes':'theta_white:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
+            f.add_entry( DataExchangeEntry.data(data={'value': self.data, 'units':'counts', 'description': 'transmission', 'axes':'theta:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
+            f.add_entry( DataExchangeEntry.data(theta={'value': self.theta, 'units':'degrees'}))
+            f.add_entry( DataExchangeEntry.data(data_dark={'value': self.data_dark, 'units':'counts', 'axes':'theta_dark:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
+            f.add_entry( DataExchangeEntry.data(data_white={'value': self.data_white, 'units':'counts', 'axes':'theta_white:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
             f.add_entry( DataExchangeEntry.data(title={'value': 'tomography_raw_projections'}))
             logger.info("Sample name = [%s]", sample_name)
             if (sample_name == None):
@@ -877,7 +877,7 @@ class Convert():
         else:
             print 'Unsupported file.'
 
-    def stack(TomoObj, file_name,
+    def stack(self, file_name,
                 projections_data_type='txrm',
                 white_file_name='',
                 white_data_type='xrm',
@@ -920,8 +920,8 @@ class Convert():
         """
 
         # Logging init.
-        TomoObj._log_level = str(log).upper()
-        TomoObj._init_log()
+        self._log_level = str(log).upper()
+        self._init_log()
         
         # Initialize Data Exchange file extension to false.
         hdf5_file_extension = False
@@ -946,7 +946,7 @@ class Convert():
                 logger.info("Please use the Data Exchange reader instead")
 
         else:
-            # Read the series of files and load them in TomoObj.data, TomoObj.data_white, TomoObj.data_dark
+            # Read the series of files and load them in self.data, self.data_white, self.data_dark
 
             logger.info("File Name Projections = [%s]", file_name)
             logger.info("File Name White = [%s]", white_file_name)
@@ -958,11 +958,11 @@ class Convert():
                 if (projections_data_type is 'txrm'):
                     f = Txrm()
                     tmpdata = f.read(file_name)
-                    TomoObj.data = tmpdata
+                    self.data = tmpdata
                 if (projections_data_type is 'edf'):
                     f = Esrf()
                     tmpdata = f.read(file_name)
-                    TomoObj.data = tmpdata
+                    self.data = tmpdata
                 
             if os.path.isfile(white_file_name):
                 logger.info("Reading white file: [%s]", os.path.realpath(white_file_name))
@@ -971,15 +971,15 @@ class Convert():
                     f = Xrm()
                     tmpdata = f.read(white_file_name)
                     #inputData[m, :, :] = tmpdata
-                    TomoObj.data_white = tmpdata
+                    self.data_white = tmpdata
                 if (white_data_type is 'edf'):
                     f = Esrf()
                     tmpdata = f.read(white_file_name)
                     #inputData[m, :, :] = tmpdata
-                    TomoObj.data_white = tmpdata
+                    self.data_white = tmpdata
             else:
-                nx, ny, nz = np.shape(TomoObj.data)
-                TomoObj.data_white = np.ones((nx,ny,1))
+                nx, ny, nz = np.shape(self.data)
+                self.data_white = np.ones((nx,ny,1))
 
             if os.path.isfile(dark_file_name):
                 logger.info("Reading dark file: [%s]", os.path.realpath(dark_file_name))
@@ -988,15 +988,15 @@ class Convert():
                     f = Xrm()
                     tmpdata = f.read(dark_file_name)
                     #inputData[m, :, :] = tmpdata
-                    TomoObj.data_dark = tmpdata
+                    self.data_dark = tmpdata
                 if (dark_data_type is 'edf'):
                     f = Esrf()
                     tmpdata = f.read(dark_file_name)
                     #inputData[m, :, :] = tmpdata
-                    TomoObj.data_dark = tmpdata
+                    self.data_dark = tmpdata
             else:
-                nx, ny, nz = np.shape(TomoObj.data)
-                TomoObj.data_dark = np.zeros((nx,ny,1))
+                nx, ny, nz = np.shape(self.data)
+                self.data_dark = np.zeros((nx,ny,1))
 
             # Getting ready to save the Data Exchange file
 
@@ -1033,12 +1033,12 @@ class Convert():
                 # Create core HDF5 dataset in exchange group for projections_theta_range
                 # deep stack of x,y images /exchange/data
                 logger.info("Adding projections to  Data Exchange File [%s]", hdf5_file_name)
-                f.add_entry( DataExchangeEntry.data(data={'value': TomoObj.data, 'units':'counts', 'description': 'transmission', 'axes':'theta:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
-                f.add_entry( DataExchangeEntry.data(theta={'value': TomoObj.theta, 'units':'degrees'}))
+                f.add_entry( DataExchangeEntry.data(data={'value': self.data, 'units':'counts', 'description': 'transmission', 'axes':'theta:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
+                f.add_entry( DataExchangeEntry.data(theta={'value': self.theta, 'units':'degrees'}))
                 logger.info("Adding dark fields to  Data Exchange File [%s]", hdf5_file_name)
-                f.add_entry( DataExchangeEntry.data(data_dark={'value': TomoObj.data_dark, 'units':'counts', 'axes':'theta_dark:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
+                f.add_entry( DataExchangeEntry.data(data_dark={'value': self.data_dark, 'units':'counts', 'axes':'theta_dark:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
                 logger.info("Adding white fields to  Data Exchange File [%s]", hdf5_file_name)
-                f.add_entry( DataExchangeEntry.data(data_white={'value': TomoObj.data_white, 'units':'counts', 'axes':'theta_white:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
+                f.add_entry( DataExchangeEntry.data(data_white={'value': self.data_white, 'units':'counts', 'axes':'theta_white:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
                 f.add_entry( DataExchangeEntry.data(title={'value': 'tomography_raw_projections'}))
                 if (sample_name == None):
                     sample_name = end[0]
@@ -1055,21 +1055,21 @@ class Convert():
             else:
                 logger.warning("Data Exchange file name was not set => read series of files in memory only.")
 
-    def _init_log(TomoObj):
+    def _init_log(self):
         # Top-level log setup.
         logger.setLevel(logging.DEBUG)
         
         # Terminal stram log.
         ch = logging.StreamHandler()
-        if TomoObj._log_level == 'DEBUG':
+        if self._log_level == 'DEBUG':
             ch.setLevel(logging.DEBUG)
-        elif TomoObj._log_level == 'INFO':
+        elif self._log_level == 'INFO':
             ch.setLevel(logging.INFO)
-        elif TomoObj._log_level == 'WARN':
+        elif self._log_level == 'WARN':
             ch.setLevel(logging.WARN)
-        elif TomoObj._log_level == 'WARNING':
+        elif self._log_level == 'WARNING':
             ch.setLevel(logging.WARNING)
-        elif TomoObj._log_level == 'ERROR':
+        elif self._log_level == 'ERROR':
             ch.setLevel(logging.ERROR)
         
         # Show date and time.
@@ -1079,7 +1079,7 @@ class Convert():
         # Update logger.
         logger.addHandler(ch)
         
-    def _set_log_file(TomoObj):
+    def _set_log_file(self):
         log_name = "data_exchange.log"
         
         # File log.
