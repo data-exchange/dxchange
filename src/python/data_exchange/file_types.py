@@ -480,7 +480,7 @@ class Spe(FileInterface):
              z_start=None,
              z_end=None,
              z_step=None,
-             verbose=False
+             verbose=True
              ):
         """ Read 3-D tomographic data from a spe file and the background/reference image for an xrm files.
 
@@ -521,9 +521,9 @@ class Spe(FileInterface):
             if verbose: print "reading data ... "
             array = spe_data.getData()
             #reader.openFile(file_name)
-            num_x, num_y, num_z = np.shape(array)
+            num_z, num_y, num_x = np.shape(array)
             if verbose:
-                print "done reading ", num_x, " images of (", num_z,"x", num_y, ") pixels"
+                print "done reading ", num_z, " images of (", num_y,"x", num_x, ") pixels"
 
         # Select desired y from whole data.
         # num_x, num_y, num_z = hdfdata.shape
@@ -547,9 +547,9 @@ class Spe(FileInterface):
             z_step = 1
 
         # Construct dataset from desired y.
-        dataset = array[x_start:x_end:x_step,
+        dataset = array[z_start:z_end:z_step,
                           y_start:y_end:y_step,
-                          z_start:z_end:z_step]
+                          x_start:x_end:x_step]
         return dataset
 
     def write(self):

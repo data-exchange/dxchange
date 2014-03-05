@@ -1,5 +1,5 @@
 """
-.. module:: main_convert_APS_13BM.py
+.. module:: convert_APS_13BM.py
    :platform: Unix
    :synopsis: Convert APS 13-BM SPE files in data exchange.
 
@@ -7,21 +7,13 @@
 
 
 """ 
-from data_exchange import DataExchangeFile, DataExchangeEntry
-from data_exchange.data_convert import Convert
 
-import numpy as np
-import os
-import scipy
-import re
-
-import logging
-logging.basicConfig(filename='convert_APS_13BM.log',level=logging.DEBUG)
+import data_exchange as dx
 
 def main():
 
-    file_name = '/local/data/databank/APS_13_BM/run2_soln1_2_.SPE'
-    hdf5_file_name = '/local/data/databank/dataExchange/microCT/run2_soln1_2_ZZZ.h5'
+    file_name = '/Users/decarlo/data/APS_13_BM/run2_soln1_2_.SPE'
+    hdf5_file_name = '/Users/decarlo/data/databank/dataExchange/microCT/APS_13_BM_01.h5'
 
     white_start = 1
     white_end = 8
@@ -30,47 +22,25 @@ def main():
     projections_end = 7
     projections_step = 2
 
-    mydata = Convert()
-    # Create minimal hdf5 file
-    if verbose: print "Reading data ... "
-    mydata.multiple_stack(file_name,
-                        hdf5_file_name = hdf5_file_name,
-                        projections_start = projections_start,
-                        projections_end = projections_end,
-                        projections_step = projections_step,
-                        white_start = white_start,
-                        white_end = white_end,
-                        white_step = white_step,
-                        sample_name = 'Stripe_Solder_Sample_Tip1'
-                   )
+    mydata = dx.Convert()
     
-    # Add extra metadata if available / desired
-
-    # Open DataExchange file
-    f = DataExchangeFile(hdf5_file_name, mode='a') 
-
-    # Create HDF5 subgroup
-    # /measurement/instrument
-    f.add_entry( DataExchangeEntry.instrument(name={'value': 'APS 13-BM'}) )
-
-    ### Create HDF5 subgroup
-    ### /measurement/instrument/source
-    f.add_entry( DataExchangeEntry.source(name={'value': "Advanced Photon Source"},
-                                        date_time={'value': "2013-11-30T19:17:04+0100"},
-                                        beamline={'value': "13-BM"},
-                                        )
-    )
-
-    # Create HDF5 subgroup
-    # /measurement/experimenter
-    f.add_entry( DataExchangeEntry.experimenter(name={'value':"Mark Rivers"},
-                                                role={'value':"Project PI"},
-                    )
-        )
-
-    f.close()
-    print "Done creating data exchange file: ", hdf5_file_name
-
+    # Create minimal hdf5 file
+    mydata.series_of_images(file_name,
+                            hdf5_file_name = hdf5_file_name,
+                            projections_start = projections_start,
+                            projections_end = projections_end,
+                            projections_step = projections_step,
+                            white_start = white_start,
+                            white_end = white_end,
+                            white_step = white_step,
+                            projections_zeros=False,
+                            white_zeros=False,
+                            dark_zeros=False,
+                            data_type='spe',
+                            sample_name = 'Stripe_Solder_Sample_Tip1',
+                            log='WARNING'
+                            )
+    
 if __name__ == "__main__":
     main()
 

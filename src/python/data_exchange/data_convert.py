@@ -163,6 +163,7 @@ class Convert():
 
         else:
             # Read the series of files and load them in self.data, self.data_white, self.data_dark
+            logger.info("Default projection file name white set [%s]", file_name)
             
             # Set default prefix for white and dark.
             if white_file_name == None:
@@ -211,6 +212,20 @@ class Convert():
                     dataFileDark = dark_file_name.split('.')[-2]
                     dataExtensionDark = dark_file_name.split('.')[-1]
             
+            if (data_type is 'spe'):
+                if file_name.endswith('SPE') or \
+                   file_name.endswith('spe'):
+                    dataFile = file_name.split('.')[-2]
+                    dataExtension = file_name.split('.')[-1]
+                if white_file_name.endswith('SPE') or \
+                   white_file_name.endswith('spe'):
+                    dataFileWhite = white_file_name.split('.')[-2]
+                    dataExtensionWhite = white_file_name.split('.')[-1]
+                if dark_file_name.endswith('SPE') or \
+                   dark_file_name.endswith('spe'):
+                    dataFileDark = dark_file_name.split('.')[-2]
+                    dataExtensionDark = dark_file_name.split('.')[-1]
+
             projections_file_index = ["" for x in range(projections_digits)]
 
             for m in range(projections_digits):
@@ -245,12 +260,13 @@ class Convert():
                     #logger.info("n = [%d], ind[m] [%d] < [%d]", n, ind[m], np.power(10, n + 1))
                     if ind[m] < np.power(10, n + 1):
                         fileName = dataFile + projections_file_index[n] + str(ind[m]) + '.' + dataExtension
-                        logger.info("Generating file names: [%s]", fileName)
+                        logger.info("Generating projection file names: [%s]", fileName)
                         break
 
                 if os.path.isfile(fileName):
                     logger.info("Reading projection file: [%s]", os.path.realpath(fileName))
                     logger.info("data type: [%s]", data_type)
+
                     if (data_type is 'hdf4'):
                         f = Hdf4()
                         tmpdata = f.read(fileName,
@@ -268,7 +284,14 @@ class Convert():
                                             x_step=slices_step,
                                             dtype=dtype
                                          )
-                    else:
+
+                    elif (data_type is 'spe'):
+                        f = Spe()
+                        tmpdata = f.read(fileName)
+                        #logger.info("tmpData: [%d], [%d], [%d]", tmpdata.shape[0], tmpdata.shape[1], tmpdata.shape[2])  
+                        #inputData = np.concatenate((inputData, tmpdata), axis=0)
+
+                    elif (data_type is 'tiff'):
                         f = Tiff()
                         tmpdata = f.read(fileName,
                                             x_start=slices_start,
@@ -276,13 +299,22 @@ class Convert():
                                             x_step=slices_step,
                                             dtype=dtype
                                          )
-                    if m == 0: # Get resolution once.
-                        inputData = np.empty((len(ind),
-                                            tmpdata.shape[0],
-                                            tmpdata.shape[1]),
-                                            dtype=dtype
-                                    )
-                    inputData[m, :, :] = tmpdata
+
+                    if ((data_type is 'tiff') or (data_type is 'compressed_tiff') or (data_type is 'hdf4')):
+                        if m == 0: # Get resolution once.
+                            inputData = np.empty((len(ind),
+                                                tmpdata.shape[0],
+                                                tmpdata.shape[1]),
+                                                dtype=dtype
+                                            )
+                        inputData[m, :, :] = tmpdata
+
+                    if (data_type is 'spe'):
+                        if m == 0: # Get resolution once.
+                            inputData = np.vstack([tmpdata])
+                        else:
+                            inputData = np.concatenate((inputData, tmpdata), axis=0)
+
             if len(ind) > 0:
                 self.data = inputData
 
@@ -295,12 +327,13 @@ class Convert():
                     #logger.info("n = [%d], ind[m] [%d] < [%d]", n, ind[m], np.power(10, n + 1))
                     if ind[m] < np.power(10, n + 1):
                         fileName = dataFileWhite + white_file_index[n] + str(ind[m]) + '.' + dataExtension
-                        logger.info(fileName)
+                        logger.info("Generating white file names: [%s]", fileName)
                         break
 
                 if os.path.isfile(fileName):
                     logger.info("Reading white file: [%s]", os.path.realpath(fileName))
                     logger.info("data type: [%s]", data_type)
+
                     if (data_type is 'hdf4'):
                         f = Hdf4()
                         tmpdata = f.read(fileName,
@@ -317,7 +350,15 @@ class Convert():
                                             x_step=slices_step,
                                             dtype=dtype
                                          )
-                    else:
+
+                    elif (data_type is 'spe'):
+                        f = Spe()
+                        tmpdata = f.read(fileName)
+                        #logger.info("tmpData: [%d], [%d], [%d]", tmpdata.shape[0], tmpdata.shape[1], tmpdata.shape[2])  
+                        #inputData = np.concatenate((inputData, tmpdata), axis=0)
+
+
+                    elif (data_type is 'tiff'):
                         f = Tiff()
                         tmpdata = f.read(fileName,
                                             x_start=slices_start,
@@ -325,19 +366,32 @@ class Convert():
                                             x_step=slices_step,
                                             dtype=dtype
                                          )
-                    if m == 0: # Get resolution once.
-                        inputData = np.empty((len(ind),
-                                            tmpdata.shape[0],
-                                            tmpdata.shape[1]),
-                                            dtype=dtype
-                                        )
-                    inputData[m, :, :] = tmpdata
+
+                    if ((data_type is 'tiff') or (data_type is 'compressed_tiff') or (data_type is 'hdf4')):
+                        if m == 0: # Get resolution once.
+                            inputData = np.empty((len(ind),
+                                                tmpdata.shape[0],
+                                                tmpdata.shape[1]),
+                                                dtype=dtype
+                                            )
+                        inputData[m, :, :] = tmpdata
+
+                    if (data_type is 'spe'):
+                        if m == 0: # Get resolution once.
+                            inputData = np.vstack([tmpdata])
+                        else:
+                            inputData = np.concatenate((inputData, tmpdata), axis=0)
+
             if len(ind) > 0:
                 self.data_white = inputData
             else:
-                # Fabricate a one white field
-                nx, ny, nz = np.shape(self.data)
-                self.data_white = np.ones((nx,ny,1))
+                # Fabricate one white field
+                if ((data_type is 'tiff') or (data_type is 'compressed_tiff') or (data_type is 'hdf4')):
+                    nx, ny, nz = np.shape(self.data)
+                    self.data_white = np.ones((nx,ny,1))
+                if (data_type is 'spe'):
+                    nz, ny, nx = np.shape(self.data)
+                    self.data_dark = np.zeros((1, ny, nx))
                 
             # Reading dark fields.
             ind = range(dark_start, dark_end, dark_step)
@@ -348,12 +402,13 @@ class Convert():
                     #logger.info("n = [%d], ind[m] [%d] < [%d]", n, ind[m], np.power(10, n + 1))
                     if ind[m] < np.power(10, n + 1):
                         fileName = dataFileDark + dark_file_index[n] + str(ind[m]) + '.' + dataExtension
-                        logger.info(fileName)
+                        logger.info("Generating dark file names: [%s]", fileName)
                         break
 
                 if os.path.isfile(fileName):
                     logger.info("Reading dark file: [%s]", os.path.realpath(fileName))
                     logger.info("data type: [%s]", data_type)
+
                     if (data_type is 'hdf4'):
                         f = Hdf4()
                         tmpdata = f.read(fileName,
@@ -362,6 +417,7 @@ class Convert():
                                             x_step=slices_step,
                                             array_name = 'data'
                                          )
+
                     elif (data_type is 'compressed_tiff'):
                         f = Tiffc()
                         tmpdata = f.read(fileName,
@@ -370,7 +426,14 @@ class Convert():
                                             x_step=slices_step,
                                             dtype=dtype
                                          )
-                    else:
+
+                    elif (data_type is 'spe'):
+                        f = Spe()
+                        tmpdata = f.read(fileName)
+                        #logger.info("tmpData: [%d], [%d], [%d]", tmpdata.shape[0], tmpdata.shape[1], tmpdata.shape[2])  
+                        #inputData = np.concatenate((inputData, tmpdata), axis=0)
+
+                    elif (data_type is 'tiff'):
                         f = Tiff()
                         tmpdata = f.read(fileName,
                                             x_start=slices_start,
@@ -378,19 +441,32 @@ class Convert():
                                             x_step=slices_step,
                                             dtype=dtype
                                          )
-                    if m == 0: # Get resolution once.
-                        inputData = np.empty((len(ind),
-                                            tmpdata.shape[0],
-                                            tmpdata.shape[1]),
-                                            dtype=dtype
-                                        )
-                    inputData[m, :, :] = tmpdata
+
+                    if ((data_type is 'tiff') or (data_type is 'compressed_tiff') or (data_type is 'hdf4')):
+                        if m == 0: # Get resolution once.
+                            inputData = np.empty((len(ind),
+                                                tmpdata.shape[0],
+                                                tmpdata.shape[1]),
+                                                dtype=dtype
+                                            )
+                        inputData[m, :, :] = tmpdata
+
+                    if (data_type is 'spe'):
+                        if m == 0: # Get resolution once.
+                            inputData = np.vstack([tmpdata])
+                        else:
+                            inputData = np.concatenate((inputData, tmpdata), axis=0)
+
             if len(ind) > 0:
                 self.data_dark = inputData
             else:
-                # Fabricate a zero dark field
-                nx, ny, nz = np.shape(self.data)
-                self.data_dark = np.zeros((nx,ny,1))
+                # Fabricate one dark field
+                if ((data_type is 'tiff') or (data_type is 'compressed_tiff') or (data_type is 'hdf4')):
+                    nx, ny, nz = np.shape(self.data)
+                    self.data_white = np.ones((nx,ny,1))
+                if (data_type is 'spe'):
+                    nz, ny, nx = np.shape(self.data)
+                    self.data_dark = np.zeros((1, ny, nx))
                 
             # Fabricate theta values.
             z = np.arange(projections_end - projections_start);
@@ -454,296 +530,6 @@ class Convert():
                 logger.info("DONE!!!!. Created Data Exchange File [%s]", hdf5_file_name)
             else:
                 logger.warning("Data Exchange file name was not set => read series of files in memory only.")
-
-    def multiple_stack(self, file_name,
-                hdf5_file_name,
-                projections_start=0,
-                projections_end=1,
-                projections_step=1,
-                white_file_name=None,
-                white_start=0,
-                white_end=0,
-                white_step=1,
-                dark_file_name=None,
-                dark_start=0,
-                dark_end=0,
-                dark_step=1,
-                projections_digits=4,
-                white_digits=-1,
-                dark_digits=-1,
-                projections_zeros=False,
-                white_zeros=False,
-                dark_zeros=False,
-                data_type='spe',
-                sample_name=None,
-                log='INFO'):
-        """Read a stack spe files. Each SPE file contains a stack of projections/white images
-
-        Parameters
-        ----------
-        file_name : str
-            Base name of the input SPE files.
-            For example if the projection file names are /local/data/test_XXXX.SPE
-            file_name is /local/data/test_.hdf
-            
-        projections_start, projections_end, projections_step : scalar, optional
-            start and end index for the projection Tiff files to load. Use step define a stride.
-
-        white_file_name : str
-            Base name of the white field input SPE files: string optional.
-            For example if the white field names are /local/data/test_bg_XXXX.SPE
-            file_name is /local/data/test_bg_.SPE
-            if omitted white_file_name = file_name.
-
-        white_start, white_end, white_step : scalar, optional
-            start and end index for the white field SPE files to load.
-            white_step defines the stride.
-
-        dark_file_name : str
-            Base name of the dark field input SPE files: string optinal.
-            For example if the white field names are /local/data/test_dk_XXXX.SPE
-            file_name is /local/data/test_dk_.SPE
-            if omitted dark_file_name = file_name.
-
-        dark_start, dark_end, dark_step : scalar, optional
-            start and end index for the dark field Tiff files to load. 
-            dark_step defines the stride.
-
-        projections_digits : scalar, optional
-            Number of projections_digits used for file indexing.
-            For example if 4: test_XXXX.hdf
-
-        projections_zeros, white_zero, dark_zeros : bool, optional
-            If ``True`` assumes all indexing uses four projections_digits
-            (0001, 0002, ..., 9999). If ``False`` omits projections_zeros in
-            indexing (1, 2, ..., 9999)
-
-        data_type : str, optional
-            Not used 
-            
-        hdf5_file_name : str
-            HDF5/data exchange file name
-
-        Returns
-        -------
-
-        Output : saves the data as HDF5 in hdf5_file_name
-
-        .. See also:: http://docs.scipy.org/doc/numpy/user/basics.types.html
-        """
-
-        logger.info("Call to multiple_stack")
-        # Initialize f to null.
-        hdf5_file_extension = False
-
-        # Get the file_name in lower case.
-        lFn = hdf5_file_name.lower()
-
-        # Split the string with the delimeter '.'
-        end = lFn.split('.')
-        logger.info(end)
-        # If the string has an extension.
-        if len(end) > 1:
-            # Check.
-            if end[len(end) - 1] == 'h5' or end[len(end) - 1] == 'hdf':
-                hdf5_file_extension = True
-                logger.info("HDF file extension is .h5 or .hdf")
-            else:
-                hdf5_file_extension = False
-                logger.info("HDF file extension must be .h5 or .hdf")
-                
-        # If the extension is correct and the file does not exists then convert
-        if (hdf5_file_extension and (os.path.isfile(hdf5_file_name) == False)):
-            # Create new folder.
-            dirPath = os.path.dirname(hdf5_file_name)
-            if not os.path.exists(dirPath):
-                os.makedirs(dirPath)
-            # Prepare hdf file names to be read.
-            if white_file_name == None:
-                    white_file_name = file_name
-                    logger.info("File Name White = [%s]", white_file_name)
-            if dark_file_name == None:
-                    dark_file_name = file_name
-                    logger.info("File Name Dark = [%s]", dark_file_name)
-
-            logger.info("File Name Projections = [%s]", file_name)
-            logger.info("File Name White = [%s]", white_file_name)
-            logger.info("File Name Dark = [%s]", dark_file_name)
-
-            # Set default digits.
-            if white_digits == -1:
-                    white_digits = projections_digits
-                    logger.info("White digits = [%s]", white_digits)
-            if dark_digits == -1:
-                    dark_digits = projections_digits
-                    logger.info("Dark digits= [%s]", dark_digits)
-
-            if (data_type is 'spe'):
-                if file_name.endswith('SPE') or \
-                   file_name.endswith('spe'):
-                    dataFile = file_name.split('.')[-2]
-                    dataExtension = file_name.split('.')[-1]
-                if white_file_name.endswith('SPE') or \
-                   white_file_name.endswith('spe'):
-                    dataFileWhite = white_file_name.split('.')[-2]
-                    dataExtensionWhite = white_file_name.split('.')[-1]
-                if dark_file_name.endswith('SPE') or \
-                   dark_file_name.endswith('spe'):
-                    dataFileDark = dark_file_name.split('.')[-2]
-                    dataExtensionDark = dark_file_name.split('.')[-1]
-
-            projections_file_index = ["" for x in range(projections_digits)]
-            for m in range(projections_digits):
-                if projections_zeros is True:
-                   projections_file_index[m] = '0' * (projections_digits - m - 1)
-
-                elif projections_zeros is False:
-                   projections_file_index[m] = ''
-
-            white_file_index = ["" for x in range(white_digits)]
-            for m in range(white_digits):
-                if white_zeros is True:
-                   white_file_index[m] = '0' * (white_digits - m - 1)
-
-                elif white_zeros is False:
-                   white_file_index[m] = ''
-
-            dark_file_index = ["" for x in range(dark_digits)]
-            for m in range(dark_digits):
-                if dark_zeros is True:
-                   dark_file_index[m] = '0' * (dark_digits - m - 1)
-
-                elif dark_zeros is False:
-                   dark_file_index[m] = ''
-
-            # Reading projections.
-            fileName = ''
-            ind = range(projections_start, projections_end, projections_step)
-            logger.info("projections: Start = [%d], End = [%d], Step = [%d]", projections_start, projections_end, projections_step)
-            for m in range(len(ind)):
-                for n in range(projections_digits):
-                    logger.info("n = [%d], ind[m] [%d] < [%d]", n, ind[m], np.power(10, n + 1))
-                    if ind[m] < np.power(10, n + 1):
-                        fileName = dataFile + projections_file_index[n] + str(ind[m]) + '.' + dataExtension
-                        logger.info("Generating file names: [%s]", fileName)
-                        break
-                if os.path.isfile(fileName):
-                    # spe_data = spe.PrincetonSPEFile(fileName)
-                    # logger.info(spe_data)
-
-                    logger.info("Reading projections file: [%s]", os.path.realpath(fileName))
-                    logger.info("data type: [%s]", data_type)
-                    if (data_type is 'spe'):
-                        f = Spe()
-                        tmpdata = f.read(fileName)
-                        logger.info("tmpData: [%d], [%d], [%d]", tmpdata.shape[0], tmpdata.shape[1], tmpdata.shape[2])  
-                        if m == 0: # Get resolution once.
-                            inputData = np.vstack([tmpdata])
-                        else:
-                            inputData = np.concatenate((inputData, tmpdata), axis=0)
-                            logger.info("InputData: [%d], [%d], [%d]", inputData.shape[0], inputData.shape[1], inputData.shape[2])
-
-            if len(ind) > 0:
-                self.data = inputData
-                logger.info("Done loading projections")
-                logger.info("Data: [%d], [%d], [%d]", self.data.shape[0], self.data.shape[1], self.data.shape[2])  
-
-            # Reading white.
-            fileName = ''
-            ind = range(white_start, white_end, white_step)
-            logger.info("white: Start = [%d], End = [%d], Step = [%d]", white_start, white_end, white_step)
-            for m in range(len(ind)):
-                for n in range(white_digits):
-                    if ind[m] < np.power(10, n + 1):
-                        fileName = dataFile + white_file_index[n] + str(ind[m]) + '.' + dataExtension
-                        logger.info("Generating file names: [%s]", fileName)
-                        break
-                if os.path.isfile(fileName):
-                    # spe_data = spe.PrincetonSPEFile(fileName)
-                    # logger.info(spe_data)
-
-                    logger.info("Reading white file: [%s]", os.path.realpath(fileName))
-                    logger.info("data type: [%s]", data_type)
-                    if (data_type is 'spe'):
-                        f = Spe()
-                        tmpdata = f.read(fileName)
-                        logger.info("tmpData: [%d], [%d], [%d]", tmpdata.shape[0], tmpdata.shape[1], tmpdata.shape[2])  
-                        if m == 0: # Get resolution once.
-                            inputData = np.vstack([tmpdata])
-                        else:
-                            inputData = np.concatenate((inputData, tmpdata), axis=0)
-                            logger.info("InputData: [%d], [%d], [%d]", inputData.shape[0], inputData.shape[1], inputData.shape[2])
-
-            if len(ind) > 0:
-                self.data_white = inputData
-                logger.info("Done loading white")
-                logger.info("WhiteData: [%d], [%d], [%d]", self.data_white.shape[0], self.data_white.shape[1], self.data_white.shape[2])
-            else:
-                nx, ny, nz = np.shape(self.data)
-                self.data_white = np.ones((1, ny, nx))
-
-            # Reading dark.
-            fileName = ''
-            ind = range(dark_start, dark_end, dark_step)
-            logger.info("dark: Start = [%d], End = [%d], Step = [%d]", dark_start, dark_end, dark_step)
-            for m in range(len(ind)):
-                for n in range(dark_digits):
-                    logger.info("n = [%d], ind[m] [%d] < [%d]", n, ind[m], np.power(10, n + 1))
-                    if ind[m] < np.power(10, n + 1):
-                        fileName = dataFile + dark_file_index[n] + str(ind[m]) + '.' + dataExtension
-                        logger.info("Generating file names: [%s]", fileName)
-                        break
-                if os.path.isfile(fileName):
-                    # spe_data = spe.PrincetonSPEFile(fileName)
-                    # logger.info(spe_data)
-
-                    logger.info("Reading dark file: [%s]", os.path.realpath(fileName))
-                    logger.info("data type: [%s]", data_type)
-                    if (data_type is 'spe'):
-                        f = Spe()
-                        tmpdata = f.read(fileName)
-                        logger.info("tmpData: [%d], [%d], [%d]", tmpdata.shape[0], tmpdata.shape[1], tmpdata.shape[2])  
-                        if m == 0: # Get resolution once.
-                            inputData = np.vstack([tmpdata])
-                        else:
-                            inputData = np.concatenate((inputData, tmpdata), axis=0)
-                            logger.info("InputData: [%d], [%d], [%d]", inputData.shape[0], inputData.shape[1], inputData.shape[2])
-
-            if len(ind) > 0:
-                self.data_dark = inputData
-                logger.info("Done loading dark")
-                logger.info(self.data_dark.shape[0], self.data_dark.shape[1], self.data_dark.shape[2])  
-            else:
-                nx, ny, nz = np.shape(self.data)
-                self.data_dark = np.zeros((1, ny, nx))
-
-            # Write HDF5 file.
-            # Open DataExchange file
-            f = DataExchangeFile(hdf5_file_name, mode='w') 
-
-            logger.info("Writing the HDF5 file")
-            # Create core HDF5 dataset in exchange group for projections_theta_range
-            # deep stack of x,y images /exchange/data
-            f.add_entry( DataExchangeEntry.data(data={'value': self.data, 'units':'counts', 'description': 'transmission', 'axes':'theta:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
-            f.add_entry( DataExchangeEntry.data(theta={'value': self.theta, 'units':'degrees'}))
-            f.add_entry( DataExchangeEntry.data(data_dark={'value': self.data_dark, 'units':'counts', 'axes':'theta_dark:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
-            f.add_entry( DataExchangeEntry.data(data_white={'value': self.data_white, 'units':'counts', 'axes':'theta_white:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
-            f.add_entry( DataExchangeEntry.data(title={'value': 'tomography_raw_projections'}))
-            logger.info("Sample name = [%s]", sample_name)
-            if (sample_name == None):
-                sample_name = end[0]
-                f.add_entry( DataExchangeEntry.sample( name={'value':sample_name}, description={'value':'Sample name was assigned by the HDF5 converter and based on the HDF5 file name'}))
-                logger.info("Assigned default file name: [%s]", end[0])
-            else:
-                f.add_entry( DataExchangeEntry.sample( name={'value':sample_name}, description={'value':'Sample name was read from the user log file'}))
-                logger.info("Assigned file name from user log")                    
-            
-            f.close()
-        else:
-            if os.path.isfile(hdf5_file_name):
-                print 'HDF5 already exists. Nothing to do ...'
-            if (hdf5_file_extension == False):
-                print "HDF file extension must be .h5 or .hdf"
 
     def nexus(self, file_name,
                   hdf5_file_name,

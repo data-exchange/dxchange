@@ -18,14 +18,14 @@ def main():
     dark_file_name = '/Users/decarlo/data/databank/Anka/darks/image_.tif'
     white_file_name = '/Users/decarlo/data/databank/Anka/flats/image_.tif'
 
-    hdf5_file_name = '/Users/decarlo/data/databank/dataExchange/microCT/Anka.h5'
+    hdf5_file_name = '/Users/decarlo/data/databank/dataExchange/microCT/Anka_04.h5'
 
     projections_start = 0
     projections_end = 11
     white_start = 0
-    white_end = 11
+    white_end = 12
     dark_start = 0
-    dark_end = 11
+    dark_end = 13
 
     sample_name = 'Anka'
     
