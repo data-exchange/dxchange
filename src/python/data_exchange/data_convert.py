@@ -680,6 +680,8 @@ class Convert():
                 xrm: two optional files contating white and dark images
 
             ESRF ID-19 data:
+                ESRF tomography data consists of 3 edf files each containing
+                staks of images. The comverter requires:
                 edf: one mandatory file, containing the projections
                 edf: two optional files contating white and dark images
 
@@ -756,12 +758,10 @@ class Convert():
                 if (white_data_type is 'xrm'):
                     f = Xrm()
                     tmpdata = f.read(white_file_name)
-                    #inputData[m, :, :] = tmpdata
                     self.data_white = tmpdata
                 if (white_data_type is 'edf'):
                     f = Esrf()
                     tmpdata = f.read(white_file_name)
-                    #inputData[m, :, :] = tmpdata
                     self.data_white = tmpdata
             else:
                 nx, ny, nz = np.shape(self.data)
@@ -773,12 +773,10 @@ class Convert():
                 if (dark_data_type is 'xrm'):
                     f = Xrm()
                     tmpdata = f.read(dark_file_name)
-                    #inputData[m, :, :] = tmpdata
                     self.data_dark = tmpdata
                 if (dark_data_type is 'edf'):
                     f = Esrf()
                     tmpdata = f.read(dark_file_name)
-                    #inputData[m, :, :] = tmpdata
                     self.data_dark = tmpdata
             else:
                 nx, ny, nz = np.shape(self.data)

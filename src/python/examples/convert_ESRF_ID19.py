@@ -12,10 +12,10 @@ import data_exchange as dx
 
 def main():
 
-    file_name = '/Users/decarlo/data/esrf/scan.edf'
-    dark_file_name = '/Users/decarlo/data/esrf/dark.edf'
-    white_file_name = '/Users/decarlo/data/esrf/flat.edf'
-    hdf5_file_name = '/Users/decarlo/data/esrf/esrf_02.h5'
+    file_name = '/local/data/ESRF/scan.edf'
+    dark_file_name = '/local/data/ESRF/dark.edf'
+    white_file_name = '/local/data/ESRF/flat.edf'
+    hdf5_file_name = '/local/data/ESRF/esrf_01.h5'
 
     sample_name = 'esrf'
 
