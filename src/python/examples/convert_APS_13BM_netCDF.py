@@ -12,8 +12,8 @@ import data_exchange as dx
 
 def main():
 
-    file_name = '/local/data/APS_13_BM/NC/Dorthe_F_.nc'
-    hdf5_file_name = '/local/data/APS_13_BM/NC/APS_13_BM_nc_019.h5'
+    file_name = '/local/data/databank/APS_13_BM/NC/Dorthe_F_.nc'
+    hdf5_file_name = '/local/data/databank/APS_13_BM/NC/APS_13_BM_nc_0xx.h5'
 
     white_start = 1
     white_end = 4
