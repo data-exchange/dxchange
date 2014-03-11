@@ -12,6 +12,7 @@ from esrf.EdfFile import EdfFile
 import xradia.xradia_xrm as xradia
 import xradia.data_struct as dstruct
 import aps_13bm.data_spe as spe
+import netCDF4 as nc
 from elettra.tifffile import TiffFile
 
 class Hdf5(FileInterface):
@@ -520,6 +521,93 @@ class Spe(FileInterface):
         if file_name.endswith('SPE'):
             if verbose: print "reading data ... "
             array = spe_data.getData()
+            #reader.openFile(file_name)
+            num_z, num_y, num_x = np.shape(array)
+            if verbose:
+                print "done reading ", num_z, " images of (", num_y,"x", num_x, ") pixels"
+
+        # Select desired y from whole data.
+        # num_x, num_y, num_z = hdfdata.shape
+        if x_start is None:
+            x_start = 0
+        if x_end is None:
+            x_end = num_x
+        if x_step is None:
+            x_step = 1
+        if y_start is None:
+            y_start = 0
+        if y_end is None:
+            y_end = num_y
+        if y_step is None:
+            y_step = 1
+        if z_start is None:
+            z_start = 0
+        if z_end is None:
+            z_end = num_z
+        if z_step is None:
+            z_step = 1
+
+        # Construct dataset from desired y.
+        dataset = array[z_start:z_end:z_step,
+                          y_start:y_end:y_step,
+                          x_start:x_end:x_step]
+        return dataset
+
+    def write(self):
+        pass
+
+class Spe(FileInterface):
+    def read(self, file_name,
+             #array_name='Image',
+             x_start=None,
+             x_end=None,
+             x_step=None,
+             y_start=None,
+             y_end=None,
+             y_step=None,
+             z_start=None,
+             z_end=None,
+             z_step=None,
+             verbose=True
+             ):
+        """ Read 3-D tomographic data from a spe file and the background/reference image for an xrm files.
+
+        Opens ``file_name`` and copy into an array its content;
+                this is can be a series/scan of tomographic projections (if file_name extension is ``txrm``) or
+                a series of backgroud/reference images if the file_name extension is ``xrm``
+        
+        Parameters
+        ----------
+        file_name : str
+            Input txrm or xrm file.
+            
+        x_start, x_end, x_step : scalar, optional
+            Values of the start, end and step of the
+            slicing for the whole array.
+
+        y_start, y_end, y_step : scalar, optional
+            Values of the start, end and step of the
+            slicing for the whole array.
+
+        z_start, z_end, z_step : scalar, optional
+            Values of the start, end and step of the
+            slicing for the whole array.
+
+        Returns
+        -------
+        out : array
+            Returns the data as a matrix.
+        """
+        verbose = False
+        #imgname = array_name
+        nc_data = nc.Dataset(file_name, 'r')
+        #array = dstruct
+        if verbose: print file_name
+        if verbose: print nc_data
+        # Read data from file.
+        if file_name.endswith('nc'):
+            if verbose: print "reading data ... "
+            array = f.variables['array_data'][:]
             #reader.openFile(file_name)
             num_z, num_y, num_x = np.shape(array)
             if verbose:

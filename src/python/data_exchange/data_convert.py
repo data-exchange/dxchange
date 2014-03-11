@@ -198,7 +198,36 @@ class Convert():
                    dark_file_name.endswith('hdf'):
                     dataFileDark = dark_file_name.split('.')[-2]
                     dataExtensionDark = dark_file_name.split('.')[-1]
-            else:
+
+            elif (data_type is 'spe'):
+                if file_name.endswith('SPE') or \
+                   file_name.endswith('spe'):
+                    dataFile = file_name.split('.')[-2]
+                    dataExtension = file_name.split('.')[-1]
+                if white_file_name.endswith('SPE') or \
+                   white_file_name.endswith('spe'):
+                    dataFileWhite = white_file_name.split('.')[-2]
+                    dataExtensionWhite = white_file_name.split('.')[-1]
+                if dark_file_name.endswith('SPE') or \
+                   dark_file_name.endswith('spe'):
+                    dataFileDark = dark_file_name.split('.')[-2]
+                    dataExtensionDark = dark_file_name.split('.')[-1]
+
+            elif (data_type is 'nc'):
+                if file_name.endswith('NC') or \
+                   file_name.endswith('nc'):
+                    dataFile = file_name.split('.')[-2]
+                    dataExtension = file_name.split('.')[-1]
+                if white_file_name.endswith('NC') or \
+                   white_file_name.endswith('nc'):
+                    dataFileWhite = white_file_name.split('.')[-2]
+                    dataExtensionWhite = white_file_name.split('.')[-1]
+                if dark_file_name.endswith('NC') or \
+                   dark_file_name.endswith('nc'):
+                    dataFileDark = dark_file_name.split('.')[-2]
+                    dataExtensionDark = dark_file_name.split('.')[-1]
+
+            elif (data_type is 'tiff'):
                 if file_name.endswith('tif') or \
                    file_name.endswith('tiff'):
                     dataFile = file_name.split('.')[-2]
@@ -212,19 +241,6 @@ class Convert():
                     dataFileDark = dark_file_name.split('.')[-2]
                     dataExtensionDark = dark_file_name.split('.')[-1]
             
-            if (data_type is 'spe'):
-                if file_name.endswith('SPE') or \
-                   file_name.endswith('spe'):
-                    dataFile = file_name.split('.')[-2]
-                    dataExtension = file_name.split('.')[-1]
-                if white_file_name.endswith('SPE') or \
-                   white_file_name.endswith('spe'):
-                    dataFileWhite = white_file_name.split('.')[-2]
-                    dataExtensionWhite = white_file_name.split('.')[-1]
-                if dark_file_name.endswith('SPE') or \
-                   dark_file_name.endswith('spe'):
-                    dataFileDark = dark_file_name.split('.')[-2]
-                    dataExtensionDark = dark_file_name.split('.')[-1]
 
             projections_file_index = ["" for x in range(projections_digits)]
 
@@ -288,8 +304,10 @@ class Convert():
                     elif (data_type is 'spe'):
                         f = Spe()
                         tmpdata = f.read(fileName)
-                        #logger.info("tmpData: [%d], [%d], [%d]", tmpdata.shape[0], tmpdata.shape[1], tmpdata.shape[2])  
-                        #inputData = np.concatenate((inputData, tmpdata), axis=0)
+
+                    elif (data_type is 'nc'):
+                        f = Nc()
+                        tmpdata = f.read(fileName)
 
                     elif (data_type is 'tiff'):
                         f = Tiff()
@@ -354,8 +372,10 @@ class Convert():
                     elif (data_type is 'spe'):
                         f = Spe()
                         tmpdata = f.read(fileName)
-                        #logger.info("tmpData: [%d], [%d], [%d]", tmpdata.shape[0], tmpdata.shape[1], tmpdata.shape[2])  
-                        #inputData = np.concatenate((inputData, tmpdata), axis=0)
+
+                    elif (data_type is 'nc'):
+                        f = Nc()
+                        tmpdata = f.read(fileName)
 
 
                     elif (data_type is 'tiff'):
@@ -430,8 +450,10 @@ class Convert():
                     elif (data_type is 'spe'):
                         f = Spe()
                         tmpdata = f.read(fileName)
-                        #logger.info("tmpData: [%d], [%d], [%d]", tmpdata.shape[0], tmpdata.shape[1], tmpdata.shape[2])  
-                        #inputData = np.concatenate((inputData, tmpdata), axis=0)
+
+                    elif (data_type is 'nc'):
+                        f = Nc()
+                        tmpdata = f.read(fileName)
 
                     elif (data_type is 'tiff'):
                         f = Tiff()
