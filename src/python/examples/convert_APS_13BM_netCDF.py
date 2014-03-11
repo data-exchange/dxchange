@@ -12,8 +12,8 @@ import data_exchange as dx
 
 def main():
 
-    file_name = '/Users/decarlo/data/APS_13_BM/Dorthe_F_.nc'
-    hdf5_file_name = '/Users/decarlo/data/databank/dataExchange/microCT/APS_13_BM_nc_01.h5'
+    file_name = '/local/data/APS_13_BM/NC/Dorthe_F_.nc'
+    hdf5_file_name = '/local/data/APS_13_BM/NC/APS_13_BM_nc_019.h5'
 
     white_start = 1
     white_end = 4
@@ -33,9 +33,10 @@ def main():
                             white_start = white_start,
                             white_end = white_end,
                             white_step = white_step,
-                            projections_zeros=False,
-                            white_zeros=False,
-                            dark_zeros=False,
+                            projections_digits = 3,
+                            #projections_zeros=False,
+                            #white_zeros=False,
+                            #dark_zeros=False,
                             data_type='nc',
                             sample_name = 'Stripe_Solder_Sample_Tip1',
                             log='WARNING'
@@ -43,4 +44,3 @@ def main():
     
 if __name__ == "__main__":
     main()
-

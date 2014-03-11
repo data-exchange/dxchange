@@ -556,7 +556,7 @@ class Spe(FileInterface):
     def write(self):
         pass
 
-class Spe(FileInterface):
+class Netcdf(FileInterface):
     def read(self, file_name,
              #array_name='Image',
              x_start=None,
@@ -607,7 +607,7 @@ class Spe(FileInterface):
         # Read data from file.
         if file_name.endswith('nc'):
             if verbose: print "reading data ... "
-            array = f.variables['array_data'][:]
+            array = nc_data.variables['array_data'][:]
             #reader.openFile(file_name)
             num_z, num_y, num_x = np.shape(array)
             if verbose:

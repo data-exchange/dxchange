@@ -3,7 +3,7 @@
 import numpy as np
 import os
 import h5py
-from file_types import Tiff, Hdf4, Hdf5, Txrm, Xrm, Spe, Esrf, Tiffc
+from file_types import Tiff, Hdf4, Hdf5, Txrm, Xrm, Spe, Esrf, Tiffc, Netcdf
 from data_exchange import DataExchangeFile, DataExchangeEntry
 
 import logging
@@ -306,7 +306,7 @@ class Convert():
                         tmpdata = f.read(fileName)
 
                     elif (data_type is 'nc'):
-                        f = Nc()
+                        f = Netcdf()
                         tmpdata = f.read(fileName)
 
                     elif (data_type is 'tiff'):
@@ -327,7 +327,7 @@ class Convert():
                                             )
                         inputData[m, :, :] = tmpdata
 
-                    if (data_type is 'spe'):
+                    if ((data_type is 'spe') or (data_type is 'nc')):
                         if m == 0: # Get resolution once.
                             inputData = np.vstack([tmpdata])
                         else:
@@ -374,7 +374,7 @@ class Convert():
                         tmpdata = f.read(fileName)
 
                     elif (data_type is 'nc'):
-                        f = Nc()
+                        f = Netcdf()
                         tmpdata = f.read(fileName)
 
 
@@ -396,7 +396,7 @@ class Convert():
                                             )
                         inputData[m, :, :] = tmpdata
 
-                    if (data_type is 'spe'):
+                    if ((data_type is 'spe') or (data_type is 'nc')):
                         if m == 0: # Get resolution once.
                             inputData = np.vstack([tmpdata])
                         else:
@@ -409,7 +409,7 @@ class Convert():
                 if ((data_type is 'tiff') or (data_type is 'compressed_tiff') or (data_type is 'hdf4')):
                     nx, ny, nz = np.shape(self.data)
                     self.data_white = np.ones((nx,ny,1))
-                if (data_type is 'spe'):
+                if ((data_type is 'spe') or (data_type is 'nc')):
                     nz, ny, nx = np.shape(self.data)
                     self.data_dark = np.zeros((1, ny, nx))
                 
@@ -452,7 +452,7 @@ class Convert():
                         tmpdata = f.read(fileName)
 
                     elif (data_type is 'nc'):
-                        f = Nc()
+                        f = Netcdf()
                         tmpdata = f.read(fileName)
 
                     elif (data_type is 'tiff'):
@@ -486,7 +486,7 @@ class Convert():
                 if ((data_type is 'tiff') or (data_type is 'compressed_tiff') or (data_type is 'hdf4')):
                     nx, ny, nz = np.shape(self.data)
                     self.data_white = np.ones((nx,ny,1))
-                if (data_type is 'spe'):
+                if ((data_type is 'spe') or (data_type is 'nc')) :
                     nz, ny, nx = np.shape(self.data)
                     self.data_dark = np.zeros((1, ny, nx))
                 
@@ -532,7 +532,7 @@ class Convert():
                 # deep stack of x,y images /exchange/data
                 logger.info("Adding projections to  Data Exchange File [%s]", hdf5_file_name)
                 f.add_entry( DataExchangeEntry.data(data={'value': self.data, 'units':'counts', 'description': 'transmission', 'axes':'theta:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
-                f.add_entry( DataExchangeEntry.data(theta={'value': self.theta, 'units':'degrees'}))
+                #f.add_entry( DataExchangeEntry.data(theta={'value': self.theta, 'units':'degrees'}))
                 logger.info("Adding dark fields to  Data Exchange File [%s]", hdf5_file_name)
                 f.add_entry( DataExchangeEntry.data(data_dark={'value': self.data_dark, 'units':'counts', 'axes':'theta_dark:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
                 logger.info("Adding white fields to  Data Exchange File [%s]", hdf5_file_name)
