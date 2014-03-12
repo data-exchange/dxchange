@@ -473,7 +473,7 @@ class Convert():
                                             )
                         inputData[m, :, :] = tmpdata
 
-                    if (data_type is 'spe'):
+                    if ((data_type is 'spe') or (data_type is 'nc')):
                         if m == 0: # Get resolution once.
                             inputData = np.vstack([tmpdata])
                         else:
@@ -490,11 +490,12 @@ class Convert():
                     nz, ny, nx = np.shape(self.data)
                     self.data_dark = np.zeros((1, ny, nx))
                 
-            # Fabricate theta values.
-            z = np.arange(projections_end - projections_start);
-                
-            # Fabricate theta values
-            self.theta = (z * float(projections_angle_range) / (len(z) - 1))
+            if ((data_type is 'tiff') or (data_type is 'compressed_tiff') or (data_type is 'hdf4')):
+                # Fabricate theta values.
+                z = np.arange(projections_end - projections_start);
+                    
+                # Fabricate theta values
+                self.theta = (z * float(projections_angle_range) / (len(z) - 1))
 
             # Getting ready to save the Data Exchange file
 
@@ -532,7 +533,8 @@ class Convert():
                 # deep stack of x,y images /exchange/data
                 logger.info("Adding projections to  Data Exchange File [%s]", hdf5_file_name)
                 f.add_entry( DataExchangeEntry.data(data={'value': self.data, 'units':'counts', 'description': 'transmission', 'axes':'theta:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
-                #f.add_entry( DataExchangeEntry.data(theta={'value': self.theta, 'units':'degrees'}))
+                if ((data_type is 'tiff') or (data_type is 'compressed_tiff') or (data_type is 'hdf4')):
+                    f.add_entry( DataExchangeEntry.data(theta={'value': self.theta, 'units':'degrees'}))
                 logger.info("Adding dark fields to  Data Exchange File [%s]", hdf5_file_name)
                 f.add_entry( DataExchangeEntry.data(data_dark={'value': self.data_dark, 'units':'counts', 'axes':'theta_dark:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
                 logger.info("Adding white fields to  Data Exchange File [%s]", hdf5_file_name)
@@ -551,7 +553,7 @@ class Convert():
                 f.close()
                 logger.info("DONE!!!!. Created Data Exchange File [%s]", hdf5_file_name)
             else:
-                logger.warning("Data Exchange file name was not set => read series of files in memory only.")
+                logger.warning("Data Exchange file name was not set => series of files are in memory only and passed to self.data, self.data_dark, self.data_white")
 
     def nexus(self, file_name,
                   hdf5_file_name,

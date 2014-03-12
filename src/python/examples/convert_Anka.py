@@ -14,18 +14,18 @@ import re
 
 def main():
 
-    file_name = '/Users/decarlo/data/databank/Anka/radios/image_.tif'
-    dark_file_name = '/Users/decarlo/data/databank/Anka/darks/image_.tif'
-    white_file_name = '/Users/decarlo/data/databank/Anka/flats/image_.tif'
+    file_name = '/local/dataraid/databank/Anka/radios/image_.tif'
+    dark_file_name = '/local/dataraid/databank/Anka/darks/image_.tif'
+    white_file_name = '/local/dataraid/databank/Anka/flats/image_.tif'
 
-    hdf5_file_name = '/Users/decarlo/data/databank/dataExchange/microCT/Anka_04.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/Anka.h5'
 
     projections_start = 0
-    projections_end = 11
+    projections_end = 3167
     white_start = 0
-    white_end = 12
+    white_end = 100
     dark_start = 0
-    dark_end = 13
+    dark_end = 100
 
     sample_name = 'Anka'
     
@@ -43,7 +43,6 @@ def main():
                      dark_end = dark_end,
                      sample_name = sample_name,
                      projections_digits = 5,
-                     projections_zeros = True,
                      log='WARNING'
                      )
 
