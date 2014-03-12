@@ -47,8 +47,8 @@ class Convert():
                 dark_end=None,
                 dark_step=1,
                 projections_digits=4,
-                white_digits=None,
-                dark_digits=None,
+                white_digits=4,
+                dark_digits=4,
                 projections_zeros=True,
                 white_zeros=True,
                 dark_zeros=True,
@@ -131,10 +131,19 @@ class Convert():
         # Check inputs.
         if projections_end == None:
             logger.error("projections_end not defined.")
+            return
         if slices_end == None:
             logger.error("slices_end not defined.")
+            return
         if pixels_end == None:
             logger.error("pixels_end not defined.")
+            return
+        if white_end == None:
+            logger.error("projections_end not defined.")
+            return
+        if dark_end == None:
+            logger.error("projections_end not defined.")
+            return
 
         logger.info("###############################################")
         logger.info("####      read series of [%s] images      ####", data_type)
