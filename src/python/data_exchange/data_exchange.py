@@ -587,7 +587,7 @@ class DataExchangeEntry(object):
                 'units': 'pixels',
                 'docstring': 'Top pixel position'
             },
-            'y1': {
+            'y2': {
                 'value': None,
                 'units': 'pixels',
                 'docstring': 'Bottom pixel position'
