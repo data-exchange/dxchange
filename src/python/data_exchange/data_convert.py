@@ -57,7 +57,8 @@ class Convert():
                 hdf5_file_name='dummy',
                 sample_name=None,
                 log='INFO'):
-        """Read a stack of HDF-4 or TIFF files in a folder.
+
+        """Read a series of HDF-4 or TIFF single images or a series of spe or netCDF stack images.
 
         Parameters
         ----------
@@ -112,6 +113,8 @@ class Convert():
                     hdf4: HDF-4 files used on old detector at APS 2-BM
                     compressed_tiff: tiff files used at elettra 
                     tiff: uncompressed regualar tiff files
+                    spe: spe data from APS 13-BM
+                    nc: netCDF data from 13-BM
 
         Returns
         -------
@@ -697,7 +700,11 @@ class Convert():
                 sample_name=None,
                 log='INFO'):
         """Read a stack of tomographic data consisting of up to 3 files.
+
             Supported formats:
+            
+            Data Exchange: one single HDF5 file follwoing the definition from http://www.aps.anl.gov/DataExchange/
+                NOT COMPLETED YET
             
             X-radia data:
                 txrm: one mandatory file, containing the projections
@@ -754,8 +761,9 @@ class Convert():
         logger.info("#########################################")
 
         if os.path.isfile(hdf5_file_name):
-                logger.info("Data Exchange file [%s] already exists. Nothing to do!", hdf5_file_name)
-                logger.info("Please use the Data Exchange reader instead")
+                logger.info("Data Exchange file [%s] already exists. Nothing to convert!", hdf5_file_name)
+                logger.info("Reading the Data Exchange")
+                # ADD DATA EXCHANGE READER CALL HERE
 
         else:
             # Read the series of files and load them in self.data, self.data_white, self.data_dark
