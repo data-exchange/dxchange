@@ -15,12 +15,12 @@ import re
 
 def main():
 
-    file_name = '/Users/decarlo/data/ALS/blakely_raw/blakelyALS_.tif'
-    dark_file_name = '/Users/decarlo/data/ALS/blakely_raw/blakelyALSdrk_.tif'
-    white_file_name = '/Users/decarlo/data/ALS/blakely_raw/blakelyALSbak_.tif'
-    log_file = '/Users/decarlo/data/ALS/blakely_raw/blakelyALS.sct'
+    file_name = '/local/dataraid/databank/ALS_2011/Blakely/blakely_raw/blakelyALS_.tif'
+    dark_file_name = '/local/dataraid/databank/ALS_2011/Blakely/blakely_raw/blakelyALSdrk_.tif'
+    white_file_name = '/local/dataraid/databank/ALS_2011/Blakely/blakely_raw/blakelyALSbak_.tif'
+    log_file = '/local/dataraid/databank/ALS_2011/Blakely/blakely_raw/blakelyALS.sct'
 
-    hdf5_file_name = '/Users/decarlo/data/ALS/blakely_ALS_2011.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/blakely_ALS_2011.h5'
 
     verbose = True
 
