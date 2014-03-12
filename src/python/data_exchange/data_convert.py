@@ -127,6 +127,14 @@ class Convert():
         
         # Initialize Data Exchange file extension to false.
         hdf5_file_extension = False
+        
+        # Check inputs.
+        if projections_end == None:
+            logger.error("projections_end not defined.")
+        if slices_end == None:
+            logger.error("slices_end not defined.")
+        if pixels_end == None:
+            logger.error("pixels_end not defined.")
 
         logger.info("###############################################")
         logger.info("####      read series of [%s] images      ####", data_type)
