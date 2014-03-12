@@ -29,26 +29,26 @@ class Convert():
     
     def series_of_images(self, file_name,
                 projections_start=0,
-                projections_end=0,
+                projections_end=None,
                 projections_step=1,
                 projections_angle_range=180,
-                slices_start=None,
+                slices_start=0,
                 slices_end=None,
-                slices_step=None,
-                pixels_start=None,
+                slices_step=1,
+                pixels_start=0,
                 pixels_end=None,
-                pixels_step=None,
+                pixels_step=1,
                 white_file_name=None,
                 white_start=0,
-                white_end=0,
+                white_end=None,
                 white_step=1,
                 dark_file_name=None,
                 dark_start=0,
-                dark_end=0,
+                dark_end=None,
                 dark_step=1,
                 projections_digits=4,
-                white_digits=-1,
-                dark_digits=-1,
+                white_digits=None,
+                dark_digits=None,
                 projections_zeros=True,
                 white_zeros=True,
                 dark_zeros=True,
@@ -96,7 +96,7 @@ class Convert():
         dark_start, dark_end : scalar, optional
             start and end index for the dark field Tiff files to load. Use step define a stride.
 
-        projections_digits : scalar, optional
+        projections_digits, white_digits, dark_digits : scalar, optional
             Number of projections_digits used for file indexing.
             For example if 4: test_XXXX.hdf
 
@@ -125,15 +125,11 @@ class Convert():
         .. See also:: http://docs.scipy.org/doc/numpy/user/basics.types.html
         """
         
-        # Logging init.
-        self._log_level = str(log).upper()
-        self._init_log()
-        
         # Initialize Data Exchange file extension to false.
         hdf5_file_extension = False
 
         logger.info("###############################################")
-        logger.info("####      read series of [%s] images     ####", data_type)
+        logger.info("####      read series of [%s] images      ####", data_type)
         logger.info("###############################################")
         logger.info("projections file name= [%s]", file_name)
         logger.info("projections start [%d]", projections_start)
@@ -161,8 +157,8 @@ class Convert():
         logger.info("#########################################")
 
         if os.path.isfile(hdf5_file_name):
-                logger.info("Data Exchange file [%s] already exists. Nothing to do!", hdf5_file_name)
-                logger.info("Please use the Data Exchange reader instead")
+            logger.info("Data Exchange file [%s] already exists. Nothing to do!", hdf5_file_name)
+            logger.info("Please use the Data Exchange reader instead")
 
         else:
             # Read the series of files and load them in self.data, self.data_white, self.data_dark
@@ -170,23 +166,23 @@ class Convert():
             
             # Set default prefix for white and dark.
             if white_file_name == None:
-                    white_file_name = file_name
-                    logger.info("Default file name white set [%s]", white_file_name)
+                white_file_name = file_name
+                logger.info("Default white file name set [%s]", white_file_name)
             if dark_file_name == None:
-                    dark_file_name = file_name
-                    logger.info("Default file name dark set [%s]", dark_file_name)
+                dark_file_name = file_name
+                logger.info("Default datrk file name  set [%s]", dark_file_name)
 
             logger.info("File Name Projections = [%s]", file_name)
             logger.info("File Name White = [%s]", white_file_name)
             logger.info("File Name Dark = [%s]", dark_file_name)
 
             # Set default digits.
-            if white_digits == -1:
-                    white_digits = projections_digits
-                    logger.info("White digits = [%s]", white_digits)
-            if dark_digits == -1:
-                    dark_digits = projections_digits
-                    logger.info("Dark digits= [%s]", dark_digits)
+            if white_digits == None:
+                white_digits = projections_digits
+                logger.info("White digits = [%s]", white_digits)
+            if dark_digits == None:
+                dark_digits = projections_digits
+                logger.info("Dark digits = [%s]", dark_digits)
 
             if (data_type is 'hdf4'):
                 if file_name.endswith('h4') or \
@@ -257,18 +253,18 @@ class Convert():
             white_file_index = ["" for x in range(white_digits)]
             for m in range(white_digits):
                 if white_zeros is True:
-                   white_file_index[m] = '0' * (white_digits - m - 1)
+                    white_file_index[m] = '0' * (white_digits - m - 1)
 
                 elif white_zeros is False:
-                   white_file_index[m] = ''
+                    white_file_index[m] = ''
 
             dark_file_index = ["" for x in range(dark_digits)]
             for m in range(dark_digits):
                 if dark_zeros is True:
-                   dark_file_index[m] = '0' * (dark_digits - m - 1)
+                    dark_file_index[m] = '0' * (dark_digits - m - 1)
 
                 elif dark_zeros is False:
-                   dark_file_index[m] = ''
+                    dark_file_index[m] = ''
                    
             # Reading projections.
             ind = range(projections_start, projections_end, projections_step)
@@ -289,19 +285,19 @@ class Convert():
                     if (data_type is 'hdf4'):
                         f = Hdf4()
                         tmpdata = f.read(fileName,
-                                            x_start=slices_start,
-                                            x_end=slices_end,
-                                            x_step=slices_step,
-                                            array_name = 'data'
+                                         x_start=slices_start,
+                                         x_end=slices_end,
+                                         x_step=slices_step,
+                                         array_name = 'data'
                                          )
 
                     elif (data_type is 'compressed_tiff'):
                         f = Tiffc()
                         tmpdata = f.read(fileName,
-                                            x_start=slices_start,
-                                            x_end=slices_end,
-                                            x_step=slices_step,
-                                            dtype=dtype
+                                         x_start=slices_start,
+                                         x_end=slices_end,
+                                         x_step=slices_step,
+                                         dtype=dtype
                                          )
 
                     elif (data_type is 'spe'):
@@ -315,19 +311,19 @@ class Convert():
                     elif (data_type is 'tiff'):
                         f = Tiff()
                         tmpdata = f.read(fileName,
-                                            x_start=slices_start,
-                                            x_end=slices_end,
-                                            x_step=slices_step,
-                                            dtype=dtype
+                                         x_start=slices_start,
+                                         x_end=slices_end,
+                                         x_step=slices_step,
+                                         dtype=dtype
                                          )
 
                     if ((data_type is 'tiff') or (data_type is 'compressed_tiff') or (data_type is 'hdf4')):
                         if m == 0: # Get resolution once.
                             inputData = np.empty((len(ind),
-                                                tmpdata.shape[0],
-                                                tmpdata.shape[1]),
-                                                dtype=dtype
-                                            )
+                                                  tmpdata.shape[0],
+                                                  tmpdata.shape[1]),
+                                                  dtype=dtype
+                                                  )
                         inputData[m, :, :] = tmpdata
 
                     if ((data_type is 'spe') or (data_type is 'nc')):
@@ -358,18 +354,18 @@ class Convert():
                     if (data_type is 'hdf4'):
                         f = Hdf4()
                         tmpdata = f.read(fileName,
-                                            x_start=slices_start,
-                                            x_end=slices_end,
-                                            x_step=slices_step,
-                                            array_name = 'data'
+                                         x_start=slices_start,
+                                         x_end=slices_end,
+                                         x_step=slices_step,
+                                         array_name = 'data'
                                          )
                     elif (data_type is 'compressed_tiff'):
                         f = Tiffc()
                         tmpdata = f.read(fileName,
-                                            x_start=slices_start,
-                                            x_end=slices_end,
-                                            x_step=slices_step,
-                                            dtype=dtype
+                                         x_start=slices_start,
+                                         x_end=slices_end,
+                                         x_step=slices_step,
+                                         dtype=dtype
                                          )
 
                     elif (data_type is 'spe'):
@@ -384,19 +380,19 @@ class Convert():
                     elif (data_type is 'tiff'):
                         f = Tiff()
                         tmpdata = f.read(fileName,
-                                            x_start=slices_start,
-                                            x_end=slices_end,
-                                            x_step=slices_step,
-                                            dtype=dtype
+                                         x_start=slices_start,
+                                         x_end=slices_end,
+                                         x_step=slices_step,
+                                         dtype=dtype
                                          )
 
                     if ((data_type is 'tiff') or (data_type is 'compressed_tiff') or (data_type is 'hdf4')):
                         if m == 0: # Get resolution once.
                             inputData = np.empty((len(ind),
-                                                tmpdata.shape[0],
-                                                tmpdata.shape[1]),
-                                                dtype=dtype
-                                            )
+                                                 tmpdata.shape[0],
+                                                 tmpdata.shape[1]),
+                                                 dtype=dtype
+                                                 )
                         inputData[m, :, :] = tmpdata
 
                     if ((data_type is 'spe') or (data_type is 'nc')):
@@ -435,19 +431,19 @@ class Convert():
                     if (data_type is 'hdf4'):
                         f = Hdf4()
                         tmpdata = f.read(fileName,
-                                            x_start=slices_start,
-                                            x_end=slices_end,
-                                            x_step=slices_step,
-                                            array_name = 'data'
+                                         x_start=slices_start,
+                                         x_end=slices_end,
+                                         x_step=slices_step,
+                                         array_name = 'data'
                                          )
 
                     elif (data_type is 'compressed_tiff'):
                         f = Tiffc()
                         tmpdata = f.read(fileName,
-                                            x_start=slices_start,
-                                            x_end=slices_end,
-                                            x_step=slices_step,
-                                            dtype=dtype
+                                         x_start=slices_start,
+                                         x_end=slices_end,
+                                         x_step=slices_step,
+                                         dtype=dtype
                                          )
 
                     elif (data_type is 'spe'):
@@ -461,19 +457,19 @@ class Convert():
                     elif (data_type is 'tiff'):
                         f = Tiff()
                         tmpdata = f.read(fileName,
-                                            x_start=slices_start,
-                                            x_end=slices_end,
-                                            x_step=slices_step,
-                                            dtype=dtype
+                                         x_start=slices_start,
+                                         x_end=slices_end,
+                                         x_step=slices_step,
+                                         dtype=dtype
                                          )
 
                     if ((data_type is 'tiff') or (data_type is 'compressed_tiff') or (data_type is 'hdf4')):
                         if m == 0: # Get resolution once.
                             inputData = np.empty((len(ind),
-                                                tmpdata.shape[0],
-                                                tmpdata.shape[1]),
-                                                dtype=dtype
-                                            )
+                                                  tmpdata.shape[0],
+                                                  tmpdata.shape[1]),
+                                                  dtype=dtype
+                                                  )
                         inputData[m, :, :] = tmpdata
 
                     if ((data_type is 'spe') or (data_type is 'nc')):
@@ -501,7 +497,6 @@ class Convert():
                 self.theta = (z * float(projections_angle_range) / (len(z) - 1))
 
             # Getting ready to save the Data Exchange file
-
             if (hdf5_file_name != 'dummy'):
                 logger.info("Data Exchange file is set to [%s]", hdf5_file_name)
 
@@ -511,6 +506,7 @@ class Convert():
                 # Split the string with the delimeter '.'
                 end = lFn.split('.')
                 logger.info(end)
+                
                 # If the string has an extension.
                 if len(end) > 1:
                     # Check.
@@ -640,7 +636,7 @@ class Convert():
                                 z_step=pixels_step).astype(dtype)
 
             # Read white field data from exchange group.
-            print white_start, white_end, slices_start, slices_end
+            #print white_start, white_end, slices_start, slices_end
             self.data_white = f.read(file_name,
                                 array_name=array_name,
                                 x_start=white_start,
