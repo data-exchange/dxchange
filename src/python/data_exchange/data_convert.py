@@ -139,10 +139,10 @@ class Convert():
             logger.error("pixels_end not defined.")
             return
         if white_end == None:
-            logger.error("projections_end not defined.")
+            logger.error("white_end not defined.")
             return
         if dark_end == None:
-            logger.error("projections_end not defined.")
+            logger.error("dark_end not defined.")
             return
 
         logger.info("###############################################")
@@ -573,18 +573,18 @@ class Convert():
 
     def nexus(self, file_name,
                   hdf5_file_name,
-                  projections_start=None,
+                  projections_start=0,
                   projections_end=None,
-                  projections_step=None,
-                  slices_start=None,
+                  projections_step=1,
+                  slices_start=0,
                   slices_end=None,
-                  slices_step=None,
-                  pixels_start=None,
+                  slices_step=1,
+                  pixels_start=0,
                   pixels_end=None,
-                  pixels_step=None,
-                  white_start=None,
+                  pixels_step=1,
+                  white_start=0,
                   white_end=None,
-                  dark_start=None,
+                  dark_start=0,
                   dark_end=None,
                   array_name='entry/instrument/detector/data',
                   sample_name=None,
@@ -619,6 +619,30 @@ class Convert():
         dtype : str, optional
             Desired output data type.
         """
+        
+        # Check inputs.
+        if file_name == None:
+            logger.error("file_name not defined.")
+            return
+        if projections_end == None:
+            logger.error("projections_end not defined.")
+            return
+        if slices_end == None:
+            logger.error("slices_end not defined.")
+            return
+        if pixels_end == None:
+            logger.error("pixels_end not defined.")
+            return
+        if white_end == None:
+            logger.error("white_end not defined.")
+            return
+        if dark_end == None:
+            logger.error("dark_end not defined.")
+            return
+        if sample_name == None:
+            logger.error("sanple_name not defined.")
+            return
+        
         print "Reading NeXus file ..."
         self.file_name = file_name
 
@@ -750,10 +774,10 @@ class Convert():
 
         .. See also:: http://docs.scipy.org/doc/numpy/user/basics.types.html
         """
-
-        # Logging init.
-        self._log_level = str(log).upper()
-        self._init_log()
+        # Check inputs.
+        if sample_name == None:
+            logger.error("sanple_name not defined.")
+            return
         
         # Initialize Data Exchange file extension to false.
         hdf5_file_extension = False
