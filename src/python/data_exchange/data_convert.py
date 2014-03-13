@@ -35,9 +35,6 @@ class Convert():
                 slices_start=0,
                 slices_end=None,
                 slices_step=1,
-                pixels_start=0,
-                pixels_end=None,
-                pixels_step=1,
                 white_file_name=None,
                 white_start=0,
                 white_end=None,
@@ -75,8 +72,6 @@ class Convert():
 
         slices_start, slices_end, slices_step : scalar, optional
             start and end pixel of the projection image to load along the rotation axis. Use step define a stride.
-
-        pixels_start, pixels_end, pixels_step : not used yet.
 
         white_file_name : str
             Base name of the white field input HDF-4 or TIFF files: string optional.
@@ -132,18 +127,12 @@ class Convert():
         if projections_end == None:
             logger.error("projections_end not defined.")
             return
-        if slices_end == None:
-            logger.error("slices_end not defined.")
-            return
-        if pixels_end == None:
-            logger.error("pixels_end not defined.")
-            return
+
         if white_end == None:
-            logger.error("white_end not defined.")
-            return
+            logger.info("white range not defined.")
+
         if dark_end == None:
-            logger.error("dark_end not defined.")
-            return
+            logger.info("dark range not defined. ")
 
         logger.info("###############################################")
         logger.info("####      read series of [%s] images      ####", data_type)
@@ -187,7 +176,7 @@ class Convert():
                 logger.info("Default white file name set [%s]", white_file_name)
             if dark_file_name == None:
                 dark_file_name = file_name
-                logger.info("Default datrk file name  set [%s]", dark_file_name)
+                logger.info("Default dark file name  set [%s]", dark_file_name)
 
             logger.info("File Name Projections = [%s]", file_name)
             logger.info("File Name White = [%s]", white_file_name)
@@ -353,158 +342,153 @@ class Convert():
                 self.data = inputData
 
             # Reading white fields.
-            ind = range(white_start, white_end, white_step)
-            #logger.info("white: Start = [%d], End = [%d], Step = [%d]", white_start, white_end, white_step)
-            
-            for m in range(len(ind)):
-                for n in range(white_digits):
-                    #logger.info("n = [%d], ind[m] [%d] < [%d]", n, ind[m], np.power(10, n + 1))
-                    if ind[m] < np.power(10, n + 1):
-                        fileName = dataFileWhite + white_file_index[n] + str(ind[m]) + '.' + dataExtension
-                        logger.info("Generating white file names: [%s]", fileName)
-                        break
+            ind = range(0,0,1)
+            if white_end != None:
+                ind = range(white_start, white_end, white_step)
+                #logger.info("white: Start = [%d], End = [%d], Step = [%d]", white_start, white_end, white_step)
+                
+                for m in range(len(ind)):
+                    for n in range(white_digits):
+                        #logger.info("n = [%d], ind[m] [%d] < [%d]", n, ind[m], np.power(10, n + 1))
+                        if ind[m] < np.power(10, n + 1):
+                            fileName = dataFileWhite + white_file_index[n] + str(ind[m]) + '.' + dataExtension
+                            logger.info("Generating white file names: [%s]", fileName)
+                            break
 
-                if os.path.isfile(fileName):
-                    logger.info("Reading white file: [%s]", os.path.realpath(fileName))
-                    logger.info("data type: [%s]", data_type)
+                    if os.path.isfile(fileName):
+                        logger.info("Reading white file: [%s]", os.path.realpath(fileName))
+                        logger.info("data type: [%s]", data_type)
 
-                    if (data_type is 'hdf4'):
-                        f = Hdf4()
-                        tmpdata = f.read(fileName,
-                                         x_start=slices_start,
-                                         x_end=slices_end,
-                                         x_step=slices_step,
-                                         array_name = 'data'
-                                         )
-                    elif (data_type is 'compressed_tiff'):
-                        f = Tiffc()
-                        tmpdata = f.read(fileName,
-                                         x_start=slices_start,
-                                         x_end=slices_end,
-                                         x_step=slices_step,
-                                         dtype=dtype
-                                         )
+                        if (data_type is 'hdf4'):
+                            f = Hdf4()
+                            tmpdata = f.read(fileName,
+                                             x_start=slices_start,
+                                             x_end=slices_end,
+                                             x_step=slices_step,
+                                             array_name = 'data'
+                                             )
+                        elif (data_type is 'compressed_tiff'):
+                            f = Tiffc()
+                            tmpdata = f.read(fileName,
+                                             x_start=slices_start,
+                                             x_end=slices_end,
+                                             x_step=slices_step,
+                                             dtype=dtype
+                                             )
 
-                    elif (data_type is 'spe'):
-                        f = Spe()
-                        tmpdata = f.read(fileName)
+                        elif (data_type is 'spe'):
+                            f = Spe()
+                            tmpdata = f.read(fileName)
 
-                    elif (data_type is 'nc'):
-                        f = Netcdf()
-                        tmpdata = f.read(fileName)
+                        elif (data_type is 'nc'):
+                            f = Netcdf()
+                            tmpdata = f.read(fileName)
 
 
-                    elif (data_type is 'tiff'):
-                        f = Tiff()
-                        tmpdata = f.read(fileName,
-                                         x_start=slices_start,
-                                         x_end=slices_end,
-                                         x_step=slices_step,
-                                         dtype=dtype
-                                         )
+                        elif (data_type is 'tiff'):
+                            f = Tiff()
+                            tmpdata = f.read(fileName,
+                                             x_start=slices_start,
+                                             x_end=slices_end,
+                                             x_step=slices_step,
+                                             dtype=dtype
+                                             )
 
-                    if ((data_type is 'tiff') or (data_type is 'compressed_tiff') or (data_type is 'hdf4')):
-                        if m == 0: # Get resolution once.
-                            inputData = np.empty((len(ind),
-                                                 tmpdata.shape[0],
-                                                 tmpdata.shape[1]),
-                                                 dtype=dtype
-                                                 )
-                        inputData[m, :, :] = tmpdata
+                        if ((data_type is 'tiff') or (data_type is 'compressed_tiff') or (data_type is 'hdf4')):
+                            if m == 0: # Get resolution once.
 
-                    if ((data_type is 'spe') or (data_type is 'nc')):
-                        if m == 0: # Get resolution once.
-                            inputData = np.vstack([tmpdata])
-                        else:
-                            inputData = np.concatenate((inputData, tmpdata), axis=0)
+                                inputData = np.empty((len(ind),
+                                                     tmpdata.shape[0],
+                                                     tmpdata.shape[1]),
+                                                     dtype=dtype
+                                                     )
+                            inputData[m, :, :] = tmpdata
 
+                        if ((data_type is 'spe') or (data_type is 'nc')):
+                            if m == 0: # Get resolution once.
+                                inputData = np.vstack([tmpdata])
+                            else:
+                                inputData = np.concatenate((inputData, tmpdata), axis=0)
             if len(ind) > 0:
                 self.data_white = inputData
             else:
                 # Fabricate one white field
-                if ((data_type is 'tiff') or (data_type is 'compressed_tiff') or (data_type is 'hdf4')):
-                    nx, ny, nz = np.shape(self.data)
-                    self.data_white = np.ones((nx,ny,1))
-                if ((data_type is 'spe') or (data_type is 'nc')):
-                    nz, ny, nx = np.shape(self.data)
-                    self.data_dark = np.zeros((1, ny, nx))
-                
+                nz, ny, nx = np.shape(self.data)
+
             # Reading dark fields.
-            ind = range(dark_start, dark_end, dark_step)
-            #logger.info("dark: Start = [%d], End = [%d], Step = [%d]", dark_start, dark_end, dark_step)
-            
-            for m in range(len(ind)):
-                for n in range(dark_digits):
-                    #logger.info("n = [%d], ind[m] [%d] < [%d]", n, ind[m], np.power(10, n + 1))
-                    if ind[m] < np.power(10, n + 1):
-                        fileName = dataFileDark + dark_file_index[n] + str(ind[m]) + '.' + dataExtension
-                        logger.info("Generating dark file names: [%s]", fileName)
-                        break
+            ind = range(0,0,1)
+            if dark_end != None:
+                ind = range(dark_start, dark_end, dark_step)
+                #logger.info("dark: Start = [%d], End = [%d], Step = [%d]", dark_start, dark_end, dark_step)
+                
+                for m in range(len(ind)):
+                    for n in range(dark_digits):
+                        #logger.info("n = [%d], ind[m] [%d] < [%d]", n, ind[m], np.power(10, n + 1))
+                        if ind[m] < np.power(10, n + 1):
+                            fileName = dataFileDark + dark_file_index[n] + str(ind[m]) + '.' + dataExtension
+                            logger.info("Generating dark file names: [%s]", fileName)
+                            break
 
-                if os.path.isfile(fileName):
-                    logger.info("Reading dark file: [%s]", os.path.realpath(fileName))
-                    logger.info("data type: [%s]", data_type)
+                    if os.path.isfile(fileName):
+                        logger.info("Reading dark file: [%s]", os.path.realpath(fileName))
+                        logger.info("data type: [%s]", data_type)
 
-                    if (data_type is 'hdf4'):
-                        f = Hdf4()
-                        tmpdata = f.read(fileName,
-                                         x_start=slices_start,
-                                         x_end=slices_end,
-                                         x_step=slices_step,
-                                         array_name = 'data'
-                                         )
+                        if (data_type is 'hdf4'):
+                            f = Hdf4()
+                            tmpdata = f.read(fileName,
+                                             x_start=slices_start,
+                                             x_end=slices_end,
+                                             x_step=slices_step,
+                                             array_name = 'data'
+                                             )
 
-                    elif (data_type is 'compressed_tiff'):
-                        f = Tiffc()
-                        tmpdata = f.read(fileName,
-                                         x_start=slices_start,
-                                         x_end=slices_end,
-                                         x_step=slices_step,
-                                         dtype=dtype
-                                         )
+                        elif (data_type is 'compressed_tiff'):
+                            f = Tiffc()
+                            tmpdata = f.read(fileName,
+                                             x_start=slices_start,
+                                             x_end=slices_end,
+                                             x_step=slices_step,
+                                             dtype=dtype
+                                             )
 
-                    elif (data_type is 'spe'):
-                        f = Spe()
-                        tmpdata = f.read(fileName)
+                        elif (data_type is 'spe'):
+                            f = Spe()
+                            tmpdata = f.read(fileName)
 
-                    elif (data_type is 'nc'):
-                        f = Netcdf()
-                        tmpdata = f.read(fileName)
+                        elif (data_type is 'nc'):
+                            f = Netcdf()
+                            tmpdata = f.read(fileName)
 
-                    elif (data_type is 'tiff'):
-                        f = Tiff()
-                        tmpdata = f.read(fileName,
-                                         x_start=slices_start,
-                                         x_end=slices_end,
-                                         x_step=slices_step,
-                                         dtype=dtype
-                                         )
+                        elif (data_type is 'tiff'):
+                            f = Tiff()
+                            tmpdata = f.read(fileName,
+                                             x_start=slices_start,
+                                             x_end=slices_end,
+                                             x_step=slices_step,
+                                             dtype=dtype
+                                             )
 
-                    if ((data_type is 'tiff') or (data_type is 'compressed_tiff') or (data_type is 'hdf4')):
-                        if m == 0: # Get resolution once.
-                            inputData = np.empty((len(ind),
-                                                  tmpdata.shape[0],
-                                                  tmpdata.shape[1]),
-                                                  dtype=dtype
-                                                  )
-                        inputData[m, :, :] = tmpdata
+                        if ((data_type is 'tiff') or (data_type is 'compressed_tiff') or (data_type is 'hdf4')):
+                            if m == 0: # Get resolution once.
+                                inputData = np.empty((len(ind),
+                                                      tmpdata.shape[0],
+                                                      tmpdata.shape[1]),
+                                                      dtype=dtype
+                                                      )
+                            inputData[m, :, :] = tmpdata
 
-                    if ((data_type is 'spe') or (data_type is 'nc')):
-                        if m == 0: # Get resolution once.
-                            inputData = np.vstack([tmpdata])
-                        else:
-                            inputData = np.concatenate((inputData, tmpdata), axis=0)
-
+                        if ((data_type is 'spe') or (data_type is 'nc')):
+                            if m == 0: # Get resolution once.
+                                inputData = np.vstack([tmpdata])
+                            else:
+                                inputData = np.concatenate((inputData, tmpdata), axis=0)
             if len(ind) > 0:
+                print len(ind)
                 self.data_dark = inputData
             else:
                 # Fabricate one dark field
-                if ((data_type is 'tiff') or (data_type is 'compressed_tiff') or (data_type is 'hdf4')):
-                    nx, ny, nz = np.shape(self.data)
-                    self.data_white = np.ones((nx,ny,1))
-                if ((data_type is 'spe') or (data_type is 'nc')) :
-                    nz, ny, nx = np.shape(self.data)
-                    self.data_dark = np.zeros((1, ny, nx))
+                nz, ny, nx = np.shape(self.data)
+                self.data_dark = np.ones((1, ny, nx))
                 
             if ((data_type is 'tiff') or (data_type is 'compressed_tiff') or (data_type is 'hdf4')):
                 # Fabricate theta values.

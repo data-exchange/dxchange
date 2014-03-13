@@ -18,10 +18,10 @@ def main():
     dark_file_name = '/local/dataraid/databank/Anka/darks/image_.tif'
     white_file_name = '/local/dataraid/databank/Anka/flats/image_.tif'
 
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/Anka.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/Anka_01.h5'
 
     projections_start = 0
-    projections_end = 3167
+    projections_end = 31 #3167
     white_start = 0
     white_end = 100
     dark_start = 0
