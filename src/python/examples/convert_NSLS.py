@@ -9,7 +9,7 @@
 
 """ 
 import data_exchange as dx
-import tomopy
+#import tomopy
 
 ## NOT CHECKED
 
