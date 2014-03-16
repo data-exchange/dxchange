@@ -44,8 +44,8 @@ class Convert():
                 dark_end=None,
                 dark_step=1,
                 projections_digits=4,
-                white_digits=4,
-                dark_digits=4,
+                white_digits=None,
+                dark_digits=None,
                 projections_zeros=True,
                 white_zeros=True,
                 dark_zeros=True,
@@ -133,6 +133,12 @@ class Convert():
 
         if dark_end == None:
             logger.info("dark range not defined. ")
+
+        if white_digits == None:
+                white_digits = projections_digits
+                
+        if dark_digits == None:
+                dark_digits = projections_digits
 
         logger.info("###############################################")
         logger.info("####      read series of [%s] images      ####", data_type)
@@ -345,11 +351,11 @@ class Convert():
             ind = range(0,0,1)
             if white_end != None:
                 ind = range(white_start, white_end, white_step)
-                #logger.info("white: Start = [%d], End = [%d], Step = [%d]", white_start, white_end, white_step)
+                logger.info("white: Start = [%d], End = [%d], Step = [%d]", white_start, white_end, white_step)
                 
                 for m in range(len(ind)):
                     for n in range(white_digits):
-                        #logger.info("n = [%d], ind[m] [%d] < [%d]", n, ind[m], np.power(10, n + 1))
+                        logger.info("n = [%d], ind[m] [%d] < [%d]", n, ind[m], np.power(10, n + 1))
                         if ind[m] < np.power(10, n + 1):
                             fileName = dataFileWhite + white_file_index[n] + str(ind[m]) + '.' + dataExtension
                             logger.info("Generating white file names: [%s]", fileName)
@@ -419,11 +425,11 @@ class Convert():
             ind = range(0,0,1)
             if dark_end != None:
                 ind = range(dark_start, dark_end, dark_step)
-                #logger.info("dark: Start = [%d], End = [%d], Step = [%d]", dark_start, dark_end, dark_step)
+                logger.info("dark: Start = [%d], End = [%d], Step = [%d]", dark_start, dark_end, dark_step)
                 
                 for m in range(len(ind)):
                     for n in range(dark_digits):
-                        #logger.info("n = [%d], ind[m] [%d] < [%d]", n, ind[m], np.power(10, n + 1))
+                        logger.info("n = [%d], ind[m] [%d] < [%d]", n, ind[m], np.power(10, n + 1))
                         if ind[m] < np.power(10, n + 1):
                             fileName = dataFileDark + dark_file_index[n] + str(ind[m]) + '.' + dataExtension
                             logger.info("Generating dark file names: [%s]", fileName)
@@ -483,7 +489,6 @@ class Convert():
                             else:
                                 inputData = np.concatenate((inputData, tmpdata), axis=0)
             if len(ind) > 0:
-                print len(ind)
                 self.data_dark = inputData
             else:
                 # Fabricate one dark field
