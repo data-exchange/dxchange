@@ -8,12 +8,8 @@
 
 
 """ 
-from data_exchange import DataExchangeFile, DataExchangeEntry
-from data_exchange.data_convert import Convert
 
-import re
-import logging
-logging.basicConfig(filename='convert_PetraIII.log',level=logging.DEBUG)
+import xtomo.xtomo_importer as dx
 
 def main():
 
@@ -61,9 +57,9 @@ def main():
     ##dark_step = 1
 
     # ct4: pj: from 0 -> 1199; bf from 1 -> 18; df from 0 -> 19
-    file_name = '/local/data/databank/PetraIII/ct4/ct4_.tif'
-    dark_file_name = '/local/data/databank/PetraIII/ct4/df_ct4_.tif'
-    white_file_name = '/local/data/databank/PetraIII/ct4/bf_ct4_.tif'
+    file_name = '/local/dataraid/databank/PetraIII/ct4/ct4_.tif'
+    dark_file_name = '/local/dataraid/databank/PetraIII/ct4/df_ct4_.tif'
+    white_file_name = '/local/dataraid/databank/PetraIII/ct4/bf_ct4_.tif'
     hdf5_file_name = '/local/data/databank/dataExchange/microCT/PetraIII_ct4_180.h5'
     sample_name = 'ct4'
 
@@ -79,53 +75,26 @@ def main():
     dark_end = 20
     dark_step = 1
 
-    mydata = Convert()
+    mydata = dx.Import()
     # Create minimal hdf5 file
     mydata.series_of_images(file_name,
-                     hdf5_file_name,
-                     projections_start,
-                     projections_end,
-                     # projections_angle_range=360,
-                     white_file_name = white_file_name,
-                     white_start = white_start,
-                     white_end = white_end,
-                     white_step = white_step,
-                     dark_file_name = dark_file_name,
-                     dark_start = dark_start,
-                     dark_end = dark_end,
-                     dark_step = dark_step,
-                     sample_name = sample_name,
-                     projections_digits = 5,
-                     projections_zeros = True,
-                     verbose = False
-                     )
-
-     
-    # Add extra metadata if available / desired
-
-    # Open DataExchange file
-    f = DataExchangeFile(hdf5_file_name, mode='a') 
-
-    # Create HDF5 subgroup
-    # /measurement/instrument
-    f.add_entry( DataExchangeEntry.instrument(name={'value': 'Petra III'}) )
-
-    # Create HDF5 subgroup
-    # /measurement/instrument/source
-    f.add_entry( DataExchangeEntry.source(name={'value': 'Petra III'},
-                                        date_time={'value': "2011-25-05T19:42:13+0100"},
-                                        beamline={'value': "P06"},
-                                        )
-    )
-
-    # /measurement/experimenter
-    f.add_entry( DataExchangeEntry.experimenter(name={'value':"Walter Schroeder"},
-                                                role={'value':"Project PI"},
-                    )
-        )
-
-    f.close()
-    print "Done creating data exchange file: ", hdf5_file_name
+                            #hdf5_file_name,
+                            projections_start,
+                            projections_end,
+                            #projections_angle_range=360,
+                            white_file_name = white_file_name,
+                            white_start = white_start,
+                            white_end = white_end,
+                            white_step = white_step,
+                            dark_file_name = dark_file_name,
+                            dark_start = dark_start,
+                            dark_end = dark_end,
+                            dark_step = dark_step,
+                            sample_name = sample_name,
+                            projections_digits = 5,
+                            projections_zeros = True,
+                            log='INFO'
+                            )
 
 if __name__ == "__main__":
     main()

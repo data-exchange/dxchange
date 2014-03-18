@@ -6,9 +6,9 @@
 
 .. moduleauthor:: Francesco De Carlo <decarlof@gmail.com>
 
-
 """ 
-import data_exchange as dx
+
+import xtomo.xtomo_importer as dx
 
 import re
 
@@ -21,7 +21,7 @@ def main():
     hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/Anka_01.h5'
 
     projections_start = 0
-    projections_end = 31 #3167
+    projections_end = 3167
     white_start = 0
     white_end = 100
     dark_start = 0
@@ -29,10 +29,10 @@ def main():
 
     sample_name = 'Anka'
     
-    mydata = dx.Convert()
+    mydata = dx.Import()
     # Create minimal hdf5 file
     mydata.series_of_images(file_name,
-                     hdf5_file_name = hdf5_file_name,
+                     #hdf5_file_name = hdf5_file_name,
                      projections_start = projections_start,
                      projections_end = projections_end,
                      white_file_name = white_file_name,
@@ -43,7 +43,7 @@ def main():
                      dark_end = dark_end,
                      sample_name = sample_name,
                      projections_digits = 5,
-                     log='WARNING'
+                     log='INFO'
                      )
 
 if __name__ == "__main__":

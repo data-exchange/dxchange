@@ -9,15 +9,15 @@
 
 """ 
 
-import data_exchange as dx
+import xtomo.xtomo_importer as dx
 
 def main():
 
-    file_name = '/Users/decarlo/data/elettra/Volcanic_rock/tomo_.tif'
-    dark_file_name = '/Users/decarlo/data/elettra/Volcanic_rock/dark_.tif'
-    white_file_name = '/Users/decarlo/data/elettra/Volcanic_rock/flat_.tif'
+    file_name = '/local/dataraid/databank/Elettra/Volcanic_rock/tomo_.tif'
+    dark_file_name = '/local/dataraid/databank/Elettra/Volcanic_rock/dark_.tif'
+    white_file_name = '/local/dataraid/databank/Elettra/Volcanic_rock/flat_.tif'
 
-    hdf5_file_name = '/Users/decarlo/data/elettra/Volcanic_rock/elettra_Volcanic_rock_03.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/Elettra.h5'
 
     projections_start = 1
     projections_end = 1441
@@ -30,9 +30,9 @@ def main():
 
     sample_name = 'Volcanic_rock'
 
-    mydata = dx.Convert()
+    mydata = dx.Import()
     mydata.series_of_images(file_name,
-                            hdf5_file_name = hdf5_file_name,
+                            #hdf5_file_name = hdf5_file_name,
                             projections_start = projections_start,
                             projections_end = projections_end,
                             projections_digits = 4,
@@ -49,7 +49,7 @@ def main():
                             white_zeros = False,
                             dark_zeros = False,
                             sample_name = sample_name,
-                            log='ERROR'
+                            log='INFO'
                             )
 
 if __name__ == "__main__":

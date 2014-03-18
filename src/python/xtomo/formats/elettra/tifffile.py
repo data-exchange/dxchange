@@ -2157,13 +2157,14 @@ def _replace_by(module_function, package=None, warn=True):
         return lambda func: func
 
     def decorate(func, module_function=module_function, warn=warn):
-        try:
+        try:   
             module, function = module_function.split('.')
             if not package:
                 module = import_module(module)
             else:
                 module = import_module('.' + module, package=package)
-            func, oldfunc = getattr(module, function), func
+            func, oldfunc = getattr(module, function), func         
+
             globals()['__old_' + func.__name__] = oldfunc
         except Exception:
             if warn:

@@ -5,13 +5,10 @@
 
 .. moduleauthor:: David Vine <djvine@gmail.com>
 
-
 """ 
-from functools import wraps 
 import h5py
 import os
 import sys
-import pdb
 py3 = sys.version_info[0] == 3
 
 
@@ -23,7 +20,6 @@ class DataExchangeFile(h5py.File):
 
         :method create_top_level_group: Helper function for creating a top level group which will update the ``implements`` group automagically.
         :method add_entry: This method is used to parse DataExchangeEntry objects and add them to the DataExchangeFile.
-
 
     """
     def __init__(self, *args, **kwargs):
@@ -119,9 +115,6 @@ class DataExchangeFile(h5py.File):
                             print 'WARNING: Dataset {:s} already exists. This entry has been skipped.'.format(ds_name)
                         else:
                             raise
-
-
-
 
 
 class DataExchangeEntry(object):
@@ -714,7 +707,5 @@ class DataExchangeEntry(object):
             except:
                 print("Unable to create DataExchangeEntry for {:s}".format(entry_name))
                 raise
-
-
 
 DataExchangeEntry()
