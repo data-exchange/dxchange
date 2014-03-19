@@ -20,7 +20,7 @@ def main():
     white_file_name = '/local/dataraid/databank/ALS_2011/Blakely/blakely_raw/blakelyALSbak_.tif'
     log_file = '/local/dataraid/databank/ALS_2011/Blakely/blakely_raw/blakelyALS.sct'
 
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/blakely_ALS_2011.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/blakely_ALS_2011_01.h5'
 
     verbose = True
 
@@ -65,7 +65,7 @@ def main():
     mydata = dx.Import()
     # Create minimal hdf5 file
     mydata.series_of_images(file_name = file_name,
-                            #hdf5_file_name = hdf5_file_name,
+                            hdf5_file_name = hdf5_file_name,
                             projections_start = projections_start,
                             projections_end = projections_end,
                             white_file_name = white_file_name,

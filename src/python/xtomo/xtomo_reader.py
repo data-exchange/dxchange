@@ -173,11 +173,12 @@ class XTomoReader:
                                tuple(list(im.size[::-1])))
 
         num_x, num_y = out.shape
+
         if x_end is None:
             x_end = num_x
         if y_end is None:
             y_end = num_y
-            
+        
         #im.close()
         return out[x_start:x_end:x_step,
                    y_start:y_end:y_step]
