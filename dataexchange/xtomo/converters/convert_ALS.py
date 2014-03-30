@@ -61,7 +61,7 @@ def main():
     white_step = int(WhiteStep[0])
     projections_start = 0
     projections_end = int(Angles[0])
-
+ 
     mydata = dx.Import()
     # Create minimal hdf5 file
     mydata.series_of_images(file_name = file_name,
