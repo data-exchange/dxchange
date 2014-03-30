@@ -19,6 +19,11 @@ def main():
 
     hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/Blakely_SLS_2011_01.h5'
 
+    file_name = '/local/dataraid/databank/SLS_2011/Ashley/3e_final_2_.tif'
+    log_file = '/local/dataraid/databank/SLS_2011/Ashley/3e_final_2_.log'
+
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/Ashley_SLS.h5'
+
     #Read SLS log file data
     file = open(log_file, 'r')
 
@@ -49,11 +54,11 @@ def main():
     white_end = white_start + int(NumberOfFlats[0])
     projections_start = white_end
     projections_end = projections_start + int(NumberOfProjections[0])
-
+    
     mydata = dx.Import()
     # Create minimal hdf5 file
     mydata.series_of_images(file_name,
-                            #hdf5_file_name = hdf5_file_name,
+                            hdf5_file_name = hdf5_file_name,
                             projections_start = projections_start,
                             projections_end = projections_end,
                             white_start = white_start,
