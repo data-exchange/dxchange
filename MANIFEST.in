@@ -1,0 +1,4 @@
+include README.rst
+include CHANGES.txt
+include LICENSE.txt
+recursive-include dataexchange/xtomo *
