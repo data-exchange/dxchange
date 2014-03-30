@@ -4,7 +4,7 @@ import os
 import h5py
 import logging
 
-from xtomo.xtomo_reader import XTomoReader
+from dataexchange.xtomo.xtomo_reader import XTomoReader
 from formats.data_exchange.data_exchange import DataExchangeFile, DataExchangeEntry
 
 
