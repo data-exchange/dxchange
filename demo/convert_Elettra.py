@@ -9,7 +9,7 @@
 
 """ 
 
-import xtomo.xtomo_importer as dx
+import dataexchange.xtomo.xtomo_importer as dx
 
 def main():
 
@@ -27,12 +27,12 @@ def main():
     dark_start = 1
     dark_end = 11
     dark_step = 1
-
+    
     sample_name = 'Volcanic_rock'
 
     mydata = dx.Import()
     mydata.series_of_images(file_name,
-                            #hdf5_file_name = hdf5_file_name,
+                            hdf5_file_name = hdf5_file_name,
                             projections_start = projections_start,
                             projections_end = projections_end,
                             projections_digits = 4,

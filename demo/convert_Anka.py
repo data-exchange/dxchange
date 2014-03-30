@@ -8,7 +8,7 @@
 
 """ 
 
-import xtomo.xtomo_importer as dx
+import dataexchange.xtomo.xtomo_importer as dx
 
 import re
 
@@ -18,7 +18,7 @@ def main():
     dark_file_name = '/local/dataraid/databank/Anka/darks/image_.tif'
     white_file_name = '/local/dataraid/databank/Anka/flats/image_.tif'
 
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/Anka_01.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/Anka.h5'
 
     projections_start = 0
     projections_end = 3167
@@ -32,7 +32,7 @@ def main():
     mydata = dx.Import()
     # Create minimal hdf5 file
     mydata.series_of_images(file_name,
-                     #hdf5_file_name = hdf5_file_name,
+                     hdf5_file_name = hdf5_file_name,
                      projections_start = projections_start,
                      projections_end = projections_end,
                      white_file_name = white_file_name,

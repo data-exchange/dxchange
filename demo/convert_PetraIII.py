@@ -9,7 +9,7 @@
 
 """ 
 
-import xtomo.xtomo_importer as dx
+import dataexchange.xtomo.xtomo_importer as dx
 
 def main():
 
@@ -60,7 +60,7 @@ def main():
     file_name = '/local/dataraid/databank/PetraIII/ct4/ct4_.tif'
     dark_file_name = '/local/dataraid/databank/PetraIII/ct4/df_ct4_.tif'
     white_file_name = '/local/dataraid/databank/PetraIII/ct4/bf_ct4_.tif'
-    hdf5_file_name = '/local/data/databank/dataExchange/microCT/PetraIII_ct4_180.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/PetraIII_ct4_180.h5'
     sample_name = 'ct4'
 
     # ct4: Leaf of rice
@@ -78,9 +78,9 @@ def main():
     mydata = dx.Import()
     # Create minimal hdf5 file
     mydata.series_of_images(file_name,
-                            #hdf5_file_name,
-                            projections_start,
-                            projections_end,
+                            hdf5_file_name = hdf5_file_name,
+                            projections_start = projections_start,
+                            projections_end = projections_end,
                             #projections_angle_range=360,
                             white_file_name = white_file_name,
                             white_start = white_start,

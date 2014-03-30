@@ -9,21 +9,21 @@
 
 """ 
 
-import xtomo.xtomo_importer as dx
+import dataexchange.xtomo.xtomo_importer as dx
 
 def main():
 
     file_name = '/local/dataraid/databank/ESRF/scan.edf'
     dark_file_name = '/local/dataraid/databank/ESRF/dark.edf'
     white_file_name = '/local/dataraid/databank/ESRF/flat.edf'
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/ESRF.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/xx_ESRF.h5'
 
     sample_name = 'esrf'
 
     mydata = dx.Import()
     # Create minimal hdf5 file
     mydata.stack(file_name,
-                 #hdf5_file_name = hdf5_file_name,
+                 hdf5_file_name = hdf5_file_name,
                  white_file_name = white_file_name,
                  dark_file_name = dark_file_name,
                  projections_data_type = 'edf',

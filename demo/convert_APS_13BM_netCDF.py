@@ -8,12 +8,12 @@
 
 """ 
 
-import xtomo.xtomo_importer as dx
+import dataexchange.xtomo.xtomo_importer as dx
 
 def main():
 
     file_name = '/local/dataraid/databank/APS_13_BM/NC/Dorthe_F_.nc'
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/APS_13_BM_NC.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/xx_APS_13_BM_NC.h5'
 
     white_start = 1
     white_end = 4
@@ -26,7 +26,7 @@ def main():
     
     # Create minimal hdf5 file
     mydata.series_of_images(file_name,
-                            #hdf5_file_name = hdf5_file_name,
+                            hdf5_file_name = hdf5_file_name,
                             projections_start = projections_start,
                             projections_end = projections_end,
                             projections_step = projections_step,

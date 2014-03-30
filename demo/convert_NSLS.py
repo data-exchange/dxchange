@@ -9,7 +9,7 @@
 
 """ 
 
-import xtomo.xtomo_importer as dx
+import dataexchange.xtomo.xtomo_importer as dx
 
 def main():
 
@@ -27,7 +27,7 @@ def main():
     mydata = dx.Import()
     # Create minimal hdf5 file
     mydata.series_of_images(file_name,
-                            #hdf5_file_name = hdf5_file_name,
+                            hdf5_file_name = hdf5_file_name,
                             projections_start = projections_start,
                             projections_end = projections_end,
                             white_file_name = white_file_name,

@@ -8,7 +8,8 @@
 
 
 """ 
-import xtomo.xtomo_importer as dx
+
+import dataexchange.xtomo.xtomo_importer as dx
 
 import re
 
@@ -54,7 +55,7 @@ def main():
     white_end = white_start + int(NumberOfFlats[0])
     projections_start = white_end
     projections_end = projections_start + int(NumberOfProjections[0])
-    
+   
     mydata = dx.Import()
     # Create minimal hdf5 file
     mydata.series_of_images(file_name,

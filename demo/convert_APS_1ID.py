@@ -8,14 +8,15 @@
 
 
 """ 
-import xtomo.xtomo_importer as dx
+
+import dataexchange.xtomo.xtomo_importer as dx
 
 def main():
 
     file_name = '/local/dataraid/databank/APS_1_ID/APS1ID_Cat4B_2/CAT4B_2_.tif'
     log_file = '/local/dataraid/databank/APS_1_ID/APS1ID_Cat4B_2/CAT4B_2_TomoStillScan.dat'
 
-    hdf5_file_name = '/local/data/databank/dataExchange/microCT/CAT4B_2_01.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/CAT4B_2.h5'
 
     # to do: add log_file parser
     projections_start = 943
@@ -28,7 +29,7 @@ def main():
     mydata = dx.Import()
     # Create minimal hdf5 file
     mydata.series_of_images(file_name,
-                            #hdf5_file_name = hdf5_file_name,
+                            hdf5_file_name = hdf5_file_name,
                             projections_start = projections_start,
                             projections_end = projections_end,
                             white_start = white_start,

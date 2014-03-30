@@ -126,11 +126,11 @@ class Import():
                          pixels_step=1,
                          white_file_name=None,
                          white_start=0,
-                         white_end=None,
+                         white_end=0,
                          white_step=1,
                          dark_file_name=None,
                          dark_start=0,
-                         dark_end=None,
+                         dark_end=0,
                          dark_step=1,
                          projections_angle_range=180,
                          projections_zeros=True,
@@ -415,6 +415,7 @@ class Import():
         else:
             # Fabricate one white field
             nz, ny, nx = np.shape(xtomo.data)
+            xtomo.data_white = np.ones((1, ny, nx))
             
         # Dark ------------------------------------------------
 
@@ -479,7 +480,7 @@ class Import():
         else:
             # Fabricate one dark field
             nz, ny, nx = np.shape(xtomo.data)
-            xtomo.data_dark = np.ones((1, ny, nx))
+            xtomo.data_dark = np.zeros((1, ny, nx))
             
         # Theta ------------------------------------------------
             

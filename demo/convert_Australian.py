@@ -8,14 +8,15 @@
 
 
 """ 
-import xtomo.xtomo_importer as dx
+
+import dataexchange.xtomo.xtomo_importer as dx
 
 def main():
 
     file_name = '/local/dataraid/databank/AS/Mayo_tooth_AS/SAMPLE_T_.tif'
     dark_file_name = '/local/dataraid/databank/AS/Mayo_tooth_AS/DF__AFTER_.tif'
     white_file_name = '/local/dataraid/databank/AS/Mayo_tooth_AS/BG__BEFORE_.tif'
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/Australian_01.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/Australian.h5'
     sample_name = 'Teeth'
 
     projections_start = 0
@@ -30,7 +31,7 @@ def main():
     mydata = dx.Import()
     # Create minimal hdf5 file
     mydata.series_of_images(file_name,
-                            #hdf5_file_name = hdf5_file_name,
+                            hdf5_file_name = hdf5_file_name,
                             projections_start = projections_start,
                             projections_end = projections_end,
                             white_file_name = white_file_name,
