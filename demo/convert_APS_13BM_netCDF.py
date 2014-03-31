@@ -9,6 +9,7 @@
 """ 
 
 import dataexchange.xtomo.xtomo_importer as dx
+import dataexchange.xtomo.xtomo_exporter as ex
 
 def main():
 
@@ -24,7 +25,7 @@ def main():
 
     mydata = dx.Import()
     
-    # Create minimal hdf5 file
+    # Read series of images
     data, white, dark, theta = mydata.series_of_images(file_name,
                                                        hdf5_file_name = hdf5_file_name,
                                                        projections_start = projections_start,
@@ -37,6 +38,16 @@ def main():
                                                        data_type='nc',
                                                        sample_name = 'Stripe_Solder_Sample_Tip1',
                                                        log='INFO'
-                                                )
+                                                       )
+    mydata = ex.Export()
+    # Create minimal data exchange hdf5 file
+    mydata.xtomo_exchange(data = data,
+                          data_white = white,
+                          data_dark = dark,
+                          theta = theta,
+                          hdf5_file_name = hdf5_file_name,
+                          data_exchange_type = 'tomography_raw_projections'
+                          )
+
 if __name__ == "__main__":
     main()

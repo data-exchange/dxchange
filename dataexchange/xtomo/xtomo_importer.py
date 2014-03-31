@@ -21,8 +21,8 @@ class Import():
         xtomo.logger = None
         xtomo._log_level = str(log).upper()
         xtomo._init_logging()
-
         
+       
     def xtomo_reader(file_name,
                      projections_start=None,
                      projections_end=None,
@@ -176,7 +176,6 @@ class Import():
                          dtype='uint16',
                          data_type='tiff',
                          sample_name=None,
-                         hdf5_file_name=None,
                          log='INFO'):
         """
         Read a stack of 2-D HDF4, TIFF, spe or netCDF images.
@@ -190,11 +189,11 @@ class Import():
 
         projections_start, projections_end, projections_step : scalar, optional
             start and end index for the projection 
-            images to load. Use step define a stride.
+            images to load. Use step to define a stride.
 
         slices_start, slices_end, slices_step : scalar, optional
             start and end pixel of the projection image to load 
-            along the rotation axis. Use step define a stride.
+            along the rotation axis. Use step to define a stride.
 
         white_file_name, dark_file_name : str, optional
             Base name of the white and dark field input files.
@@ -203,13 +202,13 @@ class Import():
             file_name is /local/data/test_bg_.hdf. 
             If omitted white_file_name = file_name.
 
-        white_start, white_end : scalar, optional
+        white_start, white_end, white_step : scalar, optional
             start and end index for the white field 
             files to load. Use step define a stride.
 
-        dark_start, dark_end : scalar, optional
+        dark_start, dark_end, dark_step : scalar, optional
             start and end index for the dark field 
-            files to load. Use step define a stride.
+            files to load. Use step to define a stride.
 
         projections_digits, white_digits, dark_digits : scalar, optional
             Number of projections_digits used for file indexing.
@@ -221,6 +220,12 @@ class Import():
             If ``False`` omits projections_zeros in
             indexing (1, 2, ..., 9999)
 
+        sample_name : str, optional
+            sample name. If not defined the file name is assigmed as sample name
+
+        hdf5_file_name : str, optional
+            if set the series for images is saved as a data exchange file
+        
         dtype : str, optional
             Corresponding Numpy data type of file.
 
@@ -234,9 +239,9 @@ class Import():
 
         Returns
         -------
-        Output : obj,
-            X-ray absorption tomography data object.
-        """
+        Output : data, data_white, data_dark, theta
+             if hdf5_file_name is set the series for images is saved as a data exchange file
+       """
             
         # Set default prefix for white and dark.
         if white_file_name is None:
@@ -527,48 +532,7 @@ class Import():
             # Fabricate theta values
             xtomo.theta = (z * float(projections_angle_range) / (len(z) - 1))
 
-        # Create Data Exchange file ----------------------------
-        if (hdf5_file_name != None):
-            if os.path.isfile(hdf5_file_name):
-                xtomo.logger.info("Data Exchange file exists: [%s]. Next time use the Data Exchange reader instead", hdf5_file_name)
-            else:
-                # Create new folder.
-                dirPath = os.path.dirname(hdf5_file_name)
-                if not os.path.exists(dirPath):
-                    os.makedirs(dirPath)
-
-                # Get the file_name in lower case.
-                lFn = hdf5_file_name.lower()
-
-                # Split the string with the delimeter '.'
-                end = lFn.split('.')
-
-                # Write the Data Exchange HDF5 file.
-                # Open DataExchange file
-                f = DataExchangeFile(hdf5_file_name, mode='w') 
-
-                xtomo.logger.info("Creating Data Exchange File [%s]", hdf5_file_name)
-
-                # Create core HDF5 dataset in exchange group for projections_theta_range
-                # deep stack of x,y images /exchange/data
-                xtomo.logger.info("Adding projections to Data Exchange File [%s]", hdf5_file_name)
-                f.add_entry( DataExchangeEntry.data(data={'value': xtomo.data, 'units':'counts', 'description': 'transmission', 'axes':'theta:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
-                if ((data_type is 'tiff') or (data_type is 'compressed_tiff') or (data_type is 'hdf4')):
-                    f.add_entry( DataExchangeEntry.data(theta={'value': xtomo.theta, 'units':'degrees'}))
-                xtomo.logger.info("Adding dark fields to  Data Exchange File [%s]", hdf5_file_name)
-                f.add_entry( DataExchangeEntry.data(data_dark={'value': xtomo.data_dark, 'units':'counts', 'axes':'theta_dark:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
-                xtomo.logger.info("Adding white fields to  Data Exchange File [%s]", hdf5_file_name)
-                f.add_entry( DataExchangeEntry.data(data_white={'value': xtomo.data_white, 'units':'counts', 'axes':'theta_white:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
-                f.add_entry( DataExchangeEntry.data(title={'value': 'tomography_raw_projections'}))
-                if (sample_name == None):
-                    sample_name = end[0]
-                    f.add_entry( DataExchangeEntry.sample( name={'value':sample_name}, description={'value':'Sample name was assigned by the HDF5 converter and based on the HDF5 file name'}))
-                else:
-                    f.add_entry( DataExchangeEntry.sample( name={'value':sample_name}, description={'value':'Sample name was read from the user log file'}))
-                f.close()
-                xtomo.logger.info("DONE!!!!. Created Data Exchange File [%s]", hdf5_file_name)                
-
-        # this if will be removed once I clean up the series of stack loading for netCDF and SPE
+        # this "if" will be removed once I clean up the series of stack loading for netCDF and SPE
         if ((data_type is 'tiff') or (data_type is 'compressed_tiff') or (data_type is 'hdf4')):
             return xtomo.data, xtomo.data_white, xtomo.data_dark,  xtomo.theta
         else:

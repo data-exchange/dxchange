@@ -9,6 +9,7 @@
 """ 
 
 import dataexchange.xtomo.xtomo_importer as dx
+import dataexchange.xtomo.xtomo_exporter as ex
 
 import re
 
@@ -20,7 +21,7 @@ def main():
     white_file_name = '/local/dataraid/databank/ALS_2011/Blakely/blakely_raw/blakelyALSbak_.tif'
     log_file = '/local/dataraid/databank/ALS_2011/Blakely/blakely_raw/blakelyALS.sct'
 
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/xx_01_blakely_ALS_2011_01.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/xx_full_7_blakely_ALS_2011_01.h5'
 
     verbose = True
 
@@ -63,9 +64,8 @@ def main():
     projections_end = int(Angles[0])
 
     mydata = dx.Import()
-    # Create minimal hdf5 file
+    # Read series of images
     data, white, dark, theta = mydata.series_of_images(file_name = file_name,
-                                                       hdf5_file_name = hdf5_file_name,
                                                        projections_start = projections_start,
                                                        projections_end = projections_end,
                                                        white_file_name = white_file_name,
@@ -81,7 +81,18 @@ def main():
                                                        dark_zeros = False,
                                                        log='INFO'
                                                        )
-    
+
+    mydata = ex.Export()
+    # Create minimal data exchange hdf5 file
+    mydata.xtomo_exchange(data = data,
+                          data_white = white,
+                          data_dark = dark,
+                          theta = theta,
+                          hdf5_file_name = hdf5_file_name,
+                          sample_name = 'test',
+                          data_exchange_type = 'tomography_raw_projections'
+                          )
+
 if __name__ == "__main__":
     main()
 
