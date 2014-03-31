@@ -58,16 +58,16 @@ def main():
    
     mydata = dx.Import()
     # Create minimal hdf5 file
-    mydata.series_of_images(file_name,
-                            hdf5_file_name = hdf5_file_name,
-                            projections_start = projections_start,
-                            projections_end = projections_end,
-                            white_start = white_start,
-                            white_end = white_end,
-                            dark_start = dark_start,
-                            dark_end = dark_end,
-                            log='INFO'
-                            )
+    data, white, dark, theta = mydata.series_of_images(file_name,
+                                                       hdf5_file_name = hdf5_file_name,
+                                                       projections_start = projections_start,
+                                                       projections_end = projections_end,
+                                                       white_start = white_start,
+                                                       white_end = white_end,
+                                                       dark_start = dark_start,
+                                                       dark_end = dark_end,
+                                                       log='INFO'
+                                                       )
 
 if __name__ == "__main__":
     main()

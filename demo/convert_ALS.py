@@ -20,7 +20,7 @@ def main():
     white_file_name = '/local/dataraid/databank/ALS_2011/Blakely/blakely_raw/blakelyALSbak_.tif'
     log_file = '/local/dataraid/databank/ALS_2011/Blakely/blakely_raw/blakelyALS.sct'
 
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/blakely_ALS_2011_01.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/xx_01_blakely_ALS_2011_01.h5'
 
     verbose = True
 
@@ -61,27 +61,27 @@ def main():
     white_step = int(WhiteStep[0])
     projections_start = 0
     projections_end = int(Angles[0])
- 
+
     mydata = dx.Import()
     # Create minimal hdf5 file
-    mydata.series_of_images(file_name = file_name,
-                            hdf5_file_name = hdf5_file_name,
-                            projections_start = projections_start,
-                            projections_end = projections_end,
-                            white_file_name = white_file_name,
-                            white_start = white_start,
-                            white_end = white_end,
-                            white_step = white_step,
-                            dark_file_name = dark_file_name,
-                            dark_start = dark_start,
-                            dark_end = dark_end,
-                            dark_step = dark_step,
-                            projections_zeros = False,
-                            white_zeros = False,
-                            dark_zeros = False,
-                            log='INFO'
-                            )
-
+    data, white, dark, theta = mydata.series_of_images(file_name = file_name,
+                                                       hdf5_file_name = hdf5_file_name,
+                                                       projections_start = projections_start,
+                                                       projections_end = projections_end,
+                                                       white_file_name = white_file_name,
+                                                       white_start = white_start,
+                                                       white_end = white_end,
+                                                       white_step = white_step,
+                                                       dark_file_name = dark_file_name,
+                                                       dark_start = dark_start,
+                                                       dark_end = dark_end,
+                                                       dark_step = dark_step,
+                                                       projections_zeros = False,
+                                                       white_zeros = False,
+                                                       dark_zeros = False,
+                                                       log='INFO'
+                                                       )
+    
 if __name__ == "__main__":
     main()
 
