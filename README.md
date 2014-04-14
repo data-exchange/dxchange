@@ -23,7 +23,7 @@ Make sure you have [Python 2.6](http://www.python.org/download/releases/2.6/ "ts
 
 To test if the installation was succesfull, open a new shell and try:
 
-- ``python -c "import data_exchange"``
+- ``python -c "import dataexchange"``
 
 
 
