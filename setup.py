@@ -22,7 +22,7 @@ except ImportError:
 # Main setup configuration.
 setup(
         name='data-exchange',
-        version='0.0.1',
+        version='0.0.2',
 
         packages = find_packages(),
         
