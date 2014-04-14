@@ -19,7 +19,7 @@ Data Exchange is a Python toolbox for reading and writing  [Data Exchange](http:
 Make sure you have [Python 2.6](http://www.python.org/download/releases/2.6/ "tsss...") or [2.7](http://www.python.org/download/releases/2.7/ "tsss...") and the above dependencies installed in your system. 
 
  
-- To build and install from source, download the [latest source tarball](https://github.com/data-exchange/data-exchange/releases), open shell prompt and type `python setup.py install` or `python setup.py install --user` in the directory where `setup.py` resides.
+- To build and install from source, download the repository, open shell prompt and type `python setup.py install` or `python setup.py install --user` in the directory where `setup.py` resides.
 
 To test if the installation was succesfull, open a new shell and try:
 
