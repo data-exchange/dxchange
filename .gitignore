@@ -59,6 +59,9 @@ docs/build
 *.cls
 *.layout
 *.bst
+*.lof
+*.toc
+*.out
 
 # Test files #
 ##############
