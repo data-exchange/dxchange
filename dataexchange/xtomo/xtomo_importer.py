@@ -8,21 +8,35 @@ from dataexchange.xtomo.xtomo_reader import XTomoReader
 from formats.data_exchange.data_exchange import DataExchangeFile, DataExchangeEntry
 
 
-class Import():
-    def __init__(xtomo, data=None, data_white=None,
-                 data_dark=None, theta=None, log='INFO'):
+def _dset_read(f_in, dset_name, slice_list):
+    """
+    Helper function for reading data sets that might not exist with arbitrary slices
 
-        xtomo.data = data
-        xtomo.data_white = data_white
-        xtomo.data_dark = data_dark
-        xtomo.theta = theta
+    Parameters
+    ----------
+    f_in : h5py.Group
+       Open file or group
 
-        # Set the log level.
-        xtomo.logger = None
-        xtomo._log_level = str(log).upper()
-        xtomo._init_logging()
+    dset_name : str
+       name of dataset to try to read
 
-    @staticmethod
+    slice_list : list or tuple
+       slice object to use slicing the data set.  length needs to math
+       the number of dimensions
+    """
+    # try to read the data
+    try:
+        out_data = f_in[dset_name][slice_list]
+    # if KeyError is raised (because the data set does not exist)
+    except KeyError:
+        # set data to None
+        out_data = None
+
+    # return the data
+    return out_data
+
+_no_data_err = "{file} does not contain '/exchange/data'"
+
     def xtomo_reader(file_name,
                      projections_start=None,
                      projections_end=None,
@@ -97,51 +111,59 @@ class Import():
             >>> plt.show()
         """
 
-        # Start working on checks and stuff.
+        # expand the file_name
         file_name = os.path.abspath(file_name)
 
-        # Start reading data.
-        f = h5py.File(file_name, "r")
-        hdfdata = f["/exchange/data"]
-        proj_slc = slice(projections_start, projections_end, projections_step)
-        slices_slc = slice(slices_start, slices_end, slices_step)
-        pixel_slc = slice(pixels_start, pixels_end, pixels_step)
-
-        data = hdfdata[proj_slc,
-                       slices_slc,
-                       pixel_slc]
-
-        try:
-            # Now read white fields.
-            hdfdata = f["/exchange/data_white"]
+        # open the hdf file with context manager so it will always close
+        # properly, even if there are uncaught errors.
+        with h5py.File(file_name, "r") as f:
+            # set up all of the slices, these should really be passed in
+            # and follow the pattern
+            # if a is None:
+            #    a = slice(None, None, None)
+            proj_slc = slice(projections_start, projections_end,
+                                projections_step)
+            slices_slc = slice(slices_start, slices_end, slices_step)
+            pixel_slc = slice(pixels_start, pixels_end, pixels_step)
             white_slc = slice(white_start, white_end)
-            data_white = hdfdata[white_slc,
-                                 slices_slc,
-                                 pixel_slc]
-        except KeyError:
-            data_white = None
-
-        try:
-            # Now read dark fields.
-            hdfdata = f["/exchange/data_dark"]
             dark_slc = slice(dark_start, dark_end)
-            data_dark = hdfdata[dark_slc,
-                                slices_slc,
-                                pixel_slc]
 
-        except KeyError:
-            data_dark = None
+            # read the data
+            data = _dset_read(f, "/exchange/data",
+                              [proj_slc, slices_slc, pixel_slc])
+            # add a check that data is not None
+            if data is None:
+                raise ValueError(_no_data_err.format(file=file_name))
+            # read the white-field data
+            data_white = _dset_read(f, "/exchange/data_white",
+                                [white_slc, slices_slc, pixel_slc])
 
-        try:
-            # Read projection angles.
-            hdfdata = f["/exchange/theta"]
-            theta = hdfdata[projections_start:projections_end:projections_step]
-        except KeyError:
-            theta = None
+            # read the dark-field data
+            data_dark = _dset_read(f, "/exchange/data_dark",
+                                [dark_slc, slices_slc, pixel_slc])
 
-        f.close()
+            # read the theta data
+            theta = _dset_read(f, "/exchange/theta", [proj_slc, ])
 
         return data, data_white, data_dark, theta
+
+
+class Import():
+    def __init__(xtomo, data=None, data_white=None,
+                 data_dark=None, theta=None, log='INFO'):
+
+        xtomo.data = data
+        xtomo.data_white = data_white
+        xtomo.data_dark = data_dark
+        xtomo.theta = theta
+
+        # Set the log level.
+        xtomo.logger = None
+        xtomo._log_level = str(log).upper()
+        xtomo._init_logging()
+
+    # put this here for backwards compatibility
+    xtomo_reader = staticmethod(xtomo_reader)
 
     @staticmethod
     def series_of_images(xtomo, file_name,
