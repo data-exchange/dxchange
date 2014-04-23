@@ -8,21 +8,35 @@ from dataexchange.xtomo.xtomo_reader import XTomoReader
 from formats.data_exchange.data_exchange import DataExchangeFile, DataExchangeEntry
 
 
-class Import():
-    def __init__(xtomo, data=None, data_white=None, 
-                 data_dark=None, theta=None, log='INFO'):
-        
-        xtomo.data = data
-        xtomo.data_white = data_white
-        xtomo.data_dark = data_dark
-        xtomo.theta = theta
+def _dset_read(f_in, dset_name, slice_list):
+    """
+    Helper function for reading data sets that might not exist with arbitrary slices
 
-        # Set the log level.
-        xtomo.logger = None
-        xtomo._log_level = str(log).upper()
-        xtomo._init_logging()
-        
-       
+    Parameters
+    ----------
+    f_in : h5py.Group
+       Open file or group
+
+    dset_name : str
+       name of dataset to try to read
+
+    slice_list : list or tuple
+       slice object to use slicing the data set.  length needs to math
+       the number of dimensions
+    """
+    # try to read the data
+    try:
+        out_data = f_in[dset_name][slice_list]
+    # if KeyError is raised (because the data set does not exist)
+    except KeyError:
+        # set data to None
+        out_data = None
+
+    # return the data
+    return out_data
+
+_no_data_err = "{file} does not contain '/exchange/data'"
+
     def xtomo_reader(file_name,
                      projections_start=None,
                      projections_end=None,
@@ -39,115 +53,119 @@ class Import():
                      dark_end=None):
         """
         Read Data Exchange HDF5 file.
-        
+
         Parameters
         ----------
         file_name : str
             Input file.
-        
+
         projections_start, projections_end, projections_step : scalar, optional
             Values of the start, end and step of the projections to
             be used for slicing for the whole data.
-        
+
         slices_start, slices_end, slices_step : scalar, optional
             Values of the start, end and step of the slices to
             be used for slicing for the whole data.
-        
+
         pixels_start, pixels_end, pixels_step : scalar, optional
             Values of the start, end and step of the pixels to
             be used for slicing for the whole data.
-        
+
         white_start, white_end : scalar, optional
             Values of the start and end of the
             slicing for the whole white field shots.
-        
+
         dark_start, dark_end : scalar, optional
             Values of the start and end of the
             slicing for the whole dark field shots.
-            
+
         Examples
         --------
         - Import data, white-field, dark-field and projection angles
           from HDF5 file:
-            
+
             >>> import tomopy
-            >>> 
+            >>>
             >>> # Load data
             >>> myfile = 'demo/data.h5'
             >>> data, white, dark, theta = tomopy.xtomo_reader(myfile)
             >>>
             >>> # Image data
-            >>> import pylab as plt
+            >>> import pyplot as plt
             >>> plt.figure()
             >>> plt.imshow(data[:, 0, :])
             >>> plt.show()
-        
+
         - Import only 4th slice from HDF5 file:
 
             >>> import tomopy
-            >>> 
+            >>>
             >>> # Load data
             >>> myfile = 'demo/data.h5'
             >>> data, white, dark, theta = tomopy.xtomo_reader(myfile,  slices_start=4, slices_end=5)
-            >>> 
+            >>>
             >>> # Image data
-            >>> import pylab as plt
+            >>> import pyplot as plt
             >>> plt.figure()
             >>> plt.imshow(data[:, 0, :])
             >>> plt.show()
         """
 
-        # Start working on checks and stuff.
+        # expand the file_name
         file_name = os.path.abspath(file_name)
-        
-        # Start reading data.
-        f = h5py.File(file_name, "r")
-        hdfdata = f["/exchange/data"]
-        num_x, num_y, num_z = hdfdata.shape
-        if projections_end is None:
-            projections_end = num_x
-        if slices_end is None:
-            slices_end = num_y
-        if pixels_end is None:
-            pixels_end = num_z
-        data = hdfdata[projections_start:projections_end:projections_step,
-                       slices_start:slices_end:slices_step,
-                       pixels_start:pixels_end:pixels_step]
-        
-        try:
-            # Now read white fields.
-            hdfdata = f["/exchange/data_white"]
-            if white_end is None:
-                white_end = num_x
-            data_white = hdfdata[white_start:white_end,
-                                 slices_start:slices_end:slices_step,
-                                 pixels_start:pixels_end:pixels_step]
-        except KeyError:
-            data_white = None
-            
-        try:
-            # Now read dark fields. 
-            hdfdata = f["/exchange/data_dark"]
-            if dark_end is None:
-                dark_end = num_x
-            data_dark = hdfdata[dark_start:dark_end,
-                                slices_start:slices_end:slices_step,
-                                pixels_start:pixels_end:pixels_step]
-        except KeyError:
-            data_dark = None
-        
-        try:
-            # Read projection angles.
-            hdfdata = f["/exchange/theta"]
-            theta = hdfdata[projections_start:projections_end:projections_step]
-        except KeyError:
-            theta = None
-        
-        f.close()
-        
+
+        # open the hdf file with context manager so it will always close
+        # properly, even if there are uncaught errors.
+        with h5py.File(file_name, "r") as f:
+            # set up all of the slices, these should really be passed in
+            # and follow the pattern
+            # if a is None:
+            #    a = slice(None, None, None)
+            proj_slc = slice(projections_start, projections_end,
+                                projections_step)
+            slices_slc = slice(slices_start, slices_end, slices_step)
+            pixel_slc = slice(pixels_start, pixels_end, pixels_step)
+            white_slc = slice(white_start, white_end)
+            dark_slc = slice(dark_start, dark_end)
+
+            # read the data
+            data = _dset_read(f, "/exchange/data",
+                              [proj_slc, slices_slc, pixel_slc])
+            # add a check that data is not None
+            if data is None:
+                raise ValueError(_no_data_err.format(file=file_name))
+            # read the white-field data
+            data_white = _dset_read(f, "/exchange/data_white",
+                                [white_slc, slices_slc, pixel_slc])
+
+            # read the dark-field data
+            data_dark = _dset_read(f, "/exchange/data_dark",
+                                [dark_slc, slices_slc, pixel_slc])
+
+            # read the theta data
+            theta = _dset_read(f, "/exchange/theta", [proj_slc, ])
+
         return data, data_white, data_dark, theta
-                                
-            
+
+
+class Import():
+    def __init__(xtomo, data=None, data_white=None,
+                 data_dark=None, theta=None, log='INFO'):
+
+        xtomo.data = data
+        xtomo.data_white = data_white
+        xtomo.data_dark = data_dark
+        xtomo.theta = theta
+
+        # Set the log level.
+        xtomo.logger = None
+        xtomo._log_level = str(log).upper()
+        xtomo._init_logging()
+
+    # put this here for backwards compatibility
+    xtomo_reader = staticmethod(xtomo_reader)
+
+    @staticmethod
     def series_of_images(xtomo, file_name,
                          projections_start=0,
                          projections_end=0,
@@ -188,26 +206,26 @@ class Import():
             file_name is /local/data/test_.hdf
 
         projections_start, projections_end, projections_step : scalar, optional
-            start and end index for the projection 
+            start and end index for the projection
             images to load. Use step to define a stride.
 
         slices_start, slices_end, slices_step : scalar, optional
-            start and end pixel of the projection image to load 
+            start and end pixel of the projection image to load
             along the rotation axis. Use step to define a stride.
 
         white_file_name, dark_file_name : str, optional
             Base name of the white and dark field input files.
-            For example if the white field names 
+            For example if the white field names
             are /local/data/test_bg_XXXX.hdf
-            file_name is /local/data/test_bg_.hdf. 
+            file_name is /local/data/test_bg_.hdf.
             If omitted white_file_name = file_name.
 
         white_start, white_end, white_step : scalar, optional
-            start and end index for the white field 
+            start and end index for the white field
             files to load. Use step define a stride.
 
         dark_start, dark_end, dark_step : scalar, optional
-            start and end index for the dark field 
+            start and end index for the dark field
             files to load. Use step to define a stride.
 
         projections_digits, white_digits, dark_digits : scalar, optional
@@ -215,8 +233,8 @@ class Import():
             For example if 4: test_XXXX.hdf
 
         projections_zeros, white_zeros, dark_zeros : bool, optional
-            If ``True`` assumes all indexing uses four 
-            projections_digits (0001, 0002, ..., 9999). 
+            If ``True`` assumes all indexing uses four
+            projections_digits (0001, 0002, ..., 9999).
             If ``False`` omits projections_zeros in
             indexing (1, 2, ..., 9999)
 
@@ -225,14 +243,14 @@ class Import():
 
         hdf5_file_name : str, optional
             if set the series for images is saved as a data exchange file
-        
+
         dtype : str, optional
             Corresponding Numpy data type of file.
 
         data_type : str, optional
             supported options are:
                 - ``hdf4``: HDF4 files used on old detector at APS 2-BM
-                - ``compressed_tiff``: tiff files used at elettra 
+                - ``compressed_tiff``: tiff files used at elettra
                 - ``tiff``: uncompressed regualar tiff files
                 - ``spe``: spe data from APS 13-BM
                 - ``nc``: netCDF data from 13-BM
@@ -242,7 +260,7 @@ class Import():
         Output : data, data_white, data_dark, theta
              if hdf5_file_name is set the series for images is saved as a data exchange file
        """
-            
+
         # Set default prefix for white and dark.
         if white_file_name is None:
             white_file_name = file_name
@@ -304,8 +322,8 @@ class Import():
             if dark_file_name.endswith('tif') or \
                 dark_file_name.endswith('tiff'):
                 data_file_dark = dark_file_name.split('.')[-2]
-                
-        
+
+
         projections_file_index = ["" for x in range(projections_digits)]
         for m in range(projections_digits):
             if projections_zeros is True:
@@ -326,12 +344,12 @@ class Import():
                 dark_file_index[m] = '0' * (dark_digits-m-1)
             elif dark_zeros is False:
                 dark_file_index[m] = ''
-        
+
         xtomo.logger.debug('')
-        
-                
+
+
         # Data ------------------------------------------------
-                
+
         # Start reading projections one-by-one.
         ind = range(projections_start, projections_end, projections_step)
         for m in range(len(ind)):
@@ -344,7 +362,7 @@ class Import():
             if os.path.isfile(_file_name):
                 xtomo.logger.info("Reading projection file: [%s]", os.path.realpath(_file_name))
                 xtomo.logger.info("data type: [%s]", data_type)
-                
+
                 f = XTomoReader(_file_name)
                 if (data_type is 'hdf4'):
                     tmpdata = f.hdf4(x_start=slices_start,
@@ -370,8 +388,8 @@ class Import():
                                      x_step=slices_step,
                                      dtype='uint16')
 
-                if ((data_type is 'tiff') or 
-                    (data_type is 'compressed_tiff') or 
+                if ((data_type is 'tiff') or
+                    (data_type is 'compressed_tiff') or
                     (data_type is 'hdf4')):
                     if m == 0: # Get resolution once.
                         input_data = np.empty((len(ind),
@@ -380,17 +398,17 @@ class Import():
                                              dtype=dtype)
                     input_data[m, :, :] = tmpdata
 
-                if ((data_type is 'spe') or 
+                if ((data_type is 'spe') or
                     (data_type is 'nc')):
                     if m == 0: # Get resolution once.
                         input_data = np.vstack([tmpdata])
                     else:
                         input_data = np.concatenate((input_data, tmpdata), axis=0)
-        
-        # Update data.                               
+
+        # Update data.
         if len(ind) > 0:
             xtomo.data = input_data
-            
+
         # White ------------------------------------------------
 
         # Reading white fields.
@@ -412,7 +430,7 @@ class Import():
                                      x_end=slices_end,
                                      x_step=slices_step,
                                      array_name='data')
-                                        
+
                 elif (data_type is 'compressed_tiff'):
                     tmpdata = f.tiffc(x_start=slices_start,
                                       x_end=slices_end,
@@ -430,8 +448,8 @@ class Import():
                                      x_end = slices_end,
                                      x_step = slices_step,
                                      dtype = dtype)
-                    
-                if ((data_type is 'tiff') or 
+
+                if ((data_type is 'tiff') or
                     (data_type is 'compressed_tiff') or
                     (data_type is 'hdf4')):
                     if m == 0: # Get resolution once.
@@ -441,21 +459,21 @@ class Import():
                                              dtype=dtype)
                     input_data[m, :, :] = tmpdata
 
-                if ((data_type is 'spe') or 
+                if ((data_type is 'spe') or
                     (data_type is 'nc')):
                     if m == 0: # Get resolution once.
                         input_data = np.vstack([tmpdata])
                     else:
                         input_data = np.concatenate((input_data, tmpdata), axis=0)
-               
-        # Update white data.                
+
+        # Update white data.
         if len(ind) > 0:
             xtomo.data_white = input_data
         else:
             # Fabricate one white field
             nz, ny, nx = np.shape(xtomo.data)
             xtomo.data_white = np.ones((1, ny, nx))
-            
+
         # Dark ------------------------------------------------
 
         # Reading dark fields.
@@ -496,8 +514,8 @@ class Import():
                                      x_step=slices_step,
                                      dtype=dtype)
 
-                if ((data_type is 'tiff') or 
-                    (data_type is 'compressed_tiff') or 
+                if ((data_type is 'tiff') or
+                    (data_type is 'compressed_tiff') or
                     (data_type is 'hdf4')):
                     if m == 0: # Get resolution once.
                         input_data = np.empty((len(ind),
@@ -506,29 +524,29 @@ class Import():
                                              dtype=dtype)
                     input_data[m, :, :] = tmpdata
 
-                if ((data_type is 'spe') or 
+                if ((data_type is 'spe') or
                     (data_type is 'nc')):
                     if m == 0: # Get resolution once.
                         input_data = np.vstack([tmpdata])
                     else:
                         input_data = np.concatenate((input_data, tmpdata), axis=0)
-               
-        # Update dark data.                
+
+        # Update dark data.
         if len(ind) > 0:
             xtomo.data_dark = input_data
         else:
             # Fabricate one dark field
             nz, ny, nx = np.shape(xtomo.data)
             xtomo.data_dark = np.zeros((1, ny, nx))
-            
+
         # Theta ------------------------------------------------
-            
-        if ((data_type is 'tiff') or 
-           (data_type is 'compressed_tiff') or 
+
+        if ((data_type is 'tiff') or
+           (data_type is 'compressed_tiff') or
            (data_type is 'hdf4')):
             # Fabricate theta values.
             z = np.arange(projections_end - projections_start);
-                
+
             # Fabricate theta values
             xtomo.theta = (z * float(projections_angle_range) / (len(z) - 1))
 
@@ -537,7 +555,7 @@ class Import():
             return xtomo.data, xtomo.data_white, xtomo.data_dark,  xtomo.theta
         else:
             return xtomo.data, xtomo.data_white, xtomo.data_dark
-        
+
     def nexus(xtomo, file_name,
               hdf5_file_name,
               projections_start=0,
@@ -556,7 +574,7 @@ class Import():
               array_name='entry/instrument/detector/data',
               sample_name=None,
               dtype='float32'):
-        """ 
+        """
         Read Data Exchange HDF5 file.
 
         Parameters
@@ -626,43 +644,41 @@ class Import():
                             z_end=pixels_end,
                             z_step=pixels_step).astype(dtype)
 
-    
+
     def _init_logging(xtomo):
         """
         Setup and start command line logging.
         """
         # Top-level log setup.
-        xtomo.logger = logging.getLogger("data exchange") 
+        xtomo.logger = logging.getLogger("data exchange")
         if xtomo._log_level == 'DEBUG':
             xtomo.logger.setLevel(logging.DEBUG)
         elif xtomo._log_level == 'INFO':
-            xtomo.logger.setLevel(logging.INFO) 
+            xtomo.logger.setLevel(logging.INFO)
         elif xtomo._log_level == 'WARN':
             xtomo.logger.setLevel(logging.WARN)
         elif xtomo._log_level == 'WARNING':
             xtomo.logger.setLevel(logging.WARNING)
         elif xtomo._log_level == 'ERROR':
             xtomo.logger.setLevel(logging.ERROR)
-        
+
         # Terminal stream log.
         ch = logging.StreamHandler()
         if xtomo._log_level == 'DEBUG':
             ch.setLevel(logging.DEBUG)
         elif xtomo._log_level == 'INFO':
-            ch.setLevel(logging.INFO) 
+            ch.setLevel(logging.INFO)
         elif xtomo._log_level == 'WARN':
             ch.setLevel(logging.WARN)
         elif xtomo._log_level == 'WARNING':
             ch.setLevel(logging.WARNING)
         elif xtomo._log_level == 'ERROR':
             ch.setLevel(logging.ERROR)
-        
+
         # Show date and time.
         formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
         ch.setFormatter(formatter)
-            
+
         # Update logger.
         if not len(xtomo.logger.handlers): # For fist time create handlers.
             xtomo.logger.addHandler(ch)
-
-
