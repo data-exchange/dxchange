@@ -16,15 +16,10 @@ import re
 
 def main():
 
-    file_name = '/local/dataraid/databank/SLS_2011/Blakely_SLS/Blakely.tif'
-    log_file = '/local/dataraid/databank/SLS_2011/Blakely_SLS/Blakely.log'
+    file_name = '/local/dataraid/databank/SLS_2011/Ashley/3e_final_2_.tif'
+    log_file = '/local/dataraid/databank/SLS_2011/Ashley/3e_final_2_.log'
 
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/Blakely_SLS_2011.h5'
-
-    file_name = '/local/dataraid/databank/SLS_2011/Hornby_SLS/Hornby_b.tif'
-    log_file = '/local/dataraid/databank/SLS_2011/Hornby_SLS/Hornby.log'
-
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/Hornby_SLS_2011.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/Ashley_SLS.h5'
 
     #Read SLS log file data
     file = open(log_file, 'r')
@@ -56,7 +51,7 @@ def main():
     white_end = white_start + int(NumberOfFlats[0])
     projections_start = white_end
     projections_end = projections_start + int(NumberOfProjections[0])
-       
+   
     mydata = dx.Import()
     # Read series of images
     data, white, dark, theta = mydata.series_of_images(file_name,

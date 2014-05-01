@@ -5,7 +5,7 @@ import h5py
 import logging
 
 from dataexchange.xtomo.xtomo_reader import XTomoReader
-from formats.data_exchange.data_exchange import DataExchangeFile, DataExchangeEntry
+#from formats.data_exchange.data_exchange import DataExchangeFile, DataExchangeEntry
 
 
 def _dset_read(f_in, dset_name, slice_list):
@@ -37,7 +37,7 @@ def _dset_read(f_in, dset_name, slice_list):
 
 _no_data_err = "{file} does not contain '/exchange/data'"
 
-    def xtomo_reader(file_name,
+def xtomo_reader(file_name,
                      projections_start=None,
                      projections_end=None,
                      projections_step=None,
@@ -165,7 +165,7 @@ class Import():
     # put this here for backwards compatibility
     xtomo_reader = staticmethod(xtomo_reader)
 
-    @staticmethod
+    #@staticmethod
     def series_of_images(xtomo, file_name,
                          projections_start=0,
                          projections_end=0,

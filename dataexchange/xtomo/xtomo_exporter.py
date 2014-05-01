@@ -4,7 +4,7 @@ import os
 import h5py
 import logging
 
-from formats.data_exchange.data_exchange import DataExchangeFile, DataExchangeEntry
+from data_exchange import DataExchangeFile, DataExchangeEntry
 
 class Export():
     def __init__(xtomo, data=None, data_white=None, 
