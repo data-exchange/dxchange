@@ -48,16 +48,16 @@ In x-ray tomography, the 3D arrays representing the most basic version of the da
 \item[\tt{theta, theta\_dark, theta\_white}] \hfill \\
 {Theta is a vector dataset storing the projection angular positions.  If theta is not defined the projections are assumed to be collected at equally spaced angular interval between 0 and 180 degree.  The dark field and white fields can be collected at any time before, during, or after the projection data. Theta\_dark, and theta\_white store the position of the tomographic rotation axis when the corresponding dark and white images are collected. If theta\_dark and theta\_white are missing the corresponding data\_dark and data\_white are assumed to be collected all at the beginning or at the end of the projection data collection.}
 
-\item[ \tt{data\_shift\_x, data\_shift\_y}] \hfill \\{Data\_shift\_x and data\_shift\_y are the vectors storing at each projection angular positions the image relative shift in x and y.  These vectors are used in high resolution CT when at each angular position the sample x and y are moved to keep the sample in the field of view based on a pre-calibration of rotary stage runout. If the unit is not defined are assumed to be in pixels.}
+\item[ \tt{data\_shift\_x, data\_shift\_y}] \hfill \\
+{Data\_shift\_x and data\_shift\_y are the vectors storing at each projection angular positions the image relative shift in x and y.  These vectors are used in high resolution CT when at each angular position the sample x and y are moved to keep the sample in the field of view based on a pre-calibration of rotary stage runout. If the unit is not defined are assumed to be in pixels.}
 
 \end{description}
 
 %*****************************************************************
 \subsection{Instrument Group for Tomography}
 \label{tomo:instrument}
-The instrument group for X-ray tomography introduces an extended detector group definition along with new interferometer group. The extended instrument group is as shown in Table \ref{table:tomo:instrument}.
+The instrument group for X-ray tomography introduces an extended detector group definition adding definitions for {\tt{setup}} and {\tt{acquisition}}. The extended instrument group is as shown in Table \ref{table:tomo:instrument}.
 
-\label{table:tomo:instrument}
 \begin{table}[h!]\sffamily \footnotesize
 \centering
 \caption{Instrument Group for Tomography}
@@ -71,17 +71,66 @@ The instrument group for X-ray tomography introduces an extended detector group 
 \hyperref[table:shutter]{shutter\_$N$}  &  group &  same as core\\
 \hyperref[table:attenuator]{attenuator\_$N$} & group & same as core\\
 \hyperref[table:monochromator]{monochromator} & group & same as core\\
-\hyperref[table:tomo:interferometer]{interferometer} & group & new \\
 \hyperref[table:tomo:setup]{setup} & group & new \\
 \hyperref[table:tomo:acquisition]{acquisition} & group & new \\
 \hyperref[table:tomo:detector]{detector\_$N$} & group & extended from core\\
 \bottomrule
 \end{tabular}
+\label{table:tomo:instrument}
 \end{table}
 
+\subsubsection{Setup and Acquisition Parameters}
+\label{table:tomo:setup}
+\label{table:tomo:acquisition}
+Logging instrument setup parameters (static setup values) and storing acquisition configuration parameters (scan engine setup) is not defined by Data Exchange because is specific and different for each instrument. For these information Data Exchange defines a {\tt{setup}} and {\tt{acquisition}} group under the instrument group and leaves each facility free to store what is relevant for a specific instrument. In table  \ref{table:tomo:instrument:acquisition} and \ref{table:tomo:instrument:setup} we present the implementation adopted by the Swiss Light Source and Advanced Photon Source.
+
+
+\begin{table}[h!]\sffamily \footnotesize
+\centering
+\caption{Instrument Acquisition Group for Tomography}
+\rowcolors{1}{white}{tableBlue}
+\begin{tabular}{l l l}
+\toprule
+\bfseries Member     & \bfseries Type & \bfseries Example \\
+\midrule
+\tt{rotation\_start\_angle} & float & 0.0 \\
+\tt{rotation\_end\_angle} & float & 180.0 \\
+\tt{angular\_step} & float & 0.125 \\
+\tt{number\_of\_projections} & integer & 1441 \\
+\tt{number\_of\_flats} & integer & 100 \\
+\tt{number\_of\_darks} & integer & 32 \\
+\tt{start\_date}  & string dataset (ISO 8601) & "2012-07-31T21:15:22+0600" \\    
+\tt{end\_date}  & string dataset (ISO 8601) & "2012-07-31T23:10:20+0600" \\    
+\tt{sample\_in} & float & 0.0 \\
+\tt{sample\_out} & float & 4.0 \\
+\tt{type} & string & dpc\_tomography \\
+\bottomrule
+\end{tabular}
+\label{table:tomo:instrument:acquisition}
+\end{table}
+
+\begin{table}[h!]\sffamily \footnotesize
+\caption{Instrument Setup Group Members}
+\centering
+\rowcolors{1}{white}{tableBlue}
+\begin{tabular}{l l l}
+
+\toprule
+\bfseries Member     & \bfseries Type & \bfseries Example \\
+\midrule
+\tt{sample\_x} & float & -10.107 \\
+\tt{sample\_y} & float &  -17.900\\
+\tt{sample\_z} & float & -5.950 \\
+\tt{sample\_xx} & float & -1.559\\
+\tt{sample\_zz} & float & 1.307 \\
+\hyperref[tomo:interferometer]{interferometer} &  group & \\
+\bottomrule
+\end{tabular}
+\label{table:tomo:instrument:setup}
+\end{table}
 
 \subsubsection{Interferometer}
-\label{table:tomo:interferometer}
+\label{tomo:interferometer}
 
 This group stores the interferometer parameters.
 
@@ -94,15 +143,17 @@ This group stores the interferometer parameters.
 \toprule
 \bfseries Member     & \bfseries Type & \bfseries Example \\
 \midrule
-\tt{start\_angle} & float dataset & 0.000 \\  
-\tt{grid\_start} & float dataset & 0.000 \\
-\tt{grid\_end} & float dataset & 2.4e-6 \\ 
-\tt{grid\_position\_for\_scan} & float dataset & 1.3e-6 \\    
-\tt{number\_of\_grid\_steps} & int dataset & 8    \\
+\tt{grid\_start} & float & 1.8 \\
+\tt{grid\_end} & float  & 3.51 \\ 
+\tt{number\_of\_grid\_periods} & int  & 1    \\
+\tt{number\_of\_grid\_steps} & int  & 6    \\
 \hyperref[tomo:geometry]{geometry} &  group & \\
 \bottomrule
 \end{tabular}
+\label{table:tomo:instrument:setup:interferometer}
 \end{table}
+
+
 
 \begin{description}
 \item[\tt{start\_angle}] \hfill \\
@@ -120,11 +171,6 @@ This group stores the interferometer parameters.
 \item[\tt{number\_of\_grid\_steps}] \hfill \\
 {Number of grid steps.}
 \end{description}
-
-\subsubsection{Setup and Acquisition Parameters}
-\label{table:tomo:setup}
-\label{table:tomo:acquisition}
-Logging instrument setup parameters (for static setup) and storing acquisition configuration parameters (for the scan engine setup) is not defined by Data Exchange because is specific and different for each instrument. For these information Data Exchange defines a setup and acquisition group under the instrument group and leaves each facility free to store what is relevant for a specific instrument.
 
 \subsubsection{Detector Group for Tomography}
 \label{table:tomo:detector}
@@ -146,12 +192,16 @@ This class holds information about the detector used during the experiment. If  
 \tt{bit\_depth} & integer & 12 \\     
 \tt{x\_pixel\_size} & float & 6.7e-6 \\
 \tt{y\_pixel\_size} & float & 6.7e-6 \\
+\tt{x\_actual\_pixel\_size} & float & 1.2e-6 \\
+\tt{y\_actual\_pixel\_size} & float & 1.2e-6 \\
 \tt{x\_dimension} & integer & 2048 \\
 \tt{y\_dimension} & integer & 2048 \\
 \tt{x\_binning} & integer & 1 \\
 \tt{y\_binning} & integer & 1 \\
 \tt{operating\_temperature} & float &  270 \\     
 \tt{exposure\_time} & float & 1.7e-3 \\   
+\tt{delay\_time} & float & 1.7e-3 \\   
+\tt{sample\_settling\_time} & float & 1.7e-3 \\   
 \tt{frame\_rate} & integer &  2 \\
 \tt{output\_data} & string dataset & "/exchange" \\
 \hyperref[table:roi]{\tt{roi}} & group & \\
@@ -184,6 +234,10 @@ This class holds information about the detector used during the experiment. If  
 \item[\tt{x\_dimension, y\_dimension}] \hfill \\
 {The detector horiz./vertical dimension.}
 
+\item[\tt{x\_actual\_pixel\_size, y\_actual\_pixel\_size}] \hfill \\
+{Actual pixel size on the sample plane.}
+
+
 \item[\tt{x\_binning, y\_binning}] \hfill \\
 {If the data are collected binning the detector x\_binning and y\_binning store the binning factor.}
 
@@ -192,6 +246,12 @@ This class holds information about the detector used during the experiment. If  
 
 \item[\tt{exposure\_time}] \hfill \\
 {The detector exposure time (s).}
+
+\item[\tt{delay\_time}] \hfill \\
+{Delay time between projections when using a mechanical shutter to reduce radiation damage of the sample (s).}
+
+\item[\tt{sample\_settling\_time}] \hfill \\
+{Time required by the sample to stabilize (s).}
 
 \item[\tt{frame\_rate}] \hfill \\
 {The detector frame rate (fps). This parameter is set for fly scan}
