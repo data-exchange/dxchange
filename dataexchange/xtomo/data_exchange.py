@@ -5,7 +5,8 @@
 
 .. moduleauthor:: David Vine <djvine@gmail.com>
 
-""" 
+"""
+from __future__ import print_function
 import h5py
 import os
 import sys
@@ -24,7 +25,7 @@ class DataExchangeFile(h5py.File):
     """
     def __init__(self, *args, **kwargs):
         super(DataExchangeFile, self).__init__(*args, **kwargs)
-        
+
         if kwargs['mode'] in ['w', 'a']: #New File
             if not 'exchange' in self.keys():
                 self.create_top_level_group('exchange')
@@ -112,7 +113,7 @@ class DataExchangeFile(h5py.File):
                         # Likely cause of runtime error is dataset already existing in file
                         dataset_exists = ds_name in self['/'.join([root, getattr(dexen, 'entry_name')])].keys()
                         if dataset_exists:
-                            print 'WARNING: Dataset {:s} already exists. This entry has been skipped.'.format(ds_name)
+                            print('WARNING: Dataset {:s} already exists. This entry has been skipped.'.format(ds_name))
                         else:
                             raise
 
@@ -133,7 +134,7 @@ class DataExchangeEntry(object):
             The syntax for an entry is:
                 *'root': The HDF5 path where this entry will be created (e.g. '/measurement_3/sample' or '/exchange/').
                 *'entry_name': The name of entry (e.g. 'monochromator' or 'sample_7'). It is a HDF5 Group.
-                *'docstring': Describes this type of entry. E.g for sample: "The sample measured." 
+                *'docstring': Describes this type of entry. E.g for sample: "The sample measured."
                                     *This is used only for autogegnerating documentation for DataExchangeEntry.
                                     *It does not get written to the DataExchangeFile.
                 *'ENTRY':   An entry is a dataset with attributes under the 'name' group.
@@ -214,7 +215,7 @@ class DataExchangeEntry(object):
                 'docstring': 'Sample pressure.'
             },
             'thickness': {
-                'value': None, 
+                'value': None,
                 'units': 'm',
                 'docstring': 'Sample thickness.'
             },
@@ -691,7 +692,7 @@ class DataExchangeEntry(object):
 
         def __init__(self, **kwargs):
             for kw in kwargs:
-                setattr(self, kw, kwargs[kw]) 
+                setattr(self, kw, kwargs[kw])
 
         # Generate a class for each entry definition
         for entry_name in self.__dict__:
