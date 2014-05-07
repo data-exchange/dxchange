@@ -499,6 +499,16 @@ class DataExchangeEntry(object):
                 'units': 'm',
                 'docstring': 'Physical detector pixel size (m).'
             },
+            'x_actual_pixel_size': {
+                'value': None,
+                'units': 'm',
+                'docstring': 'Pixel size on the sample plane (m).'
+            },
+            'y_actual_pixel_size': {
+                'value': None,
+                'units': 'm',
+                'docstring': 'Pixel size on the sample plane (m).'
+            },
             'x_dimension': {
                 'value': None,
                 'units': 'pixels',
@@ -528,6 +538,16 @@ class DataExchangeEntry(object):
                 'value': None,
                 'units': 's',
                 'docstring': 'The detector exposure time (s).'
+            },
+            'delay_time': {
+                'value': None,
+                'units': 's',
+                'docstring': 'Detector delay time (s). This is used in combination with a mechanical shutter.'
+            },
+            'stabilization_time': {
+                'value': None,
+                'units': 's',
+                'docstring': 'Detector delay time (s). This is used during stop and go data collection to allow the sample to stabilize.'
             },
             'frame_rate': {
                 'value': None,
@@ -679,6 +699,118 @@ class DataExchangeEntry(object):
             },
         }
 
+        self._setup = {
+            'root': '/measurement/instrument',
+            'entry_name': 'setup',
+            'docstring': 'Tomography specific tag to store motor positions that are static during data collection.',
+            'sample_x': {
+                'value': None,
+                'units': 'mm',
+                'docstring': 'Position of the X stage under the rotary motor.'
+            },
+            'sample_y': {
+                'value': None,
+                'units': 'mm',
+                'docstring': 'Position of the Y stage under the rotary motor.'
+            },
+            'sample_z': {
+                'value': None,
+                'units': 'mm',
+                'docstring': 'Position of the Z stage under the rotary motor.'
+            },
+            'sample_xx': {
+                'value': None,
+                'units': 'mm',
+                'docstring': 'Position of the X stage on top of the rotary motor.'
+            },
+            'sample_zz': {
+                'value': None,
+                'units': 'mm',
+                'docstring': 'Position of the Z stage on top of the rotary motor.'
+            }
+        }
+
+        self._interferometer = {
+            'root': '/measurement/instrument/setup/',
+            'entry_name': 'interferometer',
+            'docstring': 'Tomography specific tag to store interferometer parameters.',
+            'grid_start': {
+                'value': None,
+                'units': 'mm',
+                'docstring': 'Interferometer grid start.'
+            },
+            'grid_end': {
+                'value': None,
+                'units': 'mm',
+                'docstring': 'Interferometer grid end.'
+            },
+            'number_of_grid_periods': {
+                'value': None,
+                'units': None,
+                'docstring': 'Interferometer number of grid periods.'
+            },
+            'number_of_grid_steps': {
+                'value': None,
+                'units': None,
+                'docstring': 'Interferometer number of grid steps.'
+            }
+        }
+
+        self._acquisition = {
+            'root': '/measurement/instrument',
+            'entry_name': 'acquisition',
+            'docstring': 'Tomography specific tag to store scan parameters.',
+            'start_date': {
+                'value': None,
+                'units': 'text',
+                'docstring': 'Date and time measurement starts.'
+            },
+            'end_date': {
+                'value': None,
+                'units': 'text',
+                'docstring': 'Date and time measurement ends.'
+            },
+            'number_of_projections': {
+                'value': None,
+                'units': None,
+                'docstring': 'Number of projections.'
+            },
+            'number_of_darks': {
+                'value': None,
+                'units': None,
+                'docstring': 'Number of dark images.'
+            },
+            'number_of_flats': {
+                'value': None,
+                'units': None,
+                'docstring': 'Number of flat/white images.'
+            },
+            'sample_in': {
+                'value': None,
+                'units': 'mm',
+                'docstring': 'Position of the sample axis (x or y) used for taking the sample out of the beam during data collection.'
+            },
+            'sample_out': {
+                'value': None,
+                'units': 'mm',
+                'docstring': 'Position of the sample axis (x or y) used for taking the sample out of the beam during the flat field data collection.'
+            },
+            'rotation_start_angle': {
+                'value': None,
+                'units': 'degree',
+                'docstring': 'Position of rotation axis at the end of data collection.'
+            },
+            'rotation_end_angle': {
+                'value': None,
+                'units': 'degree',
+                'docstring': 'Position of rotation axis at the start of the data collection.'
+            },
+            'angular_step': {
+                'value': None,
+                'units': 'degree',
+                'docstring': 'Rotation axis angular step used during data collection.'
+            },
+        }
 
     def _generate_classes(self):
 

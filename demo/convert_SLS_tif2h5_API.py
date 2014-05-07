@@ -54,7 +54,7 @@ def main():
 ##        samplename = os.path.basename(basename)
 ##        imageFileFullPath = basename + "/" + samplename + ".h5"
         # test
-        imageFileFullPath = "/local/data/DPC/test_38.h5"
+        imageFileFullPath = "/local/data/DPC/BG_API_01.h5"
         samplename = "sample_name"
         if os.path.exists(imageFileFullPath):
                 print "File exists, exiting"
@@ -83,7 +83,11 @@ def main():
 
         # Create HDF5 subgroup
         # /measurement/instrument/source
-        f.add_entry( DataExchangeEntry.source(name={'value': 'SLS'}, beamline={'value': "TOMCAT"}))
+        f.add_entry( DataExchangeEntry.source(name={'value': 'SLS'},
+                                              beamline={'value': "TOMCAT"},
+                                              energy={'value': 11.1, 'units':'keV', 'dataset_opts': {'dtype': 'd'}}
+                                              )
+                     )
 
 
 
@@ -169,117 +173,139 @@ def main():
 
 
                         # Detector settings
-
+                        # /measurement/instrument/detector
                         elif (linelist[0]=="Camera"):
-                                print linelist
 ##                                camera=detectorGrp.create_dataset('model', data = ' '.join(linelist[2:]))
+                                f.add_entry( DataExchangeEntry.detector(model={'value': ' '.join(linelist[2:])}))
                         elif (linelist[0]=="Microscope"):
-                                print linelist
+                                # I think this should go with the objective list (it is just another lens in the visible light path correct?)
 ##                                microscope=detectorGrp.create_dataset('microscope', data = ' '.join(linelist[2:]))
+#                                f.add_entry(DataExchangeEntry.objective(entry_name="objective_1", model={'value': ' '.join(linelist[2:])}))
+                                f.add_entry(DataExchangeEntry.objective(entry_name="objective_1", model={'value': ' '.join(linelist[2:])}))
                         elif (linelist[0]=="Magnification"):
-                                print linelist
 ##                                objGrp=detectorGrp.create_group("objective")
 ##                                objGrp.create_dataset('magnification', data = float(linelist[2]))
+                                f.add_entry(DataExchangeEntry.objective(entry_name="objective_2",magnification={'value': float(linelist[2]), 'dataset_opts':  {'dtype': 'd'}}))
                         elif (linelist[0]=="Scintillator"):
-                                print linelist
 ##                                scintGrp=detectorGrp.create_group("scintillator")
 ##                                scintGrp.create_dataset('type', data = ' '.join(linelist[2:]))
+                                f.add_entry(DataExchangeEntry.scintillator(type={'value':linelist[2]}, scintillating_thickness={'value':float(linelist[3]), 'units':linelist[4], 'dataset_opts':{'dtype': 'd'}}))
                         elif (linelist[0]=="Exposure" and linelist[1]=="time"):
-                                print linelist
 ##                                exp=detectorGrp.create_dataset('exposure_time', data = float(linelist[4]))
 ##                                exp.attrs['units'] = "ms"
+                                f.add_entry( DataExchangeEntry.detector(exposure_time={'value': float(linelist[4]), 'units':'ms', 'dataset_opts':  {'dtype': 'd'}}))
                         elif (linelist[0]=="Delay" and linelist[1]=="time"):
-                                print linelist
 ##                                delay=detectorGrp.create_dataset('delay_time', data = float(linelist[4]))
 ##                                delay.attrs['units'] = "ms"
+                                f.add_entry( DataExchangeEntry.detector(delay_time={'value': float(linelist[4]), 'units':'ms', 'dataset_opts':  {'dtype': 'd'}}))
                         elif (linelist[0]=="Stabilization" and linelist[1]=="time"):
-                                print linelist
 ##                                stabilization=detectorGrp.create_dataset('stabilization_time', data = float(linelist[4]))
 ##                                stabilization.attrs['units'] = "ms"
+                                f.add_entry( DataExchangeEntry.detector(stabilization_time={'value': float(linelist[4]), 'units':'ms', 'dataset_opts':  {'dtype': 'd'}}))
                         elif (linelist[0]=="Actual" and linelist[1]=="pixel"):
-                                print linelist
 ##                                xActualPixelSize=detectorGrp.create_dataset('x_actual_pixel_size', data = float(linelist[5]))
 ##                                xActualPixelSize.attrs['units'] = "micron"
 ##                                yActualPixelSize=detectorGrp.create_dataset('y_actual_pixel_size', data = float(linelist[5]))
 ##                                yActualPixelSize.attrs['units'] = "micron"
+                                f.add_entry( DataExchangeEntry.detector(x_actual_pixel_size={'value': float(linelist[5]), 'units':'micron', 'dataset_opts':  {'dtype': 'd'}}))
+                                f.add_entry( DataExchangeEntry.detector(y_actual_pixel_size={'value': float(linelist[5]), 'units':'micron', 'dataset_opts':  {'dtype': 'd'}}))
                         elif (linelist[0]=="Millisecond"):
                                 print linelist
 ##                                shutterGrp = instGrp.create_group("shutter")
 ##                                shutterGrp.create_dataset('name', data = "Millisecond shutter")
 ##                                shutterGrp.create_dataset('status', data = ' '.join(linelist[4:]))			
                         elif (linelist[0]=="X-ROI"):
-                                print linelist
 ##                                roiGrp.create_dataset('x1', data = int(linelist[2]))
 ##                                roiGrp.create_dataset('x2', data = int(linelist[4]))
+                                f.add_entry( DataExchangeEntry.roi(x1={'value':int(linelist[2]), 'dataset_opts': {'dtype': 'i'}}, x2={'value':int(linelist[4]), 'dataset_opts': {'dtype': 'i'}}))
                         elif (linelist[0]=="Y-ROI"):
-                                print linelist
 ##                                roiGrp.create_dataset('y1', data = int(linelist[2]))
 ##                                roiGrp.create_dataset('y2', data = int(linelist[4]))
+                                f.add_entry( DataExchangeEntry.roi(y1={'value':int(linelist[2]), 'dataset_opts': {'dtype': 'i'}}, y2={'value':int(linelist[4]), 'dataset_opts': {'dtype': 'i'}}))
 ##
 ##
-##                        elif (linelist[0]=="X-coordinate"):
+                        elif (linelist[0]=="X-coordinate"):
 ##                                x=setupGrp.create_dataset('sample_x', data = float(linelist[2]))
 ##                                x.attrs['units'] = "micron"
-##                        elif (linelist[0]=="Y-coordinate"):
+                                f.add_entry( DataExchangeEntry.setup(sample_x={'value': float(linelist[2]), 'units':'micron', 'dataset_opts':  {'dtype': 'd'}}))
+                        elif (linelist[0]=="Y-coordinate"):
 ##                                y=setupGrp.create_dataset('sample_y', data = float(linelist[2]))
 ##                                y.attrs['units'] = "micron"
-##                        elif (linelist[0]=="Z-coordinate"):
+                                f.add_entry( DataExchangeEntry.setup(sample_y={'value': float(linelist[2]), 'units':'micron', 'dataset_opts':  {'dtype': 'd'}}))
+                        elif (linelist[0]=="Z-coordinate"):
 ##                                z=setupGrp.create_dataset('sample_z', data = float(linelist[2]))
 ##                                z.attrs['units'] = "micron"
-##                        elif (linelist[0]=="XX-coordinate"):
+                                f.add_entry( DataExchangeEntry.setup(sample_z={'value': float(linelist[2]), 'units':'micron', 'dataset_opts':  {'dtype': 'd'}}))
+                        elif (linelist[0]=="XX-coordinate"):
 ##                                xx=setupGrp.create_dataset('sample_xx', data = float(linelist[2]))
 ##                                xx.attrs['units'] = "micron"
-##                        elif (linelist[0]=="ZZ-coordinate"):
+                                f.add_entry( DataExchangeEntry.setup(sample_xx={'value': float(linelist[2]), 'units':'micron', 'dataset_opts':  {'dtype': 'd'}}))
+                        elif (linelist[0]=="ZZ-coordinate"):
 ##                                zz=setupGrp.create_dataset('sample_zz', data = float(linelist[2]))
 ##                                zz.attrs['units'] = "micron"
+                                f.add_entry( DataExchangeEntry.setup(sample_zz={'value': float(linelist[2]), 'units':'micron', 'dataset_opts':  {'dtype': 'd'}}))
 
                         # Scan settings
                            
-##                        elif (linelist[1]=="scan" and linelist[2]=="of"):
+                        elif (linelist[1]=="scan" and linelist[2]=="of"):
 ##                                acqGrp.create_dataset('type', data = linelist[0])
 ##                                startdate= linelist[7] + " " + linelist[8] + " " + linelist[9] + " " + linelist[10] + " " + linelist[11]		
 ##                                acqGrp.create_dataset('start_date', data = startdate)
-##                        elif (linelist[1]=="SCAN" and linelist[2]=="FINISHED"):
+                                f.add_entry( DataExchangeEntry.acquisition(start_date={'value': (linelist[7] + " " + linelist[8] + " " + linelist[9] + " " + linelist[10] + " " + linelist[11])}))
+                        elif (linelist[1]=="SCAN" and linelist[2]=="FINISHED"):
 ##                                enddate= linelist[4] + " " + linelist[5] + " " + linelist[6] + " " + linelist[7] + " " + linelist[8]		
 ##                                acqGrp.create_dataset('end_date', data = enddate)
-##                        elif (linelist[0]=="Number" and linelist[2]=="projections"):
+                                f.add_entry( DataExchangeEntry.acquisition(end_date={'value': (linelist[4] + " " + linelist[5] + " " + linelist[6] + " " + linelist[7] + " " + linelist[8])}))
+                        elif (linelist[0]=="Number" and linelist[2]=="projections"):
 ##                                nprj=int(linelist[4])
 ##                                acqGrp.create_dataset('number_of_projections', data = int(linelist[4]))
-##                        elif (linelist[0]=="Number" and linelist[2]=="darks"):
+                                f.add_entry( DataExchangeEntry.acquisition(number_of_projections={'value': int(linelist[4]), 'dataset_opts':  {'dtype': 'd'}}))
+                        elif (linelist[0]=="Number" and linelist[2]=="darks"):
 ##                                ndrk=int(linelist[4])
 ##                                acqGrp.create_dataset('number_of_darks', data = int(linelist[4]))
-##                        elif (linelist[0]=="Number" and linelist[2]=="flats"):
+                                f.add_entry( DataExchangeEntry.acquisition(number_of_darks={'value': int(linelist[4]), 'dataset_opts':  {'dtype': 'd'}}))
+                        elif (linelist[0]=="Number" and linelist[2]=="flats"):
 ##                                nflt=int(linelist[4])
 ##                                acqGrp.create_dataset('number_of_flats', data = int(linelist[4]))
-##                        elif (linelist[0]=="Sample" and linelist[1]=="In"):
+                                f.add_entry( DataExchangeEntry.acquisition(number_of_flats={'value': int(linelist[4]), 'dataset_opts':  {'dtype': 'd'}}))
+                        elif (linelist[0]=="Sample" and linelist[1]=="In"):
 ##                                sampleIn=acqGrp.create_dataset('sample_in', data = float(linelist[4]))
 ##                                sampleIn.attrs['units'] = "micron"
-##                        elif (linelist[0]=="Sample" and linelist[1]=="Out"):
+                                f.add_entry( DataExchangeEntry.acquisition(sample_in={'value': float(linelist[4]), 'units':'micron', 'dataset_opts':  {'dtype': 'd'}}))
+                        elif (linelist[0]=="Sample" and linelist[1]=="Out"):
 ##                                sampleOut=acqGrp.create_dataset('sample_out', data = float(linelist[4]))
 ##                                sampleOut.attrs['units'] = "micron"
-##                        elif (linelist[0]=="Rot" and linelist[2]=="min"):
+                                f.add_entry( DataExchangeEntry.acquisition(sample_out={'value': float(linelist[4]), 'units':'micron', 'dataset_opts':  {'dtype': 'd'}}))
+                        elif (linelist[0]=="Rot" and linelist[2]=="min"):
 ##                                rotmin = float(linelist[6])
 ##                                acqGrp.create_dataset('rotation_start_angle', data = float(linelist[6]))
-##                        elif (linelist[0]=="Rot" and linelist[2]=="max"):
+                                f.add_entry( DataExchangeEntry.acquisition(rotation_start_angle={'value': float(linelist[6]), 'units':'degree', 'dataset_opts':  {'dtype': 'd'}}))
+                        elif (linelist[0]=="Rot" and linelist[2]=="max"):
 ##                                rotmax = float(linelist[6])
 ##                                acqGrp.create_dataset('rotation_end_angle', data = float(linelist[6]))
-##                        elif (linelist[0]=="Angular" and linelist[1]=="step"):
+                                f.add_entry( DataExchangeEntry.acquisition(rotation_end_angle={'value': float(linelist[6]), 'units':'degree', 'dataset_opts':  {'dtype': 'd'}}))
+                        elif (linelist[0]=="Angular" and linelist[1]=="step"):
 ##                                angularStep = float(linelist[4])
 ##                                acqGrp.create_dataset('angular_step', data = float(linelist[4]))
+                                f.add_entry( DataExchangeEntry.acquisition(angular_step={'value': float(linelist[4]), 'units':'degree', 'dataset_opts':  {'dtype': 'd'}}))
 
                         # Interferometer settings
 
-##                        elif (linelist[0]=="Grid" and linelist[1]=="start"):
+                        elif (linelist[0]=="Grid" and linelist[1]=="start"):
 ##                                interferometerGrp = setupGrp.create_group("interferometer")
 ##                                interferometerGrp.create_dataset('grid_start', data = float(linelist[5]))
-##                        elif (linelist[0]=="Grid" and linelist[1]=="end"):
+                                f.add_entry( DataExchangeEntry.interferometer(grid_start={'value': float(linelist[5]), 'dataset_opts':  {'dtype': 'd'}}))
+                        elif (linelist[0]=="Grid" and linelist[1]=="end"):
 ##                                interferometerGrp.create_dataset('grid_end', data = float(linelist[5]))
-##                        elif (linelist[0]=="Grid" and linelist[1]=="step"):
+                                f.add_entry( DataExchangeEntry.interferometer(grid_end={'value': float(linelist[5]), 'dataset_opts':  {'dtype': 'd'}}))
+                        elif (linelist[0]=="Grid" and linelist[1]=="step"):
 ##                                grid_steps = int(linelist[3])+1
 ##                                interferometerGrp.create_dataset('number_of_grid_steps', data = int(linelist[3]))
-##                        elif (linelist[0]=="Grid" and linelist[1]=="period"):
+                                f.add_entry( DataExchangeEntry.interferometer(number_of_grid_steps={'value': float(linelist[3]), 'dataset_opts':  {'dtype': 'd'}}))
+                        elif (linelist[0]=="Grid" and linelist[1]=="period"):
 ##                                grid_periods = int(linelist[3])
 ##                                interferometerGrp.create_dataset('number_of_grid_periods', data = int(linelist[3]))
+                                f.add_entry( DataExchangeEntry.interferometer(number_of_grid_periods={'value': float(linelist[3]), 'dataset_opts':  {'dtype': 'd'}}))
 		
         FILE.close()
 	

@@ -53,7 +53,7 @@ def main():
 ##        samplename = os.path.basename(basename)
 ##        imageFileFullPath = basename + "/" + samplename + ".h5"
         # test
-        imageFileFullPath = "/Users/decarlo/Desktop/test/test_08.h5"
+        imageFileFullPath = "//local/data/DPC/test_ref2.h5"
         samplename = "sample_name"
         if os.path.exists(imageFileFullPath):
                 print "File exists, exiting"
@@ -117,7 +117,7 @@ def main():
 ##        image = wx.Image(filename_image)
 ##        height = int(image.GetHeight())
 ##        width = int(image.GetWidth())
-        filename = "/Users/decarlo/Desktop/test/BG_Fab-1_B1_.log"
+        filename = "/local/data/DPC/BG_Fab-1_B1_.log"
         FILE = open(filename,"r")
         for line in FILE:
                 linelist=line.split()
