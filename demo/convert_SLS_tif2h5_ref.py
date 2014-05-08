@@ -1,14 +1,10 @@
 #!/usr/bin/env python
 
-###### WORK IN PROGRESS #######
-
 import numpy as np
 import h5py
 import time
 import os
 import sys
-
-from dataexchange.xtomo.data_exchange import DataExchangeFile, DataExchangeEntry
 
 #import wx
 #from tifffile import tifffile
@@ -52,8 +48,9 @@ def main():
 ##        basename = os.getcwd()
 ##        samplename = os.path.basename(basename)
 ##        imageFileFullPath = basename + "/" + samplename + ".h5"
+
         # test
-        imageFileFullPath = "//local/data/DPC/test_ref2.h5"
+        imageFileFullPath = "/Users/decarlo/Desktop/DPC/BG_ref.h5"
         samplename = "sample_name"
         if os.path.exists(imageFileFullPath):
                 print "File exists, exiting"
@@ -61,10 +58,6 @@ def main():
         print imageFileFullPath
         # Open HDF5 file
         imageFile = h5py.File(imageFileFullPath, 'w') 
-        # Open DataExchange file
-######        f = DataExchangeFile(imageFileFullPath, mode='a')
-######        f.add_entry( DataExchangeEntry.data(title={'value': 'dpc_tomography'}))
-
 
         # Create basic definitions in root
         Implements = imageFile.create_dataset('implements', data = "exchange:measurement")
@@ -76,22 +69,9 @@ def main():
         measurementGrp = imageFile.create_group("measurement")
 
         # Sample group
-
-
-
-        # Sample group
         sampleGrp = measurementGrp.create_group("sample")
         sampleGrp.create_dataset('name', data = samplename)
         experimentGrp = sampleGrp.create_group("experiment")
-
-        # Instrument group
-        # Create HDF5 subgroup
-
-        # Create HDF5 subgroup
-        # /measurement/instrument/source
-######        f.add_entry( DataExchangeEntry.source(name={'value': 'SLS'}, beamline={'value': "TOMCAT"}))
-
-
 
         # Instrument group
         instGrp = measurementGrp.create_group("instrument")
@@ -106,7 +86,7 @@ def main():
         acqGrp = instGrp.create_group("acquisition")
         setupGrp = instGrp.create_group("setup")
 
-##        grid_steps=1	
+        grid_steps=1	
 ##
 ##        # Read info and userID from log file
 ##        os.chdir(tifdir)
@@ -117,7 +97,8 @@ def main():
 ##        image = wx.Image(filename_image)
 ##        height = int(image.GetHeight())
 ##        width = int(image.GetWidth())
-        filename = "/local/data/DPC/BG_Fab-1_B1_.log"
+        filename = "/Users/decarlo/Desktop/DPC/BG_Fab-1_B1_.log"
+
         FILE = open(filename,"r")
         for line in FILE:
                 linelist=line.split()
@@ -127,42 +108,21 @@ def main():
 
                         if (linelist[0]=="User" and linelist[1]=="ID"):
                                 experimentGrp.create_dataset('activity', data = linelist[3])
-######                                # /measurement/experiment
-######                                f.add_entry( DataExchangeEntry.experiment(activity={'value':linelist[3]}))
  		   
                         # Beamline settings
 		   	
                         elif (linelist[0]=="Ring" and linelist[1]=="current"):
                                 current=sourceGrp.create_dataset('current', data = float(linelist[4]))
                                 current.attrs['units'] = "mA"
-######                                f.add_entry( DataExchangeEntry.source(current={'value': float(linelist[4]), 'units':'mA', 'dataset_opts':  {'dtype': 'd'}}))
                         elif (linelist[0]=="Beam" and linelist[1]=="energy"):
                                 energy=monoGrp.create_dataset('energy', data = float(linelist[4]))
                                 energy.attrs['units'] = "keV"
-######                                f.add_entry( DataExchangeEntry.source(energy={'value': float(linelist[4]), 'units':'keV', 'dataset_opts':  {'dtype': 'd'}}))
                         elif (linelist[0]=="Monostripe"):
                                 monoGrp.create_dataset('mono_stripe', data = linelist[2])
-######                                f.add_entry(DataExchangeEntry.monochromator(type={'value': 'Multilayer'}, mono_stripe={'value': linelist[2]}))
                         elif (linelist[0]=="FE-Filter"):
-                                print linelist
                                 attenuator1Grp = instGrp.create_group("attenuator_1")
                                 attenuator1Grp.create_dataset('type', data = linelist[0])
                                 attenuator1Grp.create_dataset('thickness', data = ' '.join(linelist[2:]))
-
-######                                f.add_entry( DataExchangeEntry.monochromator(type={'value': 'Multilayer'}, mono_stripe={'value': linelist[2]}))
-######                                f.add_entry( DataExchangeEntry.attenuator(thickness={'value' : linelist[2]}, 'units': 'm', 'dataset_opts': {'dtype': 'd'}}, type={'value': linelist[0]})
-######                                f.add_entry( DataExchangeEntry.attenuator(thickness={'value': 1.44, 'units': 'm', 'dataset_opts': {'dtype': 'd'}}, type={'value': 'Al'}))
-
-##
-##                                f.add_entry( DataExchangeEntry.monochromator(type={'value': 'Multilayer'},
-##                                                energy={'value': 19.26, 'units': 'keV', 'dataset_opts': {'dtype': 'd'}},
-##                                                energy_error={'value': 1e-3, 'units': 'keV', 'dataset_opts': {'dtype': 'd'}},
-##                                                mono_stripe={'value': data},
-##                                                )
-##        )
-##
-##        )
-
                         elif (linelist[0]=="OP-Filter" and linelist[1]=="1"):
                                 attenuator2Grp = instGrp.create_group("attenuator_2")
                                 attenuator2Grp.create_dataset('type', data = ' '.join(linelist[0:2]))
@@ -324,7 +284,7 @@ def main():
 ##                        rawImagesDataset[rawDataImageCounter, :, :] = imageAs2DArray
 ##
         imageFile.close() # Close file
-#####        f.close()
+
 ##        endtime = time.clock()
 ##        print "time to write", str(endtime - starttime), "sec"
 ##        print "speed", 2*(20+400+1441)*2048*2048/((endtime - starttime)*1000000000), "Gigabyte/s"
