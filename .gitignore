@@ -62,6 +62,8 @@ docs/build
 *.lof
 *.toc
 *.out
+*.bbl
+*.blg
 
 # Test files #
 ##############
