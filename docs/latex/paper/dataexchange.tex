@@ -251,9 +251,29 @@ Data exchange model has been implemented for XPCS using the following HDF5 group
 
 Similar to the implementations for the other techniques presented earlier, multiple analysis performed on the same data set under different processing steps are tracked in a provenance table.
 
+\textcolor{red}{\section{The future of the Data Exchange Model}}
+
+\textcolor{red}{The Data Exchange initial goal is to facilitate exchange of data and analysis software tools among facilities performing the same or similar technique. For X--ray absorption and phase contrast tomography, we looked at data collected at ALS, APS (1-ID, 2-BM, 13-BM, 26-ID, 32-ID), Anka, Australian Synchrotron facility, Diamond, ESRF ID-19, Elettra, Petra III, SLAC, SLS and X--radia systems and found that there is no standardized format currently in use. Most (ALS, Anka, Australian Synchrotron facility, Elettra, Petra III, SLS) save tomographic projections as series of tiff with, but more often without, a well defined ascii file storing experimental  metadata.  Some use the txrm format (X--radia systems at SLAC, APS 26-ID, NSLS-II FXI), some HDF5 Data Exchange natively (APS 2-BM, 32-ID) or HDF4 (APS 1-ID), one NetCDF (APS 13-BM), one EDF (ESRF) and one HDF5 NeXus (Diamond). None store provenance.}
+
+\textcolor{red}{The Data Exchange strategy is not to solve the ``Babel situation'' described in the introduction by creating yet another format but creating a sort of Esperanto among existing formats. For this reason, even within the same technique, Data Exchange does not impose rigid definition for instrument components nor of saving instrument status at each data collection point (like the NeXus implementation for example) instead its goal is in finding consensus within each class of instrument in what is the most meaningful and basic ‘raw’ data set to share.}
+
+\textcolor{red}{To expand the Data Exchange model and possibly turn it into the native data format of choice at large facilities we adopted the following strategy:}
+
+\begin{itemize}
+\item \textcolor{red}{maintain, expand and freely distribute to all tomography users tomoPy \cite{python_cpp}, the APS analysis software that natively uses Data Exchange.} 
+\item \textcolor{red}{interface the data generated at all the facilities listed above with tomoPy by providing converters to Data Exchange or Direct Importers into tomoPy. These are published and constantly updated in the demo section of \cite{data_exchange}.}
+\item \textcolor{red}{develope a data exchange plug--in for area detector \cite{area_detector} making it possible for all facility using this software to control their camera and to save tomographic data directly in Data Exchange.}
+\item \textcolor{red}{expand this model to X--ray Fluorescence Microscopy, X--ray Photon Correlation Spectroscopy and other techniques.}
+\end{itemize}
+
+
+\textcolor{red}{With more and more users doing experiments at different synchrotron facilities we expect the need to “exchange” data and software tools will grow and facilitate this approach.}
+ 
+
 \section{Conclusions}
 
 The definition of Data Exchange as a simple data model designed to interface, or ``exchange'' data among different instruments has the potential to improve the interoperability of software toolboxes currently under development at various synchrotron facilities. At the APS the adoption of tomoPy \cite{python_cpp} and its full integration with Data Exchange creates such an environment for X-ray tomography providing the ability to analyze tomography data from all major synchrotron facilities around the world. 
+\item \textcolor{red}{Upcoming tomoPy releases will include integration of grating interferometer based tomography, X--ray fluorescence tomography and X--ray diffraction tomography.}
 
 %\appendix
 %\section{Appendix title}
