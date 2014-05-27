@@ -2,25 +2,23 @@
 """
 .. module:: convert_SLS.py
    :platform: Unix
-   :synopsis: Convert SLS Tomcat TIFF files in data exchange.
+   :synopsis: reconstruct SLS Tomcat data with TomoPy
+   :INPUT
+       series of tiff and log file or data exchange 
 
 .. moduleauthor:: Francesco De Carlo <decarlof@gmail.com>
 
 
 """ 
-
+import tomopy
 import dataexchange.xtomo.xtomo_importer as dx
 import dataexchange.xtomo.xtomo_exporter as ex
 
 import re
 
+
 def main():
-
-##    file_name = '/local/dataraid/databank/SLS_2011/Blakely_SLS/Blakely.tif'
-##    log_file = '/local/dataraid/databank/SLS_2011/Blakely_SLS/Blakely.log'
-##
-##    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/Blakely_SLS_2011.h5'
-
+    # read a series of tiff
     file_name = '/local/dataraid/databank/SLS_2011/Hornby_SLS/Hornby_b.tif'
     log_file = '/local/dataraid/databank/SLS_2011/Hornby_SLS/Hornby.log'
 
@@ -53,8 +51,8 @@ def main():
     projections_start = white_end
     projections_end = projections_start + number_of_projections
 
-    # we only reconstruct slices from slices_start to slices_end
-    # if omitted all data set is recontructed
+    # to reconstruct a subset of slices set slices_start and slices_end
+    # if omitted the full data set is recontructed
     
     slices_start = 800    
     slices_end = 804    
@@ -72,15 +70,29 @@ def main():
                                                        dark_end = dark_end,
                                                        log='INFO'
                                                        )
-    mydata = ex.Export()
-    # Create minimal data exchange hdf5 file
-    mydata.xtomo_exchange(data = data,
-                          data_white = white,
-                          data_dark = dark,
-                          theta = theta,
-                          hdf5_file_name = hdf5_file_name,
-                          data_exchange_type = 'tomography_raw_projections'
-                          )
+
+##    # if you have already created a data exchange file using convert_SLS.py module,
+##    # comment the call above and read the data set as data exchange 
+##    # Read HDF5 file.
+##    data, white, dark, theta = tomopy.xtomo_reader(hdf5_file_name,
+##                                                   slices_start=0,
+##                                                   slices_end=2)
+
+    # TomoPy xtomo object creation and pipeline of methods.  
+    d = tomopy.xtomo_dataset(log='debug')
+    d.dataset(data, white, dark, theta)
+    d.normalize()
+    d.correct_drift()
+    #d.optimize_center()
+    #d.phase_retrieval()
+    #d.correct_drift()
+    d.center=1010.0
+    d.gridrec()
+
+
+    # Write to stack of TIFFs.
+    tomopy.xtomo_writer(d.data_recon, 'tmp/SLS_', axis=0)
+
 if __name__ == "__main__":
     main()
 

@@ -173,9 +173,9 @@ class Import():
                          slices_start=0,
                          slices_end=None,
                          slices_step=1,
-                         pixels_start=0,
-                         pixels_end=0,
-                         pixels_step=1,
+                         #pixels_start=0,
+                         #pixels_end=0,
+                         #pixels_step=1,
                          white_file_name=None,
                          white_start=0,
                          white_end=0,
@@ -184,7 +184,8 @@ class Import():
                          dark_start=0,
                          dark_end=0,
                          dark_step=1,
-                         projections_angle_range=180,
+                         projections_angle_start = 0,
+                         projections_angle_end = 180,
                          projections_zeros=True,
                          projections_digits=4,
                          white_digits=None,
@@ -548,6 +549,7 @@ class Import():
             z = np.arange(projections_end - projections_start);
 
             # Fabricate theta values
+            projections_angle_range = projections_angle_end - projections_angle_start
             xtomo.theta = (z * float(projections_angle_range) / (len(z) - 1))
 
         # this "if" will be removed once I clean up the series of stack loading for netCDF and SPE
