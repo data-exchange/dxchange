@@ -12,7 +12,6 @@
 """ 
 import tomopy
 import dataexchange.xtomo.xtomo_importer as dx
-import dataexchange.xtomo.xtomo_exporter as ex
 
 import re
 
