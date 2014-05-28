@@ -25,7 +25,7 @@ def main():
     hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/VirginiaTech_test.h5'
     sample_name = 'Diplodocus_1_200mm_'
 
-    projections_start = 0
+    projections_start = 1 # projection 0 is dark so we skip it1
     projections_end = 1500
     white_start = 0
     white_end = 10
@@ -72,16 +72,16 @@ def main():
     d = tomopy.xtomo_dataset(log='debug')
     d.dataset(data, white, dark, theta)
     d.normalize()
-    d.correct_drift()
-    d.optimize_center()
+    #d.correct_drift()
+    #d.optimize_center()
     #d.phase_retrieval()
     #d.correct_drift()
-    #d.center=1010.0
+    d.center=1018.63
     d.gridrec()
 
 
     # Write to stack of TIFFs.
-    tomopy.xtomo_writer(d.data_recon, 'tmp/VT_', axis=0)
+    tomopy.xtomo_writer(d.data_recon, 'tmp/AAA_VT_', axis=0)
 
 if __name__ == "__main__":
     main()
