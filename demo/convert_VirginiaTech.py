@@ -20,7 +20,7 @@ def main():
     hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/VirginiaTech_test.h5'
     sample_name = 'Diplodocus_1_200mm_'
 
-    projections_start = 0
+    projections_start = 1 # projection 0 is dark so we skip it
     projections_end = 1500
     white_start = 0
     white_end = 10
@@ -32,8 +32,8 @@ def main():
     # to reconstruct slices from slices_start to slices_end
     # if omitted all data set is recontructed
     
-    slices_start = 800    
-    slices_end = 804    
+    slices_start = 600    
+    slices_end = 604    
 
     mydata = dx.Import()
     # Read series of images
