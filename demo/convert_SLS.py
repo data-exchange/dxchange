@@ -53,7 +53,7 @@ def main():
     projections_start = white_end
     projections_end = projections_start + number_of_projections
 
-    # we only reconstruct slices from slices_start to slices_end
+    # to reconstruct slices from slices_start to slices_end
     # if omitted all data set is recontructed
     
     slices_start = 800    
