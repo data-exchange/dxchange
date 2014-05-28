@@ -14,9 +14,9 @@ import dataexchange.xtomo.xtomo_exporter as ex
 
 def main():
 
-    file_name = '/local/dataraid/databank/giarra_socha_tomography_data_2014-04-12/test_sample_Diplo_4/Diplodocus_1_200mm_4_.tif'
-    dark_file_name = '/local/dataraid/databank/giarra_socha_tomography_data_2014-04-12/test_sample_Diplo_4/Diplodocus_1_200mm_4postDark_.tif'
-    white_file_name = '/local/dataraid/databank/giarra_socha_tomography_data_2014-04-12/test_sample_Diplo_4/Diplodocus_1_200mm_4postFlat_.tif'
+    file_name = '/local/dataraid/databank/VirginiaTech/test_sample_Diplo_4/Diplodocus_1_200mm_4_.tif'
+    dark_file_name = '/local/dataraid/databank/VirginiaTech/test_sample_Diplo_4/Diplodocus_1_200mm_4postDark_.tif'
+    white_file_name = '/local/dataraid/databank/VirginiaTech/test_sample_Diplo_4/Diplodocus_1_200mm_4postFlat_.tif'
     hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/VirginiaTech_test.h5'
     sample_name = 'Diplodocus_1_200mm_'
 

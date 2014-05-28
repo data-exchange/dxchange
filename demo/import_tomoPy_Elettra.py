@@ -39,14 +39,15 @@ def main():
     # to reconstruct slices from slices_start to slices_end
     # if omitted all data set is recontructed
     
-    slices_start = 800    
-    slices_end = 804    
+    slices_start = 150    
+    slices_end = 154    
 
     mydata = dx.Import()
     # Read series of images
     data, white, dark, theta = mydata.series_of_images(file_name,
                                                        projections_start = projections_start,
                                                        projections_end = projections_end,
+                                                       projections_digits = 4,
                                                        slices_start = slices_start,
                                                        slices_end = slices_end,
                                                        white_file_name = white_file_name,
@@ -57,13 +58,13 @@ def main():
                                                        dark_start = dark_start,
                                                        dark_end = dark_end,
                                                        dark_step = dark_step,
-                                                       sample_name = sample_name,
-                                                       projections_digits = 4,
-                                                       white_digits = 2,
-                                                       dark_digits = 2,
+                                                       data_type =  'compressed_tiff', # comment this line if regular tiff
                                                        projections_zeros = True,
+                                                       white_zeros = False,
+                                                       dark_zeros = False,
+                                                       sample_name = sample_name,
                                                        log='INFO'
-                                                    )    
+                                                       )
 
 ##    # if you have already created a data exchange file using convert_SLS.py module,
 ##    # comment the call above and read the data set as data exchange 

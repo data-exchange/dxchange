@@ -19,9 +19,9 @@ import dataexchange.xtomo.xtomo_importer as dx
 
 def main():
     # read a series of tiff
-    file_name = '/local/dataraid/databank/giarra_socha_tomography_data_2014-04-12/test_sample_Diplo_4/Diplodocus_1_200mm_4_.tif'
-    dark_file_name = '/local/dataraid/databank/giarra_socha_tomography_data_2014-04-12/test_sample_Diplo_4/Diplodocus_1_200mm_4postDark_.tif'
-    white_file_name = '/local/dataraid/databank/giarra_socha_tomography_data_2014-04-12/test_sample_Diplo_4/Diplodocus_1_200mm_4postFlat_.tif'
+    file_name = '/local/dataraid/databank/VirginiaTech/test_sample_Diplo_4/Diplodocus_1_200mm_4_.tif'
+    dark_file_name = '/local/dataraid/databank/VirginiaTech/test_sample_Diplo_4/Diplodocus_1_200mm_4postDark_.tif'
+    white_file_name = '/local/dataraid/databank/VirginiaTech/test_sample_Diplo_4/Diplodocus_1_200mm_4postFlat_.tif'
     hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/VirginiaTech_test.h5'
     sample_name = 'Diplodocus_1_200mm_'
 
@@ -37,8 +37,8 @@ def main():
     # to reconstruct slices from slices_start to slices_end
     # if omitted all data set is recontructed
     
-    slices_start = 800    
-    slices_end = 804    
+    slices_start = 600    
+    slices_end = 604    
 
     mydata = dx.Import()
     # Read series of images
@@ -56,9 +56,7 @@ def main():
                                                        dark_end = dark_end,
                                                        dark_step = dark_step,
                                                        sample_name = sample_name,
-                                                       projections_digits = 4,
-                                                       white_digits = 2,
-                                                       dark_digits = 2,
+                                                       projections_digits = 5,
                                                        projections_zeros = True,
                                                        log='INFO'
                                                     )    

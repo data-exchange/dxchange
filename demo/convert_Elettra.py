@@ -34,8 +34,8 @@ def main():
     # to reconstruct slices from slices_start to slices_end
     # if omitted all data set is recontructed
     
-    slices_start = 800    
-    slices_end = 804    
+    slices_start = 150    
+    slices_end = 154    
 
     mydata = dx.Import()
     # Read series of images
