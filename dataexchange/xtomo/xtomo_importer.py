@@ -378,9 +378,9 @@ class Import():
                                       dtype=dtype)
 
                 elif (data_type is 'spe'):
-                    tmpdata = f.spe(x_start = slices_start,
-                                    x_end = slices_end,
-                                    x_step = slices_step)
+                    tmpdata = f.spe(y_start = slices_start,
+                                    y_end = slices_end,
+                                    y_step = slices_step)
 
                 elif (data_type is 'nc'):
                     tmpdata = f.netcdf()
@@ -441,9 +441,9 @@ class Import():
                                       dtype=dtype)
 
                 elif (data_type is 'spe'):
-                    tmpdata = f.spe(x_start = slices_start,
-                                    x_end = slices_end,
-                                    x_step = slices_step)
+                    tmpdata = f.spe(y_start = slices_start,
+                                    y_end = slices_end,
+                                    y_step = slices_step)
 
 
                 elif (data_type is 'nc'):
@@ -509,9 +509,9 @@ class Import():
                                       dtype=dtype)
 
                 elif (data_type is 'spe'):
-                    tmpdata = f.spe(x_start = slices_start,
-                                    x_end = slices_end,
-                                    x_step = slices_step)
+                    tmpdata = f.spe(y_start = slices_start,
+                                    y_end = slices_end,
+                                    y_step = slices_step)
 
                 elif (data_type is 'nc'):
                     tmpdata = f.netcdf()
