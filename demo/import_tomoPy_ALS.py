@@ -1,21 +1,26 @@
 # -*- coding: utf-8 -*-
 """
-.. module:: convert_ALS.py
+.. module:: import_tomoPy_ALS.py
    :platform: Unix
-   :synopsis: Convert ALS TIFF files in data exchange.
+   :synopsis: reconstruct ALS tiff data with TomoPy
+   :INPUT
+       series of tiff and sct file or data exchange 
 
 .. moduleauthor:: Francesco De Carlo <decarlof@gmail.com>
 
-""" 
 
+""" 
+# tomoPy: https://github.com/tomopy/tomopy
+import tomopy 
+
+# Data Exchange: https://github.com/data-exchange/data-exchange
 import dataexchange.xtomo.xtomo_importer as dx
-import dataexchange.xtomo.xtomo_exporter as ex
 
 import re
 
 
 def main():
-    
+    # read a series of tiff
     file_name = '/local/dataraid/databank/ALS_2011/Blakely/blakely_raw/blakelyALS_.tif'
     dark_file_name = '/local/dataraid/databank/ALS_2011/Blakely/blakely_raw/blakelyALSdrk_.tif'
     white_file_name = '/local/dataraid/databank/ALS_2011/Blakely/blakely_raw/blakelyALSbak_.tif'
@@ -63,8 +68,8 @@ def main():
     projections_start = 0
     projections_end = int(Angles[0])
 
-    # to reconstruct slices from slices_start to slices_end
-    # if omitted all data set is recontructed
+    # to reconstruct a subset of slices set slices_start and slices_end
+    # if omitted the full data set is recontructed
     
     slices_start = 800    
     slices_end = 804    
@@ -90,16 +95,27 @@ def main():
                                                        log='INFO'
                                                        )
 
-    mydata = ex.Export()
-    # Create minimal data exchange hdf5 file
-    mydata.xtomo_exchange(data = data,
-                          data_white = white,
-                          data_dark = dark,
-                          theta = theta,
-                          hdf5_file_name = hdf5_file_name,
-                          sample_name = 'test',
-                          data_exchange_type = 'tomography_raw_projections'
-                          )
+##    # if you have already created a data exchange file using convert_SLS.py module,
+##    # comment the call above and read the data set as data exchange 
+##    # Read HDF5 file.
+##    data, white, dark, theta = tomopy.xtomo_reader(hdf5_file_name,
+##                                                   slices_start=0,
+##                                                   slices_end=2)
+
+    # TomoPy xtomo object creation and pipeline of methods.  
+    d = tomopy.xtomo_dataset(log='debug')
+    d.dataset(data, white, dark, theta)
+    d.normalize()
+    d.correct_drift()
+    #d.optimize_center()
+    #d.phase_retrieval()
+    #d.correct_drift()
+    d.center=1683.8
+    d.gridrec()
+
+
+    # Write to stack of TIFFs.
+    tomopy.xtomo_writer(d.data_recon, 'tmp/ALS_', axis=0)
 
 if __name__ == "__main__":
     main()
