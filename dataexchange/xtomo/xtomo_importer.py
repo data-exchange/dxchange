@@ -378,7 +378,9 @@ class Import():
                                       dtype=dtype)
 
                 elif (data_type is 'spe'):
-                    tmpdata = f.spe()
+                    tmpdata = f.spe(x_start = slices_start,
+                                    x_end = slices_end,
+                                    x_step = slices_step)
 
                 elif (data_type is 'nc'):
                     tmpdata = f.netcdf()
@@ -439,7 +441,10 @@ class Import():
                                       dtype=dtype)
 
                 elif (data_type is 'spe'):
-                    tmpdata = f.spe()
+                    tmpdata = f.spe(x_start = slices_start,
+                                    x_end = slices_end,
+                                    x_step = slices_step)
+
 
                 elif (data_type is 'nc'):
                     tmpdata = f.netcdf()
@@ -504,7 +509,9 @@ class Import():
                                       dtype=dtype)
 
                 elif (data_type is 'spe'):
-                    tmpdata = f.spe()
+                    tmpdata = f.spe(x_start = slices_start,
+                                    x_end = slices_end,
+                                    x_step = slices_step)
 
                 elif (data_type is 'nc'):
                     tmpdata = f.netcdf()
@@ -542,21 +549,14 @@ class Import():
 
         # Theta ------------------------------------------------
 
-        if ((data_type is 'tiff') or
-           (data_type is 'compressed_tiff') or
-           (data_type is 'hdf4')):
-            # Fabricate theta values.
-            z = np.arange(projections_end - projections_start);
+        nz, ny, nx = np.shape(xtomo.data)
+        z = np.arange(nz)
 
-            # Fabricate theta values
-            projections_angle_range = projections_angle_end - projections_angle_start
-            xtomo.theta = (z * float(projections_angle_range) / (len(z) - 1))
+        # Fabricate theta values
+        projections_angle_range = projections_angle_end - projections_angle_start
+        xtomo.theta = (z * float(projections_angle_range) / (len(z)))
 
-        # this "if" will be removed once I clean up the series of stack loading for netCDF and SPE
-        if ((data_type is 'tiff') or (data_type is 'compressed_tiff') or (data_type is 'hdf4')):
-            return xtomo.data, xtomo.data_white, xtomo.data_dark,  xtomo.theta
-        else:
-            return xtomo.data, xtomo.data_white, xtomo.data_dark
+        return xtomo.data, xtomo.data_white, xtomo.data_dark,  xtomo.theta
 
     def nexus(xtomo, file_name,
               hdf5_file_name,
