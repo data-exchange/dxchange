@@ -29,9 +29,8 @@ def main():
     dark_end = 10
     dark_step = 1
 
-    # to reconstruct slices from slices_start to slices_end
-    # if omitted all data set is recontructed
-    
+    # set to convert slices between slices_start and slices_end
+    # if omitted all data set will be converted   
     slices_start = 290    
     slices_end = 294    
 

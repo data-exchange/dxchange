@@ -53,9 +53,8 @@ def main():
     projections_start = white_end
     projections_end = projections_start + number_of_projections
 
-    # to reconstruct slices from slices_start to slices_end
-    # if omitted all data set is recontructed
-    
+    # set to convert slices between slices_start and slices_end
+    # if omitted all data set will be converted   
     slices_start = 800    
     slices_end = 804    
 
