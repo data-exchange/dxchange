@@ -70,7 +70,7 @@ def main():
     #d.optimize_center()
     #d.phase_retrieval()
     #d.correct_drift()
-    d.center=700.0
+    d.center=705
     d.gridrec()
 
 
