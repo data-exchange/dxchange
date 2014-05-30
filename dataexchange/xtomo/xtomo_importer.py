@@ -383,8 +383,10 @@ class Import():
                                     y_step = slices_step)
 
                 elif (data_type is 'nc'):
-                    tmpdata = f.netcdf()
-
+                    tmpdata = f.netcdf(y_start = slices_start,
+                                    y_end = slices_end,
+                                    y_step = slices_step)
+ 
                 elif (data_type is 'tiff'):
                     tmpdata = f.tiff(x_start=slices_start,
                                      x_end=slices_end,
@@ -447,7 +449,9 @@ class Import():
 
 
                 elif (data_type is 'nc'):
-                    tmpdata = f.netcdf()
+                    tmpdata = f.netcdf(y_start = slices_start,
+                                    y_end = slices_end,
+                                    y_step = slices_step)
 
                 elif (data_type is 'tiff'):
                     tmpdata = f.tiff(x_start = slices_start,
@@ -514,7 +518,9 @@ class Import():
                                     y_step = slices_step)
 
                 elif (data_type is 'nc'):
-                    tmpdata = f.netcdf()
+                    tmpdata = f.netcdf(y_start = slices_start,
+                                    y_end = slices_end,
+                                    y_step = slices_step)
 
                 elif (data_type is 'tiff'):
                     tmpdata = f.tiff(x_start=slices_start,
