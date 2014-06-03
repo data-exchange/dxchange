@@ -279,51 +279,51 @@ class Import():
         if (data_type is 'hdf4'):
             if file_name.endswith('h4') or \
                 file_name.endswith('hdf'):
-                data_file = file_name.split('.')[-2]
-                dataExtension = file_name.split('.')[-1]
+                data_file = os.path.splitext(file_name)[0]
+                dataExtension = os.path.splitext(file_name)[1]
             if white_file_name.endswith('h4') or \
                 white_file_name.endswith('hdf'):
-                data_file_white = white_file_name.split('.')[-2]
+                data_file_white = os.path.splitext(white_file_name)[0]
             if dark_file_name.endswith('h4') or \
                 dark_file_name.endswith('hdf'):
-                data_file_dark = dark_file_name.split('.')[-2]
+                data_file_dark = os.path.splitext(dark_file_name)[0]
 
         elif (data_type is 'spe'):
             if file_name.endswith('SPE') or \
                 file_name.endswith('spe'):
-                data_file = file_name.split('.')[-2]
-                dataExtension = file_name.split('.')[-1]
+                data_file = os.path.splitext(file_name)[0]
+                dataExtension = os.path.splitext(file_name)[1]
             if white_file_name.endswith('SPE') or \
                 white_file_name.endswith('spe'):
-                data_file_white = white_file_name.split('.')[-2]
+                data_file_white = os.path.splitext(white_file_name)[0]
             if dark_file_name.endswith('SPE') or \
                 dark_file_name.endswith('spe'):
-                data_file_dark = dark_file_name.split('.')[-2]
+                data_file_dark = os.path.splitext(dark_file_name)[0]
 
         elif (data_type is 'nc'):
             if file_name.endswith('NC') or \
                 file_name.endswith('nc'):
-                data_file = file_name.split('.')[-2]
-                dataExtension = file_name.split('.')[-1]
+                data_file = os.path.splitext(file_name)[0]
+                dataExtension = os.path.splitext(file_name)[1]
             if white_file_name.endswith('NC') or \
                 white_file_name.endswith('nc'):
-                data_file_white = white_file_name.split('.')[-2]
+                data_file_white = os.path.splitext(white_file_name)[0]
             if dark_file_name.endswith('NC') or \
                 dark_file_name.endswith('nc'):
-                data_file_dark = dark_file_name.split('.')[-2]
+                data_file_dark = os.path.splitext(dark_file_name)[0]
 
         elif ((data_type is 'tiff') or (data_type is 'compressed_tiff')):
             if file_name.endswith('tif') or \
                 file_name.endswith('tiff'):
-                data_file = file_name.split('.')[-2]
-                dataExtension = file_name.split('.')[-1]
+                data_file = os.path.splitext(file_name)[0]
+                dataExtension = os.path.splitext(file_name)[1]
+
             if white_file_name.endswith('tif') or \
                 white_file_name.endswith('tiff'):
-                data_file_white = white_file_name.split('.')[-2]
+                data_file_white = os.path.splitext(white_file_name)[0]
             if dark_file_name.endswith('tif') or \
                 dark_file_name.endswith('tiff'):
-                data_file_dark = dark_file_name.split('.')[-2]
-
+                data_file_dark = os.path.splitext(dark_file_name)[0]
 
         projections_file_index = ["" for x in range(projections_digits)]
         for m in range(projections_digits):
@@ -356,8 +356,8 @@ class Import():
         for m in range(len(ind)):
             for n in range(projections_digits):
                 if ind[m] < np.power(10, n+1):
-                    _file_name = data_file + projections_file_index[n] + str(ind[m]) + '.' + dataExtension
-                    xtomo.logger.info("Generating projection file names: [%s]", _file_name)
+                    _file_name = data_file + projections_file_index[n] + str(ind[m]) + dataExtension
+                    xtomo.logger.info("Generating projection file names: [%s]", _file_name)                    
                     break
 
             if os.path.isfile(_file_name):
@@ -421,7 +421,7 @@ class Import():
         for m in range(len(ind)):
             for n in range(white_digits):
                 if ind[m] < np.power(10, n+1):
-                    _file_name = data_file_white + white_file_index[n] + str(ind[m]) + '.' + dataExtension
+                    _file_name = data_file_white + white_file_index[n] + str(ind[m]) + dataExtension
                     xtomo.logger.info("Generating white file names: [%s]", _file_name)
                     break
 
@@ -491,7 +491,7 @@ class Import():
         for m in range(len(ind)):
             for n in range(dark_digits):
                 if ind[m] < np.power(10, n + 1):
-                    _file_name = data_file_dark + dark_file_index[n] + str(ind[m]) + '.' + dataExtension
+                    _file_name = data_file_dark + dark_file_index[n] + str(ind[m]) + dataExtension
                     xtomo.logger.info("Generating dark file names: [%s]", _file_name)
                     break
 
