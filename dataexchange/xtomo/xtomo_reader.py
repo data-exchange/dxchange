@@ -129,8 +129,8 @@ class XTomoReader:
             y_end = num_y
 
         # Construct dataset.
-        dataset = hdfdata[y_start:y_end:y_step,
-                          x_start:x_end:x_step]
+        dataset = hdfdata[x_start:x_end:x_step,
+                          y_start:y_end:y_step]
         return dataset
         
         
