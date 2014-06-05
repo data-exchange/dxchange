@@ -79,9 +79,11 @@ def main():
                                                        log='INFO'
                                                        )
 
-##    # if you have already created a data exchange file using convert_SLS.py module,
+##    # if you have already created a data exchange file using convert_APS_2BM.py module,
 ##    # comment the call above and read the data set as data exchange 
 ##    # Read HDF5 file.
+##
+##    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/Hornby_19keV_10x_APS_2011_01.h5'
 ##    data, white, dark, theta = tomopy.xtomo_reader(hdf5_file_name,
 ##                                                   slices_start=0,
 ##                                                   slices_end=2)

@@ -18,9 +18,7 @@ def main():
 
     log_file = '/local/dataraid/databank/APS_2_BM/Sam18_hornby/Sam18_exp.hdf'
 
-    # only set hdf5_file_name if you want to convert into data exchange
     hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/Hornby_19keV_10x_APS_2011_01.h5'
-
 
     #Read APS 2-BM log file data
     f = SD.SD(log_file)
@@ -55,29 +53,29 @@ def main():
 
     sample_name = base_name
     
-##    mydata = dx.Import()
-##    # Read series of images
-##    data, white, dark, theta = mydata.series_of_images(file_name,
-##                                                     projections_start = projections_start,
-##                                                     projections_end = projections_end,
-##                                                     white_start = white_start,
-##                                                     white_end = white_end,
-##                                                     dark_start = dark_start,
-##                                                     dark_end = dark_end,
-##                                                     projections_digits = 5,
-##                                                     data_type = 'hdf4',
-##                                                     log='INFO'
-##                                                     )
-##    mydata = ex.Export()
-##    # Create minimal data exchange hdf5 file
-##    mydata.xtomo_exchange(data = data,
-##                          data_white = white,
-##                          data_dark = dark,
-##                          theta = theta,
-##                          sample_name = sample_name,
-##                          hdf5_file_name = hdf5_file_name,
-##                          data_exchange_type = 'tomography_raw_projections'
-##                          )
+    mydata = dx.Import()
+    # Read series of images
+    data, white, dark, theta = mydata.series_of_images(file_name,
+                                                     projections_start = projections_start,
+                                                     projections_end = projections_end,
+                                                     white_start = white_start,
+                                                     white_end = white_end,
+                                                     dark_start = dark_start,
+                                                     dark_end = dark_end,
+                                                     projections_digits = 5,
+                                                     data_type = 'hdf4',
+                                                     log='INFO'
+                                                     )
+    mydata = ex.Export()
+    # Create minimal data exchange hdf5 file
+    mydata.xtomo_exchange(data = data,
+                          data_white = white,
+                          data_dark = dark,
+                          theta = theta,
+                          sample_name = sample_name,
+                          hdf5_file_name = hdf5_file_name,
+                          data_exchange_type = 'tomography_raw_projections'
+                          )
 
 if __name__ == "__main__":
     main()
