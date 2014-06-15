@@ -64,6 +64,7 @@ def main():
     data, white, dark, theta = mydata.series_of_images(file_name,
                                                        projections_start = projections_start,
                                                        projections_end = projections_end,
+                                                       projections_digits=4,
                                                        slices_start = slices_start,
                                                        slices_end = slices_end,
                                                        white_start = white_start,

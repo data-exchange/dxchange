@@ -187,7 +187,7 @@ class Import():
                          projections_angle_start = 0,
                          projections_angle_end = 180,
                          projections_zeros=True,
-                         projections_digits=4,
+                         projections_digits=-1,
                          white_digits=None,
                          dark_digits=None,
                          white_zeros=True,
@@ -325,6 +325,22 @@ class Import():
                 dark_file_name.endswith('tiff'):
                 data_file_dark = os.path.splitext(dark_file_name)[0]
 
+        elif (data_type is 'edf'):
+            if file_name.endswith('EDF') or \
+                file_name.endswith('edf'):
+                data_file = os.path.splitext(file_name)[0]
+                dataExtension = os.path.splitext(file_name)[1]
+            if white_file_name.endswith('EDF') or \
+                white_file_name.endswith('edf'):
+                data_file_white = os.path.splitext(white_file_name)[0]
+            if dark_file_name.endswith('EDF') or \
+                dark_file_name.endswith('edf'):
+                data_file_dark = os.path.splitext(dark_file_name)[0]
+
+        print data_file, dataExtension
+        print data_file_white
+        print data_file_dark
+        
         projections_file_index = ["" for x in range(projections_digits)]
         for m in range(projections_digits):
             if projections_zeros is True:
