@@ -1,19 +1,25 @@
 # -*- coding: utf-8 -*-
 """
-.. module:: main_convert_NSLS.py
+.. module:: import_tomoPy_NSLS.py
    :platform: Unix
-   :synopsis: Convert NSLS TIFF files in data exchange.
+   :synopsis: reconstruct NSLS data with TomoPy
+   :INPUT
+       series of tiff and log file or data exchange 
 
 .. moduleauthor:: Francesco De Carlo <decarlof@gmail.com>
 
 
 """ 
+# tomoPy: https://github.com/tomopy/tomopy
+import tomopy 
 
+# Data Exchange: https://github.com/data-exchange/data-exchange
 import dataexchange.xtomo.xtomo_importer as dx
-import dataexchange.xtomo.xtomo_exporter as ex
+
+import re
+
 
 def main():
-
     file_name = '/local/dataraid/2013_11/Vincent_201311/GA_exp/92_2_01/rad_0400ms_.tiff'
     white_file_name = '/local/dataraid/2013_11/Vincent_201311/GA_exp/92_2_01/ff_0350ms_.tiff'
 
@@ -45,15 +51,27 @@ def main():
                                                        log='INFO'
                                                        )
 
-    mydata = ex.Export()
-    # Create minimal data exchange hdf5 file
-    mydata.xtomo_exchange(data = data,
-                          data_white = white,
-                          data_dark = dark,
-                          theta = theta,
-                          hdf5_file_name = hdf5_file_name,
-                          data_exchange_type = 'tomography_raw_projections'
-                          )
+##    # if you have already created a data exchange file using convert_SLS.py module,
+##    # comment the call above and read the data set as data exchange 
+##    # Read HDF5 file.
+##    data, white, dark, theta = tomopy.xtomo_reader(hdf5_file_name,
+##                                                   slices_start=0,
+##                                                   slices_end=2)
+
+    # TomoPy xtomo object creation and pipeline of methods.  
+    d = tomopy.xtomo_dataset(log='debug')
+    d.dataset(data, white, dark, theta)
+    d.normalize()
+    d.correct_drift()
+    #d.optimize_center()
+    #d.phase_retrieval()
+    #d.correct_drift()
+    d.center=1010.0
+    d.gridrec()
+
+
+    # Write to stack of TIFFs.
+    tomopy.xtomo_writer(d.data_recon, 'tmp/SLS_', axis=0)
 
 if __name__ == "__main__":
     main()
