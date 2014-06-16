@@ -442,7 +442,10 @@ class Import():
                 tmpdata = f.edf(y_start = slices_start,
                                 y_end = slices_end,
                                 y_step = slices_step)
+                print np.shape(tmpdata)
                 xtomo.data = tmpdata
+                print np.shape(tmpdata)
+
             
             
         # White ------------------------------------------------
