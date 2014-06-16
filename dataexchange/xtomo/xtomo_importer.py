@@ -340,9 +340,11 @@ class Import():
         print data_file, dataExtension
         print data_file_white
         print data_file_dark
+        print projections_digits, dark_digits, white_digits
         
         projections_file_index = ["" for x in range(projections_digits)]
         for m in range(projections_digits):
+            print "IN"
             if projections_zeros is True:
                 projections_file_index[m] = '0' * (projections_digits-m-1)
             elif projections_zeros is False:
@@ -350,6 +352,7 @@ class Import():
 
         white_file_index = ["" for x in range(white_digits)]
         for m in range(white_digits):
+            print "IN"
             if white_zeros is True:
                 white_file_index[m] = '0' * (white_digits-m-1)
             elif white_zeros is False:
@@ -357,6 +360,7 @@ class Import():
 
         dark_file_index = ["" for x in range(dark_digits)]
         for m in range(dark_digits):
+            print "IN"
             if dark_zeros is True:
                 dark_file_index[m] = '0' * (dark_digits-m-1)
             elif dark_zeros is False:
@@ -369,6 +373,7 @@ class Import():
 
         # Start reading projections one-by-one.
         ind = range(projections_start, projections_end, projections_step)
+        print len(ind)
         for m in range(len(ind)):
             for n in range(projections_digits):
                 if ind[m] < np.power(10, n+1):
@@ -430,6 +435,16 @@ class Import():
         if len(ind) > 0:
             xtomo.data = input_data
 
+        else: 
+            # Read the projections that are all in a single file
+            f = XTomoReader(file_name)
+            if (data_type is 'edf'):
+                tmpdata = f.edf(y_start = slices_start,
+                                y_end = slices_end,
+                                y_step = slices_step)
+                xtomo.data = tmpdata
+            
+            
         # White ------------------------------------------------
 
         # Reading white fields.
