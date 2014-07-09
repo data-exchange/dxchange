@@ -24,13 +24,15 @@ def main():
     dark_file_name = '/local/dataraid/databank/ESRF/dark.edf'
     white_file_name = '/local/dataraid/databank/ESRF/flat.edf'
 
+    # only defined if used a converter
+    # omit when used as direct importer in tomoPy    
     hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/ESRF_test_02.h5'
 
     sample_name = 'esrf'
 
 
     
-    # set to convert slices between slices_start and slices_end
+    # set to import/convert slices between slices_start and slices_end
     # if omitted all data set will be converted   
     slices_start = 300    
     slices_end = 304    
@@ -48,13 +50,15 @@ def main():
                                                        )
 
 ##    # if you have already created a data exchange file using convert_SLS.py module,
-##    # comment the call above and read the data set as data exchange 
+##    # comment the call above and read the data set as data exchange with:
 ##    # Read HDF5 file.
 ##    data, white, dark, theta = tomopy.xtomo_reader(hdf5_file_name,
 ##                                                   slices_start=0,
 ##                                                   slices_end=2)
 
-    # TomoPy xtomo object creation and pipeline of methods.  
+    # TomoPy xtomo object creation and pipeline of methods. 
+    # for full set of options see http://tomopy.github.io/tomopy/
+
     d = tomopy.xtomo_dataset(log='debug')
     d.dataset(data, white, dark, theta)
     d.normalize()
@@ -62,7 +66,7 @@ def main():
     #d.optimize_center()
     #d.phase_retrieval()
     #d.correct_drift()
-    d.center=1010.0
+    d.center=549.84
     d.gridrec()
 
 
