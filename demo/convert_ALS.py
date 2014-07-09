@@ -86,6 +86,7 @@ def main():
                                                        projections_zeros = False,
                                                        white_zeros = False,
                                                        dark_zeros = False,
+                                                       projections_digits = 4,
                                                        log='INFO'
                                                        )
 
