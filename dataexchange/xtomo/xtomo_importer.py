@@ -230,12 +230,15 @@ class Import():
             files to load. Use step to define a stride.
 
         projections_digits, white_digits, dark_digits : scalar, optional
-            Number of projections_digits used for file indexing.
-            For example if 4: test_XXXX.hdf
+            Maximum number of digits used for file indexing.
+            For example if last file is: test_9999.hdf _digits is 4
+            if -1 skips series of file name generation and assume one sigle file is used for
+            all projections, white or dark.
 
         projections_zeros, white_zeros, dark_zeros : bool, optional
-            If ``True`` assumes all indexing uses four
-            projections_digits (0001, 0002, ..., 9999).
+            If ``True`` assumes all indexing uses projections_digits digits:
+            if projections_digits = 4 and projections_zeros = true indeding is:
+            (0001, 0002, ..., 9999).
             If ``False`` omits projections_zeros in
             indexing (1, 2, ..., 9999)
 
@@ -344,7 +347,7 @@ class Import():
         
         projections_file_index = ["" for x in range(projections_digits)]
         for m in range(projections_digits):
-            print "IN"
+            print "IN projections"
             if projections_zeros is True:
                 projections_file_index[m] = '0' * (projections_digits-m-1)
             elif projections_zeros is False:
@@ -352,7 +355,7 @@ class Import():
 
         white_file_index = ["" for x in range(white_digits)]
         for m in range(white_digits):
-            print "IN"
+            print "IN white"
             if white_zeros is True:
                 white_file_index[m] = '0' * (white_digits-m-1)
             elif white_zeros is False:
@@ -360,7 +363,7 @@ class Import():
 
         dark_file_index = ["" for x in range(dark_digits)]
         for m in range(dark_digits):
-            print "IN"
+            print "IN dark"
             if dark_zeros is True:
                 dark_file_index[m] = '0' * (dark_digits-m-1)
             elif dark_zeros is False:
@@ -373,7 +376,8 @@ class Import():
 
         # Start reading projections one-by-one.
         ind = range(projections_start, projections_end, projections_step)
-        print len(ind)
+        print "projections_start, projections_end, projections_step",projections_start, projections_end, projections_step
+        print "len(ind), ind", len(ind), ind
         for m in range(len(ind)):
             for n in range(projections_digits):
                 if ind[m] < np.power(10, n+1):
@@ -438,6 +442,7 @@ class Import():
         else: 
             # Read the projections that are all in a single file
             f = XTomoReader(file_name)
+            print "f, file_name", f, file_name
             if (data_type is 'edf'):
                 tmpdata = f.edf(y_start = slices_start,
                                 y_end = slices_end,
@@ -514,9 +519,21 @@ class Import():
         if len(ind) > 0:
             xtomo.data_white = input_data
         else:
-            # Fabricate one white field
-            nz, ny, nx = np.shape(xtomo.data)
-            xtomo.data_white = np.ones((1, ny, nx))
+            # Read the white fields that are all in a single file
+            f = XTomoReader(white_file_name)
+            if (data_type is 'edf'):
+                tmpdata = f.edf(y_start = slices_start,
+                                y_end = slices_end,
+                                y_step = slices_step)
+                print np.shape(tmpdata)
+                xtomo.data = tmpdata
+                print np.shape(tmpdata)
+            else:
+                # Fabricate one white field
+                nz, ny, nx = np.shape(xtomo.data)
+                xtomo.data_white = np.ones((1, ny, nx))
+                # Read the projections that are all in a single file
+
 
         # Dark ------------------------------------------------
 
