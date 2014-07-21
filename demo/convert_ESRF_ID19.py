@@ -18,7 +18,7 @@ def main():
     dark_file_name = '/local/dataraid/databank/ESRF/dark.edf'
     white_file_name = '/local/dataraid/databank/ESRF/flat.edf'
 
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/ESRF_test_03.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/ESRF_test_06.h5'
 
     sample_name = 'esrf'
 
