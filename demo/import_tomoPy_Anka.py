@@ -70,10 +70,10 @@ def main():
     d.dataset(data, white, dark, theta)
     d.normalize()
     d.correct_drift()
-    d.optimize_center()
+    #d.optimize_center()
     #d.phase_retrieval()
     #d.correct_drift()
-    #d.center=1010.0
+    d.center=993.825
     d.gridrec()
 
 

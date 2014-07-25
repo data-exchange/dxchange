@@ -396,7 +396,7 @@ class XTomoReader:
         return dataset
         
         
-    def esrf(self,
+    def edf(self,
              x_start=0,
              x_end=None,
              x_step=1,
@@ -442,6 +442,11 @@ class XTomoReader:
             tmpdata[i::] = f.GetData(i)
 
         num_z, num_y, num_x = np.shape(tmpdata)
+        #print "*******************"
+        #print num_z, num_y, num_x
+        #print x_start, y_start, z_start
+        #print x_end, y_end, z_end
+        #print "*******************"
         if x_end is None:
             x_end = num_x
         if y_end is None:
@@ -449,10 +454,16 @@ class XTomoReader:
         if z_end is None:
             z_end = num_z
 
+        #print "*******************"
+        #print num_z, num_y, num_x
+        #print x_start, y_start, z_start
+        #print x_end, y_end, z_end
+        #print "*******************"
         # Construct dataset from desired y.
         dataset = tmpdata[z_start:z_end:z_step,
                           y_start:y_end:y_step,
                           x_start:x_end:x_step]
+        #print np.shape(dataset)
         return dataset
         
        

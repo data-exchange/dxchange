@@ -14,7 +14,7 @@ import dataexchange.xtomo.xtomo_exporter as ex
 def main():
 
     file_name = '/local/dataraid/databank/APS_13_BM/NC/Dorthe_F_.nc'
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/APS_13_BM_NC_test_02.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/APS_13_BM_Dorthe_F.h5'
 
     white_start = 1
     white_end = 4
@@ -25,8 +25,8 @@ def main():
 
     # set to convert slices between slices_start and slices_end
     # if omitted all data set will be converted   
-    slices_start = 300    
-    slices_end = 304    
+#    slices_start = 300    
+#    slices_end = 304    
 
     mydata = dx.Import()    
     # Read series of images
@@ -34,14 +34,13 @@ def main():
                                                        projections_start = projections_start,
                                                        projections_end = projections_end,
                                                        projections_step = projections_step,
-                                                       slices_start = slices_start,
-                                                       slices_end = slices_end,
+#                                                       slices_start = slices_start,
+#                                                       slices_end = slices_end,
                                                        white_start = white_start,
                                                        white_end = white_end,
                                                        white_step = white_step,
                                                        projections_digits = 3,
                                                        data_type='nc',
-                                                       sample_name = 'Stripe_Solder_Sample_Tip1',
                                                        log='INFO'
                                                        )
     mydata = ex.Export()

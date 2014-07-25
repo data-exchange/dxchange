@@ -20,8 +20,8 @@ import dataexchange.xtomo.xtomo_importer as dx
 def main():
     # read a series of tiff
     file_name = '/local/dataraid/databank/AS/Mayo_tooth_AS/SAMPLE_T_.tif'
-    dark_file_name = '/local/dataraid/databank/AS/Mayo_tooth_AS/DF__AFTER_.tif'
-    white_file_name = '/local/dataraid/databank/AS/Mayo_tooth_AS/BG__BEFORE_.tif'
+    dark_file_name = '/local/dataraid/databank/AS/Mayo_tooth_AS/DF__AFTER_01.tif'
+    white_file_name = '/local/dataraid/databank/AS/Mayo_tooth_AS/BG__BEFORE_01.tif'
     hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/Australian_test.h5'
     sample_name = 'Teeth'
 
@@ -75,10 +75,10 @@ def main():
     d.dataset(data, white, dark, theta)
     d.normalize()
     d.correct_drift()
-    d.optimize_center()
+    #d.optimize_center()
     #d.phase_retrieval()
     #d.correct_drift()
-    #d.center=1010.0
+    d.center=1184.0
     d.gridrec()
 
 

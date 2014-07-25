@@ -49,7 +49,6 @@ def main():
                                                        white_step = white_step,
                                                        projections_digits = 3,
                                                        data_type='nc',
-                                                       sample_name = 'Stripe_Solder_Sample_Tip1',
                                                        log='INFO'
                                                        )
 

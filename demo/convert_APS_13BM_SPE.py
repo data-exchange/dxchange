@@ -42,8 +42,8 @@ def main():
                                                        projections_zeros=False,
                                                        white_zeros=False,
                                                        dark_zeros=False,
+                                                       projections_digits = 1,
                                                        data_type='spe',
-                                                       sample_name = 'Stripe_Solder_Sample_Tip1',
                                                        log='INFO'
                                                        )
     mydata = ex.Export()

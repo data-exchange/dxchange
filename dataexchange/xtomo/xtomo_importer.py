@@ -230,12 +230,15 @@ class Import():
             files to load. Use step to define a stride.
 
         projections_digits, white_digits, dark_digits : scalar, optional
-            Number of projections_digits used for file indexing.
-            For example if 4: test_XXXX.hdf
+            Maximum number of digits used for file indexing.
+            For example if last file is: test_9999.hdf _digits is 4
+            if -1 skips series of file name generation and assume one sigle file is used for
+            all projections, white or dark.
 
         projections_zeros, white_zeros, dark_zeros : bool, optional
-            If ``True`` assumes all indexing uses four
-            projections_digits (0001, 0002, ..., 9999).
+            If ``True`` assumes all indexing uses projections_digits digits:
+            if projections_digits = 4 and projections_zeros = true indeding is:
+            (0001, 0002, ..., 9999).
             If ``False`` omits projections_zeros in
             indexing (1, 2, ..., 9999)
 
@@ -261,12 +264,23 @@ class Import():
         Output : data, data_white, data_dark, theta
              if hdf5_file_name is set the series for images is saved as a data exchange file
        """
+        projection_exist = False
+        dark_exist = False
+        white_exist = False
 
-        # Set default prefix for white and dark.
-        if white_file_name is None:
-            white_file_name = file_name
-        if dark_file_name is None:
-            dark_file_name = file_name
+        if (projections_digits == -1):
+            # Set default dark/white file names
+            if white_file_name is None:
+                white_file_name = "does_not_exist"
+            if dark_file_name is None:
+                dark_file_name = "does_not_exist"
+            
+        else:    
+            # Set default prefix for white and dark series of files.
+            if white_file_name is None:
+                white_file_name = file_name
+            if dark_file_name is None:
+                dark_file_name = file_name
 
         # Set default digits.
         if white_digits is None:
@@ -337,12 +351,14 @@ class Import():
                 dark_file_name.endswith('edf'):
                 data_file_dark = os.path.splitext(dark_file_name)[0]
 
-        print data_file, dataExtension
-        print data_file_white
-        print data_file_dark
+        #print data_file, dataExtension
+        #print data_file_white
+        #print data_file_dark
+        #print projections_digits, dark_digits, white_digits
         
         projections_file_index = ["" for x in range(projections_digits)]
         for m in range(projections_digits):
+            #print "IN projections"
             if projections_zeros is True:
                 projections_file_index[m] = '0' * (projections_digits-m-1)
             elif projections_zeros is False:
@@ -350,6 +366,7 @@ class Import():
 
         white_file_index = ["" for x in range(white_digits)]
         for m in range(white_digits):
+            #print "IN white"
             if white_zeros is True:
                 white_file_index[m] = '0' * (white_digits-m-1)
             elif white_zeros is False:
@@ -357,6 +374,7 @@ class Import():
 
         dark_file_index = ["" for x in range(dark_digits)]
         for m in range(dark_digits):
+            #print "IN dark"
             if dark_zeros is True:
                 dark_file_index[m] = '0' * (dark_digits-m-1)
             elif dark_zeros is False:
@@ -369,6 +387,8 @@ class Import():
 
         # Start reading projections one-by-one.
         ind = range(projections_start, projections_end, projections_step)
+        #print "projections_start, projections_end, projections_step",projections_start, projections_end, projections_step
+        #print "len(ind), ind", len(ind), ind
         for m in range(len(ind)):
             for n in range(projections_digits):
                 if ind[m] < np.power(10, n+1):
@@ -377,6 +397,7 @@ class Import():
                     break
 
             if os.path.isfile(_file_name):
+                projection_exist = True
                 xtomo.logger.info("Reading projection file: [%s]", os.path.realpath(_file_name))
                 xtomo.logger.info("data type: [%s]", data_type)
 
@@ -427,9 +448,24 @@ class Import():
                         input_data = np.concatenate((input_data, tmpdata), axis=0)
 
         # Update data.
-        if len(ind) > 0:
+        if projection_exist:
             xtomo.data = input_data
 
+        else: 
+            xtomo.logger.info("Attempt reading projection file: [%s]", file_name)                    
+            if (data_type is 'edf'):
+                # Read the projections that are all in a single file
+                if os.path.isfile(file_name):
+                    xtomo.logger.info("Projection file: [%s] exists", file_name)                    
+                    f = XTomoReader(file_name)
+                    tmpdata = f.edf(y_start = slices_start,
+                                    y_end = slices_end,
+                                    y_step = slices_step)
+                    xtomo.data = tmpdata
+            else:
+                xtomo.logger.error("ERROR: Projection file is mandatory")
+                    
+            
         # White ------------------------------------------------
 
         # Reading white fields.
@@ -442,6 +478,7 @@ class Import():
                     break
 
             if os.path.isfile(_file_name):
+                white_exist = True
                 xtomo.logger.info("Reading white file: [%s]", os.path.realpath(_file_name))
                 xtomo.logger.info("data type: [%s]", data_type)
 
@@ -493,12 +530,29 @@ class Import():
                         input_data = np.concatenate((input_data, tmpdata), axis=0)
 
         # Update white data.
-        if len(ind) > 0:
+        if white_exist:
             xtomo.data_white = input_data
         else:
-            # Fabricate one white field
-            nz, ny, nx = np.shape(xtomo.data)
-            xtomo.data_white = np.ones((1, ny, nx))
+            xtomo.logger.info("Attempt reading white file: [%s] ", white_file_name)                    
+            if (data_type is 'edf'):
+                # Read the whites that are all in a single file
+                if os.path.isfile(white_file_name):
+                    xtomo.logger.info("White file: [%s] exists", white_file_name)                    
+                    f = XTomoReader(white_file_name)
+                    tmpdata = f.edf(y_start = slices_start,
+                                    y_end = slices_end,
+                                    y_step = slices_step)
+                    xtomo.data_white = tmpdata
+                else:
+                    # Fabricate one white field
+                    xtomo.logger.info("White file [%s] is missing. Generating white fields", white_file_name)  
+                    nz, ny, nx = np.shape(xtomo.data)
+                    xtomo.data_white = np.ones((1, ny, nx))
+            else:
+                # Fabricate one white field
+                xtomo.logger.info("White file is missing. Generating white fields")
+                nz, ny, nx = np.shape(xtomo.data)
+                xtomo.data_white = np.ones((1, ny, nx))
 
         # Dark ------------------------------------------------
 
@@ -512,6 +566,7 @@ class Import():
                     break
 
             if os.path.isfile(_file_name):
+                dark_exist = True
                 xtomo.logger.info("Reading dark file: [%s]", os.path.realpath(_file_name))
                 xtomo.logger.info("data type: [%s]", data_type)
 
@@ -562,12 +617,29 @@ class Import():
                         input_data = np.concatenate((input_data, tmpdata), axis=0)
 
         # Update dark data.
-        if len(ind) > 0:
+        if dark_exist > 0:
             xtomo.data_dark = input_data
         else:
-            # Fabricate one dark field
-            nz, ny, nx = np.shape(xtomo.data)
-            xtomo.data_dark = np.zeros((1, ny, nx))
+            xtomo.logger.info("Attempt reading dark file: [%s]", dark_file_name)            
+            if (data_type is 'edf'):
+                # Read the dark fields that are all in a single file
+                if os.path.isfile(dark_file_name):
+                    xtomo.logger.info("Dark file: [%s] exists", dark_file_name)                    
+                    f = XTomoReader(dark_file_name)
+                    tmpdata = f.edf(y_start = slices_start,
+                                    y_end = slices_end,
+                                    y_step = slices_step)
+                    xtomo.data_dark = tmpdata
+                else:
+                    # Fabricate one dark field
+                    xtomo.logger.info("Dark file [%s] is missing. Generating dark fields", dark_file_name)
+                    nz, ny, nx = np.shape(xtomo.data)
+                    xtomo.data_dark = np.zeros((1, ny, nx))
+            else:
+                # Fabricate one dark field
+                xtomo.logger.info("Dark file is missing. Generating dark fields")
+                nz, ny, nx = np.shape(xtomo.data)
+                xtomo.data_dark = np.zeros((1, ny, nx))
 
         # Theta ------------------------------------------------
 
