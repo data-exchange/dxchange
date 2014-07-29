@@ -79,14 +79,14 @@ def main():
     d.normalize()
     d.correct_drift()
     #d.optimize_center()
-    #d.phase_retrieval()
+    d.phase_retrieval()
     #d.correct_drift()
     d.center=1870.921875
     d.gridrec()
 
 
     # Write to stack of TIFFs.
-    tomopy.xtomo_writer(d.data_recon, 'tmp/PetraIII_', axis=0)
+    tomopy.xtomo_writer(d.data_recon, 'tmp/PetraIII_phase', axis=0)
 
 if __name__ == "__main__":
     main()

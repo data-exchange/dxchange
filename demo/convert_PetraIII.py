@@ -92,7 +92,7 @@ def main():
     dark_end = 20
     dark_step = 1
 
-    sample_name = 'PetraIII P06'
+    sample_name = 'PetraIII P06 oster02_0002'
 
     # to reconstruct slices from slices_start to slices_end
     # if omitted all data set is recontructed
