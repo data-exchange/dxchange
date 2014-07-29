@@ -80,7 +80,7 @@ def main():
     file_name = '/local/dataraid/databank/PetraIII/2011_KW16_oster/oster02_0002/scan_0002/ccd/pco01/ccd_.tif'
     dark_file_name = '/local/dataraid/databank/PetraIII/2011_KW16_oster/oster02_0002/scan_0000/ccd/pco01/ccd_.tif'
     white_file_name = '/local/dataraid/databank/PetraIII/2011_KW16_oster/oster02_0002/scan_0001/ccd/pco01/ccd_.tif'
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/PetraIII_oster02_01.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/PetraIII_oster02_0002.h5'
 
 
     projections_start = 0
@@ -96,8 +96,8 @@ def main():
 
     # to reconstruct slices from slices_start to slices_end
     # if omitted all data set is recontructed
-    slices_start = 800    
-    slices_end = 804    
+#    slices_start = 800    
+#    slices_end = 804    
     
     print "data", file_name
     print "dark", dark_file_name
@@ -108,8 +108,8 @@ def main():
     data, white, dark, theta = mydata.series_of_images(file_name,
                                                        projections_start = projections_start,
                                                        projections_end = projections_end,
-                                                       slices_start = slices_start,
-                                                       slices_end = slices_end,
+#                                                       slices_start = slices_start,
+#                                                       slices_end = slices_end,
                                                        #projections_angle_range=360,
                                                        white_file_name = white_file_name,
                                                        white_start = white_start,
