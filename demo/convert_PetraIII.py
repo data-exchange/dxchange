@@ -76,7 +76,7 @@ def main():
     #dark_end = 20
     #dark_step = 1
 
-    # oster: pj: from 0 -> 1199; bf from 1 -> 18; df from 0 -> 19
+    # oster: pj: from 0 -> 1440; bf from 0 -> 19; df from 3 -> 19
     file_name = '/local/dataraid/databank/PetraIII/2011_KW16_oster/oster02_0002/scan_0002/ccd/pco01/ccd_.tif'
     dark_file_name = '/local/dataraid/databank/PetraIII/2011_KW16_oster/oster02_0002/scan_0000/ccd/pco01/ccd_.tif'
     white_file_name = '/local/dataraid/databank/PetraIII/2011_KW16_oster/oster02_0002/scan_0001/ccd/pco01/ccd_.tif'
@@ -94,15 +94,47 @@ def main():
 
     sample_name = 'PetraIII P06 oster02_0002'
 
+    # oster: pj: from 0 -> 1440; bf from 0 -> 19; df from 0 -> 19
+    file_name = '/local/dataraid/databank/PetraIII/2011_KW16_oster/oster02_0000/scan_0002/ccd/pco01/ccd_.tif'
+    dark_file_name = '/local/dataraid/databank/PetraIII/2011_KW16_oster/oster02_0000/scan_0000/ccd/pco01/ccd_.tif'
+    white_file_name = '/local/dataraid/databank/PetraIII/2011_KW16_oster/oster02_0000/scan_0001/ccd/pco01/ccd_.tif'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/PetraIII_oster02_0000.h5'
+
+
+    projections_start = 0
+    projections_end = 1441
+    white_start = 0
+    white_end = 20
+    white_step = 1
+    dark_start = 0
+    dark_end = 20
+    dark_step = 1
+
+    sample_name = 'PetraIII P06 oster02_0000'
+
+    # oster: pj: from 0 -> 1440; bf from 0 -> 19; df from 0 -> 19
+    file_name = '/local/dataraid/databank/PetraIII/2011_KW16_oster/oster02_0001/scan_0002/ccd/pco01/ccd_.tif'
+    dark_file_name = '/local/dataraid/databank/PetraIII/2011_KW16_oster/oster02_0001/scan_0000/ccd/pco01/ccd_.tif'
+    white_file_name = '/local/dataraid/databank/PetraIII/2011_KW16_oster/oster02_0001/scan_0001/ccd/pco01/ccd_.tif'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/PetraIII_oster02_0001.h5'
+
+
+    projections_start = 0
+    projections_end = 1441
+    white_start = 0
+    white_end = 20
+    white_step = 1
+    dark_start = 0
+    dark_end = 20
+    dark_step = 1
+
+    sample_name = 'PetraIII P06 oster02_0001'
+
     # to reconstruct slices from slices_start to slices_end
     # if omitted all data set is recontructed
 #    slices_start = 800    
 #    slices_end = 804    
     
-    print "data", file_name
-    print "dark", dark_file_name
-    print "white", white_file_name
-
     mydata = dx.Import()
     # Read series of images
     data, white, dark, theta = mydata.series_of_images(file_name,
