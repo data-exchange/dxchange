@@ -21,7 +21,7 @@ def main():
     white_file_name = '/local/dataraid/databank/als/data/raw/sacarroll/20140731_001306_2477A_x00y08/20140731_001306_2477A_x00y08bak_.tif'
     log_file = '/local/dataraid/databank/als/data/raw/sacarroll/20140731_001306_2477A_x00y08/20140731_001306_2477A_x00y08.sct'
 
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/ALS_20140731.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/ALS_20140731.h5'
 
     verbose = True
 
