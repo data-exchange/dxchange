@@ -510,6 +510,7 @@ class XTomoReader:
         print "Number of projections: ", num_of_projections
         file.close()
 
+        # Determine image size and dimentions        
         file = open(self.file_name, 'r')
         first_line = file.readline()
         firstlinelist=first_line.split(",")
@@ -522,15 +523,17 @@ class XTomoReader:
 
         num_z, num_y, num_x = np.shape(tmpdata)
 
-        if image_dim**2 == image_size:
-            # if projection is square then read them all
-            file = open(self.file_name, 'r')
-        
+        if image_dim**2 == image_size: # check projections are square
+            file = open(self.file_name, 'r')      
             for line in file:
                 linelist=line.split(",")
 
                 projection = np.reshape(np.array(linelist)[offset:], (image_dim ,image_dim))
+
                 projection = projection.transpose()
+                projection = projection.astype(np.float)
+                projection = np.exp(-projection)
+
                 tmpdata[int(linelist[0])::] = projection
                 print "reading image", int(linelist[0]), "wavelenght", float(linelist[1])
 
@@ -543,16 +546,11 @@ class XTomoReader:
         if z_end is None:
             z_end = num_z
 
-        print "*******************"
-        print num_z, num_y, num_x
-        print x_start, y_start, z_start
-        print x_end, y_end, z_end
-        print "*******************"
         # Construct dataset from desired y.
         dataset = tmpdata[z_start:z_end:z_step,
                           y_start:y_end:y_step,
                           x_start:x_end:x_step]
-        print np.shape(dataset)
+
         return dataset
        
     def netcdf(self,
