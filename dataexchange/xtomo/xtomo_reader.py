@@ -4,6 +4,7 @@ from pyhdf import SD
 import numpy as np 
 import PIL.Image as Image
 import netCDF4 as nc
+import math
 
 from formats.elettra.tifffile import TiffFile
 import formats.xradia.xradia_xrm as xradia
@@ -407,8 +408,7 @@ class XTomoReader:
              z_end=None,
              z_step=1):
         """ 
-        Read 3-D tomographic data from a 
-        xradia (txrm) and ESRF (edf) file.
+        Read 3-D tomographic data from an ESRF (edf) file.
         
         Parameters
         ----------
@@ -466,6 +466,94 @@ class XTomoReader:
         #print np.shape(dataset)
         return dataset
         
+    def dpt(self,
+             x_start=0,
+             x_end=None,
+             x_step=1,
+             y_start=0,
+             y_end=None,
+             y_step=1,
+             z_start=0,
+             z_end=None,
+             z_step=1):
+        """ 
+        Read 3-D tomographic data from a SRC (dpt) file.
+        
+        Parameters
+        ----------
+        file_name : str
+            SRC dpt file.
+            
+        x_start, x_end, x_step : scalar, optional
+            Values of the start, end and step of the
+            slicing for the whole array.
+        
+        y_start, y_end, y_step : scalar, optional
+            Values of the start, end and step of the
+            slicing for the whole array.
+        
+        z_start, z_end, z_step : scalar, optional
+            Values of the start, end and step of the
+            slicing for the whole array.
+        
+        Returns
+        -------
+        out : array
+            Returns the data as a matrix.
+        """
+ 
+        # Read data from file.
+        offset = 2
+        # Count the number of projections
+        file = open(self.file_name, 'r')
+        num_of_projections = sum(1 for line in file)
+        print "Number of projections: ", num_of_projections
+        file.close()
+
+        file = open(self.file_name, 'r')
+        first_line = file.readline()
+        firstlinelist=first_line.split(",")
+
+        image_size = len(firstlinelist)-offset
+        image_dim = int(math.sqrt(image_size))
+        file.close()
+
+        tmpdata = np.empty((num_of_projections, image_dim, image_dim))
+
+        num_z, num_y, num_x = np.shape(tmpdata)
+
+        if image_dim**2 == image_size:
+            # if projection is square then read them all
+            file = open(self.file_name, 'r')
+        
+            for line in file:
+                linelist=line.split(",")
+
+                projection = np.reshape(np.array(linelist)[offset:], (image_dim ,image_dim))
+                projection = projection.transpose()
+                tmpdata[int(linelist[0])::] = projection
+                print "reading image", int(linelist[0]), "wavelenght", float(linelist[1])
+
+            file.close()
+
+        if x_end is None:
+            x_end = num_x
+        if y_end is None:
+            y_end = num_y
+        if z_end is None:
+            z_end = num_z
+
+        print "*******************"
+        print num_z, num_y, num_x
+        print x_start, y_start, z_start
+        print x_end, y_end, z_end
+        print "*******************"
+        # Construct dataset from desired y.
+        dataset = tmpdata[z_start:z_end:z_step,
+                          y_start:y_end:y_step,
+                          x_start:x_end:x_step]
+        print np.shape(dataset)
+        return dataset
        
     def netcdf(self,
                x_start=0,

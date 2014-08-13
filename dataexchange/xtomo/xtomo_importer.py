@@ -351,6 +351,18 @@ class Import():
                 dark_file_name.endswith('edf'):
                 data_file_dark = os.path.splitext(dark_file_name)[0]
 
+        elif (data_type is 'dpt'):
+            if file_name.endswith('DPT') or \
+                file_name.endswith('dpt'):
+                data_file = os.path.splitext(file_name)[0]
+                dataExtension = os.path.splitext(file_name)[1]
+            if white_file_name.endswith('DPT') or \
+                white_file_name.endswith('dpt'):
+                data_file_white = os.path.splitext(white_file_name)[0]
+            if dark_file_name.endswith('DPT') or \
+                dark_file_name.endswith('dpt'):
+                data_file_dark = os.path.splitext(dark_file_name)[0]
+
         #print data_file, dataExtension
         #print data_file_white
         #print data_file_dark
@@ -462,6 +474,15 @@ class Import():
                                     y_end = slices_end,
                                     y_step = slices_step)
                     xtomo.data = tmpdata
+            if (data_type is 'dpt'):
+                # Read the projections that are all in a single file
+                if os.path.isfile(file_name):
+                    xtomo.logger.info("Projection file: [%s] exists", file_name)                    
+                    f = XTomoReader(file_name)
+                    tmpdata = f.dpt(y_start = slices_start,
+                                    y_end = slices_end,
+                                    y_step = slices_step)
+                    xtomo.data = tmpdata
             else:
                 xtomo.logger.error("ERROR: Projection file is mandatory")
                     
@@ -540,6 +561,20 @@ class Import():
                     xtomo.logger.info("White file: [%s] exists", white_file_name)                    
                     f = XTomoReader(white_file_name)
                     tmpdata = f.edf(y_start = slices_start,
+                                    y_end = slices_end,
+                                    y_step = slices_step)
+                    xtomo.data_white = tmpdata
+                else:
+                    # Fabricate one white field
+                    xtomo.logger.info("White file [%s] is missing. Generating white fields", white_file_name)  
+                    nz, ny, nx = np.shape(xtomo.data)
+                    xtomo.data_white = np.ones((1, ny, nx))
+            if (data_type is 'dpt'):
+                # Read the whites that are all in a single file
+                if os.path.isfile(white_file_name):
+                    xtomo.logger.info("White file: [%s] exists", white_file_name)                    
+                    f = XTomoReader(white_file_name)
+                    tmpdata = f.dpt(y_start = slices_start,
                                     y_end = slices_end,
                                     y_step = slices_step)
                     xtomo.data_white = tmpdata
@@ -627,6 +662,20 @@ class Import():
                     xtomo.logger.info("Dark file: [%s] exists", dark_file_name)                    
                     f = XTomoReader(dark_file_name)
                     tmpdata = f.edf(y_start = slices_start,
+                                    y_end = slices_end,
+                                    y_step = slices_step)
+                    xtomo.data_dark = tmpdata
+                else:
+                    # Fabricate one dark field
+                    xtomo.logger.info("Dark file [%s] is missing. Generating dark fields", dark_file_name)
+                    nz, ny, nx = np.shape(xtomo.data)
+                    xtomo.data_dark = np.zeros((1, ny, nx))
+            if (data_type is 'dpt'):
+                # Read the dark fields that are all in a single file
+                if os.path.isfile(dark_file_name):
+                    xtomo.logger.info("Dark file: [%s] exists", dark_file_name)                    
+                    f = XTomoReader(dark_file_name)
+                    tmpdata = f.dpt(y_start = slices_start,
                                     y_end = slices_end,
                                     y_step = slices_step)
                     xtomo.data_dark = tmpdata
