@@ -14,10 +14,11 @@ import dataexchange.xtomo.xtomo_exporter as ex
 
 def main():
 
-    base_name = "/local/dataraid/databank/SRC/read_data/FPA_16_18_18_TOMO_243_Fiber_2500_50_50_"    
-    
-    log_file = base_name + "wavelength.dpt"
-    angle_file = base_name + "angle.dpt"
+    raw_tiff_base_name = "/local/dataraid/databank/dataExchange/microCT/SRC/raw/FPA_16_18_18_TOMO_243_Fiber_2500_50_50_"    
+    hdf5_base_name = "/local/dataraid/databank/dataExchange/microCT/SRC/dx/FPA_16_18_18_TOMO_243_Fiber_2500_50_50_"    
+   
+    log_file = raw_tiff_base_name + "wavelength.dpt"
+    angle_file = raw_tiff_base_name + "angle.dpt"
 
     # Determine projection angle end    
     file = open(angle_file, 'r')
@@ -29,9 +30,10 @@ def main():
     for line in file:
         linelist = line.split(",")
 
-        file_name = base_name+linelist[0]+"cm-1.dpt"
-        hdf5_file_name = base_name+linelist[0]+"cm-1.h5"
-        sample_name = base_name+linelist[0]+"cm-1"
+        file_name = raw_tiff_base_name+linelist[0]+"cm-1.dpt"
+        sample_name = raw_tiff_base_name+linelist[0]+"cm-1"
+
+        hdf5_file_name = hdf5_base_name+linelist[0]+"cm-1.h5"
 
         mydata = dx.Import()
         # Read series of images from a single dpt file

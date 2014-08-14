@@ -17,18 +17,29 @@ import tomopy
 import dataexchange.xtomo.xtomo_importer as dx
 
 import re
+import os
 
 def main():
-    base_name = "/local/dataraid/databank/SRC/read_data/FPA_16_18_18_TOMO_243_Fiber_2500_50_50_"    
+    # only used to locate the wavelenght.dpt and angle.dpt files   
+    raw_tiff_base_name = "/local/dataraid/databank/dataExchange/microCT/SRC/raw/FPA_16_18_18_TOMO_243_Fiber_2500_50_50_"    
     
-    log_file = base_name + "wavelength.dpt"
+    hdf5_base_name = "/local/dataraid/databank/dataExchange/microCT/SRC/dx/FPA_16_18_18_TOMO_243_Fiber_2500_50_50_"    
+    
+    log_file = raw_tiff_base_name + "wavelength.dpt"
+    angle_file = raw_tiff_base_name + "angle.dpt"
+    
+    dir_name = os.path.dirname(hdf5_base_name)
+    sample_name_prefix = os.path.basename(hdf5_base_name)
+    
+    print dir_name
+    print sample_name_prefix
 
     file = open(log_file, 'r')
     for line in file:
         linelist=line.split(",")
 
-        hdf5_file_name = base_name+linelist[0]+"cm-1.h5"
-        sample_name = base_name+linelist[0]+"cm-1"
+        hdf5_file_name = hdf5_base_name+linelist[0]+"cm-1.h5"
+        sample_name = hdf5_base_name+linelist[0]+"cm-1"
     
         # set to read slices between slices_start and slices_end
         # if omitted all data set will be converted   
@@ -52,7 +63,9 @@ def main():
         d.gridrec()
 
         # Write to stack of TIFFs.
-        tomopy.xtomo_writer(d.data_recon, "tmp/SLC_"+linelist[0]+"cm-1", axis=0)
+        rec_name = dir_name + "/rec/" + sample_name_prefix + linelist[0] + "cm-1"
+
+        tomopy.xtomo_writer(d.data_recon, rec_name, axis=0)
     file.close()
 
 if __name__ == "__main__":
