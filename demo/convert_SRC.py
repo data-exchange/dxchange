@@ -27,7 +27,7 @@ def main():
 
     file = open(log_file, 'r')
     for line in file:
-        linelist=line.split(",")
+        linelist = line.split(",")
 
         file_name = base_name+linelist[0]+"cm-1.dpt"
         hdf5_file_name = base_name+linelist[0]+"cm-1.h5"

@@ -173,9 +173,6 @@ class Import():
                          slices_start=0,
                          slices_end=None,
                          slices_step=1,
-                         #pixels_start=0,
-                         #pixels_end=0,
-                         #pixels_step=1,
                          white_file_name=None,
                          white_start=0,
                          white_end=0,
@@ -253,16 +250,17 @@ class Import():
 
         data_type : str, optional
             supported options are:
-                - ``hdf4``: HDF4 files used on old detector at APS 2-BM
+                - ``hdf4``: HDF4 files used on old detectors at APS 2-BM
                 - ``compressed_tiff``: tiff files used at elettra
-                - ``tiff``: uncompressed regualar tiff files
+                - ``tiff``: uncompressed regualar tiff files used at Petra III, ALS, Elettra, SLS, Australia, CHESS
                 - ``spe``: spe data from APS 13-BM
                 - ``nc``: netCDF data from 13-BM
+                - ``dpt``: ASCII data from SRC infrared tomography
 
         Returns
         -------
         Output : data, data_white, data_dark, theta
-             if hdf5_file_name is set the series for images is saved as a data exchange file
+
        """
         projection_exist = False
         dark_exist = False
@@ -566,7 +564,7 @@ class Import():
                     xtomo.data_white = tmpdata
                 else:
                     # Fabricate one white field
-                    xtomo.logger.info("White file [%s] is missing. Generating white fields", white_file_name)  
+                    xtomo.logger.info("White file [%s]. Generating white fields", white_file_name)  
                     nz, ny, nx = np.shape(xtomo.data)
                     xtomo.data_white = np.ones((1, ny, nx))
             if (data_type is 'dpt'):
@@ -580,7 +578,7 @@ class Import():
                     xtomo.data_white = tmpdata
                 else:
                     # Fabricate one white field
-                    xtomo.logger.info("White file [%s] is missing. Generating white fields", white_file_name)  
+                    xtomo.logger.info("White file [%s]. Generating white fields", white_file_name)  
                     nz, ny, nx = np.shape(xtomo.data)
                     xtomo.data_white = np.ones((1, ny, nx))
             else:
@@ -667,7 +665,7 @@ class Import():
                     xtomo.data_dark = tmpdata
                 else:
                     # Fabricate one dark field
-                    xtomo.logger.info("Dark file [%s] is missing. Generating dark fields", dark_file_name)
+                    xtomo.logger.info("Dark file [%s]. Generating dark fields", dark_file_name)
                     nz, ny, nx = np.shape(xtomo.data)
                     xtomo.data_dark = np.zeros((1, ny, nx))
             if (data_type is 'dpt'):
@@ -681,7 +679,7 @@ class Import():
                     xtomo.data_dark = tmpdata
                 else:
                     # Fabricate one dark field
-                    xtomo.logger.info("Dark file [%s] is missing. Generating dark fields", dark_file_name)
+                    xtomo.logger.info("Dark file [%s]. Generating dark fields", dark_file_name)
                     nz, ny, nx = np.shape(xtomo.data)
                     xtomo.data_dark = np.zeros((1, ny, nx))
             else:

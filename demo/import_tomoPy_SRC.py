@@ -30,7 +30,7 @@ def main():
         hdf5_file_name = base_name+linelist[0]+"cm-1.h5"
         sample_name = base_name+linelist[0]+"cm-1"
     
-        # set to convert slices between slices_start and slices_end
+        # set to read slices between slices_start and slices_end
         # if omitted all data set will be converted   
         slices_start = 30    
         slices_end = 36    

@@ -5,6 +5,7 @@ import numpy as np
 import PIL.Image as Image
 import netCDF4 as nc
 import math
+import os
 
 from formats.elettra.tifffile import TiffFile
 import formats.xradia.xradia_xrm as xradia
@@ -360,7 +361,7 @@ class XTomoReader:
         Parameters
         ----------
         file_name : str
-            Input txrm or xrm file.
+            Input spe file.
 
         x_start, x_end, x_step : scalar, optional
             Values of the start, end and step of the
@@ -413,7 +414,7 @@ class XTomoReader:
         Parameters
         ----------
         file_name : str
-            Input txrm or xrm file.
+            Input edf.
             
         x_start, x_end, x_step : scalar, optional
             Values of the start, end and step of the
@@ -442,11 +443,6 @@ class XTomoReader:
             tmpdata[i::] = f.GetData(i)
 
         num_z, num_y, num_x = np.shape(tmpdata)
-        #print "*******************"
-        #print num_z, num_y, num_x
-        #print x_start, y_start, z_start
-        #print x_end, y_end, z_end
-        #print "*******************"
         if x_end is None:
             x_end = num_x
         if y_end is None:
@@ -454,11 +450,6 @@ class XTomoReader:
         if z_end is None:
             z_end = num_z
 
-        #print "*******************"
-        #print num_z, num_y, num_x
-        #print x_start, y_start, z_start
-        #print x_end, y_end, z_end
-        #print "*******************"
         # Construct dataset from desired y.
         dataset = tmpdata[z_start:z_end:z_step,
                           y_start:y_end:y_step,
@@ -504,10 +495,10 @@ class XTomoReader:
  
         # Read data from file.
         offset = 2
+
         # Count the number of projections
         file = open(self.file_name, 'r')
         num_of_projections = sum(1 for line in file)
-        print "Number of projections: ", num_of_projections
         file.close()
 
         # Determine image size and dimentions        
@@ -520,10 +511,11 @@ class XTomoReader:
         file.close()
 
         tmpdata = np.empty((num_of_projections, image_dim, image_dim))
-
+ 
         num_z, num_y, num_x = np.shape(tmpdata)
 
         if image_dim**2 == image_size: # check projections are square
+            print "Reading ", os.path.basename(self.file_name)
             file = open(self.file_name, 'r')      
             for line in file:
                 linelist=line.split(",")
@@ -535,9 +527,9 @@ class XTomoReader:
                 projection = np.exp(-projection)
 
                 tmpdata[int(linelist[0])::] = projection
-                print "reading image", int(linelist[0]), "wavelenght", float(linelist[1])
 
             file.close()
+            print "Found", num_z, "x (", num_x, "x", num_y, ") projections " 
 
         if x_end is None:
             x_end = num_x
@@ -570,7 +562,7 @@ class XTomoReader:
         Parameters
         ----------
         file_name : str
-            Input txrm or xrm file.
+            Input netcdf file.
         
         x_start, x_end, x_step : scalar, optional
             Values of the start, end and step of the
