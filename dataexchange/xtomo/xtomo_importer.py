@@ -173,9 +173,6 @@ class Import():
                          slices_start=0,
                          slices_end=None,
                          slices_step=1,
-                         #pixels_start=0,
-                         #pixels_end=0,
-                         #pixels_step=1,
                          white_file_name=None,
                          white_start=0,
                          white_end=0,
@@ -253,16 +250,17 @@ class Import():
 
         data_type : str, optional
             supported options are:
-                - ``hdf4``: HDF4 files used on old detector at APS 2-BM
+                - ``hdf4``: HDF4 files used on old detectors at APS 2-BM
                 - ``compressed_tiff``: tiff files used at elettra
-                - ``tiff``: uncompressed regualar tiff files
+                - ``tiff``: uncompressed regualar tiff files used at Petra III, ALS, Elettra, SLS, Australia, CHESS
                 - ``spe``: spe data from APS 13-BM
                 - ``nc``: netCDF data from 13-BM
+                - ``dpt``: ASCII data from SRC infrared tomography
 
         Returns
         -------
         Output : data, data_white, data_dark, theta
-             if hdf5_file_name is set the series for images is saved as a data exchange file
+
        """
         projection_exist = False
         dark_exist = False
@@ -349,6 +347,18 @@ class Import():
                 data_file_white = os.path.splitext(white_file_name)[0]
             if dark_file_name.endswith('EDF') or \
                 dark_file_name.endswith('edf'):
+                data_file_dark = os.path.splitext(dark_file_name)[0]
+
+        elif (data_type is 'dpt'):
+            if file_name.endswith('DPT') or \
+                file_name.endswith('dpt'):
+                data_file = os.path.splitext(file_name)[0]
+                dataExtension = os.path.splitext(file_name)[1]
+            if white_file_name.endswith('DPT') or \
+                white_file_name.endswith('dpt'):
+                data_file_white = os.path.splitext(white_file_name)[0]
+            if dark_file_name.endswith('DPT') or \
+                dark_file_name.endswith('dpt'):
                 data_file_dark = os.path.splitext(dark_file_name)[0]
 
         #print data_file, dataExtension
@@ -462,6 +472,15 @@ class Import():
                                     y_end = slices_end,
                                     y_step = slices_step)
                     xtomo.data = tmpdata
+            if (data_type is 'dpt'):
+                # Read the projections that are all in a single file
+                if os.path.isfile(file_name):
+                    xtomo.logger.info("Projection file: [%s] exists", file_name)                    
+                    f = XTomoReader(file_name)
+                    tmpdata = f.dpt(y_start = slices_start,
+                                    y_end = slices_end,
+                                    y_step = slices_step)
+                    xtomo.data = tmpdata
             else:
                 xtomo.logger.error("ERROR: Projection file is mandatory")
                     
@@ -545,7 +564,21 @@ class Import():
                     xtomo.data_white = tmpdata
                 else:
                     # Fabricate one white field
-                    xtomo.logger.info("White file [%s] is missing. Generating white fields", white_file_name)  
+                    xtomo.logger.info("White file [%s]. Generating white fields", white_file_name)  
+                    nz, ny, nx = np.shape(xtomo.data)
+                    xtomo.data_white = np.ones((1, ny, nx))
+            if (data_type is 'dpt'):
+                # Read the whites that are all in a single file
+                if os.path.isfile(white_file_name):
+                    xtomo.logger.info("White file: [%s] exists", white_file_name)                    
+                    f = XTomoReader(white_file_name)
+                    tmpdata = f.dpt(y_start = slices_start,
+                                    y_end = slices_end,
+                                    y_step = slices_step)
+                    xtomo.data_white = tmpdata
+                else:
+                    # Fabricate one white field
+                    xtomo.logger.info("White file [%s]. Generating white fields", white_file_name)  
                     nz, ny, nx = np.shape(xtomo.data)
                     xtomo.data_white = np.ones((1, ny, nx))
             else:
@@ -632,7 +665,21 @@ class Import():
                     xtomo.data_dark = tmpdata
                 else:
                     # Fabricate one dark field
-                    xtomo.logger.info("Dark file [%s] is missing. Generating dark fields", dark_file_name)
+                    xtomo.logger.info("Dark file [%s]. Generating dark fields", dark_file_name)
+                    nz, ny, nx = np.shape(xtomo.data)
+                    xtomo.data_dark = np.zeros((1, ny, nx))
+            if (data_type is 'dpt'):
+                # Read the dark fields that are all in a single file
+                if os.path.isfile(dark_file_name):
+                    xtomo.logger.info("Dark file: [%s] exists", dark_file_name)                    
+                    f = XTomoReader(dark_file_name)
+                    tmpdata = f.dpt(y_start = slices_start,
+                                    y_end = slices_end,
+                                    y_step = slices_step)
+                    xtomo.data_dark = tmpdata
+                else:
+                    # Fabricate one dark field
+                    xtomo.logger.info("Dark file [%s]. Generating dark fields", dark_file_name)
                     nz, ny, nx = np.shape(xtomo.data)
                     xtomo.data_dark = np.zeros((1, ny, nx))
             else:

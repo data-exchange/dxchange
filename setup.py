@@ -13,11 +13,23 @@ from setuptools import setup, Extension, find_packages
 try:
     import numpy
 except ImportError:
-    raise ImportError("tomopy requires numpy 1.8.0 (hint: pip install numpy)")
+    raise ImportError("data-exchange requires numpy 1.8.0 (hint: pip install numpy)")
 try:
     import h5py
 except ImportError:
-    raise ImportError("tomopy requires h5py 2.2.1 (hint: pip install h5py)")
+    raise ImportError("data-exchange requires h5py 2.2.1 (hint: pip install h5py)")
+try:
+    import pyhdf
+except ImportError:
+    raise ImportError("data-exchange requires pyhdf 0.8.3 (hint: pip install pyhdf)")
+try:
+    import netCDF4
+except ImportError:
+    raise ImportError("data-exchange requires netCDF4 1.0.7 (hint: pip install netCDF4)")
+try:
+    import PIL
+except ImportError:
+    raise ImportError("data-exchange requires  PIL 1.1.7 (hint: pip install PIL)")
 
 # Main setup configuration.
 setup(

@@ -289,16 +289,19 @@ class Export():
                 # Create core HDF5 dataset in exchange group for projections_theta_range
                 # deep stack of x,y images /exchange/data
                 xtomo.logger.info("Adding projections to Data Exchange File [%s]", hdf5_file_name)
-                f.add_entry( DataExchangeEntry.data(data={'value': data, 'units':'counts', 'description': 'transmission', 'axes':'theta:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
+                f.add_entry( DataExchangeEntry.data(data={'value': data, 'units':'counts', 'description': 'transmission', 'axes':'theta:y:x' }))
+#                f.add_entry( DataExchangeEntry.data(data={'value': data, 'units':'counts', 'description': 'transmission', 'axes':'theta:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
                 if (theta != None):
                     f.add_entry( DataExchangeEntry.data(theta={'value': theta, 'units':'degrees'}))
                     xtomo.logger.info("Adding theta to Data Exchange File [%s]", hdf5_file_name)
                 if (data_dark != None):
                     xtomo.logger.info("Adding dark fields to  Data Exchange File [%s]", hdf5_file_name)
-                    f.add_entry( DataExchangeEntry.data(data_dark={'value': data_dark, 'units':'counts', 'axes':'theta_dark:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
+                    f.add_entry( DataExchangeEntry.data(data_dark={'value': data_dark, 'units':'counts', 'axes':'theta_dark:y:x' }))
+#                    f.add_entry( DataExchangeEntry.data(data_dark={'value': data_dark, 'units':'counts', 'axes':'theta_dark:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
                 if (data_white != None):
                     xtomo.logger.info("Adding white fields to  Data Exchange File [%s]", hdf5_file_name)
-                    f.add_entry( DataExchangeEntry.data(data_white={'value': data_white, 'units':'counts', 'axes':'theta_white:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
+                    f.add_entry( DataExchangeEntry.data(data_white={'value': data_white, 'units':'counts', 'axes':'theta_white:y:x' }))
+#                    f.add_entry( DataExchangeEntry.data(data_white={'value': data_white, 'units':'counts', 'axes':'theta_white:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
                 if (data_exchange_type != None):
                     xtomo.logger.info("Adding data type to  Data Exchange File [%s]", hdf5_file_name)
                     f.add_entry( DataExchangeEntry.data(title={'value': data_exchange_type}))

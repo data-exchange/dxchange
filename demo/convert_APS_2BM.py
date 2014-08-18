@@ -16,9 +16,9 @@ import dataexchange.xtomo.xtomo_exporter as ex
 
 def main():
 
-    log_file = '/local/dataraid/databank/APS_2_BM/Sam18_hornby/Sam18_exp.hdf'
+    log_file = '/local/dataraid/databank/Sangid/Sam02/Sam02_exp.hdf'
 
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/Hornby_19keV_10x_APS_2011_01.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/Sangid_LongFiber.h5'
 
     #Read APS 2-BM log file data
     f = SD.SD(log_file)
