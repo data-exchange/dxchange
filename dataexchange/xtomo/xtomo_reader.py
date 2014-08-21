@@ -7,11 +7,12 @@ import netCDF4 as nc
 import math
 import os
 
-from formats.elettra.tifffile import TiffFile
-import formats.xradia.xradia_xrm as xradia
-import formats.xradia.data_struct as dstruct
-import formats.aps_13bm.data_spe as spe
-from formats.esrf.EdfFile import EdfFile
+import formats.xradia_xrm as xradia
+import formats.data_struct as dstruct
+import formats.data_spe as spe
+
+from formats.EdfFile import EdfFile
+from formats.tifffile import TiffFile
 
 class XTomoReader:
     def __init__(self, file_name):

@@ -1,4 +1,4 @@
-_test# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 """
 .. module:: convert_Elettra.py
    :platform: Unix
@@ -18,7 +18,7 @@ def main():
     dark_file_name = '/local/dataraid/databank/Elettra/Volcanic_rock/dark_.tif'
     white_file_name = '/local/dataraid/databank/Elettra/Volcanic_rock/flat_.tif'
 
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/Elettra_test.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/Elettra_test_xx.h5'
 
     projections_start = 1
     projections_end = 1441

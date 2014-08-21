@@ -26,7 +26,7 @@ def main():
 
     # only defined if used a converter
     # omit when used as direct importer in tomoPy    
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/ESRF_test_02.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/ESRF_test_10.h5'
 
     sample_name = 'esrf'
 
@@ -71,7 +71,7 @@ def main():
 
 
     # Write to stack of TIFFs.
-    tomopy.xtomo_writer(d.data_recon, 'tmp/ESRF_OK', axis=0)
+    tomopy.xtomo_writer(d.data_recon, 'tmp/ESRF_OKOK', axis=0)
 
 if __name__ == "__main__":
     main()

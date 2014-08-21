@@ -18,7 +18,7 @@ def main():
     dark_file_name = '/local/dataraid/databank/ESRF/dark.edf'
     white_file_name = '/local/dataraid/databank/ESRF/flat.edf'
 
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/ESRF_test_06.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/ESRF_test_10.h5'
 
     sample_name = 'esrf'
 
@@ -26,8 +26,8 @@ def main():
     
     # set to convert slices between slices_start and slices_end
     # if omitted all data set will be converted   
-    slices_start = 300    
-    slices_end = 304    
+#    slices_start = 300    
+#    slices_end = 304    
 
     mydata = dx.Import()
     # Read series of images
@@ -35,8 +35,8 @@ def main():
                                                        white_file_name = white_file_name,
                                                        dark_file_name = dark_file_name,
                                                        sample_name = sample_name,
-                                                       slices_start = slices_start,
-                                                       slices_end = slices_end,
+#                                                       slices_start = slices_start,
+#                                                       slices_end = slices_end,
                                                        data_type='edf',
                                                        log='INFO'
                                                        )

@@ -472,7 +472,7 @@ class Import():
                                     y_end = slices_end,
                                     y_step = slices_step)
                     xtomo.data = tmpdata
-            if (data_type is 'dpt'):
+            elif (data_type is 'dpt'):
                 # Read the projections that are all in a single file
                 if os.path.isfile(file_name):
                     xtomo.logger.info("Projection file: [%s] exists", file_name)                    
