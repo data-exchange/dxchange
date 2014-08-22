@@ -19,16 +19,7 @@ import os
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #sys.path.insert(0, os.path.abspath('.'))
-
-print os.path.abspath(os.path.join('..', '..', 'dataexchange'))
-print os.path.abspath(os.path.join('..', '..', 'dataexchange', 'xtomo'))
-#print os.path.abspath(os.path.join('..', '..'))
-#print os.path.abspath(os.path.join('..'))
-
-#print sys.path.insert(0, os.path.abspath('.'))
-#print sys.path.insert(0, os.path.abspath(os.path.join('..', '..')))
-
-sys.path.insert(0, os.path.abspath(os.path.join('..', '..', 'dataexchange')))
+sys.path.insert(0, os.path.abspath('../..'))
 
 # -- General configuration ------------------------------------------------
 
