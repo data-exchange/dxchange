@@ -121,8 +121,7 @@ class XTomoReader:
                           z_start:z_end:z_step]
         f.close()
         return dataset
-        
-        
+                
     def hdf4(self,
              array_name=None,
              x_start=0,
@@ -177,6 +176,63 @@ class XTomoReader:
                           y_start:y_end:y_step]
         return dataset
         
+    def hdf5_single(self,
+             array_name=None,
+             x_start=0,
+             x_end=None,
+             x_step=1,
+             y_start=0,
+             y_end=None,
+             y_step=1):
+        """ 
+        Read 3-D tomographic data from hdf5 file.
+
+        Opens ``file_name`` and reads the contents
+        of the array specified by ``array_name`` in
+        the specified group of the HDF file.
+        
+        Parameters
+        ----------
+        file_name : str
+            Input HDF file.
+        
+        array_name : str
+            Name of the array to be read at exchange group.
+        
+        x_start, x_end, x_step : scalar, optional
+            Values of the start, end and step of the
+            slicing for the whole ndarray.
+        
+        y_start, y_end, y_step : scalar, optional
+            Values of the start, end and step of the
+            slicing for the whole ndarray.
+        
+        z_start, z_end, z_step : scalar, optional
+            Values of the start, end and step of the
+            slicing for the whole ndarray.
+        
+        Returns
+        -------
+        out : ndarray
+            Returns the data as a matrix.
+        """
+        # Read data from file.
+        f = h5py.File(self.file_name, 'r')
+        hdfdata = f[array_name]
+
+        #print array_name
+
+        num_x, num_y = hdfdata.shape
+        if x_end is None:
+            x_end = num_x
+        if y_end is None:
+            y_end = num_y
+
+        # Construct dataset.
+        dataset = hdfdata[x_start:x_end:x_step,
+                          y_start:y_end:y_step]
+        f.close()
+        return dataset
         
     def tiff(self, 
              x_start=0,

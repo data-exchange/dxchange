@@ -300,6 +300,18 @@ class Import():
                 dark_file_name.endswith('hdf'):
                 data_file_dark = os.path.splitext(dark_file_name)[0]
 
+        elif (data_type is 'hdf5'):
+            if file_name.endswith('HDF') or \
+                file_name.endswith('hdf'):
+                data_file = os.path.splitext(file_name)[0]
+                dataExtension = os.path.splitext(file_name)[1]
+            if white_file_name.endswith('HDF') or \
+                white_file_name.endswith('hdf'):
+                data_file_white = os.path.splitext(white_file_name)[0]
+            if dark_file_name.endswith('HDF') or \
+                dark_file_name.endswith('hdf'):
+                data_file_dark = os.path.splitext(dark_file_name)[0]
+
         elif (data_type is 'spe'):
             if file_name.endswith('SPE') or \
                 file_name.endswith('spe'):
@@ -418,6 +430,12 @@ class Import():
                                      x_step=slices_step,
                                      array_name='data')
 
+                elif (data_type is 'hdf5'):
+                    tmpdata = f.hdf5_single(x_start=slices_start,
+                                     x_end=slices_end,
+                                     x_step=slices_step,
+                                     array_name='/entry/data/data')
+
                 elif (data_type is 'compressed_tiff'):
                     tmpdata = f.tiffc(x_start=slices_start,
                                       x_end=slices_end,
@@ -442,7 +460,8 @@ class Import():
 
                 if ((data_type is 'tiff') or
                     (data_type is 'compressed_tiff') or
-                    (data_type is 'hdf4')):
+                    (data_type is 'hdf4') or
+                    (data_type is 'hdf5')):
                     if m == 0: # Get resolution once.
                         input_data = np.empty((len(ind),
                                              tmpdata.shape[0],
@@ -508,6 +527,12 @@ class Import():
                                      x_step=slices_step,
                                      array_name='data')
 
+                elif (data_type is 'hdf5'):
+                    tmpdata = f.hdf5_single(x_start=slices_start,
+                                     x_end=slices_end,
+                                     x_step=slices_step,
+                                     array_name='data')
+
                 elif (data_type is 'compressed_tiff'):
                     tmpdata = f.tiffc(x_start=slices_start,
                                       x_end=slices_end,
@@ -533,7 +558,8 @@ class Import():
 
                 if ((data_type is 'tiff') or
                     (data_type is 'compressed_tiff') or
-                    (data_type is 'hdf4')):
+                    (data_type is 'hdf4') or
+                    (data_type is 'hdf5')):
                     if m == 0: # Get resolution once.
                         input_data = np.empty((len(ind),
                                              tmpdata.shape[0],
@@ -610,6 +636,12 @@ class Import():
                                      x_step=slices_step,
                                      array_name='data')
 
+                elif (data_type is 'hdf5'):
+                    tmpdata = f.hdf5_single(x_start=slices_start,
+                                     x_end=slices_end,
+                                     x_step=slices_step,
+                                     array_name='data')
+
                 elif (data_type is 'compressed_tiff'):
                     tmpdata = f.tiffc(x_start=slices_start,
                                       x_end=slices_end,
@@ -634,7 +666,8 @@ class Import():
 
                 if ((data_type is 'tiff') or
                     (data_type is 'compressed_tiff') or
-                    (data_type is 'hdf4')):
+                    (data_type is 'hdf4') or 
+                    (data_type is 'hdf5')):
                     if m == 0: # Get resolution once.
                         input_data = np.empty((len(ind),
                                              tmpdata.shape[0],
