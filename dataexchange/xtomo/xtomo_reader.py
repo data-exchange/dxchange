@@ -1,4 +1,45 @@
 # -*- coding: utf-8 -*-
+"""Read image data from various format files.
+
+This module provides different format support to xtomo_importer 
+
+Supported image fomats include TIFF, PackBits and LZW encoded TIFF, 
+HDF5 (Data Exchange and NeXuS), HDF4 (NeXuS), SPE, TXRM, XRM, EDF, 
+DPT, netCDF. 
+
+:Author:
+  `Francesco De Carlo <mailto: decarlof@gmail.com>`_
+
+:Organization:
+  Argonne National Laboratory, Argonne, IL 60439 USA
+
+:Version: 2014.08.15
+
+Requirements
+------------
+* `h5py <http://www.h5py.org/>`_ 
+* `PIL.Image <http://www.pythonware.com/products/pil/>`_ 
+* `pyhdf <https://pypi.python.org/pypi/pyhdf>`_  (optional for supporting APS 2-BM data)
+* `netCDF <https://pypi.python.org/pypi/netCDF4>`_  (optional for supporting APS 13-BM data)
+* `Tifffile.c 2013.01.18 <http://www.lfd.uci.edu/~gohlke/>`_ (optional for supporting Elettra data)
+  (recommended for faster decoding of PackBits and LZW encoded strings)
+
+Notes
+-----
+Tested on little-endian platforms only.
+
+Examples
+--------
+
+>>> f = XTomoReader(_file_name)
+>>> if (data_type is 'hdf4'):
+>>>     tmpdata = f.hdf4(x_start=slices_start,
+>>>                         x_end=slices_end,
+>>>                         x_step=slices_step,
+>>>                         array_name='data')
+
+"""
+
 import h5py
 from pyhdf import SD
 import numpy as np 
