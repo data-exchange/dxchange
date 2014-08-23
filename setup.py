@@ -31,13 +31,16 @@ try:
 except ImportError:
     raise ImportError("data-exchange requires  PIL 1.1.7 (hint: pip install PIL)")
 
+# installing C class supporting compressed TIFF
+setup(name='_tifffile', ext_modules=[Extension('_tifffile', ['dataexchange/xtomo/formats/tifffile.c'], include_dirs=[numpy.get_include()])])
+
 # Main setup configuration.
 setup(
         name='data-exchange',
         version='0.0.2',
 
         packages = find_packages(),
-        
+
         # include_package_data = True,
 
         # Specify C/C++ file paths. They will be compiled and put into tomopy.lib:
