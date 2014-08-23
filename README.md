@@ -45,7 +45,6 @@ Here is a complete example of the installation:
     - setenv PYTHONPATH $SANDBOX/lib/python2.7/site-packages/
     - python setup.py install --prefix=$SANDBOX
     - cd /tmp
- 
     - echo "SANDBOX = $SANDBOX"
     - echo "LD_LIBRARY_PATH = $LD_LIBRARY_PATH"
     - echo "C_INCLUDE_PATH = $C_INCLUDE_PATH"
