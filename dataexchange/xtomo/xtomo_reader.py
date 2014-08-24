@@ -56,9 +56,88 @@ from formats.EdfFile import EdfFile
 from formats.tifffile import TiffFile
 
 class XTomoReader:
+
     def __init__(self, file_name):
         self.file_name = file_name
+
+    def _dset_read(self, f_in, dset_name, slice_list):
+        """
+        Helper function for reading data sets that might not exist with arbitrary slices
+
+        Parameters
+        ----------
+        f_in : h5py.Group
+           Open file or group
+
+        dset_name : str
+           name of dataset to try to read
+
+        slice_list : list or tuple
+           slice object to use slicing the data set.  length needs to math
+           the number of dimensions
+        """
+        # try to read the data
+        try:
+            out_data = f_in[dset_name][slice_list]
+        # if KeyError is raised (because the data set does not exist)
+        except KeyError:
+            # set data to None
+            out_data = None
+
+        # return the data
+        return out_data
+
+    _no_data_err = "{file} does not contain {tag}"
     
+    def hdf5_test(self,
+                     array_name=None,
+                     x_start=0,
+                     x_end=None,
+                     x_step=1,
+                     y_start=0,
+                     y_end=None,
+                     y_step=1,
+                     z_start=0,
+                     z_end=None,
+                     z_step=1):
+
+        # expand the file_name
+        file_name = os.path.abspath(self.file_name)
+
+        # open the hdf file with context manager so it will always close
+        # properly, even if there are uncaught errors.
+        with h5py.File(file_name, "r") as f:
+            # set up all of the slices, these should really be passed in
+            # and follow the pattern
+            # if a is None:
+            #    a = slice(None, None, None)
+            hdfdata = f[array_name]
+            num_z, num_y, num_x = hdfdata.shape
+
+            if x_end is None:
+            	x_end = num_x
+            if y_end is None:
+            	y_end = num_y
+            if z_end is None:
+            	z_end = num_z
+
+            proj_slc = slice(z_start, z_end, z_step)
+            slices_slc = slice(y_start, y_end, y_step)
+            pixel_slc = slice(x_start, x_end, x_step)
+
+            if (array_name == "/exchange/theta"):
+                # read the theta data
+		data = f[array_name][proj_slc, ]
+                # add a check that data is not None
+                if data is None:
+                    raise ValueError(_no_data_err.format(file=file_name, tag=array_name))
+            else:
+                # read the data
+		data = f[array_name][proj_slc, slices_slc, pixel_slc]
+                if data is None:
+                    raise ValueError(_no_data_err.format(file=file_name, tag=array_name))
+        return data
+
     def hdf5(self,
              array_name=None,
              x_start=0,
@@ -103,22 +182,32 @@ class XTomoReader:
         """
         # Read data from file.
         f = h5py.File(self.file_name, 'r')
-        hdfdata = f[array_name]
-        num_x, num_y, num_z = hdfdata.shape
+        
+	try:
+		hdfdata = f[array_name]
+		if (array_name == "exchange/theta"):
+			num_z = hdfdata.size
+        		if z_end is 0:
+            			z_end = num_z        		
+			# Construct theta.
+        		dataset = hdfdata[z_start:z_end:z_step]
+		else:	
+			num_z, num_y, num_x = hdfdata.shape
+        		if x_end is 0:
+            			x_end = num_x
+        		if y_end is 0:
+        			y_end = num_y
+        		if z_end is 0:
+            			z_end = num_z
+        		# Construct dataset.
+        		dataset = hdfdata[z_start:z_end:z_step,
+                          			y_start:y_end:y_step,
+                          			x_start:x_end:x_step]
+	except KeyError:
+		dataset = None        
 
-        if x_end is None:
-            x_end = num_x
-        if y_end is None:
-            y_end = num_y
-        if z_end is None:
-            z_end = num_z
+	f.close()
 
-        # Construct dataset.
-        dataset = hdfdata[x_start:x_end:x_step,
-                          y_start:y_end:y_step,
-                          z_start:z_end:z_step]
-	print dataset.shape
-        f.close()
         return dataset
                 
     def hdf4(self,
@@ -214,8 +303,6 @@ class XTomoReader:
         # Read data from file.
         f = h5py.File(self.file_name, 'r')
         hdfdata = f[array_name]
-
-        #print array_name
 
         num_x, num_y = hdfdata.shape
         if x_end is None:
@@ -542,7 +629,6 @@ class XTomoReader:
         dataset = tmpdata[z_start:z_end:z_step,
                           y_start:y_end:y_step,
                           x_start:x_end:x_step]
-        #print np.shape(dataset)
         return dataset
         
     def dpt(self,

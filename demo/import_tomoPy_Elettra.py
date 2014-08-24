@@ -23,7 +23,7 @@ def main():
     dark_file_name = '/media/DISK_01/databank/Elettra/Volcanic_rock/dark_.tif'
     white_file_name = '/media/DISK_01/databank/Elettra/Volcanic_rock/flat_.tif'
 
-    hdf5_file_name = '/media/DISK_01/databank/dataExchange/microCT/Elettra_test.h5'
+    hdf5_file_name = '/media/DISK_01/databank/dataExchange/microCT/Elettra_OK.h5'
 
     projections_start = 1
     projections_end = 1441
@@ -78,15 +78,14 @@ def main():
     d.dataset(data, white, dark, theta)
     d.normalize()
     d.correct_drift()
-    d.optimize_center()
+    #d.optimize_center()
     #d.phase_retrieval()
     #d.correct_drift()
-    #d.center=1010.0
+    d.center=1096.375
     d.gridrec()
 
-
     # Write to stack of TIFFs.
-    tomopy.xtomo_writer(d.data_recon, 'tmp/Elettra_aa', axis=0)
+    tomopy.xtomo_writer(d.data_recon, 'tmp/Elettra_OK_', axis=0)
 
 if __name__ == "__main__":
     main()

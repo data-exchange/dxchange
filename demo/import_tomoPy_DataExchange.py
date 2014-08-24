@@ -20,7 +20,7 @@ import dataexchange.xtomo.xtomo_importer as dx
 def main():
     # read a series of tiff
 
-    file_name = '/media/DISK_01/databank/dataExchange/microCT/Elettra.h5'
+    file_name = '/media/DISK_01/databank/dataExchange/microCT/Elettra_OK.h5'
 
     # to reconstruct slices from slices_start to slices_end
     # if omitted all data set is recontructed
@@ -36,7 +36,6 @@ def main():
                                                        data_type='h5',
                                                        log='INFO'
                                                        )
-
     # TomoPy xtomo object creation and pipeline of methods.  
     d = tomopy.xtomo_dataset(log='debug')
     d.dataset(data, white, dark, theta)
@@ -50,7 +49,7 @@ def main():
 
 
     # Write to stack of TIFFs.
-    tomopy.xtomo_writer(d.data_recon, 'tmp/Elettra_dd', axis=0)
+    tomopy.xtomo_writer(d.data_recon, 'tmp/Elettra_OK_', axis=0)
 
 if __name__ == "__main__":
     main()
