@@ -1,5 +1,5 @@
-dataexchange.xtomo.xtomo_exporter module
-========================================
+xtomo_exporter
+==============
 
 .. automodule:: dataexchange.xtomo.xtomo_exporter
     :members:

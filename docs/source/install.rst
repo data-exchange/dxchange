@@ -47,7 +47,7 @@ tifffile.c     -     http://www.lfd.uci.edu/~gohlke/code/tifffile.c.html
 
 
 Quick Install
--------------
+*************
 
 ==========  ==============================================================================================================
 from        procedure
@@ -60,7 +60,7 @@ source      #. download latest source tarball from https://github.com/data-excha
 To test if installation was succesfull:
 
 #. open a new command shell
-#. **change to a different directory than the tomopy source**
+#. **change to a different directory than the data-exchange source**
 #. try::
 
     python -c "import dataexchange"
@@ -68,7 +68,7 @@ To test if installation was succesfull:
 If it doesn't complain you are good to go!
 
 Install Example
----------------
+***************
 
 Here is a complete example of the installation:
 

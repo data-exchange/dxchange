@@ -1,5 +1,5 @@
-dataexchange.xtomo.xtomo_importer module
-========================================
+xtomo_importer
+==============
 
 .. automodule:: dataexchange.xtomo.xtomo_importer
     :members:

@@ -1,5 +1,5 @@
-dataexchange.xtomo.xtomo_reader module
-======================================
+xtomo_reader
+============
 
 .. automodule:: dataexchange.xtomo.xtomo_reader
     :members:

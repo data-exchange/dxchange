@@ -1,5 +1,5 @@
-dataexchange.xtomo.data_exchange module
-=======================================
+data_exchange
+=============
 
 .. automodule:: dataexchange.xtomo.data_exchange
     :members:

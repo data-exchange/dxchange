@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Read image data from various format files.
 
-This module provides different format support to xtomo_importer 
+This module provides file format support to xtomo_importer 
 
 Supported image fomats include TIFF, PackBits and LZW encoded TIFF, 
 HDF5 (Data Exchange and NeXuS), HDF4 (NeXuS), SPE, TXRM, XRM, EDF, 
@@ -59,7 +59,6 @@ class XTomoReader:
     def __init__(self, file_name):
         self.file_name = file_name
     
-    
     def hdf5(self,
              array_name=None,
              x_start=0,
@@ -72,19 +71,18 @@ class XTomoReader:
              z_end=None,
              z_step=1):
         """ 
-        Read 3-D tomographic data from hdf5 file.
+        Read 3-D tomographic projection data from a Data Exchange HDF5 file.
 
-        Opens ``file_name`` and reads the contents
-        of the array specified by ``array_name`` in
-        the specified group of the HDF file.
+        Opens ``file_name`` and reads the contents of the 3D array specified 
+	by ``array_name`` in the specified group of the HDF5 file.
         
         Parameters
         ----------
         file_name : str
-            Input HDF file.
+            Input HDF5 file.
         
         array_name : str
-            Name of the array to be read at exchange group.
+            Name of the array to be read at in the exchange group.
         
         x_start, x_end, x_step : scalar, optional
             Values of the start, end and step of the
@@ -106,8 +104,8 @@ class XTomoReader:
         # Read data from file.
         f = h5py.File(self.file_name, 'r')
         hdfdata = f[array_name]
-
         num_x, num_y, num_z = hdfdata.shape
+
         if x_end is None:
             x_end = num_x
         if y_end is None:
@@ -119,6 +117,7 @@ class XTomoReader:
         dataset = hdfdata[x_start:x_end:x_step,
                           y_start:y_end:y_step,
                           z_start:z_end:z_step]
+	print dataset.shape
         f.close()
         return dataset
                 
@@ -131,7 +130,7 @@ class XTomoReader:
              y_end=None,
              y_step=1):
         """ 
-        Read 2-D tomographic data from hdf4 file.
+        Read 2-D tomographic projection data from an HDF4 file.
 
         Opens ``file_name`` and reads the contents
         of the array specified by ``array_name`` in
@@ -176,7 +175,7 @@ class XTomoReader:
                           y_start:y_end:y_step]
         return dataset
         
-    def hdf5_single(self,
+    def hdf5_2d(self,
              array_name=None,
              x_start=0,
              x_end=None,
@@ -185,7 +184,7 @@ class XTomoReader:
              y_end=None,
              y_step=1):
         """ 
-        Read 3-D tomographic data from hdf5 file.
+        Read 2-D tomographic projection data from an HDF5 file.
 
         Opens ``file_name`` and reads the contents
         of the array specified by ``array_name`` in
@@ -204,10 +203,6 @@ class XTomoReader:
             slicing for the whole ndarray.
         
         y_start, y_end, y_step : scalar, optional
-            Values of the start, end and step of the
-            slicing for the whole ndarray.
-        
-        z_start, z_end, z_step : scalar, optional
             Values of the start, end and step of the
             slicing for the whole ndarray.
         
@@ -245,7 +240,7 @@ class XTomoReader:
              ):
              
         """
-        Read TIFF files.
+        Read 2-D tomographic projection data from a TIFF file.
 
         Parameters
         ----------
@@ -283,7 +278,6 @@ class XTomoReader:
         return out[x_start:x_end:x_step,
                    y_start:y_end:y_step]
         
-        
     def tiffc(self, 
               dtype='uint16',
               x_start=0,
@@ -293,7 +287,7 @@ class XTomoReader:
               y_end=None,
               y_step=1):
         """
-        Read complex(!) TIFF files.
+        Read 2-D complex(!) tomographic projection data from a TIFF file.
 
         Parameters
         ----------
@@ -329,7 +323,6 @@ class XTomoReader:
         return out[x_start:x_end:x_step,
                    y_start:y_end:y_step]
         
-        
     def txrm(self,
              array_name='Image',
              x_start=0,
@@ -342,12 +335,12 @@ class XTomoReader:
              z_end=None,
              z_step=1):
         """ 
-        Read 3-D tomographic data from a txrm file 
+        Read 3-D tomographic projection data from a TXRM file 
         
         Parameters
         ----------
         file_name : str
-            Input txrm or xrm file.
+            Input txrm file.
         
         x_start, x_end, x_step : scalar, optional
             Values of the start, end and step of the
@@ -385,7 +378,6 @@ class XTomoReader:
                                       z_start:z_end:z_step]
         return dataset
        
-       
     def xrm(self,
             array_name='Image',
             x_start=0,
@@ -398,12 +390,12 @@ class XTomoReader:
             z_end=None,
             z_step=1):
         """ 
-        Read 3-D tomographic data from a xrm file.
+        Read 3-D tomographic projection data from an XRM file.
         
         Parameters
         ----------
         file_name : str
-            Input txrm or xrm file.
+            Input xrm file.
         
         x_start, x_end, x_step : scalar, optional
             Values of the start, end and step of the
@@ -442,7 +434,6 @@ class XTomoReader:
                                       z_start:z_end:z_step]
         return dataset
         
-         
     def spe(self,
             x_start=0,
             x_end=None,
@@ -454,7 +445,7 @@ class XTomoReader:
             z_end=None,
             z_step=1):
         """ 
-        Read 3-D tomographic data from a spe file.
+        Read 3-D tomographic projection data from a SPE file.
         
         Parameters
         ----------
@@ -495,7 +486,6 @@ class XTomoReader:
                         x_start:x_end:x_step]
         return dataset
         
-        
     def edf(self,
              x_start=0,
              x_end=None,
@@ -507,12 +497,12 @@ class XTomoReader:
              z_end=None,
              z_step=1):
         """ 
-        Read 3-D tomographic data from an ESRF (edf) file.
+        Read 3-D tomographic projection data from an EDF (ESRF) file.
         
         Parameters
         ----------
         file_name : str
-            Input edf.
+            Input edf file.
             
         x_start, x_end, x_step : scalar, optional
             Values of the start, end and step of the
@@ -566,12 +556,12 @@ class XTomoReader:
              z_end=None,
              z_step=1):
         """ 
-        Read 3-D tomographic data from a SRC (dpt) file.
+        Read 3-D tomographic projection data from a DPT (SRC) file.
         
         Parameters
         ----------
         file_name : str
-            SRC dpt file.
+            Input dpt file.
             
         x_start, x_end, x_step : scalar, optional
             Values of the start, end and step of the
@@ -627,7 +617,6 @@ class XTomoReader:
                 tmpdata[int(linelist[0])::] = projection
 
             file.close()
-            print "Found", num_z, "x (", num_x, "x", num_y, ") projections " 
 
         if x_end is None:
             x_end = num_x
@@ -654,7 +643,7 @@ class XTomoReader:
                z_end=None,
                z_step=1):
         """ 
-        Read 3-D tomographic data from a netcdf file.
+        Read 3-D tomographic projection data from a netCDF file.
 
        
         Parameters
