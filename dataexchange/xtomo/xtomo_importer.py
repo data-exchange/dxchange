@@ -1,4 +1,30 @@
 # -*- coding: utf-8 -*-
+"""Read image data from various format files.
+
+.. module:: xtomo_importer.py
+   :platform: Unix
+   :synopsis: Import tomographic data files returnin: data, data_white, data_dark, theta.
+
+:Author:
+  `Francesco De Carlo <mailto: decarlof@gmail.com>`_
+
+:Organization:
+  Argonne National Laboratory, Argonne, IL 60439 USA
+
+:Version: 2014.08.15
+
+
+Examples
+--------
+
+>>> add example here 
+>>> add example here 
+>>> add example here 
+>>> add example here 
+>>> add example here 
+
+"""
+
 import numpy as np
 import os
 import h5py

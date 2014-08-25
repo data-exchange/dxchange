@@ -37,7 +37,7 @@ def main():
     file_name = '/local/dataraid/databank/APS_1_ID/APS1ID_Cat4B_2/CAT4B_2_.tif'
     log_file = '/local/dataraid/databank/APS_1_ID/APS1ID_Cat4B_2/CAT4B_2_TomoStillScan.dat'
 
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/APS_1ID.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/APS_1_ID.h5'
 
     #Read APS 1-ID log file data
     file = open(log_file, 'r')

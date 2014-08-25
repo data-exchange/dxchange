@@ -33,7 +33,7 @@ import dataexchange.xtomo.xtomo_exporter as ex
 def main():
 
     file_name = '/local/dataraid/databank/APS_13_BM/NC/Dorthe_F_.nc'
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/APS_13_netCDF.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/APS_13_BM_netCDF.h5'
 
     white_start = 1
     white_end = 4
