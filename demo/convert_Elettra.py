@@ -74,7 +74,6 @@ def main():
                                                        projections_zeros = True,
                                                        white_zeros = False,
                                                        dark_zeros = False,
-                                                       sample_name = sample_name,
                                                        log='INFO'
                                                        )
     mydata = ex.Export()
@@ -84,7 +83,8 @@ def main():
                           data_dark = dark,
                           theta = theta,
                           hdf5_file_name = hdf5_file_name,
-                          data_exchange_type = 'tomography_raw_projections'
+                          data_exchange_type = 'tomography_raw_projections',
+                          sample_name = sample_name
                           )
 
 if __name__ == "__main__":

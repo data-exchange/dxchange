@@ -116,7 +116,7 @@ def main():
 
 
     # Write to stack of TIFFs.
-    tomopy.xtomo_writer(d.data_recon, 'tmp/APS_1ID_', axis=0)
+    tomopy.xtomo_writer(d.data_recon, 'tmp/APS_1_ID_', axis=0)
 
 if __name__ == "__main__":
     main()

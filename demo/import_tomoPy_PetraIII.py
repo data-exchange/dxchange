@@ -54,7 +54,7 @@ def main():
     # to reconstruct slices from slices_start to slices_end
     # if omitted all data set is recontructed
     slices_start = 1000    
-    slices_end = 1010    
+    slices_end = 1004    
 
     mydata = dx.Import()
     # Read series of images
@@ -72,7 +72,6 @@ def main():
                                                        dark_start = dark_start,
                                                        dark_end = dark_end,
                                                        dark_step = dark_step,
-                                                       sample_name = sample_name,
                                                        projections_digits = 4,
                                                        projections_zeros = True,
                                                        log='INFO'
@@ -90,8 +89,8 @@ def main():
     d.center=1872.87890625
     d.gridrec()
     # Write to stack of TIFFs.
-#    tomopy.xtomo_writer(d.data_recon, 'tmp/oster02_0001_', axis=0)
-    tomopy.xtomo_writer(d.data_recon, 'tmp/oster02_0001_int_', axis=0, x_start = 1001, overwrite=True, dtype='uint8', data_min=-0.0001, data_max=0.0003)
+    tomopy.xtomo_writer(d.data_recon, 'tmp/PetraIII_', axis=0)
+#    tomopy.xtomo_writer(d.data_recon, 'tmp/oster02_0001_int_', axis=0, x_start = 1001, overwrite=True, dtype='uint8', data_min=-0.0001, data_max=0.0003)
 
 if __name__ == "__main__":
     main()

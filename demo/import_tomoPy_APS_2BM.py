@@ -39,7 +39,7 @@ import dataexchange.xtomo.xtomo_importer as dx
 import re
 
 def main():
-    log_file = '/media/DISK_01/databank/Sangid/Sam01/Sam01_exp.hdf'
+    log_file = '/local/dataraid/databank/Sangid/Sam01/Sam01_exp.hdf'
 
     #Read APS 2-BM log file data
     f = SD.SD(log_file)
@@ -78,7 +78,7 @@ def main():
     # if omitted the full data set is recontructed
     
     slices_start = 1365
-    slices_end = 1367
+    slices_end = 1368
 
     mydata = dx.Import()
     # Read series of images

@@ -50,7 +50,7 @@ def main():
     # set to convert slices between slices_start and slices_end
     # if omitted all data set will be converted   
     slices_start = 400    
-    slices_end = 405    
+    slices_end = 404    
 
     mydata = dx.Import()
     # Read series of images
@@ -69,10 +69,10 @@ def main():
     d.dataset(data, white, dark, theta)
     d.normalize()
     d.correct_drift()
-    d.optimize_center()
+    #d.optimize_center()
     #d.phase_retrieval()
     #d.correct_drift()
-    #d.center=99.5
+    d.center=1160.5
     d.gridrec()
 
 

@@ -35,9 +35,9 @@ import dataexchange.xtomo.xtomo_importer as dx
 
 def main():
     # read a series of tiff
-    file_name = '/media/DISK_01/databank/Elettra/Volcanic_rock/tomo_.tif'
-    dark_file_name = '/media/DISK_01/databank/Elettra/Volcanic_rock/dark_.tif'
-    white_file_name = '/media/DISK_01/databank/Elettra/Volcanic_rock/flat_.tif'
+    file_name = '/local/dataraid/databank/Elettra/Volcanic_rock/tomo_.tif'
+    dark_file_name = '/local/dataraid/databank/Elettra/Volcanic_rock/dark_.tif'
+    white_file_name = '/local/dataraid/databank/Elettra/Volcanic_rock/flat_.tif'
 
     projections_start = 1
     projections_end = 1441
@@ -76,7 +76,6 @@ def main():
                                                        projections_zeros = True,
                                                        white_zeros = False,
                                                        dark_zeros = False,
-                                                       sample_name = sample_name,
                                                        log='INFO'
                                                        )
 

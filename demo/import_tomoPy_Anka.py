@@ -53,7 +53,7 @@ def main():
     # if omitted all data set is recontructed
     
     slices_start = 800    
-    slices_end = 811    
+    slices_end = 804    
 
     mydata = dx.Import()
     # Read series of images
@@ -68,7 +68,6 @@ def main():
                                                        dark_file_name = dark_file_name,
                                                        dark_start = dark_start,
                                                        dark_end = dark_end,
-                                                       sample_name = sample_name,
                                                        projections_digits = 5,
                                                        log='INFO'
                                                        )
@@ -86,7 +85,7 @@ def main():
 
 
     # Write to stack of TIFFs.
-    tomopy.xtomo_writer(d.data_recon, 'tmp/ANKA_', axis=0)
+    tomopy.xtomo_writer(d.data_recon, 'tmp/Anka_', axis=0)
 
 if __name__ == "__main__":
     main()

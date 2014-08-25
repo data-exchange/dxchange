@@ -67,7 +67,6 @@ def main():
                                                        dark_file_name = dark_file_name,
                                                        dark_start = dark_start,
                                                        dark_end = dark_end,
-                                                       sample_name = sample_name,
                                                        projections_digits = 5,
                                                        log='INFO'
                                                        )
@@ -79,7 +78,8 @@ def main():
                           data_dark = dark,
                           theta = theta,
                           hdf5_file_name = hdf5_file_name,
-                          data_exchange_type = 'tomography_raw_projections'
+                          data_exchange_type = 'tomography_raw_projections',
+                          sample_name = sample_name
                           )
     
 if __name__ == "__main__":

@@ -61,7 +61,6 @@ def main():
                                                        projections_end = projections_end,
 #                                                       slices_start = slices_start,
 #                                                       slices_end = slices_end,
-                                                       sample_name = sample_name,
                                                        projections_digits = 3,
                                                        projections_zeros = True,
                                                        log='INFO'

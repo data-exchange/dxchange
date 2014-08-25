@@ -52,7 +52,6 @@ def main():
     data, white, dark, theta = mydata.series_of_images(file_name,
                                                        white_file_name = white_file_name,
                                                        dark_file_name = dark_file_name,
-                                                       sample_name = sample_name,
 #                                                       slices_start = slices_start,
 #                                                       slices_end = slices_end,
                                                        data_type='edf',
@@ -66,7 +65,8 @@ def main():
                           data_dark = dark,
                           theta = theta,
                           hdf5_file_name = hdf5_file_name,
-                          data_exchange_type = 'tomography_raw_projections'
+                          data_exchange_type = 'tomography_raw_projections',
+                          sample_name = sample_name
                           )
 
 if __name__ == "__main__":

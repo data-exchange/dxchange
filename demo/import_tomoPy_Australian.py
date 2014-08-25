@@ -72,7 +72,6 @@ def main():
                                                        dark_start = dark_start,
                                                        dark_end = dark_end,
                                                        dark_step = dark_step,
-                                                       sample_name = sample_name,
                                                        projections_digits = 4,
                                                        white_digits = 2,
                                                        dark_digits = 2,
@@ -93,7 +92,7 @@ def main():
 
 
     # Write to stack of TIFFs.
-    tomopy.xtomo_writer(d.data_recon, 'tmp/AS_', axis=0)
+    tomopy.xtomo_writer(d.data_recon, 'tmp/Australian_', axis=0)
 
 if __name__ == "__main__":
     main()

@@ -80,7 +80,7 @@ def main():
 
 
     # Write to stack of TIFFs.
-    tomopy.xtomo_writer(d.data_recon, 'tmp/APS_13BM_', axis=0)
+    tomopy.xtomo_writer(d.data_recon, 'tmp/APS_13_BM_netCDF_', axis=0)
 
 if __name__ == "__main__":
     main()

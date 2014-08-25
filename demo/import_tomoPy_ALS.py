@@ -93,7 +93,7 @@ def main():
     # set to convert slices between slices_start and slices_end
     # if omitted all data set will be converted   
     slices_start = 245    
-    slices_end = 265  
+    slices_end = 249  
 
     mydata = dx.Import()
     # Read series of images

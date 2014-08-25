@@ -59,7 +59,6 @@ def main():
     data, white, dark, theta = mydata.series_of_images(file_name,
                                                        white_file_name = white_file_name,
                                                        dark_file_name = dark_file_name,
-                                                       sample_name = sample_name,
                                                        slices_start = slices_start,
                                                        slices_end = slices_end,
                                                        data_type='edf',
