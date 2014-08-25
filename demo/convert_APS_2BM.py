@@ -16,9 +16,9 @@ import dataexchange.xtomo.xtomo_exporter as ex
 
 def main():
 
-    log_file = '/local/dataraid/databank/Sangid/Sam02/Sam02_exp.hdf'
+    log_file = '/local/dataraid/databank/Sangid/Sam01/Sam01_exp.hdf'
 
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/Sangid_LongFiber.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/Sangid_ShortFiber.h5'
 
     #Read APS 2-BM log file data
     f = SD.SD(log_file)
@@ -52,6 +52,11 @@ def main():
     dark_end = dark_start + num_dark_fields
 
     sample_name = base_name
+
+    # set to convert slices between slices_start and slices_end
+    # if omitted all data set will be converted   
+#    slices_start = 1000    
+#    slices_end = 1004    
     
     mydata = dx.Import()
     # Read series of images
@@ -59,6 +64,8 @@ def main():
                                                      projections_start = projections_start,
                                                      projections_end = projections_end,
                                                      white_start = white_start,
+#                                                       slices_start = slices_start,
+#                                                       slices_end = slices_end,
                                                      white_end = white_end,
                                                      dark_start = dark_start,
                                                      dark_end = dark_end,

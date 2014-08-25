@@ -19,7 +19,7 @@ def main():
     file_name = '/local/dataraid/databank/SLS_2011/Ashley/3e_final_2_.tif'
     log_file = '/local/dataraid/databank/SLS_2011/Ashley/3e_final_2_.log'
 
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/Ashley_SLS.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/Ashley_SLS.h5'
 
     #Read SLS log file data
     file = open(log_file, 'r')
@@ -51,12 +51,19 @@ def main():
     white_end = white_start + int(NumberOfFlats[0])
     projections_start = white_end
     projections_end = projections_start + int(NumberOfProjections[0])
+
+    # set to convert slices between slices_start and slices_end
+    # if omitted all data set will be converted   
+#    slices_start = 800    
+#    slices_end = 804    
    
     mydata = dx.Import()
     # Read series of images
     data, white, dark, theta = mydata.series_of_images(file_name,
                                                        projections_start = projections_start,
                                                        projections_end = projections_end,
+#                                                       slices_start = slices_start,
+#                                                       slices_end = slices_end,
                                                        projections_digits=4,
                                                        white_start = white_start,
                                                        white_end = white_end,

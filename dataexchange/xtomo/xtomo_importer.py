@@ -288,6 +288,7 @@ class Import():
                                      x_end=slices_end,
                                      x_step=slices_step,
                                      array_name='data')
+		    print tmpdata.shape
 
                 elif (data_type is 'hdf5'):
                     tmpdata = f.hdf5_2d(x_start=slices_start,
@@ -322,10 +323,9 @@ class Import():
                     (data_type is 'hdf4') or
                     (data_type is 'hdf5')):
                     if m == 0: # Get resolution once.
-                        input_data = np.empty((len(ind),
-                                             tmpdata.shape[0],
-                                             tmpdata.shape[1]),
-                                             dtype=dtype)
+			print len(ind), tmpdata.shape[0], tmpdata.shape[1], dtype
+                        input_data = np.empty((len(ind), tmpdata.shape[0], tmpdata.shape[1]), dtype=dtype)
+			print input_data.shape
                     input_data[m, :, :] = tmpdata
 
                 if ((data_type is 'spe') or
@@ -639,10 +639,10 @@ class Import():
                 nz, ny, nx = np.shape(xtomo.data)
                 xtomo.data_dark = np.zeros((1, ny, nx))
         # Theta ------------------------------------------------
-	xtomo.logger.info("Attempt reading angles from file: [%s]", file_name)                    
 	if (data_type is 'h5'):
-		xtomo.logger.info("Angle file: [%s] exists", file_name)                    
+		xtomo.logger.info("Attempt reading angles from file: [%s]", file_name)                    
 		f = XTomoReader(file_name)
+		xtomo.logger.info("Angle file: [%s] exists", file_name)                    
 		tmpdata = f.hdf5(z_start = projections_start,
 					z_end = projections_end,
                                     	z_step = projections_step,

@@ -14,11 +14,11 @@ import dataexchange.xtomo.xtomo_exporter as ex
 
 def main():
 
-    file_name = '/media/DISK_01/databank/Elettra/Volcanic_rock/tomo_.tif'
-    dark_file_name = '/media/DISK_01/databank/Elettra/Volcanic_rock/dark_.tif'
-    white_file_name = '/media/DISK_01/databank/Elettra/Volcanic_rock/flat_.tif'
+    file_name = '/local/dataraid/databank/Elettra/Volcanic_rock/tomo_.tif'
+    dark_file_name = '/local/dataraid/databank/Elettra/Volcanic_rock/dark_.tif'
+    white_file_name = '/local/dataraid/databank/Elettra/Volcanic_rock/flat_.tif'
 
-    hdf5_file_name = '/media/DISK_01/databank/dataExchange/microCT/Elettra_OK.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/Elettra_LAST.h5'
 
     projections_start = 1
     projections_end = 1441

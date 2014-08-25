@@ -21,7 +21,7 @@ def main():
     white_file_name = '/local/dataraid/databank/als/data/raw/sacarroll/20140731_001306_2477A_x00y08/20140731_001306_2477A_x00y08bak_.tif'
     log_file = '/local/dataraid/databank/als/data/raw/sacarroll/20140731_001306_2477A_x00y08/20140731_001306_2477A_x00y08.sct'
 
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/ALS_20140731.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/ALS_20140731.h5'
 
     verbose = True
 
@@ -79,6 +79,8 @@ def main():
     data, white, dark, theta = mydata.series_of_images(file_name = file_name,
                                                        projections_start = projections_start,
                                                        projections_end = projections_end,
+#                                                       slices_start = slices_start,
+#                                                       slices_end = slices_end,
                                                        white_file_name = white_file_name,
                                                        white_start = white_start,
                                                        white_end = white_end,

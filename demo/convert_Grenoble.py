@@ -21,7 +21,7 @@ def main():
 ##    sample_name = 'HN-MR-002-SAT'
 
     file_name = '/local/dataraid/databank/GrenobleGranularData/Tomo/HN-MR-002-2_0kPa/Radios_original/HN-MR-002-2KPA_.tif'
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/HN-MR-002-2KPA.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/HN-MR-002-2KPA.h5'
     sample_name = 'HN-MR-002-2KPA'
 
 ##    file_name = '/local/dataraid/databank/GrenobleGranularData/Tomo/HN-MR-002-3_0kPa/Radios_original/HN-MR-002-3_0KPA_.tif'
@@ -31,11 +31,18 @@ def main():
     projections_start = 1
     projections_end = 1201
 
+    # set to convert slices between slices_start and slices_end
+    # if omitted all data set will be converted   
+#    slices_start = 1000    
+#    slices_end = 1004    
+
     mydata = dx.Import()
     # Read series of images
     data, white, dark, theta = mydata.series_of_images(file_name,
                                                        projections_start = projections_start,
                                                        projections_end = projections_end,
+#                                                       slices_start = slices_start,
+#                                                       slices_end = slices_end,
                                                        sample_name = sample_name,
                                                        projections_digits = 5,
                                                        projections_zeros = True,

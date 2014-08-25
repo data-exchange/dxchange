@@ -24,7 +24,7 @@ def main():
     file_name = '/local/dataraid/databank/SLS_2011/Hornby_SLS/Hornby_b.tif'
     log_file = '/local/dataraid/databank/SLS_2011/Hornby_SLS/Hornby.log'
 
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/Hornby_SLS_2011_01.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/Hornby_SLS_2011_01.h5'
 
     
     #Read SLS log file data
@@ -55,8 +55,8 @@ def main():
 
     # set to convert slices between slices_start and slices_end
     # if omitted all data set will be converted   
-    slices_start = 800    
-    slices_end = 804    
+#    slices_start = 800    
+#    slices_end = 804    
 
     mydata = dx.Import()
     # Read series of images
@@ -64,8 +64,8 @@ def main():
                                                        projections_start = projections_start,
                                                        projections_end = projections_end,
                                                        projections_digits=4,
-                                                       slices_start = slices_start,
-                                                       slices_end = slices_end,
+#                                                       slices_start = slices_start,
+#                                                       slices_end = slices_end,
                                                        white_start = white_start,
                                                        white_end = white_end,
                                                        dark_start = dark_start,

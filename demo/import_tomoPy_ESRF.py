@@ -49,16 +49,6 @@ def main():
                                                        log='INFO'
                                                        )
 
-##    # if you have already created a data exchange file using convert_SLS.py module,
-##    # comment the call above and read the data set as data exchange with:
-##    # Read HDF5 file.
-##    data, white, dark, theta = tomopy.xtomo_reader(hdf5_file_name,
-##                                                   slices_start=0,
-##                                                   slices_end=2)
-
-    # TomoPy xtomo object creation and pipeline of methods. 
-    # for full set of options see http://tomopy.github.io/tomopy/
-
     d = tomopy.xtomo_dataset(log='debug')
     d.dataset(data, white, dark, theta)
     d.normalize()
@@ -71,7 +61,7 @@ def main():
 
 
     # Write to stack of TIFFs.
-    tomopy.xtomo_writer(d.data_recon, 'tmp/ESRF_OKOK', axis=0)
+    tomopy.xtomo_writer(d.data_recon, 'tmp/ESRF_', axis=0)
 
 if __name__ == "__main__":
     main()

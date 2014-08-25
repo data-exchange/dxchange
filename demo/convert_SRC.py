@@ -15,7 +15,7 @@ import dataexchange.xtomo.xtomo_exporter as ex
 def main():
 
     raw_tiff_base_name = "/local/dataraid/databank/dataExchange/microCT/SRC/raw/FPA_16_18_18_TOMO_243_Fiber_2500_50_50_"    
-    hdf5_base_name = "/local/dataraid/databank/dataExchange/microCT/SRC/dx/FPA_16_18_18_TOMO_243_Fiber_2500_50_50_"    
+    hdf5_base_name = "/local/dataraid/databank/dataExchange/tmp/FPA_16_18_18_TOMO_243_Fiber_2500_50_50_"    
    
     log_file = raw_tiff_base_name + "wavelength.dpt"
     angle_file = raw_tiff_base_name + "angle.dpt"

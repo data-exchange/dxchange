@@ -18,7 +18,7 @@ Contents:
    cite
    install
    dataexchange
-.. demo
+   demo
 
 
 Indices and tables

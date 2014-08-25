@@ -21,10 +21,17 @@ def main():
     # read a series of tiff
 
     file_name = '/media/DISK_01/databank/dataExchange/microCT/Elettra_OK.h5'
-
+    file_name = '/media/DISK_01/databank/dataExchange/microCT/Sangid_ShortFiber.h5' 
+    file_name = '/media/DISK_01/databank/dataExchange/microCT/Elettra_LAST.h5'
     # to reconstruct slices from slices_start to slices_end
     # if omitted all data set is recontructed
     
+    slices_start = 150    
+    slices_end = 154    
+
+    slices_start = 1365
+    slices_end = 1367
+
     slices_start = 150    
     slices_end = 154    
 
@@ -40,16 +47,16 @@ def main():
     d = tomopy.xtomo_dataset(log='debug')
     d.dataset(data, white, dark, theta)
     d.normalize()
-    d.correct_drift()
-    #d.optimize_center()
+    #d.correct_drift()
+    d.optimize_center()
     #d.phase_retrieval()
     #d.correct_drift()
-    d.center=1096.375
+    #d.center=1096.375
     d.gridrec()
 
 
     # Write to stack of TIFFs.
-    tomopy.xtomo_writer(d.data_recon, 'tmp/Elettra_OK_', axis=0)
+    tomopy.xtomo_writer(d.data_recon, 'tmp/ELETTRA_LAST_', axis=0)
 
 if __name__ == "__main__":
     main()

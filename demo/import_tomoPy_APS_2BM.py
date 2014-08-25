@@ -22,7 +22,7 @@ import dataexchange.xtomo.xtomo_importer as dx
 import re
 
 def main():
-    log_file = '/local/dataraid/databank/APS_2_BM/Sam18_hornby/Sam18_exp.hdf'
+    log_file = '/media/DISK_01/databank/Sangid/Sam01/Sam01_exp.hdf'
 
     #Read APS 2-BM log file data
     f = SD.SD(log_file)
@@ -49,7 +49,7 @@ def main():
     f.end()
     
     white_start = 1
-    white_end = 2
+    white_end = 2 
     projections_start = 2
     projections_end = projections_start + (int)((end_angle -  start_angle) / angle_interval) + 1
     dark_start = projections_end + 1 
@@ -60,8 +60,8 @@ def main():
     # to reconstruct a subset of slices set slices_start and slices_end
     # if omitted the full data set is recontructed
     
-    slices_start = 800    
-    slices_end = 804    
+    slices_start = 1365
+    slices_end = 1367
 
     mydata = dx.Import()
     # Read series of images
@@ -96,7 +96,7 @@ def main():
     #d.optimize_center()
     #d.phase_retrieval()
     #d.correct_drift()
-    d.center=1023.4
+    d.center=1059.2
     d.gridrec()
 
 

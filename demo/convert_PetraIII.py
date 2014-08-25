@@ -116,7 +116,7 @@ def main():
     file_name = '/local/dataraid/databank/PetraIII/2011_KW16_oster/oster02_0001/scan_0002/ccd/pco01/ccd_.tif'
     dark_file_name = '/local/dataraid/databank/PetraIII/2011_KW16_oster/oster02_0001/scan_0000/ccd/pco01/ccd_.tif'
     white_file_name = '/local/dataraid/databank/PetraIII/2011_KW16_oster/oster02_0001/scan_0001/ccd/pco01/ccd_.tif'
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/PetraIII_oster02_0001.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/PetraIII_oster02_0001.h5'
 
 
     projections_start = 0

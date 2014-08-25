@@ -28,11 +28,14 @@ dependency   version  URL
 ===========  =======  ====================================================
 NumPy        1.8.0    http://www.numpy.org 
 H5Py         2.2.1    http://www.h5py.org
-ez_setup     0.9      https://pypi.python.org/pypi/ez_setup
+pyhdf          -      https://pypi.python.org/pypi/pyhdf
+netCDF         -      https://pypi.python.org/pypi/netCDF4
 tifffile.py    -      http://www.lfd.uci.edu/~gohlke/code/tifffile.py.html
+PIL.image      -      http://www.pythonware.com/products/pil/
+ez_setup     0.9      https://pypi.python.org/pypi/ez_setup
 ===========  =======  ====================================================
 
-.. note:: tifffile is a Python module to read and write image data from and to TIFF files
+.. note:: tifffile is a Python module to read and write image data from and to TIFF files, pyhdf is required to support legacy APS-2BM hdf4 data and netCDF is required to support APS 13-BM data.
 
 
 External Dependencies
@@ -43,7 +46,7 @@ dependency  version  URL
 tifffile.c     -     http://www.lfd.uci.edu/~gohlke/code/tifffile.c.html
 ==========  =======  ===================================================  
 
-.. note:: tiffile.c is a Python C extension module used by tifffile.py for decoding PackBits and LZW encoded TIFF data
+.. note:: tiffile.c is a Python C extension module used by tifffile.py for decoding PackBits and LZW encoded TIFF data. It is already included in Data Exchange and it will be installed by its ``setup.py``. 
 
 
 Quick Install
@@ -52,7 +55,7 @@ Quick Install
 ==========  ==============================================================================================================
 from        procedure
 ==========  ==============================================================================================================
-source      #. download latest source tarball from https://github.com/data-exchange/data-exchange/releases then
+source      #. download the source from `release`_, `master`_ or `beta`_ then
             #. ``python setup.py install`` or ``python setup.py install --user`` in the directory where *setup.py* resides 
 ==========  ==============================================================================================================
 
@@ -72,8 +75,8 @@ Install Example
 
 Here is a complete example of the installation:
 
-#. download latest source .tar.gz from https://github.com/data-exchange/data-exchange/releases
-#. expand the source .tar.gz into a new directory, build and install with these commands::
+#. download the source from `release`_, `master`_ or `beta`_ 
+#. expand the source .tar.gz or .zip into a new directory, build and install with these commands::
 
      /bin/tcsh
      setenv SANDBOX /tmp/sandbox
@@ -93,3 +96,7 @@ Here is a complete example of the installation:
      echo "C_INCLUDE_PATH = $C_INCLUDE_PATH"
      echo "PYTHONPATH = $PYTHONPATH"
      python -c "import dataexchange"
+
+.. _release: https://github.com/data-exchange/data-exchange/releases
+.. _master: https://github.com/data-exchange/data-exchange/archive/master.zip
+.. _beta: https://github.com/data-exchange/data-exchange/archive/develop.zip

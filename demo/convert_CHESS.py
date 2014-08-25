@@ -18,7 +18,7 @@ def main():
     dark_file_name = '/local/dataraid/databank/CHESS/scan1/scan1_dark_.tiff'
     white_file_name = '/local/dataraid/databank/CHESS/scan1/scan1_white_.tiff'
 
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/CHESS_02.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/CHESS_02.h5'
     sample_name = 'Dummy'
 
     projections_start = 1
@@ -33,16 +33,16 @@ def main():
 
     # set to convert slices between slices_start and slices_end
     # if omitted all data set will be converted   
-    slices_start = 400    
-    slices_end = 405    
+#    slices_start = 400    
+#    slices_end = 405    
 
     mydata = dx.Import()
     # Read series of images
     data, white, dark, theta = mydata.series_of_images(file_name,
                                                        projections_start = projections_start,
                                                        projections_end = projections_end,
-                                                       slices_start = slices_start,
-                                                       slices_end = slices_end,
+#                                                       slices_start = slices_start,
+#                                                       slices_end = slices_end,
                                                        sample_name = sample_name,
                                                        projections_digits = 3,
                                                        projections_zeros = True,
