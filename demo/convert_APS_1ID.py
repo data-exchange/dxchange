@@ -1,13 +1,31 @@
 # -*- coding: utf-8 -*-
 """
-.. module:: main_convert_APS_1ID.py
+.. module:: convert_ALS_legacy.py
    :platform: Unix
-   :synopsis: Convert APS 1-ID TIFF files in data exchange.
+   :synopsis: Convert ALS TIFF files in data exchange.
 
-.. moduleauthor:: Francesco De Carlo <decarlof@gmail.com>
+Example on how to use the `series_of_images`_ module to read ALS raw tomographic data and save them as Data Exchange
+
+:Author:
+  `Francesco De Carlo <mailto: decarlof@gmail.com>`_
+
+:Organization:
+  Argonne National Laboratory, Argonne, IL 60439 USA
+
+:Version: 2014.08.15
 
 
-""" 
+Examples
+--------
+
+>>> add example here 
+>>> add example here 
+>>> add example here 
+>>> add example here 
+>>> add example here 
+
+.. _series_of_images: dataexchange.xtomo.xtomo_importer.html
+"""
 
 import dataexchange.xtomo.xtomo_importer as dx
 import dataexchange.xtomo.xtomo_exporter as ex
@@ -57,10 +75,6 @@ def main():
 ##    white_end = 1853
 ##    dark_start = 1854
 ##    dark_end = 1863
-
-    print projections_start, projections_end
-    print dark_start, dark_end
-    print white_start, white_end
    
     # set to convert slices between slices_start and slices_end
     # if omitted all data set will be converted   

@@ -1,12 +1,32 @@
+# -*- coding: utf-8 -*-
 """
-.. module:: main_convert_Diamond.py
+.. module:: convert_ALS_legacy.py
    :platform: Unix
-   :synopsis: Convert Diamond JEEP (I12) NeXus files in data exchange.
+   :synopsis: Convert ALS TIFF files in data exchange.
 
-.. moduleauthor:: Francesco De Carlo <decarlof@gmail.com>
+Example on how to use the `series_of_images`_ module to read ALS raw tomographic data and save them as Data Exchange
+
+:Author:
+  `Francesco De Carlo <mailto: decarlof@gmail.com>`_
+
+:Organization:
+  Argonne National Laboratory, Argonne, IL 60439 USA
+
+:Version: 2014.08.15
 
 
-""" 
+Examples
+--------
+
+>>> add example here 
+>>> add example here 
+>>> add example here 
+>>> add example here 
+>>> add example here 
+
+.. _series_of_images: dataexchange.xtomo.xtomo_importer.html
+"""
+
 from data_exchange import DataExchangeFile, DataExchangeEntry
 from data_exchange.data_convert import Convert
 
