@@ -2,14 +2,31 @@
 """
 .. module:: import_tomoPy_APS_2BM.py
    :platform: Unix
-   :synopsis: reconstruct APS 2-BM hdf4 data with TomoPy
-   :INPUT
-       APS 2_BM exp file or data exchange 
+   :synopsis: Import APS 2-BM HDF4 files in data exchange.
 
-.. moduleauthor:: Francesco De Carlo <decarlof@gmail.com>
+Example on how to use the `series_of_images`_ module to read APS 2-BM HDF4 raw tomographic data and reconstruct using tomoPy
+
+:Author:
+  `Francesco De Carlo <mailto: decarlof@gmail.com>`_
+
+:Organization:
+  Argonne National Laboratory, Argonne, IL 60439 USA
+
+:Version: 2014.08.15
 
 
-""" 
+Examples
+--------
+
+>>> add example here 
+>>> add example here 
+>>> add example here 
+>>> add example here 
+>>> add example here 
+
+.. _series_of_images: dataexchange.xtomo.xtomo_importer.html
+"""
+
 from pyhdf import SD
 import os
 
@@ -79,14 +96,6 @@ def main():
                                                        log='INFO'
                                                        )
 
-##    # if you have already created a data exchange file using convert_APS_2BM.py module,
-##    # comment the call above and read the data set as data exchange 
-##    # Read HDF5 file.
-##
-##    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/Hornby_19keV_10x_APS_2011_01.h5'
-##    data, white, dark, theta = tomopy.xtomo_reader(hdf5_file_name,
-##                                                   slices_start=0,
-##                                                   slices_end=2)
 
     # TomoPy xtomo object creation and pipeline of methods.  
     d = tomopy.xtomo_dataset(log='debug')

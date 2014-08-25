@@ -48,7 +48,7 @@ class Import():
                          dark_zeros=True,
                          dtype='uint16',
                          data_type='tiff',
-                         sample_name=None,
+#                         sample_name=None,
                          log='INFO'):
         """
         Read a stack of 2-D HDF4, TIFF, spe or netCDF images.

@@ -37,7 +37,7 @@ def main():
     file_name = '/local/dataraid/databank/SLS_2011/Ashley/3e_final_2_.tif'
     log_file = '/local/dataraid/databank/SLS_2011/Ashley/3e_final_2_.log'
 
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/Ashley_SLS.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/Northwestern.h5'
 
     #Read SLS log file data
     file = open(log_file, 'r')

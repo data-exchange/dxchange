@@ -1,4 +1,31 @@
 # -*- coding: utf-8 -*-
+"""
+.. module:: import_tomoPy_CHESS.py
+   :platform: Unix
+   :synopsis: Import CHESS TIFF files in data exchange.
+
+Example on how to use the `series_of_images`_ module to read CHESS TIFF raw tomographic data and reconstruct with tomoPy
+
+:Author:
+  `Francesco De Carlo <mailto: decarlof@gmail.com>`_
+
+:Organization:
+  Argonne National Laboratory, Argonne, IL 60439 USA
+
+:Version: 2014.08.15
+
+
+Examples
+--------
+
+>>> add example here 
+>>> add example here 
+>>> add example here 
+>>> add example here 
+>>> add example here 
+
+.. _series_of_images: dataexchange.xtomo.xtomo_importer.html
+"""
 
 import tomopy
 import dataexchange.xtomo.xtomo_importer as dx
@@ -9,9 +36,6 @@ def main():
     file_name = '/local/dataraid/databank/CHESS/scan1/scan1_.tiff'
     dark_file_name = '/local/dataraid/databank/CHESS/scan1/scan1_dark_.tiff'
     white_file_name = '/local/dataraid/databank/CHESS/scan1/scan1_white_.tiff'
-
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/CHESS_02.h5'
-    sample_name = 'Dummy'
 
     projections_start = 1
     projections_end = 361
@@ -35,16 +59,10 @@ def main():
                                                        projections_end = projections_end,
                                                        slices_start = slices_start,
                                                        slices_end = slices_end,
-                                                       sample_name = sample_name,
                                                        projections_digits = 3,
                                                        projections_zeros = True,
                                                        log='INFO'
                                                     )    
-    # and/or read as data exchange
-    # Read HDF5 file.
-    ##data, white, dark, theta = tomopy.xtomo_reader('/local/dataraid/databank/dataExchange/microCT/CHESS_01.h5',
-    ##                                               slices_start=100,
-    ##                                               slices_end=101)
 
     # Xtomo object creation and pipeline of methods.  
     d = tomopy.xtomo_dataset(log='debug')
@@ -59,7 +77,7 @@ def main():
 
 
     # Write to stack of TIFFs.
-    tomopy.xtomo_writer(d.data_recon, 'tmp/CHESS_scan1_', axis=0)
+    tomopy.xtomo_writer(d.data_recon, 'tmp/CHESS_', axis=0)
 
 if __name__ == "__main__":
     main()

@@ -38,7 +38,7 @@ def main():
 
     log_file = '/local/dataraid/databank/Sangid/Sam01/Sam01_exp.hdf'
 
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/APS_02BM_HDF4.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/APS_2BM_HDF4.h5'
 
     #Read APS 2-BM log file data
     f = SD.SD(log_file)

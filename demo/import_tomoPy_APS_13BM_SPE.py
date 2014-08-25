@@ -2,14 +2,30 @@
 """
 .. module:: import_tomoPy_APS_13BM_SPE.py
    :platform: Unix
-   :synopsis: reconstruct APS 13-BM SPE data with TomoPy
-   :INPUT
-       series of SPE files or data exchange 
+   :synopsis: Import APS 13-BM SPE files in data exchange.
 
-.. moduleauthor:: Francesco De Carlo <decarlof@gmail.com>
+Example on how to use the `series_of_images`_ module to read APS 13-BM SPE raw tomographic data and reconstruct using tomoPy
+
+:Author:
+  `Francesco De Carlo <mailto: decarlof@gmail.com>`_
+
+:Organization:
+  Argonne National Laboratory, Argonne, IL 60439 USA
+
+:Version: 2014.08.15
 
 
-""" 
+Examples
+--------
+
+>>> add example here 
+>>> add example here 
+>>> add example here 
+>>> add example here 
+>>> add example here 
+
+.. _series_of_images: dataexchange.xtomo.xtomo_importer.html
+"""
 # tomoPy: https://github.com/tomopy/tomopy
 import tomopy 
 
@@ -22,7 +38,7 @@ import re
 def main():
     # read a series of SPE
     file_name = '/local/dataraid/databank/APS_13_BM/SPE/run2_soln1_2_.SPE'
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/APS_13_BM_test_04.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/APS_13_BM_SPE.h5'
 
     white_start = 1
     white_end = 8

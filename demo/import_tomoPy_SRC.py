@@ -1,15 +1,32 @@
 # -*- coding: utf-8 -*-
 """
-.. module:: import_tomoPy_SLS.py
+.. module:: import_tomoPy_SRC.py
    :platform: Unix
-   :synopsis: reconstruct SLS Tomcat data with TomoPy
-   :INPUT
-       series of tiff and log file or data exchange 
+   :synopsis: Import Synchrotron Radiation Center DPT files in data exchange.
 
-.. moduleauthor:: Francesco De Carlo <decarlof@gmail.com>
+Example on how to use the `series_of_images`_ module to read Synchrotron Radiation Center Infrared raw tomographic data and reconstruct with tomoPy
+
+:Author:
+  `Francesco De Carlo <mailto: decarlof@gmail.com>`_
+
+:Organization:
+  Argonne National Laboratory, Argonne, IL 60439 USA
+
+:Version: 2014.08.15
 
 
-""" 
+Examples
+--------
+
+>>> add example here 
+>>> add example here 
+>>> add example here 
+>>> add example here 
+>>> add example here 
+
+.. _series_of_images: dataexchange.xtomo.xtomo_importer.html
+"""
+
 # tomoPy: https://github.com/tomopy/tomopy
 import tomopy 
 

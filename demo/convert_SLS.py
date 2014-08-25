@@ -34,11 +34,6 @@ import re
 
 def main():
 
-##    file_name = '/local/dataraid/databank/SLS_2011/Blakely_SLS/Blakely.tif'
-##    log_file = '/local/dataraid/databank/SLS_2011/Blakely_SLS/Blakely.log'
-##
-##    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/Blakely_SLS_2011.h5'
-
     file_name = '/local/dataraid/databank/SLS_2011/Hornby_SLS/Hornby_b.tif'
     log_file = '/local/dataraid/databank/SLS_2011/Hornby_SLS/Hornby.log'
 

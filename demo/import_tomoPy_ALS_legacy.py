@@ -1,15 +1,31 @@
 # -*- coding: utf-8 -*-
 """
-.. module:: import_tomoPy_ALS.py
+.. module:: import_ALS_legacy.py
    :platform: Unix
-   :synopsis: reconstruct ALS tiff data with TomoPy
-   :INPUT
-       series of tiff and sct file or data exchange 
+   :synopsis: Import ALS TIFF files in data exchange.
 
-.. moduleauthor:: Francesco De Carlo <decarlof@gmail.com>
+Example on how to use the `series_of_images`_ module to read ALS raw tomographic data and reconstruct using tomoPy
+
+:Author:
+  `Francesco De Carlo <mailto: decarlof@gmail.com>`_
+
+:Organization:
+  Argonne National Laboratory, Argonne, IL 60439 USA
+
+:Version: 2014.08.15
 
 
-""" 
+Examples
+--------
+
+>>> add example here 
+>>> add example here 
+>>> add example here 
+>>> add example here 
+>>> add example here 
+
+.. _series_of_images: dataexchange.xtomo.xtomo_importer.html
+"""
 # tomoPy: https://github.com/tomopy/tomopy
 import tomopy 
 
@@ -20,13 +36,11 @@ import re
 
 
 def main():
-    # read a series of tiff
+
     file_name = '/local/dataraid/databank/ALS_2011/Blakely/blakely_raw/blakelyALS_.tif'
     dark_file_name = '/local/dataraid/databank/ALS_2011/Blakely/blakely_raw/blakelyALSdrk_.tif'
     white_file_name = '/local/dataraid/databank/ALS_2011/Blakely/blakely_raw/blakelyALSbak_.tif'
     log_file = '/local/dataraid/databank/ALS_2011/Blakely/blakely_raw/blakelyALS.sct'
-
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/blakely_ALS_2011_test.h5'
 
     verbose = True
 
@@ -96,13 +110,6 @@ def main():
                                                        log='INFO'
                                                        )
 
-##    # if you have already created a data exchange file using convert_SLS.py module,
-##    # comment the call above and read the data set as data exchange 
-##    # Read HDF5 file.
-##    data, white, dark, theta = tomopy.xtomo_reader(hdf5_file_name,
-##                                                   slices_start=0,
-##                                                   slices_end=2)
-
     # TomoPy xtomo object creation and pipeline of methods.  
     d = tomopy.xtomo_dataset(log='debug')
     d.dataset(data, white, dark, theta)
@@ -116,7 +123,7 @@ def main():
 
 
     # Write to stack of TIFFs.
-    tomopy.xtomo_writer(d.data_recon, 'tmp/ALS_', axis=0)
+    tomopy.xtomo_writer(d.data_recon, 'tmp/ALS_legacy_', axis=0)
 
 if __name__ == "__main__":
     main()

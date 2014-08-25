@@ -2,14 +2,31 @@
 """
 .. module:: import_tomoPy_SLS.py
    :platform: Unix
-   :synopsis: reconstruct SLS Tomcat data with TomoPy
-   :INPUT
-       series of tiff and log file or data exchange 
+   :synopsis: Import SLS TOMCAT TIFF files in data exchange.
 
-.. moduleauthor:: Francesco De Carlo <decarlof@gmail.com>
+Example on how to use the `series_of_images`_ module to read SLS TOMCAT TIFF raw tomographic data and reconstruct with tomoPy
+
+:Author:
+  `Francesco De Carlo <mailto: decarlof@gmail.com>`_
+
+:Organization:
+  Argonne National Laboratory, Argonne, IL 60439 USA
+
+:Version: 2014.08.15
 
 
-""" 
+Examples
+--------
+
+>>> add example here 
+>>> add example here 
+>>> add example here 
+>>> add example here 
+>>> add example here 
+
+.. _series_of_images: dataexchange.xtomo.xtomo_importer.html
+"""
+
 # tomoPy: https://github.com/tomopy/tomopy
 import tomopy 
 
@@ -23,8 +40,6 @@ def main():
     # read a series of tiff
     file_name = '/local/dataraid/databank/SLS_2011/Hornby_SLS/Hornby_b.tif'
     log_file = '/local/dataraid/databank/SLS_2011/Hornby_SLS/Hornby.log'
-
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/Hornby_SLS_2011_01.h5'
 
     
     #Read SLS log file data
@@ -73,13 +88,6 @@ def main():
                                                        dark_end = dark_end,
                                                        log='INFO'
                                                        )
-
-##    # if you have already created a data exchange file using convert_SLS.py module,
-##    # comment the call above and read the data set as data exchange 
-##    # Read HDF5 file.
-##    data, white, dark, theta = tomopy.xtomo_reader(hdf5_file_name,
-##                                                   slices_start=0,
-##                                                   slices_end=2)
 
     # TomoPy xtomo object creation and pipeline of methods.  
     d = tomopy.xtomo_dataset(log='debug')

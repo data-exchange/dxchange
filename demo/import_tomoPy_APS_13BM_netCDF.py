@@ -2,14 +2,30 @@
 """
 .. module:: import_tomoPy_APS_13BM_netCDF.py
    :platform: Unix
-   :synopsis: reconstruct APS 13-BM netCDF data with TomoPy
-   :INPUT
-       series of netCDF files or data exchange 
+   :synopsis: Import APS 13-BM netCDF files in data exchange.
 
-.. moduleauthor:: Francesco De Carlo <decarlof@gmail.com>
+Example on how to use the `series_of_images`_ module to read APS 13-BM netCDF raw tomographic data and and reconstruct using tomoPy
+
+:Author:
+  `Francesco De Carlo <mailto: decarlof@gmail.com>`_
+
+:Organization:
+  Argonne National Laboratory, Argonne, IL 60439 USA
+
+:Version: 2014.08.15
 
 
-""" 
+Examples
+--------
+
+>>> add example here 
+>>> add example here 
+>>> add example here 
+>>> add example here 
+>>> add example here 
+
+.. _series_of_images: dataexchange.xtomo.xtomo_importer.html
+"""
 # tomoPy: https://github.com/tomopy/tomopy
 import tomopy 
 
@@ -22,7 +38,6 @@ import re
 def main():
     # read a series of netCDF
     file_name = '/local/dataraid/databank/APS_13_BM/NC/Dorthe_F_.nc'
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/APS_13_BM_NC_test_02.h5'
 
     white_start = 1
     white_end = 4
@@ -51,13 +66,6 @@ def main():
                                                        data_type='nc',
                                                        log='INFO'
                                                        )
-
-##    # if you have already created a data exchange file using convert_SLS.py module,
-##    # comment the call above and read the data set as data exchange 
-##    # Read HDF5 file.
-##    data, white, dark, theta = tomopy.xtomo_reader(hdf5_file_name,
-##                                                   slices_start=0,
-##                                                   slices_end=2)
 
     # TomoPy xtomo object creation and pipeline of methods.  
     d = tomopy.xtomo_dataset(log='debug')

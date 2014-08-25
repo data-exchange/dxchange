@@ -2,14 +2,31 @@
 """
 .. module:: import_tomoPy_APS_1ID.py
    :platform: Unix
-   :synopsis: reconstruct APS 1-ID with TomoPy
-   :INPUT
-       series of tiff or data exchange 
+   :synopsis: Import APS 1-ID TIFF files in data exchange.
 
-.. moduleauthor:: Francesco De Carlo <decarlof@gmail.com>
+Example on how to use the `series_of_images`_ module to read APS 1-ID TIFF raw tomographic data and reconstruct using tomoPy
+
+:Author:
+  `Francesco De Carlo <mailto: decarlof@gmail.com>`_
+
+:Organization:
+  Argonne National Laboratory, Argonne, IL 60439 USA
+
+:Version: 2014.08.15
 
 
-""" 
+Examples
+--------
+
+>>> add example here 
+>>> add example here 
+>>> add example here 
+>>> add example here 
+>>> add example here 
+
+.. _series_of_images: dataexchange.xtomo.xtomo_importer.html
+"""
+
 # tomoPy: https://github.com/tomopy/tomopy
 import tomopy 
 
@@ -22,7 +39,7 @@ def main():
     file_name = '/local/dataraid/databank/APS_1_ID/APS1ID_Cat4B_2/CAT4B_2_.tif'
     log_file = '/local/dataraid/databank/APS_1_ID/APS1ID_Cat4B_2/CAT4B_2_TomoStillScan.dat'
 
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/CAT4B_2_test_01.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/APS_1ID.h5'
 
     #Read APS 1-ID log file data
     file = open(log_file, 'r')
@@ -85,12 +102,6 @@ def main():
                                                        log='INFO'
                                                        )
 
-##    # if you have already created a data exchange file using convert_SLS.py module,
-##    # comment the call above and read the data set as data exchange 
-##    # Read HDF5 file.
-##    data, white, dark, theta = tomopy.xtomo_reader(hdf5_file_name,
-##                                                   slices_start=0,
-##                                                   slices_end=2)
 
     # TomoPy xtomo object creation and pipeline of methods.  
     d = tomopy.xtomo_dataset(log='debug')

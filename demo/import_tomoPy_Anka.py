@@ -2,14 +2,31 @@
 """
 .. module:: import_tomoPy_Anka.py
    :platform: Unix
-   :synopsis: reconstruct ANKA Synchrotron Facility data with TomoPy
-   :INPUT
-       series of tiff or data exchange 
+   :synopsis: Import Anka TIFF files in data exchange.
 
-.. moduleauthor:: Francesco De Carlo <decarlof@gmail.com>
+Example on how to use the `series_of_images`_ module to read Anka TIFF raw tomographic data and reconstruct using tomoPy
+
+:Author:
+  `Francesco De Carlo <mailto: decarlof@gmail.com>`_
+
+:Organization:
+  Argonne National Laboratory, Argonne, IL 60439 USA
+
+:Version: 2014.08.15
 
 
-""" 
+Examples
+--------
+
+>>> add example here 
+>>> add example here 
+>>> add example here 
+>>> add example here 
+>>> add example here 
+
+.. _series_of_images: dataexchange.xtomo.xtomo_importer.html
+"""
+
 # tomoPy: https://github.com/tomopy/tomopy
 import tomopy 
 
@@ -19,11 +36,9 @@ import dataexchange.xtomo.xtomo_importer as dx
 
 def main():
     # read a series of tiff
-    file_name = '/media/DISK_01/databank/Anka/radios/image_.tif'
-    dark_file_name = '/media/DISK_01/databank/Anka/darks/image_.tif'
-    white_file_name = '/media/DISK_01/databank/Anka/flats/image_.tif'
-
-    hdf5_file_name = '/media/DISK_01/databank/dataExchange/microCT/Anka_test.h5'
+    file_name = '/local/dataraid/databank/Anka/radios/image_.tif'
+    dark_file_name = '/local/dataraid/databank/Anka/darks/image_.tif'
+    white_file_name = '/local/dataraid/databank/Anka/flats/image_.tif'
 
     projections_start = 0
     projections_end = 3167
@@ -71,7 +86,7 @@ def main():
 
 
     # Write to stack of TIFFs.
-    tomopy.xtomo_writer(d.data_recon, 'tmp/ANKA_LAST', axis=0)
+    tomopy.xtomo_writer(d.data_recon, 'tmp/ANKA_', axis=0)
 
 if __name__ == "__main__":
     main()
