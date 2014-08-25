@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-.. module:: convert_ALS_legacy.py
+.. module:: convert_APS_1ID.py
    :platform: Unix
-   :synopsis: Convert ALS TIFF files in data exchange.
+   :synopsis: Convert APS 1-ID TIFF files in data exchange.
 
-Example on how to use the `series_of_images`_ module to read ALS raw tomographic data and save them as Data Exchange
+Example on how to use the `series_of_images`_ module to read APS 1-ID TIFF raw tomographic data and save them as Data Exchange
 
 :Author:
   `Francesco De Carlo <mailto: decarlof@gmail.com>`_
@@ -37,7 +37,7 @@ def main():
     file_name = '/local/dataraid/databank/APS_1_ID/APS1ID_Cat4B_2/CAT4B_2_.tif'
     log_file = '/local/dataraid/databank/APS_1_ID/APS1ID_Cat4B_2/CAT4B_2_TomoStillScan.dat'
 
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/CAT4B_2_test_01.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/APS_01ID.h5'
 
     #Read APS 1-ID log file data
     file = open(log_file, 'r')

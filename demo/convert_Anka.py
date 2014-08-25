@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-.. module:: convert_ALS_legacy.py
+.. module:: convert_Anka.py
    :platform: Unix
-   :synopsis: Convert ALS TIFF files in data exchange.
+   :synopsis: Convert Anka TIFF files in data exchange.
 
-Example on how to use the `series_of_images`_ module to read ALS raw tomographic data and save them as Data Exchange
+Example on how to use the `series_of_images`_ module to read Anka TIFF raw tomographic data and save them as Data Exchange
 
 :Author:
   `Francesco De Carlo <mailto: decarlof@gmail.com>`_
@@ -38,7 +38,7 @@ def main():
     dark_file_name = '/local/dataraid/databank/Anka/darks/image_.tif'
     white_file_name = '/local/dataraid/databank/Anka/flats/image_.tif'
 
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/Anka_LAST.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/Anka.h5'
 
     projections_start = 0
     projections_end = 3167

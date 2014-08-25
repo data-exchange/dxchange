@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-.. module:: convert_ALS_legacy.py
+.. module:: convert_Australian.py
    :platform: Unix
-   :synopsis: Convert ALS TIFF files in data exchange.
+   :synopsis: Convert Australian Synchrotron Facility TIFF files in data exchange.
 
-Example on how to use the `series_of_images`_ module to read ALS raw tomographic data and save them as Data Exchange
+Example on how to use the `series_of_images`_ module to read Australian Synchrotron Facility TIFF raw tomographic data and save them as Data Exchange
 
 :Author:
   `Francesco De Carlo <mailto: decarlof@gmail.com>`_
@@ -35,7 +35,7 @@ def main():
     file_name = '/local/dataraid/databank/AS/Mayo_tooth_AS/SAMPLE_T_.tif'
     dark_file_name = '/local/dataraid/databank/AS/Mayo_tooth_AS/DF__AFTER_.tif'
     white_file_name = '/local/dataraid/databank/AS/Mayo_tooth_AS/BG__BEFORE_.tif'
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/Australian_test.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/Australian.h5'
     sample_name = 'Teeth'
 
     projections_start = 0

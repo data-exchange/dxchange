@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-.. module:: convert_ALS_legacy.py
+.. module:: convert_APS_2BM.py
    :platform: Unix
-   :synopsis: Convert ALS TIFF files in data exchange.
+   :synopsis: Convert APS 2-BM HDF4 files in data exchange.
 
-Example on how to use the `series_of_images`_ module to read ALS raw tomographic data and save them as Data Exchange
+Example on how to use the `series_of_images`_ module to read APS 2-BM HDF4 raw tomographic data and save them as Data Exchange
 
 :Author:
   `Francesco De Carlo <mailto: decarlof@gmail.com>`_
@@ -38,7 +38,7 @@ def main():
 
     log_file = '/local/dataraid/databank/Sangid/Sam01/Sam01_exp.hdf'
 
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/Sangid_ShortFiber.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/APS_02BM_HDF4.h5'
 
     #Read APS 2-BM log file data
     f = SD.SD(log_file)

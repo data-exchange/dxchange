@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-.. module:: convert_ALS_legacy.py
+.. module:: convert_SLS.py
    :platform: Unix
-   :synopsis: Convert ALS TIFF files in data exchange.
+   :synopsis: Convert SLS TOMCAT TIFF files in data exchange.
 
-Example on how to use the `series_of_images`_ module to read ALS raw tomographic data and save them as Data Exchange
+Example on how to use the `series_of_images`_ module to read SLS TOMCAT TIFF raw tomographic data and save them as Data Exchange
 
 :Author:
   `Francesco De Carlo <mailto: decarlof@gmail.com>`_
@@ -42,7 +42,7 @@ def main():
     file_name = '/local/dataraid/databank/SLS_2011/Hornby_SLS/Hornby_b.tif'
     log_file = '/local/dataraid/databank/SLS_2011/Hornby_SLS/Hornby.log'
 
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/Hornby_SLS_2011_01.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/SLS.h5'
 
     
     #Read SLS log file data

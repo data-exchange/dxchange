@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-.. module:: convert_ALS_legacy.py
+.. module:: convert_ALS.py
    :platform: Unix
    :synopsis: Convert ALS TIFF files in data exchange.
 
@@ -40,7 +40,7 @@ def main():
     white_file_name = '/local/dataraid/databank/als/data/raw/sacarroll/20140731_001306_2477A_x00y08/20140731_001306_2477A_x00y08bak_.tif'
     log_file = '/local/dataraid/databank/als/data/raw/sacarroll/20140731_001306_2477A_x00y08/20140731_001306_2477A_x00y08.sct'
 
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/ALS_20140731.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/ALS.h5'
 
     verbose = True
 

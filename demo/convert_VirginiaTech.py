@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-.. module:: convert_ALS_legacy.py
+.. module:: convert_VirginiaTech.py
    :platform: Unix
-   :synopsis: Convert ALS TIFF files in data exchange.
+   :synopsis: Convert APS 2-BM TIFF files in data exchange.
 
-Example on how to use the `series_of_images`_ module to read ALS raw tomographic data and save them as Data Exchange
+Example on how to use the `series_of_images`_ module to read APS 2-BM TIFF raw tomographic data and save them as Data Exchange
 
 :Author:
   `Francesco De Carlo <mailto: decarlof@gmail.com>`_
@@ -35,7 +35,7 @@ def main():
     file_name = '/local/dataraid/databank/VirginiaTech/test_sample_Diplo_4/Diplodocus_1_200mm_4_.tif'
     dark_file_name = '/local/dataraid/databank/VirginiaTech/test_sample_Diplo_4/Diplodocus_1_200mm_4postDark_.tif'
     white_file_name = '/local/dataraid/databank/VirginiaTech/test_sample_Diplo_4/Diplodocus_1_200mm_4postFlat_.tif'
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/VirginiaTech_test.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/VirginiaTech.h5'
     sample_name = 'Diplodocus_1_200mm_'
 
     projections_start = 1 # projection 0 is dark so we skip it

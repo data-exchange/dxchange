@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-.. module:: convert_ALS_legacy.py
+.. module:: convert_PetraIII.py
    :platform: Unix
-   :synopsis: Convert ALS TIFF files in data exchange.
+   :synopsis: Convert Petra III P05 and P06 TIFF files in data exchange.
 
-Example on how to use the `series_of_images`_ module to read ALS raw tomographic data and save them as Data Exchange
+Example on how to use the `series_of_images`_ module to read  Petra III P05 and P06 TIFF raw tomographic data and save them as Data Exchange
 
 :Author:
   `Francesco De Carlo <mailto: decarlof@gmail.com>`_
@@ -116,7 +116,7 @@ def main():
     file_name = '/local/dataraid/databank/PetraIII/2011_KW16_oster/oster02_0000/scan_0002/ccd/pco01/ccd_.tif'
     dark_file_name = '/local/dataraid/databank/PetraIII/2011_KW16_oster/oster02_0000/scan_0000/ccd/pco01/ccd_.tif'
     white_file_name = '/local/dataraid/databank/PetraIII/2011_KW16_oster/oster02_0000/scan_0001/ccd/pco01/ccd_.tif'
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/PetraIII_oster02_0000.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/PetraIII.h5'
 
 
     projections_start = 0

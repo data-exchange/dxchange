@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-.. module:: convert_ALS_legacy.py
+.. module:: convert_APS_13BM_SPE.py
    :platform: Unix
-   :synopsis: Convert ALS TIFF files in data exchange.
+   :synopsis: Convert APS 13-BM SPE files in data exchange.
 
-Example on how to use the `series_of_images`_ module to read ALS raw tomographic data and save them as Data Exchange
+Example on how to use the `series_of_images`_ module to read APS 13-BM SPE raw tomographic data and save them as Data Exchange
 
 :Author:
   `Francesco De Carlo <mailto: decarlof@gmail.com>`_
@@ -33,7 +33,7 @@ import dataexchange.xtomo.xtomo_exporter as ex
 def main():
 
     file_name = '/local/dataraid/databank/APS_13_BM/SPE/run2_soln1_2_.SPE'
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/APS_13_BM_test_07.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/APS_13_BM_SPE.h5'
 
     white_start = 1
     white_end = 8

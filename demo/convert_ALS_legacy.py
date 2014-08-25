@@ -40,7 +40,7 @@ def main():
     white_file_name = '/local/dataraid/databank/ALS_2011/Blakely/blakely_raw/blakelyALSbak_.tif'
     log_file = '/local/dataraid/databank/ALS_2011/Blakely/blakely_raw/blakelyALS.sct'
 
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/blakely_ALS_2011.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/ALS_legacy.h5'
 
     verbose = True
 

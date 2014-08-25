@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-.. module:: convert_ALS_legacy.py
+.. module:: convert_SRC.py
    :platform: Unix
-   :synopsis: Convert ALS TIFF files in data exchange.
+   :synopsis: Convert Synchrotron Radiation Center DPT files in data exchange.
 
-Example on how to use the `series_of_images`_ module to read ALS raw tomographic data and save them as Data Exchange
+Example on how to use the `series_of_images`_ module to read Synchrotron Radiation Center Infrared raw tomographic data and save them as Data Exchange
 
 :Author:
   `Francesco De Carlo <mailto: decarlof@gmail.com>`_
@@ -33,7 +33,7 @@ import dataexchange.xtomo.xtomo_exporter as ex
 def main():
 
     raw_tiff_base_name = "/local/dataraid/databank/dataExchange/microCT/SRC/raw/FPA_16_18_18_TOMO_243_Fiber_2500_50_50_"    
-    hdf5_base_name = "/local/dataraid/databank/dataExchange/tmp/FPA_16_18_18_TOMO_243_Fiber_2500_50_50_"    
+    hdf5_base_name = "/local/dataraid/databank/dataExchange/tmp/SRC_"    
    
     log_file = raw_tiff_base_name + "wavelength.dpt"
     angle_file = raw_tiff_base_name + "angle.dpt"

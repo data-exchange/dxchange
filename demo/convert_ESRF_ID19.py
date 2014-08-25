@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-.. module:: convert_ALS_legacy.py
+.. module:: convert_ESRF.py
    :platform: Unix
-   :synopsis: Convert ALS TIFF files in data exchange.
+   :synopsis: Convert ESRF edf files in data exchange.
 
-Example on how to use the `series_of_images`_ module to read ALS raw tomographic data and save them as Data Exchange
+Example on how to use the `series_of_images`_ module to read ESRF edf raw tomographic data and save them as Data Exchange
 
 :Author:
   `Francesco De Carlo <mailto: decarlof@gmail.com>`_
@@ -36,7 +36,7 @@ def main():
     dark_file_name = '/local/dataraid/databank/ESRF/dark.edf'
     white_file_name = '/local/dataraid/databank/ESRF/flat.edf'
 
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/ESRF_test_10.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/ESRF.h5'
 
     sample_name = 'esrf'
 

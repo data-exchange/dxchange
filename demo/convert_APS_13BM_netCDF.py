@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-.. module:: convert_ALS_legacy.py
+.. module:: convert_APS_13BM_netCDF.py
    :platform: Unix
-   :synopsis: Convert ALS TIFF files in data exchange.
+   :synopsis: Convert APS 13-BM netCDF files in data exchange.
 
-Example on how to use the `series_of_images`_ module to read ALS raw tomographic data and save them as Data Exchange
+Example on how to use the `series_of_images`_ module to read APS 13-BM netCDF raw tomographic data and save them as Data Exchange
 
 :Author:
   `Francesco De Carlo <mailto: decarlof@gmail.com>`_
@@ -33,7 +33,7 @@ import dataexchange.xtomo.xtomo_exporter as ex
 def main():
 
     file_name = '/local/dataraid/databank/APS_13_BM/NC/Dorthe_F_.nc'
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/APS_13_BM_Dorthe_F.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/APS_13_netCDF.h5'
 
     white_start = 1
     white_end = 4

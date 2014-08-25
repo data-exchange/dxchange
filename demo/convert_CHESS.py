@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-.. module:: convert_ALS_legacy.py
+.. module:: convert_CHESS.py
    :platform: Unix
-   :synopsis: Convert ALS TIFF files in data exchange.
+   :synopsis: Convert CHESS TIFF files in data exchange.
 
-Example on how to use the `series_of_images`_ module to read ALS raw tomographic data and save them as Data Exchange
+Example on how to use the `series_of_images`_ module to read CHESS TIFF raw tomographic data and save them as Data Exchange
 
 :Author:
   `Francesco De Carlo <mailto: decarlof@gmail.com>`_
@@ -36,7 +36,7 @@ def main():
     dark_file_name = '/local/dataraid/databank/CHESS/scan1/scan1_dark_.tiff'
     white_file_name = '/local/dataraid/databank/CHESS/scan1/scan1_white_.tiff'
 
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/CHESS_02.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/CHESS.h5'
     sample_name = 'Dummy'
 
     projections_start = 1
