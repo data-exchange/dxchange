@@ -355,7 +355,7 @@ class Import():
                     tmpdata = f.tiff(x_start=slices_start,
                                      x_end=slices_end,
                                      x_step=slices_step,
-                                     dtype='uint16')
+                                     dtype=dtype)
 
                 if ((data_type is 'tiff') or
                     (data_type is 'compressed_tiff') or

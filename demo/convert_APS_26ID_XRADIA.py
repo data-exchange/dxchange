@@ -42,7 +42,7 @@ def main():
     mydata = dx.Import()
     # Read series of images
     data, white, dark, theta = mydata.series_of_images(file_name,
-                                                       white_file_name = white_file_name,                                                       
+#                                                       white_file_name = white_file_name,                                                       
                                                        data_type='xradia',
                                                        log='INFO'
                                                     )    
