@@ -390,10 +390,10 @@ class Import():
                     tmpdata = f.hdf5(z_start = projections_start,
                                     	z_end = projections_end,
                                     	z_step = projections_step,
-					                    y_start = slices_start,
+					y_start = slices_start,
                                     	y_end = slices_end,
                                     	y_step = slices_step,
-					                    x_start = pixels_start,
+					x_start = pixels_start,
                                     	x_end = pixels_end,
                                     	x_step = pixels_step,
                                     	array_name='exchange/data')
@@ -509,10 +509,10 @@ class Import():
                     tmpdata = f.hdf5(z_start = projections_start,
                                     	z_end = projections_end,
                                     	z_step = projections_step,
-					y_start = slices_start,
+					                    y_start = slices_start,
                                     	y_end = slices_end,
                                     	y_step = slices_step,
-					x_start = pixels_start,
+					                    x_start = pixels_start,
                                     	x_end = pixels_end,
                                     	x_step = pixels_step,
                                     	array_name='exchange/data_white')
@@ -650,10 +650,10 @@ class Import():
                     tmpdata = f.hdf5(z_start = projections_start,
                                     	z_end = projections_end,
                                     	z_step = projections_step,
-					y_start = slices_start,
+                                        y_start = slices_start,
                                     	y_end = slices_end,
                                     	y_step = slices_step,
-					x_start = pixels_start,
+                                        x_start = pixels_start,
                                     	x_end = pixels_end,
                                     	x_step = pixels_step,
                                     	array_name='exchange/data_dark')
@@ -720,6 +720,12 @@ class Import():
                                     	y_end = slices_end,
                                     	y_step = slices_step,
 					array_name='exchange/theta')
+		xtomo.theta = tmpdata
+	elif (data_type is 'xradia'):
+		xtomo.logger.info("Attempt reading angles from file: [%s]", file_name)                    
+		f = XTomoReader(file_name)
+        	xtomo.logger.info("Angle file: [%s] exists", file_name)                    
+		tmpdata = f.txrm(array_name='exchange/theta')
 		xtomo.theta = tmpdata
 	else:
 	        # Fabricate theta values

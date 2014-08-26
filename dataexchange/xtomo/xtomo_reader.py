@@ -413,6 +413,7 @@ class XTomoReader:
                    y_start:y_end:y_step]
         
     def txrm(self,
+             array_name=None,
              x_start=0,
              x_end=0,
              x_step=1,
@@ -447,33 +448,37 @@ class XTomoReader:
         out : array
             Returns the data as a matrix.
         """
+        # Read data from file.
         reader = xradia.xrm()
         array = dstruct
 
-        # Read data from file.
-        reader.read_xrm(self.file_name,array)
-        num_x, num_y, num_z = np.shape(array.exchange.data)
+        try:
+            reader.read_txrm(self.file_name,array)
+            if (array_name == "exchange/theta"):
+                theta = np.asarray(array.exchange.angles)                
+                num_z = theta.size
+        	if z_end is 0:
+                    z_end = num_z
+		# Construct theta.
+        	dataset = theta[z_start:z_end:z_step]
+            else:
+                data = np.asarray(array.exchange.data)
+                num_x, num_y, num_z = np.shape(array.exchange.data)
+                data = np.swapaxes(data,0,2)
+                num_x, num_y, num_z = np.shape(data)
+                if x_end is 0:
+                    x_end = num_x
+                if y_end is 0:
+                    y_end = num_y
+                if z_end is 0:
+                    z_end = num_z
+                # Construct dataset from desired z, y, x.
+                dataset = data[x_start:x_end:x_step,
+                                y_start:y_end:y_step,
+                                z_start:z_end:z_step]                
+        except KeyError:
+            dataset = None
 
-        dt = np.zeros((num_x,num_y,num_z))
-        out = np.zeros((num_z-1,num_y,num_x))
-     
-        dt = array.exchange.data[:,:,:]
-        dt = np.rot90(dt)
-        for i in range(0,num_z-1):
-            out[i,:,:] = dt[:,:,i]
-
-        num_x, num_y, num_z = np.shape(out)
-        if x_end is 0:
-            x_end = num_x
-        if y_end is 0:
-            y_end = num_y
-        if z_end is 0:
-            z_end = num_z
-
-        # Construct dataset from desired y.
-        dataset = out[x_start:x_end:x_step,
-                        y_start:y_end:y_step,
-                        z_start:z_end:z_step]
         return dataset
        
     def xrm(self,
@@ -511,33 +516,29 @@ class XTomoReader:
         out : array
             Returns the data as a matrix.
         """
+        # Read data from file.
         reader = xradia.xrm()
         array = dstruct
 
-        # Read data from file.
-        reader.read_xrm(self.file_name,array)
-        num_x, num_y, num_z = np.shape(array.exchange.data)
+        try:
+            reader.read_xrm(self.file_name,array)
+            data = np.asarray(array.exchange.data)
+            num_x, num_y, num_z = np.shape(array.exchange.data)
+            data = np.swapaxes(data,0,2)
+            num_x, num_y, num_z = np.shape(data)
+            if x_end is 0:
+                x_end = num_x
+            if y_end is 0:
+                y_end = num_y
+            if z_end is 0:
+                z_end = num_z
+            # Construct dataset from desired z, y, x.
+            dataset = data[x_start:x_end:x_step,
+                            y_start:y_end:y_step,
+                            z_start:z_end:z_step]                
+        except KeyError:
+            dataset = None
 
-        dt = np.zeros((num_x,num_y,num_z))
-        out = np.zeros((num_z,num_y,num_x))
-     
-        dt = array.exchange.data[:,:,:]
-        dt = np.rot90(dt)
-        for i in range(0,num_z):
-            out[i,:,:] = dt[:,:,i]
-
-        num_x, num_y, num_z = np.shape(out)
-        if x_end is 0:
-            x_end = num_x
-        if y_end is 0:
-            y_end = num_y
-        if z_end is 0:
-            z_end = num_z
-
-        # Construct dataset from desired y.
-        dataset = out[x_start:x_end:x_step,
-                        y_start:y_end:y_step,
-                        z_start:z_end:z_step]
         return dataset
         
     def spe(self,

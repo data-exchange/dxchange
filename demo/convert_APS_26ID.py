@@ -34,14 +34,14 @@ def main():
 
     file_name = '/local/dataraid/databank/TXM_26_ID/20130731_004_Stripe_Solder_Sample_Tip1/Image_raw_.tif'
     # saturated white
-    #white_file_name = '/local/dataraid/databank/TXM_26_ID/20130731_004_Stripe_Solder_Sample_Tip1/Image_bg_.tif'
+    white_file_name = '/local/dataraid/databank/TXM_26_ID/20130731_004_Stripe_Solder_Sample_Tip1/Image_bg_.tif'
     hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/APS_26_ID.h5'
     sample_name = '20130731_004_Stripe_Solder_Sample_Tip1'
 
     projections_start = 0
     projections_end = 180
-#    white_start = 0
-#    white_end = 1
+    white_start = 0
+    white_end = 1
 
     # set to convert slices between slices_start and slices_end
     # if omitted all data set will be converted   
@@ -55,9 +55,9 @@ def main():
                                                        projections_end = projections_end,
 #                                                       slices_start = slices_start,
 #                                                       slices_end = slices_end,
-#                                                       white_file_name = white_file_name,                                                       
-#                                                       white_start = white_start,
-#                                                       white_end = white_end,
+                                                       white_file_name = white_file_name,                                                       
+                                                       white_start = white_start,
+                                                       white_end = white_end,
                                                        projections_digits = 3,
                                                        projections_zeros = False,
                                                        white_zeros = False,

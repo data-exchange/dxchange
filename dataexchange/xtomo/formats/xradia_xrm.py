@@ -85,7 +85,7 @@ class xrm:
             if verbose:print 'Energy value from filename = ', str_list[ev_ind-1]
             eV = float(str_list[ev_ind-1])
         except:
-            print 'Using energy stored in the file.'
+            if verbose:print 'Using energy stored in the file.'
             
         ole.close()
             
@@ -227,7 +227,7 @@ class xrm:
                 ev_ind = str_list.index('eV')
                 this_ev = float(str_list[ev_ind-1])
             except:
-                print 'Using energy stored in the file.'   
+                if verbose:print 'Using energy stored in the file.'   
                     
             ev[j] = this_ev
             
@@ -373,7 +373,7 @@ class xrm:
             eng = float(str_list[ev_ind-1])
             self.ev = [eng]
         except:
-            print 'Using energy stored in the file.'
+            if verbose:print 'Using energy stored in the file.'
             
         self.ev = np.array(self.ev)
                 
