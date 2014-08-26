@@ -33,8 +33,8 @@ import dataexchange.xtomo.xtomo_exporter as ex
 def main():
 
     file_name = '/local/dataraid/databank/TXM_26_ID/20130731_004_Stripe_Solder_Sample_Tip1/Image_raw_.tif'
-# saturated white
-#    white_file_name = '/local/dataraid/databank/TXM_26_ID/20130731_004_Stripe_Solder_Sample_Tip1/Image_bg_.tif'
+    # saturated white
+    #white_file_name = '/local/dataraid/databank/TXM_26_ID/20130731_004_Stripe_Solder_Sample_Tip1/Image_bg_.tif'
     hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/APS_26_ID.h5'
     sample_name = '20130731_004_Stripe_Solder_Sample_Tip1'
 

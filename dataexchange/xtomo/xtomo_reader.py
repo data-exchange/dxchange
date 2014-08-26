@@ -154,7 +154,7 @@ class XTomoReader:
         Read 3-D tomographic projection data from a Data Exchange HDF5 file.
 
         Opens ``file_name`` and reads the contents of the 3D array specified 
-	by ``array_name`` in the specified group of the HDF5 file.
+	    by ``array_name`` in the specified group of the HDF5 file.
         
         Parameters
         ----------
@@ -413,7 +413,6 @@ class XTomoReader:
                    y_start:y_end:y_step]
         
     def txrm(self,
-             array_name='Image',
              x_start=0,
              x_end=0,
              x_step=1,
@@ -452,8 +451,18 @@ class XTomoReader:
         array = dstruct
 
         # Read data from file.
-        reader.read_txrm(self.file_name, array)
+        reader.read_xrm(self.file_name,array)
         num_x, num_y, num_z = np.shape(array.exchange.data)
+
+        dt = np.zeros((num_x,num_y,num_z))
+        out = np.zeros((num_z-1,num_y,num_x))
+     
+        dt = array.exchange.data[:,:,:]
+        dt = np.rot90(dt)
+        for i in range(0,num_z-1):
+            out[i,:,:] = dt[:,:,i]
+
+        num_x, num_y, num_z = np.shape(out)
         if x_end is 0:
             x_end = num_x
         if y_end is 0:
@@ -461,14 +470,13 @@ class XTomoReader:
         if z_end is 0:
             z_end = num_z
 
-        # Construct dataset.
-        dataset = array.exchange.data[x_start:x_end:x_step,
-                                      y_start:y_end:y_step,
-                                      z_start:z_end:z_step]
+        # Construct dataset from desired y.
+        dataset = out[x_start:x_end:x_step,
+                        y_start:y_end:y_step,
+                        z_start:z_end:z_step]
         return dataset
        
     def xrm(self,
-            array_name='Image',
             x_start=0,
             x_end=0,
             x_step=1,
@@ -509,7 +517,16 @@ class XTomoReader:
         # Read data from file.
         reader.read_xrm(self.file_name,array)
         num_x, num_y, num_z = np.shape(array.exchange.data)
-            
+
+        dt = np.zeros((num_x,num_y,num_z))
+        out = np.zeros((num_z,num_y,num_x))
+     
+        dt = array.exchange.data[:,:,:]
+        dt = np.rot90(dt)
+        for i in range(0,num_z):
+            out[i,:,:] = dt[:,:,i]
+
+        num_x, num_y, num_z = np.shape(out)
         if x_end is 0:
             x_end = num_x
         if y_end is 0:
@@ -518,9 +535,9 @@ class XTomoReader:
             z_end = num_z
 
         # Construct dataset from desired y.
-        dataset = array.exchange.data[x_start:x_end:x_step,
-                                      y_start:y_end:y_step,
-                                      z_start:z_end:z_step]
+        dataset = out[x_start:x_end:x_step,
+                        y_start:y_end:y_step,
+                        z_start:z_end:z_step]
         return dataset
         
     def spe(self,

@@ -267,6 +267,19 @@ class Import():
             if dark_file_name.endswith('H5') or \
                 dark_file_name.endswith('h5'):
                 data_file_dark = os.path.splitext(dark_file_name)[0]
+
+        elif (data_type is 'xradia'):
+            if file_name.endswith('TXRM') or \
+                file_name.endswith('txrm'):
+                data_file = os.path.splitext(file_name)[0]
+                dataExtension = os.path.splitext(file_name)[1]
+            if white_file_name.endswith('XRM') or \
+                white_file_name.endswith('xrm'):
+                data_file_white = os.path.splitext(white_file_name)[0]
+            if dark_file_name.endswith('XRM') or \
+                dark_file_name.endswith('xrm'):
+                data_file_dark = os.path.splitext(dark_file_name)[0]
+
         
         projections_file_index = ["" for x in range(projections_digits)]
         for m in range(projections_digits):
@@ -377,10 +390,10 @@ class Import():
                     tmpdata = f.hdf5(z_start = projections_start,
                                     	z_end = projections_end,
                                     	z_step = projections_step,
-					y_start = slices_start,
+					                    y_start = slices_start,
                                     	y_end = slices_end,
                                     	y_step = slices_step,
-					x_start = pixels_start,
+					                    x_start = pixels_start,
                                     	x_end = pixels_end,
                                     	x_step = pixels_step,
                                     	array_name='exchange/data')
@@ -393,6 +406,13 @@ class Import():
                     tmpdata = f.edf(y_start = slices_start,
                                     y_end = slices_end,
                                     y_step = slices_step)
+                    xtomo.data = tmpdata
+            elif (data_type is 'xradia'):
+                # Read the projections that are all in a single file
+                if os.path.isfile(file_name):
+                    xtomo.logger.info("Projection file: [%s] exists", file_name)                    
+                    f = XTomoReader(file_name)
+                    tmpdata = f.txrm()
                     xtomo.data = tmpdata
             elif (data_type is 'dpt'):
                 # Read the projections that are all in a single file
@@ -510,6 +530,18 @@ class Import():
                     tmpdata = f.edf(y_start = slices_start,
                                     y_end = slices_end,
                                     y_step = slices_step)
+                    xtomo.data_white = tmpdata
+                else:
+                    # Fabricate one white field
+                    xtomo.logger.info("White file [%s]. Generating white fields", white_file_name)  
+                    nz, ny, nx = np.shape(xtomo.data)
+                    xtomo.data_white = np.ones((1, ny, nx))
+            elif (data_type is 'xradia'):
+                # Read the whites that are all in a single file
+                if os.path.isfile(white_file_name):
+                    xtomo.logger.info("White file: [%s] exists", white_file_name)                    
+                    f = XTomoReader(white_file_name)
+                    tmpdata = f.xrm()
                     xtomo.data_white = tmpdata
                 else:
                     # Fabricate one white field
@@ -639,6 +671,18 @@ class Import():
                     tmpdata = f.edf(y_start = slices_start,
                                     y_end = slices_end,
                                     y_step = slices_step)
+                    xtomo.data_dark = tmpdata
+                else:
+                    # Fabricate one dark field
+                    xtomo.logger.info("Dark file [%s]. Generating dark fields", dark_file_name)
+                    nz, ny, nx = np.shape(xtomo.data)
+                    xtomo.data_dark = np.zeros((1, ny, nx))
+            elif (data_type is 'xradia'):
+                # Read the dark fields that are all in a single file
+                if os.path.isfile(dark_file_name):
+                    xtomo.logger.info("Dark file: [%s] exists", dark_file_name)                    
+                    f = XTomoReader(dark_file_name)
+                    tmpdata = f.xrm()
                     xtomo.data_dark = tmpdata
                 else:
                     # Fabricate one dark field
