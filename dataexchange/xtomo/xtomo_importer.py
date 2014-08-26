@@ -412,7 +412,9 @@ class Import():
                 if os.path.isfile(file_name):
                     xtomo.logger.info("Projection file: [%s] exists", file_name)                    
                     f = XTomoReader(file_name)
-                    tmpdata = f.txrm()
+                    tmpdata = f.txrm(y_start = slices_start,
+                                    y_end = slices_end,
+                                    y_step = slices_step)
                     xtomo.data = tmpdata
             elif (data_type is 'dpt'):
                 # Read the projections that are all in a single file

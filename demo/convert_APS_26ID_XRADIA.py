@@ -46,6 +46,10 @@ def main():
                                                        data_type='xradia',
                                                        log='INFO'
                                                     )    
+    print "data:", data.shape, data.dtype
+    print "white:", white.shape, white.dtype
+    print "dark:", dark.shape, dark.dtype
+    print "theta:", theta.shape, theta.dtype
 
     mydata = ex.Export()
     # Create minimal data exchange hdf5 file

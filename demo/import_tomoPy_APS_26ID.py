@@ -37,23 +37,18 @@ import dataexchange.xtomo.xtomo_importer as dx
 def main():
 
     file_name = '/local/dataraid/databank/TXM_26_ID/20130731_004_Stripe_Solder_Sample_Tip1/Image_raw_.tif'
-#   white is saturated
-#    white_file_name = '/local/dataraid/databank/TXM_26_ID/20130731_004_Stripe_Solder_Sample_Tip1/Image_bg_.tif'
+#   white is saturated ...
+    white_file_name = '/local/dataraid/databank/TXM_26_ID/20130731_004_Stripe_Solder_Sample_Tip1/Image_bg_.tif'
 
     projections_start = 0
     projections_end = 180
-#    white_start = 0
-#    white_end = 1
+    white_start = 0
+    white_end = 1
 
     # set to convert slices between slices_start and slices_end
     # if omitted all data set will be converted   
-#    slices_start = 290    
-#    slices_end = 294    
-
-    # set to convert slices between slices_start and slices_end
-    # if omitted all data set will be converted   
-    slices_start = 380    
-    slices_end = 384    
+    slices_start = 290    
+    slices_end = 294    
 
     mydata = dx.Import()
     # Read series of images
@@ -62,9 +57,9 @@ def main():
                                                        projections_end = projections_end,
                                                        slices_start = slices_start,
                                                        slices_end = slices_end,
-#                                                       white_file_name = white_file_name,                                                       
-#                                                       white_start = white_start,
-#                                                       white_end = white_end,
+                                                       white_file_name = white_file_name,                                                       
+                                                       white_start = white_start,
+                                                       white_end = white_end,
                                                        projections_digits = 3,
                                                        projections_zeros = False,
                                                        white_zeros = False,

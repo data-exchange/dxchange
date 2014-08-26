@@ -35,6 +35,7 @@ def main():
     file_name = '/local/dataraid/databank/TXM_26_ID/20130731_004_Stripe_Solder_Sample_Tip1/Image_raw_.tif'
     # saturated white
     white_file_name = '/local/dataraid/databank/TXM_26_ID/20130731_004_Stripe_Solder_Sample_Tip1/Image_bg_.tif'
+
     hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/APS_26_ID.h5'
     sample_name = '20130731_004_Stripe_Solder_Sample_Tip1'
 
@@ -64,6 +65,10 @@ def main():
                                                        dtype='uint8',
                                                        log='INFO'
                                                     )    
+    print "data:", data.shape, data.dtype
+    print "white:", white.shape, white.dtype
+    print "dark:", dark.shape, dark.dtype
+    print "theta:", theta.shape, theta.dtype
 
     mydata = ex.Export()
     # Create minimal data exchange hdf5 file

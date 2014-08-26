@@ -38,18 +38,22 @@ def main():
 
     file_name = '/local/dataraid/databank/TXM_26_ID/20130731_004_Stripe_Solder_Sample_Tip1_TomoScript_181imgs_p1s_b1.txrm'
     # white is saturated .... 
-    # white_file_name = '/local/dataraid/databank/TXM_26_ID/20130731_001_Background_Reference_20imgs_p5s_b1.xrm'
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/APS_26_ID_XRADIA.h5'
+    white_file_name = '/local/dataraid/databank/TXM_26_ID/20130731_001_Background_Reference_20imgs_p5s_b1.xrm'
     sample_name = '20130731_004_Stripe_Solder_Sample_Tip1'
 
+    # set to convert slices between slices_start and slices_end
+    # if omitted all data set will be converted   
+    slices_start = 290    
+    slices_end = 294    
 
     mydata = dx.Import()
     # Read series of images
     data, white, dark, theta = mydata.series_of_images(file_name,
-                                                       white_file_name = white_file_name,                                                       
-                                                       data_type='xradia',
-                                                       log='INFO'
-                                                    )    
+                                                        white_file_name = white_file_name, 
+                                                        slices_start = slices_start, 
+                                                        slices_end = slices_end, 
+                                                        data_type='xradia', 
+                                                        log='INFO')
 
     # TomoPy xtomo object creation and pipeline of methods.  
     d = tomopy.xtomo_dataset(log='debug')
@@ -64,7 +68,7 @@ def main():
 
 
     # Write to stack of TIFFs.
-    tomopy.xtomo_writer(d.data_recon, 'tmp/APS_26_ID_', axis=0)
+    tomopy.xtomo_writer(d.data_recon, 'tmp/APS_26_ID_XRADIA_', axis=0)
 
 if __name__ == "__main__":
     main()
