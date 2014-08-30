@@ -1,5 +1,5 @@
-demo.import_tomoPy_CHESS module
-===============================
+CHESS
+=====
 
 .. automodule:: demo.import_tomoPy_CHESS
     :members:

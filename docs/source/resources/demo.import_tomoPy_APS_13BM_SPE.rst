@@ -1,5 +1,5 @@
-demo.import_tomoPy_APS_13BM_SPE module
-======================================
+APS 13-BM SPE
+=============
 
 .. automodule:: demo.import_tomoPy_APS_13BM_SPE
     :members:

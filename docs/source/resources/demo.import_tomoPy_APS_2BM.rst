@@ -1,5 +1,5 @@
-demo.import_tomoPy_APS_2BM module
-=================================
+APS 2-BM
+========
 
 .. automodule:: demo.import_tomoPy_APS_2BM
     :members:

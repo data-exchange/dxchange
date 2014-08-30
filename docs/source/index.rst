@@ -18,7 +18,7 @@ Contents:
    cite
    install
    resources/dataexchange
-   ..resources/demo
+   resources/demo
 
 
 Indices and tables

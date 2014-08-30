@@ -16,8 +16,7 @@ Example on how to use the `series_of_images`_ module to read APS 1-ID TIFF raw t
 :Version: 2014.08.15
 
 
-Examples
---------
+Example
 
 >>> add example here 
 >>> add example here 

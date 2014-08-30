@@ -1,5 +1,5 @@
-demo.import_tomoPy_ALS module
-=============================
+ALS
+===
 
 .. automodule:: demo.import_tomoPy_ALS
     :members:

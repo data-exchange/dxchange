@@ -1,5 +1,5 @@
-demo.convert_APS_2BM module
-===========================
+APS 2-BM
+========
 
 .. automodule:: demo.convert_APS_2BM
     :members:

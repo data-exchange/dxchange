@@ -1,5 +1,5 @@
-demo.import_tomoPy_Anka module
-==============================
+Anka
+====
 
 .. automodule:: demo.import_tomoPy_Anka
     :members:

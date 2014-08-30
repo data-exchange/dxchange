@@ -1,5 +1,5 @@
-demo.convert_Elettra module
-===========================
+Elettra
+=======
 
 .. automodule:: demo.convert_Elettra
     :members:

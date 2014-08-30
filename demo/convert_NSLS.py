@@ -15,8 +15,7 @@ Example on how to use the `series_of_images`_ module to read NSLS TIFF raw tomog
 :Version: 2014.08.15
 
 
-Examples
---------
+Example
 
 >>> add example here 
 >>> add example here 

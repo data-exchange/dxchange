@@ -1,5 +1,5 @@
-demo.convert_NSLS module
-========================
+NSLS
+====
 
 .. automodule:: demo.convert_NSLS
     :members:

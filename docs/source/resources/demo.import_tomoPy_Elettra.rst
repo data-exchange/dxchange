@@ -1,5 +1,5 @@
-demo.import_tomoPy_Elettra module
-=================================
+Elettra
+=======
 
 .. automodule:: demo.import_tomoPy_Elettra
     :members:

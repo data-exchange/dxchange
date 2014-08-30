@@ -1,5 +1,5 @@
-demo.convert_VirginiaTech module
-================================
+VirginiaTech
+============
 
 .. automodule:: demo.convert_VirginiaTech
     :members:

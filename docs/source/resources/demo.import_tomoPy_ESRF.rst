@@ -1,5 +1,5 @@
-demo.import_tomoPy_ESRF module
-==============================
+ESRF
+====
 
 .. automodule:: demo.import_tomoPy_ESRF
     :members:

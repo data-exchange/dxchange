@@ -16,7 +16,6 @@ Example on how to use the `series_of_images`_ module to read CHESS TIFF raw tomo
 
 
 Examples
---------
 
 >>> add example here 
 >>> add example here 

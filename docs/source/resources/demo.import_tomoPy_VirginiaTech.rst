@@ -1,5 +1,5 @@
-demo.import_tomoPy_VirginiaTech module
-======================================
+VirginiaTech
+============
 
 .. automodule:: demo.import_tomoPy_VirginiaTech
     :members:

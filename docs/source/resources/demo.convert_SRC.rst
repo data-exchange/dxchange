@@ -1,5 +1,5 @@
-demo.convert_SRC module
-=======================
+SRC
+===
 
 .. automodule:: demo.convert_SRC
     :members:

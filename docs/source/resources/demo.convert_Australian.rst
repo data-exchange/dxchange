@@ -1,5 +1,5 @@
-demo.convert_Australian module
-==============================
+Australian Synchrotron Facility
+===============================
 
 .. automodule:: demo.convert_Australian
     :members:

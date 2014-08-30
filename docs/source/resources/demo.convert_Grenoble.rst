@@ -1,5 +1,5 @@
-demo.convert_Grenoble module
-============================
+Grenoble
+========
 
 .. automodule:: demo.convert_Grenoble
     :members:

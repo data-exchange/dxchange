@@ -1,5 +1,5 @@
-demo.import_tomoPy_ALS_legacy module
-====================================
+ALS legacy
+==========
 
 .. automodule:: demo.import_tomoPy_ALS_legacy
     :members:

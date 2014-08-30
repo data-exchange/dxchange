@@ -1,5 +1,5 @@
-demo.import_tomoPy_SRC module
-=============================
+SRC
+===
 
 .. automodule:: demo.import_tomoPy_SRC
     :members:

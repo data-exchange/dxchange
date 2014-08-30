@@ -3,7 +3,7 @@
 
 .. module:: xtomo_importer.py
    :platform: Unix
-   :synopsis: Import tomographic data files returnin: data, data_white, data_dark, theta.
+   :synopsis: Import tomographic data files returning data, data_white, data_dark, theta.
 
 :Author:
   `Francesco De Carlo <mailto: decarlof@gmail.com>`_

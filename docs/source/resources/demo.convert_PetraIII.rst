@@ -1,5 +1,5 @@
-demo.convert_PetraIII module
-============================
+PetraIII P06
+============
 
 .. automodule:: demo.convert_PetraIII
     :members:

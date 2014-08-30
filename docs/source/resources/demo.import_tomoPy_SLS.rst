@@ -1,5 +1,5 @@
-demo.import_tomoPy_SLS module
-=============================
+SLS TOMCAT
+==========
 
 .. automodule:: demo.import_tomoPy_SLS
     :members:

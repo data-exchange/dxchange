@@ -1,5 +1,5 @@
-demo.convert_SLS module
-=======================
+SLS TOMCAT
+==========
 
 .. automodule:: demo.convert_SLS
     :members:

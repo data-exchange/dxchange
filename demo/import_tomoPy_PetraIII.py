@@ -16,7 +16,6 @@ Example on how to use the `series_of_images`_ module to read  Petra III P05 and 
 
 
 Examples
---------
 
 >>> add example here 
 >>> add example here 

@@ -16,7 +16,6 @@ Example on how to use the `series_of_images`_ module to read APS 2-BM HDF4 raw t
 
 
 Examples
---------
 
 >>> add example here 
 >>> add example here 

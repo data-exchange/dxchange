@@ -1,5 +1,5 @@
-demo.convert_CHESS module
-=========================
+CHESS
+=====
 
 .. automodule:: demo.convert_CHESS
     :members:

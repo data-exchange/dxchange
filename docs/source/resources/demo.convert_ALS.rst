@@ -1,5 +1,5 @@
-demo.convert_ALS module
-=======================
+ALS
+===
 
 .. automodule:: demo.convert_ALS
     :members:

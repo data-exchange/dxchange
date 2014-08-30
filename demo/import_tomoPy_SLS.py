@@ -16,7 +16,6 @@ Example on how to use the `series_of_images`_ module to read SLS TOMCAT TIFF raw
 
 
 Examples
---------
 
 >>> add example here 
 >>> add example here 

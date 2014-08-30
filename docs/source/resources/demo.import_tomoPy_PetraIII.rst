@@ -1,5 +1,5 @@
-demo.import_tomoPy_PetraIII module
-==================================
+PetraIII P06
+============
 
 .. automodule:: demo.import_tomoPy_PetraIII
     :members:

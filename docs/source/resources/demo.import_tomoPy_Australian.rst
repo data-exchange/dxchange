@@ -1,5 +1,5 @@
-demo.import_tomoPy_Australian module
-====================================
+Australian Synchrotron Facility
+===============================
 
 .. automodule:: demo.import_tomoPy_Australian
     :members:

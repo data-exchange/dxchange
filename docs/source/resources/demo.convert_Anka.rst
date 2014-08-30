@@ -1,5 +1,5 @@
-demo.convert_Anka module
-========================
+Anka
+====
 
 .. automodule:: demo.convert_Anka
     :members:

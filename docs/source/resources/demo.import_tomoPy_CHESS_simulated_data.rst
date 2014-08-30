@@ -1,5 +1,5 @@
-demo.import_tomoPy_CHESS_simulated_data module
-==============================================
+CHESS simulated data
+====================
 
 .. automodule:: demo.import_tomoPy_CHESS_simulated_data
     :members:

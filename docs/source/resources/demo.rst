@@ -1,8 +1,8 @@
-demo package
-============
+Examples
+========
 
-Submodules
-----------
+Data Exchange Converters
+------------------------
 
 .. toctree::
 
@@ -23,6 +23,13 @@ Submodules
    demo.convert_SLS
    demo.convert_SRC
    demo.convert_VirginiaTech
+
+
+tomoPy Importers
+----------------
+
+.. toctree::
+
    demo.import_tomoPy_ALS
    demo.import_tomoPy_APS_13BM_SPE
    demo.import_tomoPy_APS_13BM_netCDF

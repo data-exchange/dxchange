@@ -16,7 +16,6 @@ Example on how to use the `series_of_images`_ module to read APS 13-BM netCDF ra
 
 
 Examples
---------
 
 >>> add example here 
 >>> add example here 

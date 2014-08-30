@@ -1,5 +1,5 @@
-demo.convert_APS_1ID module
-===========================
+APS 1-ID
+========
 
 .. automodule:: demo.convert_APS_1ID
     :members:

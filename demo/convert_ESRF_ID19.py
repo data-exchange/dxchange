@@ -15,8 +15,7 @@ Example on how to use the `series_of_images`_ module to read ESRF edf raw tomogr
 :Version: 2014.08.15
 
 
-Examples
---------
+Example
 
 >>> add example here 
 >>> add example here 
