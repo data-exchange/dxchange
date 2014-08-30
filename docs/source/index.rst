@@ -5,7 +5,7 @@
 
 Welcome to Data Exchange's documentation!
 =========================================
-`Data Exchange`_ is a Python toolbox for reading and writing  `Data Exchange`_ files. It provides an interface between tomographic raw datasets collected at different :ref:`synchrotron_facilities` and `tomoPy`_, a Python toolbox to perform tomographic data processing and image reconstruction tasks developed at the `Advanced Photon Source`_.
+`Data Exchange`_ is a Python toolbox for reading and writing  `Data Exchange`_ files. It also provides an interface between tomographic raw datasets collected at different :ref:`synchrotron_facilities` and `tomoPy`_, a Python toolbox to perform tomographic data processing and image reconstruction tasks developed at the `Advanced Photon Source`_.
 
 =========
 Contents:
@@ -17,8 +17,8 @@ Contents:
    about
    cite
    install
-   dataexchange
-   demo
+   resources/dataexchange
+   ..resources/demo
 
 
 Indices and tables

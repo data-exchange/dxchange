@@ -4,7 +4,7 @@
 Synchrotron Facilities
 ======================
 
-* Advanced Photon Source (1-ID, 2-BM, 13-BM, 15-ID, 26-ID, 32-ID)
+* Advanced Photon Source (:ref:`1-ID`, 2-BM, 13-BM, 15-ID, 26-ID, 32-ID)
     - tiff (1-ID)
     - Data Exchange HDF5 (2-BM, 32-ID)
     - HDF4 (2-BM legacy)

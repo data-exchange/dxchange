@@ -26,13 +26,13 @@ Python Dependencies
 ===========  =======  ====================================================
 dependency   version  URL
 ===========  =======  ====================================================
-NumPy        1.8.0    http://www.numpy.org 
-H5Py         2.2.1    http://www.h5py.org
-pyhdf          -      https://pypi.python.org/pypi/pyhdf
-netCDF         -      https://pypi.python.org/pypi/netCDF4
-tifffile.py    -      http://www.lfd.uci.edu/~gohlke/code/tifffile.py.html
-PIL.image      -      http://www.pythonware.com/products/pil/
 ez_setup     0.9      https://pypi.python.org/pypi/ez_setup
+H5Py         2.2.1    http://www.h5py.org
+netCDF         -      https://pypi.python.org/pypi/netCDF4
+NumPy        1.8.0    http://www.numpy.org 
+pyhdf          -      https://pypi.python.org/pypi/pyhdf
+PIL.image      -      http://www.pythonware.com/products/pil/
+tifffile.py    -      http://www.lfd.uci.edu/~gohlke/code/tifffile.py.html
 ===========  =======  ====================================================
 
 .. note:: tifffile is a Python module to read and write image data from and to TIFF files, pyhdf is required to support legacy APS-2BM hdf4 data and netCDF is required to support APS 13-BM data.

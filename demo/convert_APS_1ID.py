@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 """
+.. _1-ID:
 .. module:: convert_APS_1ID.py
    :platform: Unix
    :synopsis: Convert APS 1-ID TIFF files in data exchange.

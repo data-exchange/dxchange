@@ -18,14 +18,14 @@ DPT, netCDF.
 Requirements
 ------------
 * `h5py <http://www.h5py.org/>`_ 
-* `pyhdf <https://pypi.python.org/pypi/pyhdf>`_  (optional for supporting APS 2-BM data)
 * `netCDF <https://pypi.python.org/pypi/netCDF4>`_  (optional for supporting APS 13-BM data)
+* `pyhdf <https://pypi.python.org/pypi/pyhdf>`_  (optional for supporting APS 2-BM data)
 * `PIL.Image <http://www.pythonware.com/products/pil/>`_ 
 * `Tifffile.c 2013.01.18 <http://www.lfd.uci.edu/~gohlke/>`_ (optional for supporting Elettra data) (recommended for faster decoding of PackBits and LZW encoded strings)
 
 Notes
 -----
-Tested on little-endian platforms only.
+PackBits and LZW encoded TIFF tested on little-endian platforms only.
 
 Examples
 --------
