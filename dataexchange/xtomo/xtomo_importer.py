@@ -74,6 +74,7 @@ class Import():
                          dark_zeros=True,
                          dtype='uint16',
                          data_type='tiff',
+                         exchange_rank = 0,
 #                         sample_name=None,
                          log='INFO'):
         """
@@ -139,6 +140,17 @@ class Import():
                 - ``spe``: spe data from APS 13-BM
                 - ``nc``: netCDF data from 13-BM
                 - ``dpt``: ASCII data from SRC infrared tomography
+                - ``edf``: ESRF file format
+                - ``xradia``: txrm and xrm used by all Xradia systems
+                - ``h5``: Data Exchange HDF5
+
+
+        exchange_rank : int, optional
+            set when reading Data Exchange HDF5 files
+            exchange rank is added to "exchange" to point tomopy to the data to recontruct.
+            if rank is not set then the data are raw from the detector and are located under
+            exchange = "exchange/...", to process data that are the result of some intemedite 
+            processing step then exchange_rank = 1 will direct tomopy to process "exchange1/..."
 
         Returns
         -------
@@ -257,6 +269,11 @@ class Import():
                 data_file_dark = os.path.splitext(dark_file_name)[0]
 
         elif (data_type is 'h5'):
+            if exchange_rank > 0:
+                exchange_base = 'exchange{:d}'.format(int(exchange_rank))
+            else:
+                exchange_base = "exchange"     
+
             if file_name.endswith('H5') or \
                 file_name.endswith('h5'):
                 data_file = os.path.splitext(file_name)[0]
@@ -390,13 +407,13 @@ class Import():
                     tmpdata = f.hdf5(z_start = projections_start,
                                     	z_end = projections_end,
                                     	z_step = projections_step,
-					y_start = slices_start,
+					                    y_start = slices_start,
                                     	y_end = slices_end,
                                     	y_step = slices_step,
-					x_start = pixels_start,
+					                    x_start = pixels_start,
                                     	x_end = pixels_end,
                                     	x_step = pixels_step,
-                                    	array_name='exchange/data')
+                                    	array_name= '/'.join([exchange_base, "data"]))
                     xtomo.data = tmpdata
             elif (data_type is 'edf'):
                 # Read the projections that are all in a single file
@@ -517,7 +534,7 @@ class Import():
 					                    x_start = pixels_start,
                                     	x_end = pixels_end,
                                     	x_step = pixels_step,
-                                    	array_name='exchange/data_white')
+                                        array_name= '/'.join([exchange_base, "data_white"]))
                     xtomo.data_white = tmpdata
                 else:
                     # Fabricate one white field
@@ -658,7 +675,7 @@ class Import():
                                         x_start = pixels_start,
                                     	x_end = pixels_end,
                                     	x_step = pixels_step,
-                                    	array_name='exchange/data_dark')
+                                    	array_name= '/'.join([exchange_base, "data_dark"]))
                     xtomo.data_dark = tmpdata
                 else:
                     # Fabricate one dark field
