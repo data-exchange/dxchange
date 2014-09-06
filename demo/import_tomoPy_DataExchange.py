@@ -20,17 +20,17 @@ import dataexchange.xtomo.xtomo_importer as dx
 def main():
     # read a series of tiff
 
-    file_name = '/media/DISK_01/databank/dataExchange/microCT/Elettra_OK.h5'
-    file_name = '/media/DISK_01/databank/dataExchange/microCT/Sangid_ShortFiber.h5' 
-    file_name = '/media/DISK_01/databank/dataExchange/microCT/Elettra_LAST.h5'
+    file_name = '/local/dataraid/databank/dataExchange/microCT/Elettra_OK.h5'
+    file_name = '/local/dataraid/databank/dataExchange/microCT/Sangid_ShortFiber.h5' 
+    file_name = '/local/dataraid/databank/dataExchange/tmp/Elettra.h5'
     # to reconstruct slices from slices_start to slices_end
     # if omitted all data set is recontructed
     
-    slices_start = 150    
-    slices_end = 154    
+#    slices_start = 150    
+#    slices_end = 154    
 
-    slices_start = 1365
-    slices_end = 1367
+#    slices_start = 1365
+#    slices_end = 1367
 
     slices_start = 150    
     slices_end = 154    
