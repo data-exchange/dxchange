@@ -66,10 +66,6 @@ def main():
             Angles = re.findall(r'\d+', line)
             if verbose: print 'Angles', Angles[0]
 
-        if '-i0cycle' in line:
-            WhiteStep = re.findall(r'\s+\d+', line)
-            if verbose: print 'White Step', WhiteStep[0]
-
         if '-num_bright_field' in line:
             WhiteEnd = re.findall(r'\d+', line)
 
@@ -83,9 +79,13 @@ def main():
     dark_step = 1
     white_start = 0
     white_end = int(WhiteEnd[0])
-    white_step = int(WhiteStep[0])
+    white_step = 1
     projections_start = 0
     projections_end = int(Angles[0])
+
+    print dark_start, dark_end, dark_step
+    print white_start, white_end, white_step
+    print projections_start, projections_end
 
     # set to convert slices between slices_start and slices_end
     # if omitted all data set will be converted   
