@@ -34,17 +34,21 @@ from dataexchange.xtomo.xtomo_reader import XTomoReader
 
 class Import():
     def __init__(xtomo, data=None, data_white=None,
-                 data_dark=None, theta=None, log='INFO'):
+                 data_dark=None, theta=None, color_log=True, stream_handler=True, log='INFO'):
 
         xtomo.data = data
         xtomo.data_white = data_white
         xtomo.data_dark = data_dark
         xtomo.theta = theta
 
+        # Logging init.
+        if color_log: # enable colored logging
+            from tomopy.tools import colorer
+
         # Set the log level.
         xtomo.logger = None
         xtomo._log_level = str(log).upper()
-        xtomo._init_logging()
+        xtomo._init_logging(stream_handler)
 
     def series_of_images(xtomo, file_name,
                          projections_start=0,
@@ -344,7 +348,6 @@ class Import():
                                      x_end=slices_end,
                                      x_step=slices_step,
                                      array_name='data')
-		    print tmpdata.shape
 
                 elif (data_type is 'hdf5'):
                     tmpdata = f.hdf5_2d(x_start=slices_start,
@@ -379,9 +382,7 @@ class Import():
                     (data_type is 'hdf4') or
                     (data_type is 'hdf5')):
                     if m == 0: # Get resolution once.
-			print len(ind), tmpdata.shape[0], tmpdata.shape[1], dtype
                         input_data = np.empty((len(ind), tmpdata.shape[0], tmpdata.shape[1]), dtype=dtype)
-			print input_data.shape
                     input_data[m, :, :] = tmpdata
 
                 if ((data_type is 'spe') or
@@ -404,16 +405,17 @@ class Import():
                 if os.path.isfile(file_name):
                     xtomo.logger.info("Projection file: [%s] exists", file_name)                    
                     f = XTomoReader(file_name)
+                    array_name = '/'.join([exchange_base, "data"])
                     tmpdata = f.hdf5(z_start = projections_start,
                                     	z_end = projections_end,
                                     	z_step = projections_step,
-					                    y_start = slices_start,
+                                        y_start = slices_start,
                                     	y_end = slices_end,
                                     	y_step = slices_step,
-					                    x_start = pixels_start,
+					x_start = pixels_start,
                                     	x_end = pixels_end,
                                     	x_step = pixels_step,
-                                    	array_name= '/'.join([exchange_base, "data"]))
+                                    	array_name= array_name)
                     xtomo.data = tmpdata
             elif (data_type is 'edf'):
                 # Read the projections that are all in a single file
@@ -679,7 +681,7 @@ class Import():
                     xtomo.data_dark = tmpdata
                 else:
                     # Fabricate one dark field
-                    xtomo.logger.info("Dark file [%s]. Generating dark fields", dark_file_name)
+                    xtomo.logger.warning("Dark file [%s]. Generating dark fields", dark_file_name)
                     nz, ny, nx = np.shape(xtomo.data)
                     xtomo.data_dark = np.zeros((1, ny, nx))
             elif (data_type is 'edf'):
@@ -693,7 +695,7 @@ class Import():
                     xtomo.data_dark = tmpdata
                 else:
                     # Fabricate one dark field
-                    xtomo.logger.info("Dark file [%s]. Generating dark fields", dark_file_name)
+                    xtomo.logger.warning("Dark file [%s]. Generating dark fields", dark_file_name)
                     nz, ny, nx = np.shape(xtomo.data)
                     xtomo.data_dark = np.zeros((1, ny, nx))
             elif (data_type is 'xradia'):
@@ -705,7 +707,7 @@ class Import():
                     xtomo.data_dark = tmpdata
                 else:
                     # Fabricate one dark field
-                    xtomo.logger.info("Dark file [%s]. Generating dark fields", dark_file_name)
+                    xtomo.logger.warning("Dark file [%s]. Generating dark fields", dark_file_name)
                     nz, ny, nx = np.shape(xtomo.data)
                     xtomo.data_dark = np.zeros((1, ny, nx))
             elif (data_type is 'dpt'):
@@ -719,26 +721,27 @@ class Import():
                     xtomo.data_dark = tmpdata
                 else:
                     # Fabricate one dark field
-                    xtomo.logger.info("Dark file [%s]. Generating dark fields", dark_file_name)
+                    xtomo.logger.warning("Dark file [%s]. Generating dark fields", dark_file_name)
                     nz, ny, nx = np.shape(xtomo.data)
                     xtomo.data_dark = np.zeros((1, ny, nx))
             else:
                 # Fabricate one dark field
-                xtomo.logger.info("Dark file is missing. Generating dark fields")
+                xtomo.logger.warning("Dark file is missing. Generating dark fields")
                 nz, ny, nx = np.shape(xtomo.data)
                 xtomo.data_dark = np.zeros((1, ny, nx))
         # Theta ------------------------------------------------
 	if (data_type is 'h5'):
 		xtomo.logger.info("Attempt reading angles from file: [%s]", file_name)                    
 		f = XTomoReader(file_name)
-		xtomo.logger.info("Angle file: [%s] exists", file_name)                    
-		tmpdata = f.hdf5(z_start = projections_start,
-					z_end = projections_end,
-                                    	z_step = projections_step,
-					y_start = slices_start,
-                                    	y_end = slices_end,
-                                    	y_step = slices_step,
-					array_name='exchange/theta')
+		xtomo.logger.info("Angle file: [%s] exists", file_name) 
+                array_name = '/'.join([exchange_base, "theta"])                   
+		tmpdata = f.hdf5(z_start = projections_start, 
+                        z_end = projections_end,
+                        z_step = projections_step,
+                        y_start = slices_start,
+                        y_end = slices_end,
+                        y_step = slices_step,
+                        array_name=array_name)
 		xtomo.theta = tmpdata
 	elif (data_type is 'xradia'):
 		xtomo.logger.info("Attempt reading angles from file: [%s]", file_name)                    
@@ -750,13 +753,14 @@ class Import():
 	        # Fabricate theta values
         	nz, ny, nx = np.shape(xtomo.data)
         	z = np.arange(nz)
+        	xtomo.logger.info("Angle file missing. Generating angles")                    
 
         	projections_angle_range = projections_angle_end - projections_angle_start
         	xtomo.theta = (z * float(projections_angle_range) / (len(z)))
 
         return xtomo.data, xtomo.data_white, xtomo.data_dark, xtomo.theta
 
-    def _init_logging(xtomo):
+    def _init_logging(xtomo, stream_handler):
         """
         Setup and start command line logging.
         """

@@ -184,10 +184,9 @@ class XTomoReader:
         """
         # Read data from file.
         f = h5py.File(self.file_name, 'r')
-        
 	try:
 		hdfdata = f[array_name]
-		if (array_name == "exchange/theta"):
+		if (array_name.split('/')[1] == "theta"):
 			num_z = hdfdata.size
         		if z_end is 0:
             			z_end = num_z        		
@@ -206,6 +205,7 @@ class XTomoReader:
                           			y_start:y_end:y_step,
                           			x_start:x_end:x_step]
 	except KeyError:
+                print "FILE DOES NOT CONTAIN A VALID TOMOGRAPHY DATA SET"
 		dataset = None        
 
 	f.close()
@@ -256,7 +256,6 @@ class XTomoReader:
         f.end()
 	
         num_y, num_x = hdfdata.shape
-        print num_x, num_y
 	if x_end is 0:
             x_end = num_x
         if y_end is 0:
