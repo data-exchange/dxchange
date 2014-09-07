@@ -78,7 +78,7 @@ def main():
     # if omitted the full data set is recontructed
     
     slices_start = 1365
-    slices_end = 1368
+    slices_end = 1369
 
     mydata = dx.Import()
     # Read series of images

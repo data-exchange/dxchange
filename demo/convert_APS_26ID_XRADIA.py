@@ -35,8 +35,8 @@ def main():
     # white is saturated .... 
     white_file_name = '/local/dataraid/databank/TXM_26_ID/20130731_001_Background_Reference_20imgs_p5s_b1.xrm'
     hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/APS_26_ID_xradia.h5'
-    sample_name = '20130731_004_Stripe_Solder_Sample_Tip1'
 
+    sample_name = '20130731_004_Stripe_Solder_Sample_Tip1'
 
     mydata = dx.Import()
     # Read series of images

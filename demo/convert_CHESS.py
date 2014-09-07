@@ -36,6 +36,7 @@ def main():
     white_file_name = '/local/dataraid/databank/CHESS/scan1/scan1_white_.tiff'
 
     hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/CHESS.h5'
+
     sample_name = 'Dummy'
 
     projections_start = 1

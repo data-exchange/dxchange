@@ -34,7 +34,9 @@ def main():
     file_name = '/local/dataraid/databank/AS/Mayo_tooth_AS/SAMPLE_T_.tif'
     dark_file_name = '/local/dataraid/databank/AS/Mayo_tooth_AS/DF__BEFORE_.tif'
     white_file_name = '/local/dataraid/databank/AS/Mayo_tooth_AS/BG__BEFORE_.tif'
+
     hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/Australian.h5'
+
     sample_name = 'Teeth'
 
     projections_start = 0
