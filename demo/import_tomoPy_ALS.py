@@ -112,8 +112,6 @@ def main():
     d.normalize()
     d.correct_drift()
     #d.optimize_center()
-    #d.phase_retrieval()
-    #d.correct_drift()
     d.center=1282.5
     d.gridrec()
 

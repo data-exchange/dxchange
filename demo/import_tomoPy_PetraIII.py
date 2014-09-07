@@ -83,7 +83,7 @@ def main():
     d.normalize()
     d.correct_drift()
     #d.optimize_center()
-    d.phase_retrieval(pixel_size=0.9e-4, dist=6.9, energy=15.25)
+    #d.phase_retrieval(pixel_size=0.9e-4, dist=6.9, energy=15.25)
     #d.correct_drift()
     d.center=1872.87890625
     d.gridrec()
