@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """Read image data from various format files.
 
-.. module:: xtomo_importer.py
+.. module:: self_importer.py
    :platform: Unix
    :synopsis: Import tomographic data files returning data, data_white, data_dark, theta.
 
@@ -33,24 +33,24 @@ import logging
 from dataexchange.xtomo.xtomo_reader import XTomoReader
 
 class Import():
-    def __init__(xtomo, data=None, data_white=None,
+    def __init__(self, data=None, data_white=None,
                  data_dark=None, theta=None, color_log=True, stream_handler=True, log='INFO'):
 
-        xtomo.data = data
-        xtomo.data_white = data_white
-        xtomo.data_dark = data_dark
-        xtomo.theta = theta
+        self.data = data
+        self.data_white = data_white
+        self.data_dark = data_dark
+        self.theta = theta
 
         # Logging init.
         if color_log: # enable colored logging
             from tomopy.tools import colorer
 
         # Set the log level.
-        xtomo.logger = None
-        xtomo._log_level = str(log).upper()
-        xtomo._init_logging(stream_handler)
+        self.logger = None
+        self._log_level = str(log).upper()
+        self._init_logging(stream_handler)
 
-    def series_of_images(xtomo, file_name,
+    def series_of_images(self, file_name,
                          projections_start=0,
                          projections_end=0,
                          projections_step=1,
@@ -323,24 +323,25 @@ class Import():
             elif dark_zeros is False:
                 dark_file_index[m] = ''
 
-        xtomo.logger.debug('')
+        self.logger.debug('')
 
 
         # Data ------------------------------------------------
 
         # Start reading projections one-by-one.
         ind = range(projections_start, projections_end, projections_step)
+        _file_name = ' '
         for m in range(len(ind)):
             for n in range(projections_digits):
                 if ind[m] < np.power(10, n+1):
                     _file_name = data_file + projections_file_index[n] + str(ind[m]) + dataExtension
-                    xtomo.logger.info("Generating projection file names: [%s]", _file_name)                    
+                    self.logger.info("Generating projection file names: [%s]", _file_name)                    
                     break
 
             if os.path.isfile(_file_name):
                 projection_exist = True
-                xtomo.logger.info("Reading projection file: [%s]", os.path.realpath(_file_name))
-                xtomo.logger.info("data type: [%s]", data_type)
+                self.logger.info("Reading projection file: [%s]", os.path.realpath(_file_name))
+                self.logger.info("data type: [%s]", data_type)
 
                 f = XTomoReader(_file_name)
                 if (data_type is 'hdf4'):
@@ -394,16 +395,15 @@ class Import():
 
         # Update data.
         if projection_exist:
-            xtomo.data = input_data
+            self.data = input_data
+            dtype = input_data.dtype
 
         else:
-	    # set new defaults
-	     
-            xtomo.logger.info("Attempt reading projection from file: [%s]", file_name)                    
+            self.logger.info("Attempt reading projections from: [%s]", file_name)                    
             if (data_type is 'h5'):
                 # Read the projections that are all in a single file
                 if os.path.isfile(file_name):
-                    xtomo.logger.info("Projection file: [%s] exists", file_name)                    
+                    self.logger.info("Projection file: [%s] exists", file_name)                    
                     f = XTomoReader(file_name)
                     array_name = '/'.join([exchange_base, "data"])
                     tmpdata = f.hdf5(z_start = projections_start,
@@ -416,36 +416,37 @@ class Import():
                                     	x_end = pixels_end,
                                     	x_step = pixels_step,
                                     	array_name= array_name)
-                    xtomo.data = tmpdata
+                    self.data = tmpdata
             elif (data_type is 'edf'):
                 # Read the projections that are all in a single file
                 if os.path.isfile(file_name):
-                    xtomo.logger.info("Projection file: [%s] exists", file_name)                    
+                    self.logger.info("Projection file: [%s] exists", file_name)                    
                     f = XTomoReader(file_name)
                     tmpdata = f.edf(y_start = slices_start,
                                     y_end = slices_end,
                                     y_step = slices_step)
-                    xtomo.data = tmpdata
+                    self.data = tmpdata
             elif (data_type is 'xradia'):
                 # Read the projections that are all in a single file
                 if os.path.isfile(file_name):
-                    xtomo.logger.info("Projection file: [%s] exists", file_name)                    
+                    self.logger.info("Projection file: [%s] exists", file_name)                    
                     f = XTomoReader(file_name)
                     tmpdata = f.txrm(y_start = slices_start,
                                     y_end = slices_end,
                                     y_step = slices_step)
-                    xtomo.data = tmpdata
+                    dtype = tmpdata.dtype                    
+                    self.data = tmpdata
             elif (data_type is 'dpt'):
                 # Read the projections that are all in a single file
                 if os.path.isfile(file_name):
-                    xtomo.logger.info("Projection file: [%s] exists", file_name)                    
+                    self.logger.info("Projection file: [%s] exists", file_name)                    
                     f = XTomoReader(file_name)
                     tmpdata = f.dpt(y_start = slices_start,
                                     y_end = slices_end,
                                     y_step = slices_step)
-                    xtomo.data = tmpdata
+                    self.data = tmpdata
             else:
-                xtomo.logger.error("ERROR: Projection file is mandatory")
+                self.logger.error("Projection file is mandatory")
             
         # White ------------------------------------------------
 
@@ -455,13 +456,13 @@ class Import():
             for n in range(white_digits):
                 if ind[m] < np.power(10, n+1):
                     _file_name = data_file_white + white_file_index[n] + str(ind[m]) + dataExtension
-                    xtomo.logger.info("Generating white file names: [%s]", _file_name)
+                    self.logger.info("Generating white file names: [%s]", _file_name)
                     break
 
             if os.path.isfile(_file_name):
                 white_exist = True
-                xtomo.logger.info("Reading white file: [%s]", os.path.realpath(_file_name))
-                xtomo.logger.info("data type: [%s]", data_type)
+                self.logger.info("Reading white file: [%s]", os.path.realpath(_file_name))
+                self.logger.info("data type: [%s]", data_type)
 
                 f = XTomoReader(_file_name)
                 if (data_type is 'hdf4'):
@@ -519,13 +520,13 @@ class Import():
 
         # Update white data.
         if white_exist:
-            xtomo.data_white = input_data
+            self.data_white = input_data
         else:
-            xtomo.logger.info("Attempt reading white from file: [%s]", file_name)                    
+            self.logger.info("Attempt reading white from file: [%s]", file_name)                    
             if (data_type is 'h5'):
                 # Read the whites that are all in a single file
                 if os.path.isfile(file_name):
-                    xtomo.logger.info("White file: [%s] exists", file_name)                    
+                    self.logger.info("White file: [%s] exists", file_name)                    
                     f = XTomoReader(file_name)
                     tmpdata = f.hdf5(z_start = projections_start,
                                     	z_end = projections_end,
@@ -537,57 +538,59 @@ class Import():
                                     	x_end = pixels_end,
                                     	x_step = pixels_step,
                                         array_name= '/'.join([exchange_base, "data_white"]))
-                    xtomo.data_white = tmpdata
+                    self.data_white = tmpdata
                 else:
                     # Fabricate one white field
-                    xtomo.logger.info("White file [%s]. Generating white fields", white_file_name)  
-                    nz, ny, nx = np.shape(xtomo.data)
-                    xtomo.data_white = np.ones((1, ny, nx))
+                    self.logger.info("White file [%s]. Generating white fields", white_file_name)  
+                    nz, ny, nx = np.shape(self.data)
+                    self.data_white = np.ones((1, ny, nx))
             elif (data_type is 'edf'):
                 # Read the whites that are all in a single file
                 if os.path.isfile(white_file_name):
-                    xtomo.logger.info("White file: [%s] exists", white_file_name)                    
+                    self.logger.info("White file: [%s] exists", white_file_name)                    
                     f = XTomoReader(white_file_name)
                     tmpdata = f.edf(y_start = slices_start,
                                     y_end = slices_end,
                                     y_step = slices_step)
-                    xtomo.data_white = tmpdata
+                    self.data_white = tmpdata
                 else:
                     # Fabricate one white field
-                    xtomo.logger.info("White file [%s]. Generating white fields", white_file_name)  
-                    nz, ny, nx = np.shape(xtomo.data)
-                    xtomo.data_white = np.ones((1, ny, nx))
+                    self.logger.info("White file [%s]. Generating white fields", white_file_name)  
+                    nz, ny, nx = np.shape(self.data)
+                    self.data_white = np.ones((1, ny, nx))
             elif (data_type is 'xradia'):
                 # Read the whites that are all in a single file
                 if os.path.isfile(white_file_name):
-                    xtomo.logger.info("White file: [%s] exists", white_file_name)                    
+                    self.logger.info("White file: [%s] exists", white_file_name)                    
                     f = XTomoReader(white_file_name)
-                    tmpdata = f.xrm()
-                    xtomo.data_white = tmpdata
+                    tmpdata = f.xrm(y_start = slices_start,
+                                    y_end = slices_end,
+                                    y_step = slices_step)
+                    self.data_white = tmpdata
                 else:
                     # Fabricate one white field
-                    xtomo.logger.info("White file [%s]. Generating white fields", white_file_name)  
-                    nz, ny, nx = np.shape(xtomo.data)
-                    xtomo.data_white = np.ones((1, ny, nx))
+                    self.logger.info("White file [%s]. Generating white fields", white_file_name)  
+                    nz, ny, nx = np.shape(self.data)
+                    self.data_white = np.ones((1, ny, nx),dtype=dtype)
             elif (data_type is 'dpt'):
                 # Read the whites that are all in a single file
                 if os.path.isfile(white_file_name):
-                    xtomo.logger.info("White file: [%s] exists", white_file_name)                    
+                    self.logger.info("White file: [%s] exists", white_file_name)                    
                     f = XTomoReader(white_file_name)
                     tmpdata = f.dpt(y_start = slices_start,
                                     y_end = slices_end,
                                     y_step = slices_step)
-                    xtomo.data_white = tmpdata
+                    self.data_white = tmpdata
                 else:
                     # Fabricate one white field
-                    xtomo.logger.info("White file [%s]. Generating white fields", white_file_name)  
-                    nz, ny, nx = np.shape(xtomo.data)
-                    xtomo.data_white = np.ones((1, ny, nx))
+                    self.logger.info("White file [%s]. Generating white fields", white_file_name)  
+                    nz, ny, nx = np.shape(self.data)
+                    self.data_white = np.ones((1, ny, nx))
             else:
                 # Fabricate one white field
-                xtomo.logger.info("White file is missing. Generating white fields")
-                nz, ny, nx = np.shape(xtomo.data)
-                xtomo.data_white = np.ones((1, ny, nx))
+                self.logger.warning("White file is missing. Generating white fields")
+                nz, ny, nx = np.shape(self.data)
+                self.data_white = np.ones((1, ny, nx), dtype=dtype)
 
         # Dark ------------------------------------------------
 
@@ -597,13 +600,13 @@ class Import():
             for n in range(dark_digits):
                 if ind[m] < np.power(10, n + 1):
                     _file_name = data_file_dark + dark_file_index[n] + str(ind[m]) + dataExtension
-                    xtomo.logger.info("Generating dark file names: [%s]", _file_name)
+                    self.logger.info("Generating dark file names: [%s]", _file_name)
                     break
 
             if os.path.isfile(_file_name):
                 dark_exist = True
-                xtomo.logger.info("Reading dark file: [%s]", os.path.realpath(_file_name))
-                xtomo.logger.info("data type: [%s]", data_type)
+                self.logger.info("Reading dark file: [%s]", os.path.realpath(_file_name))
+                self.logger.info("data type: [%s]", data_type)
 
                 f = XTomoReader(_file_name)
                 if (data_type is 'hdf4'):
@@ -660,13 +663,13 @@ class Import():
 
         # Update dark data.
         if dark_exist > 0:
-            xtomo.data_dark = input_data
+            self.data_dark = input_data
         else:
-            xtomo.logger.info("Attempt reading dark from file: [%s]", file_name)                    
+            self.logger.info("Attempt reading dark from file: [%s]", file_name)                    
             if (data_type is 'h5'):
                 # Read the dark fields that are all in a single file
                 if os.path.isfile(file_name):
-                    xtomo.logger.info("Dark file: [%s] exists", file_name)                    
+                    self.logger.info("Dark file: [%s] exists", file_name)                    
                     f = XTomoReader(file_name)
                     tmpdata = f.hdf5(z_start = projections_start,
                                     	z_end = projections_end,
@@ -678,62 +681,64 @@ class Import():
                                     	x_end = pixels_end,
                                     	x_step = pixels_step,
                                     	array_name= '/'.join([exchange_base, "data_dark"]))
-                    xtomo.data_dark = tmpdata
+                    self.data_dark = tmpdata
                 else:
                     # Fabricate one dark field
-                    xtomo.logger.warning("Dark file [%s]. Generating dark fields", dark_file_name)
-                    nz, ny, nx = np.shape(xtomo.data)
-                    xtomo.data_dark = np.zeros((1, ny, nx))
+                    self.logger.warning("Dark file [%s]. Generating dark fields", dark_file_name)
+                    nz, ny, nx = np.shape(self.data)
+                    self.data_dark = np.zeros((1, ny, nx))
             elif (data_type is 'edf'):
                 # Read the dark fields that are all in a single file
                 if os.path.isfile(dark_file_name):
-                    xtomo.logger.info("Dark file: [%s] exists", dark_file_name)                    
+                    self.logger.info("Dark file: [%s] exists", dark_file_name)                    
                     f = XTomoReader(dark_file_name)
                     tmpdata = f.edf(y_start = slices_start,
                                     y_end = slices_end,
                                     y_step = slices_step)
-                    xtomo.data_dark = tmpdata
+                    self.data_dark = tmpdata
                 else:
                     # Fabricate one dark field
-                    xtomo.logger.warning("Dark file [%s]. Generating dark fields", dark_file_name)
-                    nz, ny, nx = np.shape(xtomo.data)
-                    xtomo.data_dark = np.zeros((1, ny, nx))
+                    self.logger.warning("Dark file [%s]. Generating dark fields", dark_file_name)
+                    nz, ny, nx = np.shape(self.data)
+                    self.data_dark = np.zeros((1, ny, nx))
             elif (data_type is 'xradia'):
                 # Read the dark fields that are all in a single file
                 if os.path.isfile(dark_file_name):
-                    xtomo.logger.info("Dark file: [%s] exists", dark_file_name)                    
+                    self.logger.info("Dark file: [%s] exists", dark_file_name)                    
                     f = XTomoReader(dark_file_name)
-                    tmpdata = f.xrm()
-                    xtomo.data_dark = tmpdata
+                    tmpdata = f.xrm(y_start = slices_start,
+                                    y_end = slices_end,
+                                    y_step = slices_step)
+                    self.data_dark = tmpdata
                 else:
                     # Fabricate one dark field
-                    xtomo.logger.warning("Dark file [%s]. Generating dark fields", dark_file_name)
-                    nz, ny, nx = np.shape(xtomo.data)
-                    xtomo.data_dark = np.zeros((1, ny, nx))
+                    self.logger.warning("Dark file [%s]. Generating dark fields", dark_file_name)
+                    nz, ny, nx = np.shape(self.data)
+                    self.data_dark = np.zeros((1, ny, nx),dtype=dtype)
             elif (data_type is 'dpt'):
                 # Read the dark fields that are all in a single file
                 if os.path.isfile(dark_file_name):
-                    xtomo.logger.info("Dark file: [%s] exists", dark_file_name)                    
+                    self.logger.info("Dark file: [%s] exists", dark_file_name)                    
                     f = XTomoReader(dark_file_name)
                     tmpdata = f.dpt(y_start = slices_start,
                                     y_end = slices_end,
                                     y_step = slices_step)
-                    xtomo.data_dark = tmpdata
+                    self.data_dark = tmpdata
                 else:
                     # Fabricate one dark field
-                    xtomo.logger.warning("Dark file [%s]. Generating dark fields", dark_file_name)
-                    nz, ny, nx = np.shape(xtomo.data)
-                    xtomo.data_dark = np.zeros((1, ny, nx))
+                    self.logger.warning("Dark file [%s]. Generating dark fields", dark_file_name)
+                    nz, ny, nx = np.shape(self.data)
+                    self.data_dark = np.zeros((1, ny, nx))
             else:
                 # Fabricate one dark field
-                xtomo.logger.warning("Dark file is missing. Generating dark fields")
-                nz, ny, nx = np.shape(xtomo.data)
-                xtomo.data_dark = np.zeros((1, ny, nx))
+                self.logger.warning("Dark file is missing. Generating dark fields")
+                nz, ny, nx = np.shape(self.data)
+                self.data_dark = np.zeros((1, ny, nx), dtype=dtype)
         # Theta ------------------------------------------------
 	if (data_type is 'h5'):
-		xtomo.logger.info("Attempt reading angles from file: [%s]", file_name)                    
+		self.logger.info("Attempt reading angles from file: [%s]", file_name)                    
 		f = XTomoReader(file_name)
-		xtomo.logger.info("Angle file: [%s] exists", file_name) 
+		self.logger.info("Angle file: [%s] exists", file_name) 
                 array_name = '/'.join([exchange_base, "theta"])                   
 		tmpdata = f.hdf5(z_start = projections_start, 
                         z_end = projections_end,
@@ -742,52 +747,53 @@ class Import():
                         y_end = slices_end,
                         y_step = slices_step,
                         array_name=array_name)
-		xtomo.theta = tmpdata
+		self.theta = tmpdata
 	elif (data_type is 'xradia'):
-		xtomo.logger.info("Attempt reading angles from file: [%s]", file_name)                    
+		self.logger.info("Attempt reading angles from file: [%s]", file_name)                    
 		f = XTomoReader(file_name)
-        	xtomo.logger.info("Angle file: [%s] exists", file_name)                    
-		tmpdata = f.txrm(array_name='exchange/theta')
-		xtomo.theta = tmpdata
+        	self.logger.info("Angle file: [%s] exists", file_name)                    
+		tmpdata = f.txrm(array_name='theta')
+		self.theta = tmpdata
 	else:
 	        # Fabricate theta values
-        	nz, ny, nx = np.shape(xtomo.data)
+        	nz, ny, nx = np.shape(self.data)
         	z = np.arange(nz)
-        	xtomo.logger.info("Angle file missing. Generating angles")                    
+        	self.logger.warning("Angle file missing")                    
+        	self.logger.warning("Generating angles")                    
 
         	projections_angle_range = projections_angle_end - projections_angle_start
-        	xtomo.theta = (z * float(projections_angle_range) / (len(z)))
+        	self.theta = (z * float(projections_angle_range) / (len(z)))
 
-        return xtomo.data, xtomo.data_white, xtomo.data_dark, xtomo.theta
+        return self.data, self.data_white, self.data_dark, self.theta
 
-    def _init_logging(xtomo, stream_handler):
+    def _init_logging(self, stream_handler):
         """
         Setup and start command line logging.
         """
         # Top-level log setup.
-        xtomo.logger = logging.getLogger("data exchange")
-        if xtomo._log_level == 'DEBUG':
-            xtomo.logger.setLevel(logging.DEBUG)
-        elif xtomo._log_level == 'INFO':
-            xtomo.logger.setLevel(logging.INFO)
-        elif xtomo._log_level == 'WARN':
-            xtomo.logger.setLevel(logging.WARN)
-        elif xtomo._log_level == 'WARNING':
-            xtomo.logger.setLevel(logging.WARNING)
-        elif xtomo._log_level == 'ERROR':
-            xtomo.logger.setLevel(logging.ERROR)
+        self.logger = logging.getLogger("data exchange")
+        if self._log_level == 'DEBUG':
+            self.logger.setLevel(logging.DEBUG)
+        elif self._log_level == 'INFO':
+            self.logger.setLevel(logging.INFO)
+        elif self._log_level == 'WARN':
+            self.logger.setLevel(logging.WARN)
+        elif self._log_level == 'WARNING':
+            self.logger.setLevel(logging.WARNING)
+        elif self._log_level == 'ERROR':
+            self.logger.setLevel(logging.ERROR)
 
         # Terminal stream log.
         ch = logging.StreamHandler()
-        if xtomo._log_level == 'DEBUG':
+        if self._log_level == 'DEBUG':
             ch.setLevel(logging.DEBUG)
-        elif xtomo._log_level == 'INFO':
+        elif self._log_level == 'INFO':
             ch.setLevel(logging.INFO)
-        elif xtomo._log_level == 'WARN':
+        elif self._log_level == 'WARN':
             ch.setLevel(logging.WARN)
-        elif xtomo._log_level == 'WARNING':
+        elif self._log_level == 'WARNING':
             ch.setLevel(logging.WARNING)
-        elif xtomo._log_level == 'ERROR':
+        elif self._log_level == 'ERROR':
             ch.setLevel(logging.ERROR)
 
         # Show date and time.
@@ -795,11 +801,11 @@ class Import():
         ch.setFormatter(formatter)
 
         # Update logger.
-        if not len(xtomo.logger.handlers): # For fist time create handlers.
-            xtomo.logger.addHandler(ch)
+        if not len(self.logger.handlers): # For fist time create handlers.
+            self.logger.addHandler(ch)
 
 # Nexus not working yet
-    def nexus(xtomo, file_name,
+    def nexus(self, file_name,
               hdf5_file_name,
               projections_start=0,
               projections_end=None,
@@ -851,7 +857,7 @@ class Import():
 
         f = XTomoReader()
         # Read data from exchange group.
-        xtomo.data = f.hdf5(file_name,
+        self.data = f.hdf5(file_name,
                             array_name=array_name,
                             x_start=projections_start,
                             x_end=projections_end,
@@ -864,7 +870,7 @@ class Import():
                             z_step=pixels_step).astype(dtype)
 
         # Read white field data from exchange group.
-        xtomo.data_white = f.hdf5(file_name,
+        self.data_white = f.hdf5(file_name,
                             array_name=array_name,
                             x_start=white_start,
                             x_end=white_end,
@@ -876,7 +882,7 @@ class Import():
                             z_step=pixels_step).astype(dtype)
 
         # Read dark field data from exchange group.
-        xtomo.data_dark = f.hdf5(file_name,
+        self.data_dark = f.hdf5(file_name,
                             array_name=array_name,
                             x_start=dark_start,
                             x_end=dark_end,

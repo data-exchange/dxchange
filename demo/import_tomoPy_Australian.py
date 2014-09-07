@@ -31,14 +31,15 @@ import tomopy
 
 # Data Exchange: https://github.com/data-exchange/data-exchange
 import dataexchange.xtomo.xtomo_importer as dx
+import dataexchange.xtomo.xtomo_exporter as ex
 
 
 def main():
     # read a series of tiff
     file_name = '/local/dataraid/databank/AS/Mayo_tooth_AS/SAMPLE_T_.tif'
-    dark_file_name = '/local/dataraid/databank/AS/Mayo_tooth_AS/DF__AFTER_01.tif'
-    white_file_name = '/local/dataraid/databank/AS/Mayo_tooth_AS/BG__BEFORE_01.tif'
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/Australian_test.h5'
+    dark_file_name = '/local/dataraid/databank/AS/Mayo_tooth_AS/DF__BEFORE_.tif'
+    white_file_name = '/local/dataraid/databank/AS/Mayo_tooth_AS/BG__BEFORE_.tif'
+
     sample_name = 'Teeth'
 
     projections_start = 0
@@ -52,7 +53,6 @@ def main():
 
     # to reconstruct slices from slices_start to slices_end
     # if omitted all data set is recontructed
-    
     slices_start = 290    
     slices_end = 294    
 
@@ -89,9 +89,9 @@ def main():
     d.center=1184.0
     d.gridrec()
 
-
     # Write to stack of TIFFs.
-    tomopy.xtomo_writer(d.data_recon, 'tmp/Australian_', axis=0)
+    mydata = ex.Export()
+    mydata.xtomo_tiff(data = d.data_recon, output_file = 'tmp/Australian_tiff_2_tomoPy_', axis=0)
 
 if __name__ == "__main__":
     main()

@@ -34,6 +34,7 @@ import tomopy
 
 # Data Exchange: https://github.com/data-exchange/data-exchange
 import dataexchange.xtomo.xtomo_importer as dx
+import dataexchange.xtomo.xtomo_exporter as ex
 
 import re
 
@@ -107,9 +108,9 @@ def main():
     d.center=1059.2
     d.gridrec()
 
-
     # Write to stack of TIFFs.
-    tomopy.xtomo_writer(d.data_recon, 'tmp/APS_2_BM_', axis=0)
+    mydata = ex.Export()
+    mydata.xtomo_tiff(data = d.data_recon, output_file = 'tmp/APS_2_BM_hdf4_2_tomoPy_', axis=0)
 
 if __name__ == "__main__":
     main()

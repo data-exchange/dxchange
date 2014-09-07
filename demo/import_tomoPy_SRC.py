@@ -31,6 +31,7 @@ import tomopy
 
 # Data Exchange: https://github.com/data-exchange/data-exchange
 import dataexchange.xtomo.xtomo_importer as dx
+import dataexchange.xtomo.xtomo_exporter as ex
 
 import re
 import os
@@ -81,7 +82,10 @@ def main():
         # Write to stack of TIFFs.
         rec_name = dir_name + "/rec/" + sample_name_prefix + linelist[0] + "cm-1"
 
-        tomopy.xtomo_writer(d.data_recon, rec_name, axis=0)
+        # Write to stack of TIFFs.
+        mydata = ex.Export()
+        mydata.xtomo_tiff(data = d.data_recon, rec_name, axis=0)
+
     file.close()
 
 if __name__ == "__main__":

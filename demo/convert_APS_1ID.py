@@ -76,18 +76,11 @@ def main():
 ##    dark_start = 1854
 ##    dark_end = 1863
    
-    # set to convert slices between slices_start and slices_end
-    # if omitted all data set will be converted   
-#    slices_start = 1000    
-#    slices_end = 1004    
-
     mydata = dx.Import()
     # Read series of images
     data, white, dark, theta = mydata.series_of_images(file_name,
                                                        projections_start = projections_start,
                                                        projections_end = projections_end,
-#                                                       slices_start = slices_start,
-#                                                       slices_end = slices_end,
                                                        white_start = white_start,
                                                        white_end = white_end,
                                                        dark_start = dark_start,

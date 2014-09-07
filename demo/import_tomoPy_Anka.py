@@ -31,6 +31,7 @@ import tomopy
 
 # Data Exchange: https://github.com/data-exchange/data-exchange
 import dataexchange.xtomo.xtomo_importer as dx
+import dataexchange.xtomo.xtomo_exporter as ex
 
 
 def main():
@@ -49,8 +50,7 @@ def main():
     sample_name = 'Anka'
 
     # to reconstruct slices from slices_start to slices_end
-    # if omitted all data set is recontructed
-    
+    # if omitted all data set is recontructed    
     slices_start = 800    
     slices_end = 804    
 
@@ -82,9 +82,9 @@ def main():
     d.center=993.825
     d.gridrec()
 
-
     # Write to stack of TIFFs.
-    tomopy.xtomo_writer(d.data_recon, 'tmp/Anka_', axis=0)
+    mydata = ex.Export()
+    mydata.xtomo_tiff(data = d.data_recon, output_file = 'tmp/Anka_tiff_2_tomoPy_', axis=0)
 
 if __name__ == "__main__":
     main()

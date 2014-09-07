@@ -34,7 +34,7 @@ def main():
     file_name = '/local/dataraid/databank/TXM_26_ID/20130731_004_Stripe_Solder_Sample_Tip1_TomoScript_181imgs_p1s_b1.txrm'
     # white is saturated .... 
     white_file_name = '/local/dataraid/databank/TXM_26_ID/20130731_001_Background_Reference_20imgs_p5s_b1.xrm'
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/APS_26_ID_XRADIA.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/APS_26_ID_xradia.h5'
     sample_name = '20130731_004_Stripe_Solder_Sample_Tip1'
 
 
@@ -45,10 +45,6 @@ def main():
                                                        data_type='xradia',
                                                        log='INFO'
                                                     )    
-    print "data:", data.shape, data.dtype
-    print "white:", white.shape, white.dtype
-    print "dark:", dark.shape, dark.dtype
-    print "theta:", theta.shape, theta.dtype
 
     mydata = ex.Export()
     # Create minimal data exchange hdf5 file

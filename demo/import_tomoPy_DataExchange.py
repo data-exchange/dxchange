@@ -15,20 +15,16 @@ import tomopy
 
 # Data Exchange: https://github.com/data-exchange/data-exchange
 import dataexchange.xtomo.xtomo_importer as dx
-
+import dataexchange.xtomo.xtomo_exporter as ex
 
 def main():
     # read a series of tiff
 
-    file_name = '/local/dataraid/databank/dataExchange/microCT/Elettra_OK.h5'
     file_name = '/local/dataraid/databank/dataExchange/microCT/Sangid_ShortFiber.h5' 
     file_name = '/local/dataraid/databank/dataExchange/tmp/Elettra.h5'
-    # to reconstruct slices from slices_start to slices_end
-    # if omitted all data set is recontructed
-    
-#    slices_start = 150    
-#    slices_end = 154    
 
+    # to reconstruct slices from slices_start to slices_end
+    # if omitted all data set is recontructed    
 #    slices_start = 1365
 #    slices_end = 1367
 
@@ -54,9 +50,9 @@ def main():
     #d.center=1096.375
     d.gridrec()
 
-
     # Write to stack of TIFFs.
-    tomopy.xtomo_writer(d.data_recon, 'tmp/ELETTRA_LAST_', axis=0)
+    mydata = ex.Export()
+    mydata.xtomo_tiff(data = d.data_recon, output_file = 'tmp/Elettra_DataExchange_2_tomoPy_', axis=0)
 
 if __name__ == "__main__":
     main()

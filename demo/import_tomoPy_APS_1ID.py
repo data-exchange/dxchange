@@ -31,14 +31,13 @@ import tomopy
 
 # Data Exchange: https://github.com/data-exchange/data-exchange
 import dataexchange.xtomo.xtomo_importer as dx
+import dataexchange.xtomo.xtomo_exporter as ex
 
 import re
 
 def main():
     file_name = '/local/dataraid/databank/APS_1_ID/APS1ID_Cat4B_2/CAT4B_2_.tif'
     log_file = '/local/dataraid/databank/APS_1_ID/APS1ID_Cat4B_2/CAT4B_2_TomoStillScan.dat'
-
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/APS_1ID.h5'
 
     #Read APS 1-ID log file data
     file = open(log_file, 'r')
@@ -77,10 +76,6 @@ def main():
 ##    dark_start = 1854
 ##    dark_end = 1863
 
-    print projections_start, projections_end
-    print dark_start, dark_end
-    print white_start, white_end
-   
     # set to convert slices between slices_start and slices_end
     # if omitted all data set will be converted   
     slices_start = 1000    
@@ -113,9 +108,9 @@ def main():
     d.center=1026.0
     d.gridrec()
 
-
     # Write to stack of TIFFs.
-    tomopy.xtomo_writer(d.data_recon, 'tmp/APS_1_ID_', axis=0)
+    mydata = ex.Export()
+    mydata.xtomo_tiff(data = d.data_recon, output_file = 'tmp/APS_1_ID_tiff_2_tomoPy_', axis=0)
 
 if __name__ == "__main__":
     main()

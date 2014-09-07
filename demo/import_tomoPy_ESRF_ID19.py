@@ -32,6 +32,7 @@ import tomopy
 
 # Data Exchange: https://github.com/data-exchange/data-exchange
 import dataexchange.xtomo.xtomo_importer as dx
+import dataexchange.xtomo.xtomo_exporter as ex
 
 import re
 
@@ -41,13 +42,7 @@ def main():
     dark_file_name = '/local/dataraid/databank/ESRF/dark.edf'
     white_file_name = '/local/dataraid/databank/ESRF/flat.edf'
 
-    # only defined if used a converter
-    # omit when used as direct importer in tomoPy    
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/ESRF_test_10.h5'
-
     sample_name = 'esrf'
-
-
     
     # set to import/convert slices between slices_start and slices_end
     # if omitted all data set will be converted   
@@ -75,9 +70,9 @@ def main():
     d.center=549.84
     d.gridrec()
 
-
     # Write to stack of TIFFs.
-    tomopy.xtomo_writer(d.data_recon, 'tmp/ESRF_', axis=0)
+    mydata = ex.Export()
+    mydata.xtomo_tiff(data = d.data_recon, output_file = 'tmp/ESRF_edf_2_tomoPy_', axis=0)
 
 if __name__ == "__main__":
     main()

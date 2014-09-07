@@ -31,7 +31,7 @@ import tomopy
 
 # Data Exchange: https://github.com/data-exchange/data-exchange
 import dataexchange.xtomo.xtomo_importer as dx
-
+import dataexchange.xtomo.xtomo_exporter as ex
 
 def main():
 
@@ -42,8 +42,8 @@ def main():
 
     # set to convert slices between slices_start and slices_end
     # if omitted all data set will be converted   
-    slices_start = 290    
-    slices_end = 294    
+    slices_start = 620    
+    slices_end = 624    
 
     mydata = dx.Import()
     # Read series of images
@@ -53,6 +53,10 @@ def main():
                                                         slices_end = slices_end, 
                                                         data_type='xradia', 
                                                         log='INFO')
+    print "data:", data.shape, data.dtype
+    print "white:", white.shape, white.dtype
+    print "dark:", dark.shape, dark.dtype
+    print "theta:", theta.shape, theta.dtype
 
     # TomoPy xtomo object creation and pipeline of methods.  
     d = tomopy.xtomo_dataset(log='debug')
@@ -60,14 +64,12 @@ def main():
     d.normalize()
     d.correct_drift()
     #d.optimize_center()
-    #d.phase_retrieval()
-    #d.correct_drift()
     d.center=510.0
     d.gridrec()
 
-
     # Write to stack of TIFFs.
-    tomopy.xtomo_writer(d.data_recon, 'tmp/APS_26_ID_XRADIA_', axis=0)
+    mydata = ex.Export()
+    mydata.xtomo_tiff(data = d.data_recon, output_file = 'tmp/APS_26_ID_xradia_2_tomoPy_', axis=0)
 
 if __name__ == "__main__":
     main()

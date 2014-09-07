@@ -26,7 +26,10 @@ Examples
 .. _series_of_images: dataexchange.xtomo.xtomo_importer.html
 """
 
-import tomopy
+# tomoPy: https://github.com/tomopy/tomopy
+import tomopy 
+
+# Data Exchange: https://github.com/data-exchange/data-exchange
 import dataexchange.xtomo.xtomo_importer as dx
 import dataexchange.xtomo.xtomo_exporter as ex
 
@@ -74,9 +77,9 @@ def main():
     d.center=1160.5
     d.gridrec()
 
-
     # Write to stack of TIFFs.
-    tomopy.xtomo_writer(d.data_recon, 'tmp/CHESS_', axis=0)
+    mydata = ex.Export()
+    mydata.xtomo_tiff(data = d.data_recon, output_file = 'tmp/CHESS_tiff_2_tomoPy_', axis=0)
 
 if __name__ == "__main__":
     main()

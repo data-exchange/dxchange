@@ -31,7 +31,7 @@ import tomopy
 
 # Data Exchange: https://github.com/data-exchange/data-exchange
 import dataexchange.xtomo.xtomo_importer as dx
-
+import dataexchange.xtomo.xtomo_exporter as ex
 
 def main():
     # read a series of tiff
@@ -87,9 +87,11 @@ def main():
     #d.correct_drift()
     d.center=1872.87890625
     d.gridrec()
+
     # Write to stack of TIFFs.
-    tomopy.xtomo_writer(d.data_recon, 'tmp/PetraIII_', axis=0)
-#    tomopy.xtomo_writer(d.data_recon, 'tmp/oster02_0001_int_', axis=0, x_start = 1001, overwrite=True, dtype='uint8', data_min=-0.0001, data_max=0.0003)
+    mydata = ex.Export()
+    mydata.xtomo_tiff(data = d.data_recon, output_file = 'tmp/PetraIII_tiff_2_tomoPy_', axis=0)
+#    mydata.xtomo_tiff(data = d.data_recon, output_file = 'tmp/oster02_0001_int_', axis=0, x_start = 1001, overwrite=True, dtype='uint8', data_min=-0.0001, data_max=0.0003)
 
 if __name__ == "__main__":
     main()

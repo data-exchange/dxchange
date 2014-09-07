@@ -32,7 +32,7 @@ import dataexchange.xtomo.xtomo_exporter as ex
 def main():
 
     file_name = '/local/dataraid/databank/AS/Mayo_tooth_AS/SAMPLE_T_.tif'
-    dark_file_name = '/local/dataraid/databank/AS/Mayo_tooth_AS/DF__AFTER_.tif'
+    dark_file_name = '/local/dataraid/databank/AS/Mayo_tooth_AS/DF__BEFORE_.tif'
     white_file_name = '/local/dataraid/databank/AS/Mayo_tooth_AS/BG__BEFORE_.tif'
     hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/Australian.h5'
     sample_name = 'Teeth'
@@ -46,18 +46,11 @@ def main():
     dark_end = 10
     dark_step = 1
 
-    # set to convert slices between slices_start and slices_end
-    # if omitted all data set will be converted   
-#    slices_start = 290    
-#    slices_end = 294    
-
     mydata = dx.Import()
     # Read series of images
     data, white, dark, theta = mydata.series_of_images(file_name,
                                                        projections_start = projections_start,
                                                        projections_end = projections_end,
-#                                                       slices_start = slices_start,
-#                                                       slices_end = slices_end,
                                                        white_file_name = white_file_name,
                                                        white_start = white_start,
                                                        white_end = white_end,

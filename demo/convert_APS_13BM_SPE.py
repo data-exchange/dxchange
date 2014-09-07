@@ -32,7 +32,7 @@ import dataexchange.xtomo.xtomo_exporter as ex
 def main():
 
     file_name = '/local/dataraid/databank/APS_13_BM/SPE/run2_soln1_2_.SPE'
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/APS_13_BM_SPE.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/APS_13_BM_spe.h5'
 
     white_start = 1
     white_end = 8
@@ -40,11 +40,6 @@ def main():
     projections_start = 2
     projections_end = 7
     projections_step = 2
-
-    # set to convert slices between slices_start and slices_end
-    # if omitted all data set will be converted   
-#    slices_start = 100    
-#    slices_end = 104    
 
     mydata = dx.Import()
     # Read series of images

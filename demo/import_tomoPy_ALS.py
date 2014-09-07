@@ -31,6 +31,7 @@ import tomopy
 
 # Data Exchange: https://github.com/data-exchange/data-exchange
 import dataexchange.xtomo.xtomo_importer as dx
+import dataexchange.xtomo.xtomo_exporter as ex
 
 import re
 
@@ -40,8 +41,6 @@ def main():
     dark_file_name = '/local/dataraid/databank/als/data/raw/sacarroll/20140731_001306_2477A_x00y08/20140731_001306_2477A_x00y08drk_.tif'
     white_file_name = '/local/dataraid/databank/als/data/raw/sacarroll/20140731_001306_2477A_x00y08/20140731_001306_2477A_x00y08bak_.tif'
     log_file = '/local/dataraid/databank/als/data/raw/sacarroll/20140731_001306_2477A_x00y08/20140731_001306_2477A_x00y08.sct'
-
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/ALS.h5'
 
     verbose = True
 
@@ -85,10 +84,6 @@ def main():
     projections_start = 0
     projections_end = int(Angles[0])
 
-    print dark_start, dark_end, dark_step
-    print white_start, white_end, white_step
-    print projections_start, projections_end
-
     # set to convert slices between slices_start and slices_end
     # if omitted all data set will be converted   
     slices_start = 245    
@@ -123,7 +118,8 @@ def main():
     d.gridrec()
 
     # Write to stack of TIFFs.
-    tomopy.xtomo_writer(d.data_recon, 'tmp/ALS_', axis=0)
+    mydata = ex.Export()
+    mydata.xtomo_tiff(data = d.data_recon, output_file = 'tmp/ALS_tiff_2_tomoPy_', axis=0)
 
 if __name__ == "__main__":
     main()

@@ -31,6 +31,7 @@ import tomopy
 
 # Data Exchange: https://github.com/data-exchange/data-exchange
 import dataexchange.xtomo.xtomo_importer as dx
+import dataexchange.xtomo.xtomo_exporter as ex
 
 import re
 
@@ -68,8 +69,7 @@ def main():
     projections_end = projections_start + number_of_projections
 
     # to reconstruct a subset of slices set slices_start and slices_end
-    # if omitted the full data set is recontructed
-    
+    # if omitted the full data set is recontructed 
     slices_start = 800    
     slices_end = 804    
 
@@ -99,9 +99,9 @@ def main():
     d.center=1010.0
     d.gridrec()
 
-
     # Write to stack of TIFFs.
-    tomopy.xtomo_writer(d.data_recon, 'tmp/SLS_', axis=0)
+    mydata = ex.Export()
+    mydata.xtomo_tiff(data = d.data_recon, output_file = 'tmp/SLS_tiff_2_tomoPy_', axis=0)
 
 if __name__ == "__main__":
     main()

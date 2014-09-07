@@ -3,28 +3,25 @@ import numpy as np
 import os
 import h5py
 import logging
+import warnings
+from skimage import io as skimage_io 
 
 from data_exchange import DataExchangeFile, DataExchangeEntry
 
 class Export():
-    def __init__(xtomo, data=None, data_white=None, 
+    def __init__(self, data=None, data_white=None, 
                  data_dark=None, theta=None,
                  hdf5_file_name=None, data_exchange_type=None,
                  sample_name=None, logger=None, log='INFO'):
 
-        #xtomo.data = data
-        xtomo.data_white = data_white
-        xtomo.data_dark = data_dark
-        xtomo.theta = theta
-
         # Set the log level.
-        xtomo.logger = None
-        xtomo._log_level = str(log).upper()
-        xtomo._init_logging()
+        self.logger = None
+        self._log_level = str(log).upper()
+        self._init_logging()
 
-    def xtomo_writer(data, output_file=None, x_start=0,
-                     digits=5, axis=0, overwrite=False, 
-                     precision=True):
+    def xtomo_tiff(self, data, output_file=None, x_start=0,
+                     digits=5, axis=0, overwrite=False, delete=False,
+                     dtype='float32', data_min=None, data_max=None):
         """ 
         Write 3-D data to a stack of tif files.
 
@@ -45,13 +42,21 @@ class Export():
             Imaages is read along that axis.
             
         overwrite: bool, optional
-            if overwrite=True the existing data in the
+            if overwrite=True the existing files in the
             reconstruction folder will be overwritten
+            with the new ones.
             
-        precision : bool, optional
-            Export data type precision. if True it 
-            saves 32-bit precision. Otherwise it
-            uses 8-bit precision.
+        delete: bool, optional
+            if delete=True the reconstruction
+            folder and its contents will be deleted.
+            
+        dtype : bool, optional
+            Export data type precision.
+            
+        data_min, data_max : scalar, optional
+            User defined minimum and maximum values
+            in the data that will be used to scale 
+            the dataset when saving.
         
         Notes
         -----
@@ -66,60 +71,78 @@ class Export():
         --------
         - Save sinogram data:
             
-            >>> import tomopy
+            >>> import dataexchange.xtomo.xtomo_importer as dx
+            >>> import dataexchange.xtomo.xtomo_exporter as ex
             >>> 
+            >>> file_name = '/local/dataraid/databank/dataExchange/microCT/Elettra.h5'
+            >>> file_name_out = 'tmp/sinogram_'
+            >>>     
             >>> # Load data
-            >>> myfile = 'demo/data.h5'
-            >>> data, white, dark, theta = tomopy.xtomo_reader(myfile)
+            >>> mydata = dx.Import()
+            >>> # Read series of images
+            >>> data, white, dark, theta = mydata.series_of_images(file_name, data_type='h5', slices_start=0, slices_end=16)
             >>> 
             >>> # Save data
-            >>> output_file='tmp/slice_'
-            >>> tomopy.xtomo_writer(data, output_file, axis=1)
-            >>> print "Images are succesfully saved at " + output_file + '...'
-            
+            >>> mydata = ex.Export()
+            >>> mydata.xtomo_tiff(data = data, output_file = file_name_out, axis=1)
+            >>>             
         - Save first 16 projections:
             
-            >>> import tomopy
+            >>> import dataexchange.xtomo.xtomo_importer as dx
+            >>> import dataexchange.xtomo.xtomo_exporter as ex
+            >>> 
+            >>> file_name = '/local/dataraid/databank/dataExchange/microCT/Elettra.h5'
+            >>> file_name_out = 'tmp/projection_'
             >>> 
             >>> # Load data
-            >>> myfile = 'demo/data.h5'
-            >>> data, white, dark, theta = tomopy.xtomo_reader(myfile, projections_start=0, projections_end=16)
-            >>> 
+            >>> mydata = dx.Import()
+            >>> # Read series of images
+            >>> data, white, dark, theta = mydata.series_of_images(file_name, data_type='h5', projections_start=0, projections_end=16)
+
             >>> # Save data
-            >>> output_file='tmp/projection_'
-            >>> tomopy.xtomo_writer(data, output_file, axis=0)
-            >>> print "Images are succesfully saved at " + output_file + '...'
+            >>> mydata = ex.Export()
+            >>> mydata.xtomo_tiff(data = data, output_file = file_name_out, axis=0)
             
         - Save reconstructed slices:
             
-            >>> import tomopy
-            >>> 
-            >>> # Load data
-            >>> myfile = 'demo/data.h5'
-            >>> data, white, dark, theta = tomopy.xtomo_reader(myfile)
-            >>> 
-            >>> # Perform reconstruction
-            >>> d = tomopy.xtomo_dataset(log='error')
+            >>> import tomopy 
+            >>> import dataexchange.xtomo.xtomo_importer as dx
+            >>> import dataexchange.xtomo.xtomo_exporter as ex
+
+            >>> hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/Elettra.h5'
+            >>> mydata = dx.Import()
+            >>> data, white, dark, theta = mydata.series_of_images(hdf5_file_name, slices_start = 150, slices_end = 154, data_type='h5', log='INFO')
+            >>> d = tomopy.xtomo_dataset(log='debug')
             >>> d.dataset(data, white, dark, theta)
-            >>> d.center = 661.5
+            >>> d.normalize()
+            >>> d.correct_drift()
+            >>> d.optimize_center()
             >>> d.gridrec()
             >>> 
             >>> # Save data
-            >>> output_file='tmp/reconstruction_'
-            >>> tomopy.xtomo_writer(d.data_recon, output_file, axis=0)
-            >>> print "Images are succesfully saved at " + output_file + '...'
+            >>> mydata = ex.Export()
+            >>> mydata.xtomo_tiff(data = d.data_recon, output_file = 'tmp/Elettra_dataExchange_2_tomoPy_', axis=0)
         """
-        if output_file == None:
-            output_file = "tmp/img_" 
         output_file =  os.path.abspath(output_file)
         dir_path = os.path.dirname(output_file)
+            
+        # Find max min of data for scaling
+        if data_max is None:
+            data_max = np.max(data)
+        if data_min is None:
+            data_min = np.min(data)
+            
+        if data_max < np.max(data):
+            data[data>data_max] = data_max
+        if data_min > np.min(data):
+            data[data<data_min] = data_min
         
         # Remove TIFF extension if there is.
         if (output_file.endswith('tif') or
             output_file.endswith('tiff')) :
                 output_file = output_file.split(".")[-2]
       
-        if overwrite:
+        if delete:
             if os.path.exists(dir_path):
                 shutil.rmtree(dir_path)
                 
@@ -147,39 +170,48 @@ class Export():
                     file_body = output_file + file_index[n] + str(ind[m])
                     file_name = file_body + '.tif'
                     break
-            if precision:
-                if axis == 0:
-                    img = misc.toimage(data[m, :, :], mode='F')
-                elif axis == 1:
-                    img = misc.toimage(data[:, m, :], mode='F')
-                elif axis == 2:
-                    img = misc.toimage(data[:, :, m], mode='F')
-            else:
-                if axis == 0:
-                    img = misc.toimage(data[m, :, :])
-                elif axis == 1:
-                    img = misc.toimage(data[:, m, :])
-                elif axis == 2:
-                    img = misc.toimage(data[:, :, m])
 
             # check if file exists.
-            if os.path.isfile(file_name):
-                # genarate new file name.
-                indq = 1
-                FLAG_SAVE = False
-                while not FLAG_SAVE:
-                    new_file_body = file_body + '-' + str(indq)
-                    new_file_name = new_file_body + '.tif'
-                    if not os.path.isfile(new_file_name):
-                        img.save(new_file_name)
-                        FLAG_SAVE = True
-                        file_name = new_file_name
-                    else:
-                        indq += 1
-            else:
-                img.save(file_name)        
+            if not overwrite:
+                new_file_name = file_name
+                if os.path.isfile(file_name):
+                    self.logger.warning("File [%s] exists", file_name)
+                    # generate new file unique name.
+                    indq = 1
+                    FLAG_SAVE = False
+                    while not FLAG_SAVE:
+                        new_file_body = file_body + '-' + str(indq)
+                        new_file_name = new_file_body + '.tif'
+                        if not os.path.isfile(new_file_name):
+                            #self.logger.warning("File [%s] exists", new_file_name)
+                            FLAG_SAVE = True
+                            file_name = new_file_name
+                        else:
+                            self.logger.warning("File [%s] exists", new_file_name)
+                            indq += 1
 
-    def xtomo_exchange(xtomo, data, data_white=None, data_dark=None, theta=None, sample_name=None,
+            if axis == 0:
+                arr = data[m, :, :]
+            elif axis == 1:
+                arr = data[:, m, :]
+            elif axis == 2:
+                arr = data[:, :, m]
+
+            if dtype is 'uint8':
+                arr = ((arr*1.0 - data_min)/(data_max-data_min)*255).astype('uint8')
+            elif dtype is 'uint16':
+                arr = ((arr*1.0 - data_min)/(data_max-data_min)*65535).astype('uint16')
+            elif dtype is 'float32':
+                arr = arr.astype('float32')
+
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore")
+                self.logger.info("File saved as [%s]", new_file_name)
+                skimage_io.imsave(file_name, arr, plugin='tifffile')
+
+        self.logger.info("File conversion is complete")
+
+    def xtomo_exchange(self, data, data_white=None, data_dark=None, theta=None, sample_name=None,
                        data_exchange_type=None,
                        hdf5_file_name=None,
                        log='INFO'
@@ -225,16 +257,16 @@ class Export():
             >>> file_name = '/local/dataraid/databank/Anka/radios/image_.tif'
             >>> dark_file_name = '/local/dataraid/databank/Anka/darks/image_.tif'
             >>> white_file_name = '/local/dataraid/databank/Anka/flats/image_.tif'
-            >>> 
-            >>> hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/xx_yy_Anka.h5'
-            >>> 
+
+            >>> hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/Anka.h5'
+
             >>> projections_start = 0
             >>> projections_end = 3167
             >>> white_start = 0
             >>> white_end = 100
             >>> dark_start = 0
             >>> dark_end = 100
-            >>> 
+
             >>> sample_name = 'Anka'
             >>> 
             >>> mydata = dx.Import()
@@ -248,11 +280,10 @@ class Export():
             >>>                                                    dark_file_name = dark_file_name,
             >>>                                                    dark_start = dark_start,
             >>>                                                    dark_end = dark_end,
-            >>>                                                    sample_name = sample_name,
             >>>                                                    projections_digits = 5,
             >>>                                                    log='INFO'
             >>>                                                    )
-            >>> 
+
             >>> mydata = ex.Export()
             >>> # Create minimal data exchange hdf5 file
             >>> mydata.xtomo_exchange(data = data,
@@ -260,14 +291,15 @@ class Export():
             >>>                       data_dark = dark,
             >>>                       theta = theta,
             >>>                       hdf5_file_name = hdf5_file_name,
-            >>>                       data_exchange_type = 'tomography_raw_projections'
+            >>>                       data_exchange_type = 'tomography_raw_projections',
+            >>>                       sample_name = sample_name
             >>>                       )
 
         """
      
         if (hdf5_file_name != None):
             if os.path.isfile(hdf5_file_name):
-                xtomo.logger.info("Data Exchange file already exists: [%s]. Next time use the Data Exchange reader instead", hdf5_file_name)
+                self.logger.error("Data Exchange file: [%s] already exists", hdf5_file_name)
             else:
                 # Create new folder.
                 dirPath = os.path.dirname(hdf5_file_name)
@@ -284,26 +316,32 @@ class Export():
                 # Open DataExchange file
                 f = DataExchangeFile(hdf5_file_name, mode='w') 
 
-                xtomo.logger.info("Creating Data Exchange File [%s]", hdf5_file_name)
+                self.logger.info("Creating Data Exchange File [%s]", hdf5_file_name)
 
                 # Create core HDF5 dataset in exchange group for projections_theta_range
                 # deep stack of x,y images /exchange/data
-                xtomo.logger.info("Adding projections to Data Exchange File [%s]", hdf5_file_name)
+                self.logger.info("Adding projections to Data Exchange File [%s]", hdf5_file_name)
                 f.add_entry( DataExchangeEntry.data(data={'value': data, 'units':'counts', 'description': 'transmission', 'axes':'theta:y:x' }))
 #                f.add_entry( DataExchangeEntry.data(data={'value': data, 'units':'counts', 'description': 'transmission', 'axes':'theta:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
                 if (theta != None):
                     f.add_entry( DataExchangeEntry.data(theta={'value': theta, 'units':'degrees'}))
-                    xtomo.logger.info("Adding theta to Data Exchange File [%s]", hdf5_file_name)
+                    self.logger.info("Adding theta to Data Exchange File [%s]", hdf5_file_name)
+                else:
+                    self.logger.warning("theta is not defined")
                 if (data_dark != None):
-                    xtomo.logger.info("Adding dark fields to  Data Exchange File [%s]", hdf5_file_name)
+                    self.logger.info("Adding dark fields to  Data Exchange File [%s]", hdf5_file_name)
                     f.add_entry( DataExchangeEntry.data(data_dark={'value': data_dark, 'units':'counts', 'axes':'theta_dark:y:x' }))
 #                    f.add_entry( DataExchangeEntry.data(data_dark={'value': data_dark, 'units':'counts', 'axes':'theta_dark:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
+                else:
+                    self.logger.warning("data dark is not defined")
                 if (data_white != None):
-                    xtomo.logger.info("Adding white fields to  Data Exchange File [%s]", hdf5_file_name)
+                    self.logger.info("Adding white fields to  Data Exchange File [%s]", hdf5_file_name)
                     f.add_entry( DataExchangeEntry.data(data_white={'value': data_white, 'units':'counts', 'axes':'theta_white:y:x' }))
 #                    f.add_entry( DataExchangeEntry.data(data_white={'value': data_white, 'units':'counts', 'axes':'theta_white:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
+                else:
+                    self.logger.warning("data white is not defined")
                 if (data_exchange_type != None):
-                    xtomo.logger.info("Adding data type to  Data Exchange File [%s]", hdf5_file_name)
+                    self.logger.info("Adding data type to  Data Exchange File [%s]", hdf5_file_name)
                     f.add_entry( DataExchangeEntry.data(title={'value': data_exchange_type}))
                 if (sample_name == None):
                     sample_name = end[0]
@@ -311,39 +349,39 @@ class Export():
                 else:
                     f.add_entry( DataExchangeEntry.sample( name={'value':sample_name}, description={'value':'Sample name was read from the user log file'}))
                 f.close()
-                xtomo.logger.info("DONE!!!!. Created Data Exchange File [%s]", hdf5_file_name)
+                self.logger.info("DONE!!!!. Created Data Exchange File [%s]", hdf5_file_name)
         else:
-            xtomo.logger.info("Nothing to do ...")
+            self.logger.warning("Nothing to do ...")
             
 
-    def _init_logging(xtomo):
+    def _init_logging(self):
         """
         Setup and start command line logging.
         """
         # Top-level log setup.
-        xtomo.logger = logging.getLogger("data exchange") 
-        if xtomo._log_level == 'DEBUG':
-            xtomo.logger.setLevel(logging.DEBUG)
-        elif xtomo._log_level == 'INFO':
-            xtomo.logger.setLevel(logging.INFO) 
-        elif xtomo._log_level == 'WARN':
-            xtomo.logger.setLevel(logging.WARN)
-        elif xtomo._log_level == 'WARNING':
-            xtomo.logger.setLevel(logging.WARNING)
-        elif xtomo._log_level == 'ERROR':
-            xtomo.logger.setLevel(logging.ERROR)
+        self.logger = logging.getLogger("data exchange") 
+        if self._log_level == 'DEBUG':
+            self.logger.setLevel(logging.DEBUG)
+        elif self._log_level == 'INFO':
+            self.logger.setLevel(logging.INFO) 
+        elif self._log_level == 'WARN':
+            self.logger.setLevel(logging.WARN)
+        elif self._log_level == 'WARNING':
+            self.logger.setLevel(logging.WARNING)
+        elif self._log_level == 'ERROR':
+            self.logger.setLevel(logging.ERROR)
         
         # Terminal stream log.
         ch = logging.StreamHandler()
-        if xtomo._log_level == 'DEBUG':
+        if self._log_level == 'DEBUG':
             ch.setLevel(logging.DEBUG)
-        elif xtomo._log_level == 'INFO':
+        elif self._log_level == 'INFO':
             ch.setLevel(logging.INFO) 
-        elif xtomo._log_level == 'WARN':
+        elif self._log_level == 'WARN':
             ch.setLevel(logging.WARN)
-        elif xtomo._log_level == 'WARNING':
+        elif self._log_level == 'WARNING':
             ch.setLevel(logging.WARNING)
-        elif xtomo._log_level == 'ERROR':
+        elif self._log_level == 'ERROR':
             ch.setLevel(logging.ERROR)
         
         # Show date and time.
@@ -351,5 +389,5 @@ class Export():
         ch.setFormatter(formatter)
             
         # Update logger.
-        if not len(xtomo.logger.handlers): # For fist time create handlers.
-            xtomo.logger.addHandler(ch)
+        if not len(self.logger.handlers): # For fist time create handlers.
+            self.logger.addHandler(ch)

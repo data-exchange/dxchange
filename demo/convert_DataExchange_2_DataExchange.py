@@ -36,23 +36,12 @@ import dataexchange.xtomo.xtomo_exporter as ex
 
 def main():
 
-    file_name = '/media/DISK_01/databank/dataExchange/microCT/Elettra.h5'
-    file_name_out = '/media/DISK_01/databank/dataExchange/microCT/Elettra_out.h5'
-
-    
-    # set to read all slices between slices_start and slices_end
-    # if omitted all data set will be read   
-#    slices_start = 150    
-#    slices_end = 154    
+    file_name = '/local/dataraid/databank/dataExchange/microCT/Elettra.h5'
+    file_name_out = '/local/dataraid/databank/dataExchange/microCT/Elettra_out.h5'
 
     mydata = dx.Import()
     # Read series of images
-    data, white, dark, theta = mydata.series_of_images(file_name,
-#                                                       slices_start = slices_start,
-#                                                       slices_end = slices_end,
-                                                       data_type='h5',
-                                                       log='INFO'
-                                                       )
+    data, white, dark, theta = mydata.series_of_images(file_name, data_type='h5', log='INFO')
 
     mydata = ex.Export()
     # Create minimal data exchange hdf5 file

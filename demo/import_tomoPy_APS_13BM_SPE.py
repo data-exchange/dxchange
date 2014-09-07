@@ -25,11 +25,13 @@ Examples
 
 .. _series_of_images: dataexchange.xtomo.xtomo_importer.html
 """
+
 # tomoPy: https://github.com/tomopy/tomopy
 import tomopy 
 
 # Data Exchange: https://github.com/data-exchange/data-exchange
 import dataexchange.xtomo.xtomo_importer as dx
+import dataexchange.xtomo.xtomo_exporter as ex
 
 import re
 
@@ -37,7 +39,6 @@ import re
 def main():
     # read a series of SPE
     file_name = '/local/dataraid/databank/APS_13_BM/SPE/run2_soln1_2_.SPE'
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/APS_13_BM_SPE.h5'
 
     white_start = 1
     white_end = 8
@@ -81,9 +82,9 @@ def main():
     d.center=705
     d.gridrec()
 
-
     # Write to stack of TIFFs.
-    tomopy.xtomo_writer(d.data_recon, 'tmp/APS_13_BM_SPE_', axis=0)
+    mydata = ex.Export()
+    mydata.xtomo_tiff(data = d.data_recon, output_file = 'tmp/APS_13_BM_spe_2_tomoPy_', axis=0)
 
 if __name__ == "__main__":
     main()
