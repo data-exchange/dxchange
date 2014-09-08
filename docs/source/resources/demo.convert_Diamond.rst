@@ -1,5 +1,5 @@
-demo.convert_Diamond module
-===========================
+Diamond
+=======
 
 .. automodule:: demo.convert_Diamond
     :members:

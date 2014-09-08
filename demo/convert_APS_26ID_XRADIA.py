@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-.. module:: convert_APS_26ID.py
+.. module:: convert_APS_26ID_XRADIA.py
    :platform: Unix
    :synopsis: Convert APS 26-ID XRADIA files in data exchange.
 
