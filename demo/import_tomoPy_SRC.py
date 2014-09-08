@@ -84,7 +84,7 @@ def main():
 
         # Write to stack of TIFFs.
         mydata = ex.Export()
-        mydata.xtomo_tiff(data = d.data_recon, rec_name, axis=0)
+        mydata.xtomo_tiff(data = d.data_recon, output_file = rec_name, axis=0)
 
     file.close()
 

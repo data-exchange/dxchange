@@ -134,6 +134,99 @@ class XTomoReader:
 
         return dataset
                 
+    def nxs(self,
+             array_type=None,
+             x_start=0,
+             x_end=0,
+             x_step=1,
+             y_start=0,
+             y_end=0,
+             y_step=1,
+             z_start=0,
+             z_end=0,
+             z_step=1):
+        """ 
+        Read 3-D tomographic projection data from a NeXuS HDF5 file.
+
+        Opens ``file_name`` and reads the contents of the 3D array specified 
+	    by ``array_name`` in the specified group of the HDF5 file.
+        
+        Parameters
+        ----------
+        file_name : str
+            Input HDF5 file.
+        
+        array_name : str
+            Name of the array to be read at in the NeXuS file.
+            Options are: projections, dark, white 
+        
+        x_start, x_end, x_step : scalar, optional
+            Values of the start, end and step of the
+            slicing for the whole ndarray.
+        
+        y_start, y_end, y_step : scalar, optional
+            Values of the start, end and step of the
+            slicing for the whole ndarray.
+        
+        z_start, z_end, z_step : scalar, optional
+            Values of the start, end and step of the
+            slicing for the whole ndarray.
+        
+        Returns
+        -------
+        out : ndarray
+            Returns the data as a matrix.
+        """
+        # Read data from file.
+        array_name = 'entry1/tomo_entry/instrument/detector/data'
+        image_key_name = 'entry1/tomo_entry/instrument/detector/image_key'
+        print array_name
+        print array_type
+
+        if (array_type == 'projections'):
+            image_key_value = 0
+        if (array_type == 'white'):
+            image_key_value = 1                    
+        if (array_type == 'dark'):
+            image_key_value = 2
+
+        print image_key_value
+        
+        f = h5py.File(self.file_name, 'r')
+  	try:
+		hdfdata = f[array_name]
+		if (array_name.split('/')[1] == "theta"):
+			num_z = hdfdata.size
+        		if z_end is 0:
+            			z_end = num_z        		
+			# Construct theta.
+        		dataset = hdfdata[z_start:z_end:z_step]
+		else:	
+                        image_key = f[image_key_name].value
+                        image_location = np.where(image_key == image_key_value)
+                        dataset = np.ndarray.take(hdfdata.value, image_location[0], axis = 0)
+			num_z, num_y, num_x = dataset.shape
+        		if x_end is 0:
+            			x_end = num_x
+        		if y_end is 0:
+        			y_end = num_y
+        		if z_end is 0:
+            			z_end = num_z
+        		# Construct dataset.
+                        print "Z:", z_start, z_end, z_step
+                        print "Y:", y_start, y_end, y_step
+                        print "X:", x_start, x_end, x_step
+        		dataset = dataset[z_start:z_end:z_step,
+                          			y_start:y_end:y_step,
+                          			x_start:x_end:x_step]
+                        print dataset.shape
+	except KeyError:
+                print "FILE DOES NOT CONTAIN A VALID TOMOGRAPHY DATA SET"
+		dataset = None        
+
+	f.close()
+        return dataset
+
     def hdf4(self,
              array_name=None,
              x_start=0,

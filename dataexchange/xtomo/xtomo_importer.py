@@ -79,7 +79,6 @@ class Import():
                          dtype='uint16',
                          data_type='tiff',
                          exchange_rank = 0,
-#                         sample_name=None,
                          log='INFO'):
         """
         Read a stack of 2-D HDF4, TIFF, spe or netCDF images.
@@ -138,15 +137,16 @@ class Import():
 
         data_type : str, optional
             supported options are:
-                - ``hdf4``: HDF4 files used on old detectors at APS 2-BM
                 - ``compressed_tiff``: tiff files used at elettra
-                - ``tiff``: uncompressed regualar tiff files used at Petra III, ALS, Elettra, SLS, Australia, CHESS
-                - ``spe``: spe data from APS 13-BM
-                - ``nc``: netCDF data from 13-BM
                 - ``dpt``: ASCII data from SRC infrared tomography
                 - ``edf``: ESRF file format
-                - ``xradia``: txrm and xrm used by all Xradia systems
+                - ``nc``: netCDF data from 13-BM
+                - ``nxs``: NeXuS Diamond Light Source
+                - ``hdf4``: HDF4 files used on old detectors at APS 2-BM
                 - ``h5``: Data Exchange HDF5
+                - ``spe``: spe data from APS 13-BM
+                - ``tiff``: uncompressed regualar tiff files used at Petra III, ALS, Elettra, SLS, Australia, CHESS
+                - ``xradia``: txrm and xrm used by all Xradia systems
 
 
         exchange_rank : int, optional
@@ -209,6 +209,18 @@ class Import():
                 data_file_white = os.path.splitext(white_file_name)[0]
             if dark_file_name.endswith('HDF') or \
                 dark_file_name.endswith('hdf'):
+                data_file_dark = os.path.splitext(dark_file_name)[0]
+
+        elif (data_type is 'nxs'):
+            if file_name.endswith('NXS') or \
+                file_name.endswith('nxs'):
+                data_file = os.path.splitext(file_name)[0]
+                dataExtension = os.path.splitext(file_name)[1]
+            if white_file_name.endswith('NXS') or \
+                white_file_name.endswith('nxs'):
+                data_file_white = os.path.splitext(white_file_name)[0]
+            if dark_file_name.endswith('NXS') or \
+                dark_file_name.endswith('nxs'):
                 data_file_dark = os.path.splitext(dark_file_name)[0]
 
         elif (data_type is 'spe'):
@@ -417,6 +429,23 @@ class Import():
                                     	x_step = pixels_step,
                                     	array_name= array_name)
                     self.data = tmpdata
+            elif (data_type is 'nxs'):
+                # Read the projections that are all in a single file
+                if os.path.isfile(file_name):
+                    self.logger.info("Projection file: [%s] exists", file_name)                    
+                    f = XTomoReader(file_name)
+                    array_type = 'projections'
+                    tmpdata = f.nxs(z_start = projections_start,
+                                    	z_end = projections_end,
+                                    	z_step = projections_step,
+                                        y_start = slices_start,
+                                    	y_end = slices_end,
+                                    	y_step = slices_step,
+					x_start = pixels_start,
+                                    	x_end = pixels_end,
+                                    	x_step = pixels_step,
+                                    	array_type= array_type)
+                    self.data = tmpdata
             elif (data_type is 'edf'):
                 # Read the projections that are all in a single file
                 if os.path.isfile(file_name):
@@ -472,6 +501,7 @@ class Import():
                                      array_name='data')
 
                 elif (data_type is 'hdf5'):
+                    # to check on real data set from APS 15-ID
                     tmpdata = f.hdf5_2d(x_start=slices_start,
                                      x_end=slices_end,
                                      x_step=slices_step,
@@ -531,10 +561,10 @@ class Import():
                     tmpdata = f.hdf5(z_start = projections_start,
                                     	z_end = projections_end,
                                     	z_step = projections_step,
-					                    y_start = slices_start,
+                                        y_start = slices_start,
                                     	y_end = slices_end,
                                     	y_step = slices_step,
-					                    x_start = pixels_start,
+                                        x_start = pixels_start,
                                     	x_end = pixels_end,
                                     	x_step = pixels_step,
                                         array_name= '/'.join([exchange_base, "data_white"]))
@@ -544,6 +574,23 @@ class Import():
                     self.logger.info("White file [%s]. Generating white fields", white_file_name)  
                     nz, ny, nx = np.shape(self.data)
                     self.data_white = np.ones((1, ny, nx))
+            elif (data_type is 'nxs'):
+                # Read the whites that are all in a single file
+                if os.path.isfile(file_name):
+                    self.logger.info("White file: [%s] exists", file_name)                    
+                    f = XTomoReader(file_name)
+                    array_type = 'white'
+                    tmpdata = f.nxs(z_start = projections_start,
+                                    	z_end = projections_end,
+                                    	z_step = projections_step,
+                                        y_start = slices_start,
+                                    	y_end = slices_end,
+                                    	y_step = slices_step,
+					x_start = pixels_start,
+                                    	x_end = pixels_end,
+                                    	x_step = pixels_step,
+                                    	array_type= array_type)
+                    self.data_white = tmpdata
             elif (data_type is 'edf'):
                 # Read the whites that are all in a single file
                 if os.path.isfile(white_file_name):
@@ -616,6 +663,7 @@ class Import():
                                      array_name='data')
 
                 elif (data_type is 'hdf5'):
+                    # to check on real data set from APS 15-ID
                     tmpdata = f.hdf5_2d(x_start=slices_start,
                                      x_end=slices_end,
                                      x_step=slices_step,
@@ -687,6 +735,23 @@ class Import():
                     self.logger.warning("Dark file [%s]. Generating dark fields", dark_file_name)
                     nz, ny, nx = np.shape(self.data)
                     self.data_dark = np.zeros((1, ny, nx))
+            elif (data_type is 'nxs'):
+                # Read the projections that are all in a single file
+                if os.path.isfile(file_name):
+                    self.logger.info("Dark file: [%s] exists", file_name)                    
+                    f = XTomoReader(file_name)
+                    array_type = 'dark'
+                    tmpdata = f.nxs(z_start = projections_start,
+                                    	z_end = projections_end,
+                                    	z_step = projections_step,
+                                        y_start = slices_start,
+                                    	y_end = slices_end,
+                                    	y_step = slices_step,
+					x_start = pixels_start,
+                                    	x_end = pixels_end,
+                                    	x_step = pixels_step,
+                                    	array_type= array_type)
+                    self.data_dark = tmpdata
             elif (data_type is 'edf'):
                 # Read the dark fields that are all in a single file
                 if os.path.isfile(dark_file_name):
@@ -803,93 +868,4 @@ class Import():
         # Update logger.
         if not len(self.logger.handlers): # For fist time create handlers.
             self.logger.addHandler(ch)
-
-# Nexus not working yet
-    def nexus(self, file_name,
-              hdf5_file_name,
-              projections_start=0,
-              projections_end=None,
-              projections_step=1,
-              slices_start=0,
-              slices_end=None,
-              slices_step=1,
-              pixels_start=0,
-              pixels_end=None,
-              pixels_step=1,
-              white_start=0,
-              white_end=None,
-              dark_start=0,
-              dark_end=None,
-              array_name='entry/instrument/detector/data',
-              sample_name=None,
-              dtype='float32'):
-        """
-        Read Data Exchange HDF5 file.
-
-        Parameters
-        ----------
-        file_name : str
-            Input file.
-
-        projections_start, projections_end, projections_step : scalar, optional
-            Values of the start, end and step of the projections to
-            be used for slicing for the whole ndarray.
-
-        slices_start, slices_end, slices_step : scalar, optional
-            Values of the start, end and step of the slices to
-            be used for slicing for the whole ndarray.
-
-        pixels_start, pixels_end, pixels_step : scalar, optional
-            Values of the start, end and step of the pixels to
-            be used for slicing for the whole ndarray.
-
-        white_start, white_end : scalar, optional
-            Values of the start, end and step of the
-            slicing for the whole white field shots.
-
-        dark_start, dark_end : scalar, optional
-            Values of the start, end and step of the
-            slicing for the whole dark field shots.
-
-        dtype : str, optional
-            Desired output data type.
-        """
-
-        f = XTomoReader()
-        # Read data from exchange group.
-        self.data = f.hdf5(file_name,
-                            array_name=array_name,
-                            x_start=projections_start,
-                            x_end=projections_end,
-                            x_step=projections_step,
-                            y_start=slices_start,
-                            y_end=slices_end,
-                            y_step=slices_step,
-                            z_start=pixels_start,
-                            z_end=pixels_end,
-                            z_step=pixels_step).astype(dtype)
-
-        # Read white field data from exchange group.
-        self.data_white = f.hdf5(file_name,
-                            array_name=array_name,
-                            x_start=white_start,
-                            x_end=white_end,
-                            y_start=slices_start,
-                            y_end=slices_end,
-                            y_step=slices_step,
-                            z_start=pixels_start,
-                            z_end=pixels_end,
-                            z_step=pixels_step).astype(dtype)
-
-        # Read dark field data from exchange group.
-        self.data_dark = f.hdf5(file_name,
-                            array_name=array_name,
-                            x_start=dark_start,
-                            x_end=dark_end,
-                            y_start=slices_start,
-                            y_end=slices_end,
-                            y_step=slices_step,
-                            z_start=pixels_start,
-                            z_end=pixels_end,
-                            z_step=pixels_step).astype(dtype)
 
