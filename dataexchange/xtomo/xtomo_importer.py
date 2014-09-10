@@ -558,9 +558,9 @@ class Import():
                 if os.path.isfile(file_name):
                     self.logger.info("White file: [%s] exists", file_name)                    
                     f = XTomoReader(file_name)
-                    tmpdata = f.hdf5(z_start = projections_start,
-                                    	z_end = projections_end,
-                                    	z_step = projections_step,
+                    tmpdata = f.hdf5(z_start = white_start,
+                                    	z_end = white_end,
+                                    	z_step = white_step,
                                         y_start = slices_start,
                                     	y_end = slices_end,
                                     	y_step = slices_step,
@@ -580,9 +580,9 @@ class Import():
                     self.logger.info("White file: [%s] exists", file_name)                    
                     f = XTomoReader(file_name)
                     array_type = 'white'
-                    tmpdata = f.nxs(z_start = projections_start,
-                                    	z_end = projections_end,
-                                    	z_step = projections_step,
+                    tmpdata = f.nxs(z_start = white_start,
+                                    	z_end = white_end,
+                                    	z_step = white_step,
                                         y_start = slices_start,
                                     	y_end = slices_end,
                                     	y_step = slices_step,
@@ -719,9 +719,9 @@ class Import():
                 if os.path.isfile(file_name):
                     self.logger.info("Dark file: [%s] exists", file_name)                    
                     f = XTomoReader(file_name)
-                    tmpdata = f.hdf5(z_start = projections_start,
-                                    	z_end = projections_end,
-                                    	z_step = projections_step,
+                    tmpdata = f.hdf5(z_start = dark_start,
+                                    	z_end = dark_end,
+                                    	z_step = dark_step,
                                         y_start = slices_start,
                                     	y_end = slices_end,
                                     	y_step = slices_step,
@@ -741,9 +741,9 @@ class Import():
                     self.logger.info("Dark file: [%s] exists", file_name)                    
                     f = XTomoReader(file_name)
                     array_type = 'dark'
-                    tmpdata = f.nxs(z_start = projections_start,
-                                    	z_end = projections_end,
-                                    	z_step = projections_step,
+                    tmpdata = f.nxs(z_start = dark_start,
+                                    	z_end = dark_end,
+                                    	z_step = dark_step,
                                         y_start = slices_start,
                                     	y_end = slices_end,
                                     	y_step = slices_step,

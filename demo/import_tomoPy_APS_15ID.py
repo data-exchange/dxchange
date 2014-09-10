@@ -2,14 +2,29 @@
 """
 .. module:: import_tomoPy_APS_15ID.py
    :platform: Unix
-   :synopsis: reconstruct APS 15-ID hdf4 data with TomoPy
-   :INPUT
-       APS 2_BM exp file or data exchange 
+   :synopsis: Import APS 15ID hdf5 NeXuS files in data exchange.
 
-.. moduleauthor:: Francesco De Carlo <decarlof@gmail.com>
+Example on how to use the `series_of_images`_ module to read APS 15-ID raw tomographic data and reconstruct using tomoPy
+
+:Author:
+  `Francesco De Carlo <mailto: decarlof@gmail.com>`_
+
+:Organization:
+  Argonne National Laboratory, Argonne, IL 60439 USA
+
+:Version: 2014.08.15
 
 
-""" 
+Examples
+
+>>> add example here 
+>>> add example here 
+>>> add example here 
+>>> add example here 
+>>> add example here 
+
+.. _series_of_images: dataexchange.xtomo.xtomo_importer.html
+"""
 from pyhdf import SD
 import os
 
@@ -53,14 +68,14 @@ def main():
     d.normalize()
     d.correct_drift()
     #d.optimize_center()
-    #d.phase_retrieval()
+    d.phase_retrieval(pixel_size=0.9e-4, dist=8.1, energy=17)
     #d.correct_drift()
     d.center=772.2
     d.gridrec()
 
     # Write to stack of TIFFs.
     mydata = ex.Export()
-    mydata.xtomo_tiff(data = d.data_recon, output_file = 'tmp/AluminaStick_0A_fullRunRenamed_', axis=0)
+    mydata.xtomo_tiff(data = d.data_recon, output_file = 'tmp/AluminaStick_0A_', axis=0)
 
 if __name__ == "__main__":
     main()
