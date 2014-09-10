@@ -4,7 +4,7 @@
    :platform: Unix
    :synopsis: Import Anka TIFF files in data exchange.
 
-Example on how to use the `series_of_images`_ module to read Anka TIFF raw tomographic data and reconstruct using tomoPy
+Example on how to use the `xtomo_raw`_ module to read Anka TIFF raw tomographic data and reconstruct using tomoPy
 
 :Author:
   `Francesco De Carlo <mailto: decarlof@gmail.com>`_
@@ -23,7 +23,7 @@ Examples
 >>> add example here 
 >>> add example here 
 
-.. _series_of_images: dataexchange.xtomo.xtomo_importer.html
+.. _xtomo_raw: dataexchange.xtomo.xtomo_importer.html
 """
 
 # tomoPy: https://github.com/tomopy/tomopy
@@ -56,7 +56,7 @@ def main():
 
     mydata = dx.Import()
     # Read series of images
-    data, white, dark, theta = mydata.series_of_images(file_name,
+    data, white, dark, theta = mydata.xtomo_raw(file_name,
                                                        projections_start = projections_start,
                                                        projections_end = projections_end,
                                                        slices_start = slices_start,

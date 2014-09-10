@@ -33,7 +33,7 @@ def main():
 
     mydata = dx.Import()
     # Read series of images
-    data, white, dark, theta = mydata.series_of_images(file_name,
+    data, white, dark, theta = mydata.xtomo_raw(file_name,
                                                        slices_start = slices_start,
                                                        slices_end = slices_end,
                                                        data_type='h5',

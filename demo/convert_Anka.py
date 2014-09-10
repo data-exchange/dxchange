@@ -4,7 +4,7 @@
    :platform: Unix
    :synopsis: Convert Anka TIFF files in data exchange.
 
-Example on how to use the `series_of_images`_ module to read Anka TIFF raw tomographic data and save them as Data Exchange
+Example on how to use the `xtomo_raw`_ module to read Anka TIFF raw tomographic data and save them as Data Exchange
 
 :Author:
   `Francesco De Carlo <mailto: decarlof@gmail.com>`_
@@ -23,7 +23,7 @@ Example
 >>> add example here 
 >>> add example here 
 
-.. _series_of_images: dataexchange.xtomo.xtomo_importer.html
+.. _xtomo_raw: dataexchange.xtomo.xtomo_importer.html
 """
 
 import dataexchange.xtomo.xtomo_importer as dx
@@ -50,7 +50,7 @@ def main():
     
     mydata = dx.Import()
     # Read series of images
-    data, white, dark, theta = mydata.series_of_images(file_name,
+    data, white, dark, theta = mydata.xtomo_raw(file_name,
                                                        projections_start = projections_start,
                                                        projections_end = projections_end,
                                                        white_file_name = white_file_name,

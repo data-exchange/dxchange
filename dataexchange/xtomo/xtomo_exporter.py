@@ -80,7 +80,7 @@ class Export():
             >>> # Load data
             >>> mydata = dx.Import()
             >>> # Read series of images
-            >>> data, white, dark, theta = mydata.series_of_images(file_name, data_type='h5', slices_start=0, slices_end=16)
+            >>> data, white, dark, theta = mydata.xtomo_raw(file_name, data_type='h5', slices_start=0, slices_end=16)
             >>> 
             >>> # Save data
             >>> mydata = ex.Export()
@@ -97,7 +97,7 @@ class Export():
             >>> # Load data
             >>> mydata = dx.Import()
             >>> # Read series of images
-            >>> data, white, dark, theta = mydata.series_of_images(file_name, data_type='h5', projections_start=0, projections_end=16)
+            >>> data, white, dark, theta = mydata.xtomo_raw(file_name, data_type='h5', projections_start=0, projections_end=16)
 
             >>> # Save data
             >>> mydata = ex.Export()
@@ -111,7 +111,7 @@ class Export():
 
             >>> hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/Elettra.h5'
             >>> mydata = dx.Import()
-            >>> data, white, dark, theta = mydata.series_of_images(hdf5_file_name, slices_start = 150, slices_end = 154, data_type='h5', log='INFO')
+            >>> data, white, dark, theta = mydata.xtomo_raw(hdf5_file_name, slices_start = 150, slices_end = 154, data_type='h5', log='INFO')
             >>> d = tomopy.xtomo_dataset(log='debug')
             >>> d.dataset(data, white, dark, theta)
             >>> d.normalize()
@@ -271,7 +271,7 @@ class Export():
             >>> 
             >>> mydata = dx.Import()
             >>> # Read series of images
-            >>> data, white, dark, theta = mydata.series_of_images(file_name,
+            >>> data, white, dark, theta = mydata.xtomo_raw(file_name,
             >>>                                                    projections_start = projections_start,
             >>>                                                    projections_end = projections_end,
             >>>                                                    white_file_name = white_file_name,

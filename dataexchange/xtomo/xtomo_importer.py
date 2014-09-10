@@ -50,7 +50,7 @@ class Import():
         self._log_level = str(log).upper()
         self._init_logging(stream_handler)
 
-    def series_of_images(self, file_name,
+    def xtomo_raw(self, file_name,
                          projections_start=0,
                          projections_end=0,
                          projections_step=1,

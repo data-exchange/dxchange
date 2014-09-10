@@ -4,7 +4,7 @@
    :platform: Unix
    :synopsis: Convert Synchrotron Radiation Center DPT files in data exchange.
 
-Example on how to use the `series_of_images`_ module to read Synchrotron Radiation Center Infrared raw tomographic data and save them as Data Exchange
+Example on how to use the `xtomo_raw`_ module to read Synchrotron Radiation Center Infrared raw tomographic data and save them as Data Exchange
 
 :Author:
   `Francesco De Carlo <mailto: decarlof@gmail.com>`_
@@ -23,7 +23,7 @@ Example
 >>> add example here 
 >>> add example here 
 
-.. _series_of_images: dataexchange.xtomo.xtomo_importer.html
+.. _xtomo_raw: dataexchange.xtomo.xtomo_importer.html
 """
 
 import dataexchange.xtomo.xtomo_importer as dx
@@ -54,7 +54,7 @@ def main():
 
         mydata = dx.Import()
         # Read series of images from a single dpt file
-        data, white, dark, theta = mydata.series_of_images(file_name,
+        data, white, dark, theta = mydata.xtomo_raw(file_name,
                                                         data_type='dpt',
                                                         projections_angle_end = projections_angle_end,
                                                         log='INFO'

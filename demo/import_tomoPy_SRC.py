@@ -4,7 +4,7 @@
    :platform: Unix
    :synopsis: Import Synchrotron Radiation Center DPT files in data exchange.
 
-Example on how to use the `series_of_images`_ module to read Synchrotron Radiation Center Infrared raw tomographic data and reconstruct with tomoPy
+Example on how to use the `xtomo_raw`_ module to read Synchrotron Radiation Center Infrared raw tomographic data and reconstruct with tomoPy
 
 :Author:
   `Francesco De Carlo <mailto: decarlof@gmail.com>`_
@@ -23,7 +23,7 @@ Examples
 >>> add example here 
 >>> add example here 
 
-.. _series_of_images: dataexchange.xtomo.xtomo_importer.html
+.. _xtomo_raw: dataexchange.xtomo.xtomo_importer.html
 """
 
 # tomoPy: https://github.com/tomopy/tomopy
