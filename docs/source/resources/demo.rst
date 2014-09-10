@@ -31,9 +31,10 @@ tomoPy Importers
    demo.import_tomoPy_ALS
    demo.import_tomoPy_APS_13BM_SPE
    demo.import_tomoPy_APS_13BM_netCDF
+   demo.import_tomoPy_APS_15ID
    demo.import_tomoPy_APS_1ID
    demo.import_tomoPy_APS_2BM
-   demo.import_APS_26ID_XRADIA
+   demo.import_tomoPy_APS_26ID_XRADIA
    demo.import_tomoPy_Anka
    demo.import_tomoPy_Australian
    demo.import_tomoPy_CHESS

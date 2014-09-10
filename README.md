@@ -52,3 +52,8 @@ Here is a complete example of the installation:
     - python -c "import dataexchange"
 
 
+## Development
+
+Follow: Fork + Pull Model::
+
+    http://help.github.com/send-pull-requests/
