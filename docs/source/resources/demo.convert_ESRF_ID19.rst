@@ -1,5 +1,5 @@
-ESRF ID19
-=========
+ESRF ID-19
+==========
 
 .. automodule:: demo.convert_ESRF_ID19
     :members:

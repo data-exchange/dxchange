@@ -38,7 +38,7 @@ tomoPy Importers
    demo.import_tomoPy_Anka
    demo.import_tomoPy_Australian
    demo.import_tomoPy_CHESS
-   demo.import_tomoPy_ESRF
+   demo.import_tomoPy_ESRF_ID19
    demo.import_tomoPy_Elettra
    demo.import_tomoPy_PetraIII
    demo.import_tomoPy_SLS

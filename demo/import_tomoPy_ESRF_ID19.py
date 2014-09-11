@@ -16,7 +16,6 @@ Example on how to use the `xtomo_raw`_ module to read ESRF edf raw tomographic d
 
 
 Examples
---------
 
 >>> add example here 
 >>> add example here 
