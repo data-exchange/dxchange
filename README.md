@@ -2,9 +2,8 @@
 
 Data Exchange is a Python toolbox for reading and writing  [Data Exchange](http://www.aps.anl.gov/DataExchange/) files. It provides an interface between tomographic raw datasets collected at different synchrotron facilities and [tomoPy](https://github.com/tomopy/tomopy/ "tomoPy"), a Python toolbox to perform tomographic data processing and image reconstruction tasks developed at the [Advanced Photon Source](http://www.aps.anl.gov/ "APS").
 
-:home: http://www.aps.anl.gov/DataExchange
-:docs: http://data-exchange.github.io/data-exchange
-:git:  https://github.com/data-exchange/data-exchange
+:home: http://tomopy.github.io/tomopy
+:git:  https://github.com/tomopy/tomopy
 
 ====================
 Citing Data Exchange
