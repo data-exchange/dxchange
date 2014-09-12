@@ -1,11 +1,19 @@
 """
+
 .. module:: data_exchange.py
    :platform: Unix
    :synopsis: Subclasses the h5py module for interacting with Data Exchange files.
 
-.. moduleauthor:: David Vine <djvine@gmail.com>
+:Author:
+  `David Vine <mailto: djvine@gmail.com>`_
+
+:Organization:
+  Argonne National Laboratory, Argonne, IL 60439 USA
+
+:Version: 2014.08.15
 
 """
+
 from __future__ import print_function
 import h5py
 import os
