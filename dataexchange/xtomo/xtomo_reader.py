@@ -37,7 +37,6 @@ Examples
 >>>                         x_step=slices_step,
 >>>                         array_name='data')
 
-
 .. _xtomo_importer: dataexchange.xtomo.xtomo_importer.html
 """
 
@@ -810,7 +809,7 @@ class XTomoReader:
                         x_start:x_end:x_step]
         return dataset
     
-    def hdf5_test(self,
+    def _hdf5_test(self,
                      array_name=None,
                      x_start=0,
                      x_end=None,

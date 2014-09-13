@@ -7,8 +7,6 @@
        series of tiff or data exchange 
 
 .. moduleauthor:: Francesco De Carlo <decarlof@gmail.com>
-
-
 """ 
 # tomoPy: https://github.com/tomopy/tomopy
 import tomopy 

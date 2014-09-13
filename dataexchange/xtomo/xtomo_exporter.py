@@ -1,4 +1,22 @@
 # -*- coding: utf-8 -*-
+"""Write tomographic image data in various format files.
+
+Supported image fomats include HDF5 Data Exchange and TIFF.
+
+.. module:: xtomo_exporter.py
+   :platform: Unix
+   :synopsis: Export tomographic data files.
+
+:Author:
+  `Francesco De Carlo <mailto: decarlof@gmail.com>`_
+
+:Organization:
+  Argonne National Laboratory, Argonne, IL 60439 USA
+
+:Version: 2014.08.15
+
+"""
+
 import numpy as np
 import os
 import h5py
@@ -18,6 +36,150 @@ class Export():
         self.logger = None
         self._log_level = str(log).upper()
         self._init_logging()
+
+
+    def xtomo_exchange(self, data, data_white=None, data_dark=None, theta=None, sample_name=None,
+                       data_exchange_type=None,
+                       hdf5_file_name=None,
+                       log='INFO'
+                       ):
+        """ 
+        Write 3-D data to a data-exchange file.
+
+        Parameters
+        ----------            
+        data : ndarray
+            3-D X-ray absorption tomography raw data.
+            Size of the dimensions should be:
+            [projections, slices, pixels].
+            
+        data_white, data_dark : ndarray, optional
+            3-D white-field/dark_field data. Multiple
+            projections are stacked together to obtain
+            a 3-D matrix. 2nd and 3rd dimensions should
+            be the same as data: [shots, slices, pixels].
+            
+        theta : ndarray, optional
+            Data acquisition angles corresponding
+            to each projection.
+
+        data_excahnge_type : str
+            label defyining the type of data contained in data exchange file
+            for raw data tomography data use 'tomography_raw_projections'
+
+        hd5_file_name : str
+            Output file.
+
+        Notes
+        -----
+        If file exists, does nothing
+                
+        Examples
+        --------
+        - Convert tomographic projection series (raw, dark, white)  of tiff in data exchange:
+            
+            >>> from dataexchange import xtomo_importer as dx
+            >>> from dataexchange import xtomo_exporter as ex
+
+            >>> file_name = '/local/dataraid/databank/Anka/radios/image_.tif'
+            >>> dark_file_name = '/local/dataraid/databank/Anka/darks/image_.tif'
+            >>> white_file_name = '/local/dataraid/databank/Anka/flats/image_.tif'
+
+            >>> hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/Anka.h5'
+
+            >>> projections_start = 0
+            >>> projections_end = 3167
+            >>> white_start = 0
+            >>> white_end = 100
+            >>> dark_start = 0
+            >>> dark_end = 100
+
+            >>> sample_name = 'Anka'
+            >>> 
+            >>> mydata = dx.Import()
+            >>> # Read series of images
+            >>> data, white, dark, theta = mydata.xtomo_raw(file_name,
+            >>>                                                    projections_start = projections_start,
+            >>>                                                    projections_end = projections_end,
+            >>>                                                    white_file_name = white_file_name,
+            >>>                                                    white_start = white_start,
+            >>>                                                    white_end = white_end,
+            >>>                                                    dark_file_name = dark_file_name,
+            >>>                                                    dark_start = dark_start,
+            >>>                                                    dark_end = dark_end,
+            >>>                                                    projections_digits = 5,
+            >>>                                                    log='INFO'
+            >>>                                                    )
+
+            >>> mydata = ex.Export()
+            >>> # Create minimal data exchange hdf5 file
+            >>> mydata.xtomo_exchange(data = data,
+            >>>                       data_white = white,
+            >>>                       data_dark = dark,
+            >>>                       theta = theta,
+            >>>                       hdf5_file_name = hdf5_file_name,
+            >>>                       data_exchange_type = 'tomography_raw_projections',
+            >>>                       sample_name = sample_name
+            >>>                       )
+
+        """
+     
+        if (hdf5_file_name != None):
+            if os.path.isfile(hdf5_file_name):
+                self.logger.error("Data Exchange file: [%s] already exists", hdf5_file_name)
+            else:
+                # Create new folder.
+                dirPath = os.path.dirname(hdf5_file_name)
+                if not os.path.exists(dirPath):
+                    os.makedirs(dirPath)
+
+                # Get the file_name in lower case.
+                lFn = hdf5_file_name.lower()
+
+                # Split the string with the delimeter '.'
+                end = lFn.split('.')
+
+                # Write the Data Exchange HDF5 file.
+                # Open DataExchange file
+                f = DataExchangeFile(hdf5_file_name, mode='w') 
+
+                self.logger.info("Creating Data Exchange File [%s]", hdf5_file_name)
+
+                # Create core HDF5 dataset in exchange group for projections_theta_range
+                # deep stack of x,y images /exchange/data
+                self.logger.info("Adding projections to Data Exchange File [%s]", hdf5_file_name)
+                f.add_entry( DataExchangeEntry.data(data={'value': data, 'units':'counts', 'description': 'transmission', 'axes':'theta:y:x' }))
+#                f.add_entry( DataExchangeEntry.data(data={'value': data, 'units':'counts', 'description': 'transmission', 'axes':'theta:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
+                if (theta != None):
+                    f.add_entry( DataExchangeEntry.data(theta={'value': theta, 'units':'degrees'}))
+                    self.logger.info("Adding theta to Data Exchange File [%s]", hdf5_file_name)
+                else:
+                    self.logger.warning("theta is not defined")
+                if (data_dark != None):
+                    self.logger.info("Adding dark fields to  Data Exchange File [%s]", hdf5_file_name)
+                    f.add_entry( DataExchangeEntry.data(data_dark={'value': data_dark, 'units':'counts', 'axes':'theta_dark:y:x' }))
+#                    f.add_entry( DataExchangeEntry.data(data_dark={'value': data_dark, 'units':'counts', 'axes':'theta_dark:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
+                else:
+                    self.logger.warning("data dark is not defined")
+                if (data_white != None):
+                    self.logger.info("Adding white fields to  Data Exchange File [%s]", hdf5_file_name)
+                    f.add_entry( DataExchangeEntry.data(data_white={'value': data_white, 'units':'counts', 'axes':'theta_white:y:x' }))
+#                    f.add_entry( DataExchangeEntry.data(data_white={'value': data_white, 'units':'counts', 'axes':'theta_white:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
+                else:
+                    self.logger.warning("data white is not defined")
+                if (data_exchange_type != None):
+                    self.logger.info("Adding data type to  Data Exchange File [%s]", hdf5_file_name)
+                    f.add_entry( DataExchangeEntry.data(title={'value': data_exchange_type}))
+                if (sample_name == None):
+                    sample_name = end[0]
+                    f.add_entry( DataExchangeEntry.sample( name={'value':sample_name}, description={'value':'Sample name was assigned by the HDF5 converter and based on the HDF5 file name'}))
+                else:
+                    f.add_entry( DataExchangeEntry.sample( name={'value':sample_name}, description={'value':'Sample name was read from the user log file'}))
+                f.close()
+                self.logger.info("DONE!!!!. Created Data Exchange File [%s]", hdf5_file_name)
+        else:
+            self.logger.warning("Nothing to do ...")
+            
 
     def xtomo_tiff(self, data, output_file=None, x_start=0,
                      digits=5, axis=0, overwrite=False, delete=False,
@@ -210,149 +372,6 @@ class Export():
                 skimage_io.imsave(file_name, arr, plugin='tifffile')
 
         self.logger.info("File conversion is complete")
-
-    def xtomo_exchange(self, data, data_white=None, data_dark=None, theta=None, sample_name=None,
-                       data_exchange_type=None,
-                       hdf5_file_name=None,
-                       log='INFO'
-                       ):
-        """ 
-        Write 3-D data to a data-exchange file.
-
-        Parameters
-        ----------            
-        data : ndarray
-            3-D X-ray absorption tomography raw data.
-            Size of the dimensions should be:
-            [projections, slices, pixels].
-            
-        data_white, data_dark : ndarray, optional
-            3-D white-field/dark_field data. Multiple
-            projections are stacked together to obtain
-            a 3-D matrix. 2nd and 3rd dimensions should
-            be the same as data: [shots, slices, pixels].
-            
-        theta : ndarray, optional
-            Data acquisition angles corresponding
-            to each projection.
-
-        data_excahnge_type : str
-            label defyining the type of data contained in data exchange file
-            for raw data tomography data use 'tomography_raw_projections'
-
-        hd5_file_name : str
-            Output file.
-
-        Notes
-        -----
-        If file exists, does nothing
-                
-        Examples
-        --------
-        - Convert tomographic projection series (raw, dark, white)  of tiff in data exchange:
-            
-            >>> from dataexchange import xtomo_importer as dx
-            >>> from dataexchange import xtomo_exporter as ex
-
-            >>> file_name = '/local/dataraid/databank/Anka/radios/image_.tif'
-            >>> dark_file_name = '/local/dataraid/databank/Anka/darks/image_.tif'
-            >>> white_file_name = '/local/dataraid/databank/Anka/flats/image_.tif'
-
-            >>> hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/Anka.h5'
-
-            >>> projections_start = 0
-            >>> projections_end = 3167
-            >>> white_start = 0
-            >>> white_end = 100
-            >>> dark_start = 0
-            >>> dark_end = 100
-
-            >>> sample_name = 'Anka'
-            >>> 
-            >>> mydata = dx.Import()
-            >>> # Read series of images
-            >>> data, white, dark, theta = mydata.xtomo_raw(file_name,
-            >>>                                                    projections_start = projections_start,
-            >>>                                                    projections_end = projections_end,
-            >>>                                                    white_file_name = white_file_name,
-            >>>                                                    white_start = white_start,
-            >>>                                                    white_end = white_end,
-            >>>                                                    dark_file_name = dark_file_name,
-            >>>                                                    dark_start = dark_start,
-            >>>                                                    dark_end = dark_end,
-            >>>                                                    projections_digits = 5,
-            >>>                                                    log='INFO'
-            >>>                                                    )
-
-            >>> mydata = ex.Export()
-            >>> # Create minimal data exchange hdf5 file
-            >>> mydata.xtomo_exchange(data = data,
-            >>>                       data_white = white,
-            >>>                       data_dark = dark,
-            >>>                       theta = theta,
-            >>>                       hdf5_file_name = hdf5_file_name,
-            >>>                       data_exchange_type = 'tomography_raw_projections',
-            >>>                       sample_name = sample_name
-            >>>                       )
-
-        """
-     
-        if (hdf5_file_name != None):
-            if os.path.isfile(hdf5_file_name):
-                self.logger.error("Data Exchange file: [%s] already exists", hdf5_file_name)
-            else:
-                # Create new folder.
-                dirPath = os.path.dirname(hdf5_file_name)
-                if not os.path.exists(dirPath):
-                    os.makedirs(dirPath)
-
-                # Get the file_name in lower case.
-                lFn = hdf5_file_name.lower()
-
-                # Split the string with the delimeter '.'
-                end = lFn.split('.')
-
-                # Write the Data Exchange HDF5 file.
-                # Open DataExchange file
-                f = DataExchangeFile(hdf5_file_name, mode='w') 
-
-                self.logger.info("Creating Data Exchange File [%s]", hdf5_file_name)
-
-                # Create core HDF5 dataset in exchange group for projections_theta_range
-                # deep stack of x,y images /exchange/data
-                self.logger.info("Adding projections to Data Exchange File [%s]", hdf5_file_name)
-                f.add_entry( DataExchangeEntry.data(data={'value': data, 'units':'counts', 'description': 'transmission', 'axes':'theta:y:x' }))
-#                f.add_entry( DataExchangeEntry.data(data={'value': data, 'units':'counts', 'description': 'transmission', 'axes':'theta:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
-                if (theta != None):
-                    f.add_entry( DataExchangeEntry.data(theta={'value': theta, 'units':'degrees'}))
-                    self.logger.info("Adding theta to Data Exchange File [%s]", hdf5_file_name)
-                else:
-                    self.logger.warning("theta is not defined")
-                if (data_dark != None):
-                    self.logger.info("Adding dark fields to  Data Exchange File [%s]", hdf5_file_name)
-                    f.add_entry( DataExchangeEntry.data(data_dark={'value': data_dark, 'units':'counts', 'axes':'theta_dark:y:x' }))
-#                    f.add_entry( DataExchangeEntry.data(data_dark={'value': data_dark, 'units':'counts', 'axes':'theta_dark:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
-                else:
-                    self.logger.warning("data dark is not defined")
-                if (data_white != None):
-                    self.logger.info("Adding white fields to  Data Exchange File [%s]", hdf5_file_name)
-                    f.add_entry( DataExchangeEntry.data(data_white={'value': data_white, 'units':'counts', 'axes':'theta_white:y:x' }))
-#                    f.add_entry( DataExchangeEntry.data(data_white={'value': data_white, 'units':'counts', 'axes':'theta_white:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
-                else:
-                    self.logger.warning("data white is not defined")
-                if (data_exchange_type != None):
-                    self.logger.info("Adding data type to  Data Exchange File [%s]", hdf5_file_name)
-                    f.add_entry( DataExchangeEntry.data(title={'value': data_exchange_type}))
-                if (sample_name == None):
-                    sample_name = end[0]
-                    f.add_entry( DataExchangeEntry.sample( name={'value':sample_name}, description={'value':'Sample name was assigned by the HDF5 converter and based on the HDF5 file name'}))
-                else:
-                    f.add_entry( DataExchangeEntry.sample( name={'value':sample_name}, description={'value':'Sample name was read from the user log file'}))
-                f.close()
-                self.logger.info("DONE!!!!. Created Data Exchange File [%s]", hdf5_file_name)
-        else:
-            self.logger.warning("Nothing to do ...")
-            
 
     def _init_logging(self):
         """

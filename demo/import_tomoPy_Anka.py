@@ -14,15 +14,6 @@ Example on how to use the `xtomo_raw`_ module to read Anka TIFF raw tomographic 
 
 :Version: 2014.08.15
 
-
-Examples
-
->>> add example here 
->>> add example here 
->>> add example here 
->>> add example here 
->>> add example here 
-
 .. _xtomo_raw: dataexchange.xtomo.xtomo_importer.html
 """
 

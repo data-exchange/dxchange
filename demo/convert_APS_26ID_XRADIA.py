@@ -14,15 +14,6 @@ Example on how to use the `xtomo_raw`_ module to read APS 26-ID XRADIA raw tomog
 
 :Version: 2014.08.15
 
-
-Example
-
->>> add example here 
->>> add example here 
->>> add example here 
->>> add example here 
->>> add example here 
-
 .. _xtomo_raw: dataexchange.xtomo.xtomo_importer.html
 """
 

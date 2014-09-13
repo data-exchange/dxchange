@@ -1,7 +1,11 @@
 # -*- coding: utf-8 -*-
-"""Read image data from various format files.
+"""Read tomographic image data from various format files.
 
-.. module:: self_importer.py
+Supported image fomats include TIFF, PackBits and LZW encoded TIFF, 
+HDF5 (Data Exchange and NeXuS), HDF4 (NeXuS), SPE, TXRM, XRM, EDF, 
+DPT, netCDF. 
+
+.. module:: xtomo_importer.py
    :platform: Unix
    :synopsis: Import tomographic data files returning data, data_white, data_dark, theta.
 
@@ -13,15 +17,41 @@
 
 :Version: 2014.08.15
 
-
 Examples
---------
 
->>> add example here 
->>> add example here 
->>> add example here 
->>> add example here 
->>> add example here 
+>>> import dataexchange.xtomo.xtomo_importer as dx
+>>> import dataexchange.xtomo.xtomo_exporter as ex
+
+
+>>> file_name = '/local/data/radios/image_.tif'
+>>> dark_file_name = '/local/data/darks/image_.tif'
+>>> white_file_name = '/local/data/flats/image_.tif'
+
+>>> hdf5_file_name = '/local/data/dataExchange/Anka.h5'
+
+>>> projections_start = 0
+>>> projections_end = 3167
+>>> white_start = 0
+>>> white_end = 100
+>>> dark_start = 0
+>>> dark_end = 100
+
+>>> sample_name = 'Anka'
+    
+>>> mydata = dx.Import()
+>>> # Read series of images
+>>> data, white, dark, theta = mydata.xtomo_raw(file_name,
+>>>                                                    projections_start = projections_start,
+>>>                                                    projections_end = projections_end,
+>>>                                                    white_file_name = white_file_name,
+>>>                                                    white_start = white_start,
+>>>                                                    white_end = white_end,
+>>>                                                    dark_file_name = dark_file_name,
+>>>                                                    dark_start = dark_start,
+>>>                                                    dark_end = dark_end,
+>>>                                                    projections_digits = 5,
+>>>                                                    log='INFO'
+>>>                                                    )
 
 """
 

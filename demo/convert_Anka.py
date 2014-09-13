@@ -14,22 +14,11 @@ Example on how to use the `xtomo_raw`_ module to read Anka TIFF raw tomographic 
 
 :Version: 2014.08.15
 
-
-Example
-
->>> add example here 
->>> add example here 
->>> add example here 
->>> add example here 
->>> add example here 
-
 .. _xtomo_raw: dataexchange.xtomo.xtomo_importer.html
 """
 
 import dataexchange.xtomo.xtomo_importer as dx
 import dataexchange.xtomo.xtomo_exporter as ex
-
-import re
 
 def main():
 

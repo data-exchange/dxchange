@@ -14,15 +14,6 @@ Example on how to use the `xtomo_raw`_ module to read  Petra III P05 and P06 TIF
 
 :Version: 2014.08.15
 
-
-Examples
-
->>> add example here 
->>> add example here 
->>> add example here 
->>> add example here 
->>> add example here 
-
 .. _xtomo_raw: dataexchange.xtomo.xtomo_importer.html
 """
 
