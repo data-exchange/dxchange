@@ -77,9 +77,9 @@ class DataExchangeFile(h5py.File):
         except KeyError:
             self.create_dataset('implements', data=group_name)
 
-    def add_entry(self, dexen_ob):
+    def add_entry(self, dexen_ob, overwrite=False):
         """
-        .. add_entry(self, dexen_ob)
+        .. add_entry(self, dexen_ob, overwrite=False)
 
             This method is used to parse DataExchangeEntry objects and add them to the DataExchangeFile.
         """
@@ -121,7 +121,19 @@ class DataExchangeFile(h5py.File):
                         # Likely cause of runtime error is dataset already existing in file
                         dataset_exists = ds_name in self['/'.join([root, getattr(dexen, 'entry_name')])].keys()
                         if dataset_exists:
-                            print('WARNING: Dataset {:s} already exists. This entry has been skipped.'.format(ds_name))
+                            if not overwrite:
+                                print('WARNING: Dataset {:s} already exists. This entry has been skipped.'.format(ds_name))
+                            else:
+                                # The overwite flag is set so delete the existing dataset and write the new one in its place
+                                del self['/'.join([root, getattr(dexen, 'entry_name'), ds_name])]
+                                ds = self['/'.join([root, getattr(dexen, 'entry_name')])].create_dataset(ds_name, data=getattr(dexen, ds_name)['value'], **opts)
+                                for key in getattr(dexen, ds_name).keys():
+                                    if key in ['value', 'docstring','dataset_opts']:
+                                        pass
+                                    else:
+                                        ds.attrs[key] = getattr(dexen, ds_name)[key]
+
+
                         else:
                             raise
 
