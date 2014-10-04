@@ -114,7 +114,7 @@ class Import():
         Read a stack of 2-D HDF4, TIFF, spe or netCDF images.
 
         Parameters
-        ----------
+        
         file_name : str
             Base name of the input HDF4 or TIFF files.
             For example if the projections names are /local/data/test_XXXX.hdf
@@ -187,7 +187,7 @@ class Import():
             processing step then exchange_rank = 1 will direct tomopy to process "exchange1/..."
 
         Returns
-        -------
+        
         Output : data, data_white, data_dark, theta
 
        """

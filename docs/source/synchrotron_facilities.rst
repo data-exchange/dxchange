@@ -18,7 +18,7 @@ Synchrotron Facilities
 * Australian Synchrotron Facility
     - tiff
 * Elettra
-    - tiff PackBits and LZW encoded strings (:ref:`elettra`)
+    - tiff PackBits and LZW encoded strings
 * ESRF
     - EDF (ID-19)
 * Diamond  

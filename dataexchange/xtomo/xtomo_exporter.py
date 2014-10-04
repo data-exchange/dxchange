@@ -47,7 +47,7 @@ class Export():
         Write 3-D data to a data-exchange file.
 
         Parameters
-        ----------            
+                    
         data : ndarray
             3-D X-ray absorption tomography raw data.
             Size of the dimensions should be:
@@ -75,7 +75,7 @@ class Export():
         If file exists, does nothing
                 
         Examples
-        --------
+        
         - Convert tomographic projection series (raw, dark, white)  of tiff in data exchange:
             
             >>> from dataexchange import xtomo_importer as dx
@@ -188,7 +188,7 @@ class Export():
         Write 3-D data to a stack of tif files.
 
         Parameters
-        -----------
+        
         output_file : str, optional
             Name of the output file.
 
@@ -221,7 +221,7 @@ class Export():
             the dataset when saving.
         
         Notes
-        -----
+        
         If file exists, saves it with a modified name.
         
         If output location is not specified, the data is
@@ -230,7 +230,7 @@ class Export():
         be initialized with ``recon``
         
         Examples
-        --------
+        
         - Save sinogram data:
             
             >>> import dataexchange.xtomo.xtomo_importer as dx

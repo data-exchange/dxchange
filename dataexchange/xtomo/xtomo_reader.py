@@ -79,7 +79,7 @@ class XTomoReader:
 	    by ``array_name`` in the specified group of the HDF5 file.
         
         Parameters
-        ----------
+        
         file_name : str
             Input HDF5 file.
         
@@ -99,7 +99,7 @@ class XTomoReader:
             slicing for the whole ndarray.
         
         Returns
-        -------
+        
         out : ndarray
             Returns the data as a matrix.
         """
@@ -151,7 +151,7 @@ class XTomoReader:
 	    by ``array_name`` in the specified group of the HDF5 file.
         
         Parameters
-        ----------
+        
         file_name : str
             Input HDF5 file.
         
@@ -172,7 +172,7 @@ class XTomoReader:
             slicing for the whole ndarray.
         
         Returns
-        -------
+        
         out : ndarray
             Returns the data as a matrix.
         """
@@ -242,7 +242,7 @@ class XTomoReader:
         the specified group of the HDF file.
         
         Parameters
-        ----------
+        
         file_name : str
             Input HDF file.
         
@@ -258,7 +258,7 @@ class XTomoReader:
             slicing for the whole ndarray.
         
         Returns
-        -------
+        
         out : ndarray
             Returns the data as a matrix.
         """
@@ -296,7 +296,7 @@ class XTomoReader:
         the specified group of the HDF file.
         
         Parameters
-        ----------
+        
         file_name : str
             Input HDF file.
         
@@ -312,7 +312,7 @@ class XTomoReader:
             slicing for the whole ndarray.
         
         Returns
-        -------
+        
         out : ndarray
             Returns the data as a matrix.
         """
@@ -346,7 +346,7 @@ class XTomoReader:
         Read 2-D tomographic projection data from a TIFF file.
 
         Parameters
-        ----------
+        
         file_name : str
             Name of the input TIFF file.
         
@@ -362,7 +362,7 @@ class XTomoReader:
             slicing for the whole ndarray.
         
         Returns
-        -------
+        
         out : ndarray
             Output 2-D matrix as numpy array.
         """
@@ -397,7 +397,7 @@ class XTomoReader:
         Read 2-D complex(!) tomographic projection data from a TIFF file.
 
         Parameters
-        ----------
+        
         file_name : str
             Name of the input TIFF file.
         
@@ -413,7 +413,7 @@ class XTomoReader:
             slicing for the whole ndarray.
         
         Returns
-        -------
+        
         out : ndarray
             Output 2-D matrix as numpy array.
         """
@@ -445,7 +445,7 @@ class XTomoReader:
         Read 3-D tomographic projection data from a TXRM file 
         
         Parameters
-        ----------
+        
         file_name : str
             Input txrm file.
         
@@ -462,7 +462,7 @@ class XTomoReader:
             slicing for the whole array.
         
         Returns
-        -------
+        
         out : array
             Returns the data as a matrix.
         """
@@ -513,7 +513,7 @@ class XTomoReader:
         Read 3-D tomographic projection data from an XRM file.
         
         Parameters
-        ----------
+        
         file_name : str
             Input xrm file.
         
@@ -530,7 +530,7 @@ class XTomoReader:
             slicing for the whole array.
         
         Returns
-        -------
+        
         out : array
             Returns the data as a matrix.
         """
@@ -573,7 +573,7 @@ class XTomoReader:
         Read 3-D tomographic projection data from a SPE file.
         
         Parameters
-        ----------
+        
         file_name : str
             Input spe file.
 
@@ -590,7 +590,7 @@ class XTomoReader:
             slicing for the whole array.
         
         Returns
-        -------
+        
         out : array
             Returns the data as a matrix.
         """
@@ -625,7 +625,7 @@ class XTomoReader:
         Read 3-D tomographic projection data from an EDF (ESRF) file.
         
         Parameters
-        ----------
+        
         file_name : str
             Input edf file.
             
@@ -642,7 +642,7 @@ class XTomoReader:
             slicing for the whole array.
         
         Returns
-        -------
+        
         out : array
             Returns the data as a matrix.
         """
@@ -683,7 +683,7 @@ class XTomoReader:
         Read 3-D tomographic projection data from a DPT (SRC) file.
         
         Parameters
-        ----------
+        
         file_name : str
             Input dpt file.
             
@@ -700,7 +700,7 @@ class XTomoReader:
             slicing for the whole array.
         
         Returns
-        -------
+        
         out : array
             Returns the data as a matrix.
         """
@@ -771,7 +771,7 @@ class XTomoReader:
 
        
         Parameters
-        ----------
+        
         file_name : str
             Input netcdf file.
         
@@ -788,7 +788,7 @@ class XTomoReader:
             slicing for the whole array.
         
         Returns
-        -------
+        
         out : array
             Returns the data as a matrix.
         """
@@ -863,7 +863,7 @@ class XTomoReader:
         Helper function for reading data sets that might not exist with arbitrary slices
 
         Parameters
-        ----------
+        
         f_in : h5py.Group
            Open file or group
 
