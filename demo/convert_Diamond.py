@@ -1,69 +1,60 @@
+# -*- coding: utf-8 -*-
 """
-.. module:: main_convert_Diamond.py
+.. module:: convert_Diamond.py
    :platform: Unix
-   :synopsis: Convert Diamond JEEP (I12) NeXus files in data exchange.
+   :synopsis: Convert Diamond NeXuS files in data exchange.
 
-.. moduleauthor:: Francesco De Carlo <decarlof@gmail.com>
+Example on how to use the `xtomo_raw`_ module to read Diamond NeXuS raw tomographic data and save them as Data Exchange
 
+:Author:
+  `Francesco De Carlo <mailto: decarlof@gmail.com>`_
 
-""" 
-from data_exchange import DataExchangeFile, DataExchangeEntry
-from data_exchange.data_convert import Convert
+:Organization:
+  Argonne National Laboratory, Argonne, IL 60439 USA
 
-import numpy as np
-import os
-import scipy
-import re
+:Version: 2014.08.15
+
+.. _xtomo_raw: dataexchange.xtomo.xtomo_importer.html
+"""
+
+# tomoPy: https://github.com/tomopy/tomopy
+import tomopy 
+
+# Data Exchange: https://github.com/data-exchange/data-exchange
+import dataexchange.xtomo.xtomo_importer as dx
+import dataexchange.xtomo.xtomo_exporter as ex
+
+#import numpy as np
+#import os
+#import scipy
+#import re
 
 import logging
 logging.basicConfig(filename='convert_Diamond_I12.log',level=logging.DEBUG)
 
 def main():
 
-    file_name = '/local/data/databank/Diamond/projections_13429.hdf'
-    hdf5_file_name = '/local/data/databank/dataExchange/microCT/Diamond_2bin.h5'
+    file_name = '/local/dataraid/databank/Diamond/13429_subx.nxs'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/Diamond_04.h5'
 
-    mydata = Convert()
-    # Create minimal hdf5 file
-    if verbose: print "Reading data ... "
-    mydata.nexus(file_name,
-                        hdf5_file_name = hdf5_file_name,
-                        projections_start=20,
-                        projections_end=1820,
-                        projections_step=2,
-                        white_start=11,
-                        white_end=20,
-                        dark_start=1,
-                        dark_end=3,
-                        sample_name = 'unknown'
-                   )
+    mydata = dx.Import()
+    # Read series of images
+    data, white, dark, theta = mydata.xtomo_raw(file_name, 
+                                                        data_type='nxs', 
+                                                        slices_start=1600,
+                                                        slices_end=1610,
+                                                        slices_step=1,
+                                                        log='INFO')
     
-    # Add extra metadata if available / desired
-
-    # Open DataExchange file
-    f = DataExchangeFile(hdf5_file_name, mode='a') 
-
-    # Create HDF5 subgroup
-    # /measurement/instrument
-    f.add_entry( DataExchangeEntry.instrument(name={'value': 'Diamond I12'}) )
-
-    ### Create HDF5 subgroup
-    ### /measurement/instrument/source
-    f.add_entry( DataExchangeEntry.source(name={'value': "Diamond Light Source"},
-                                        date_time={'value': "2013-11-30T19:17:04+0100"},
-                                        beamline={'value': "JEEP I12"},
-                                        )
-    )
-
-    # Create HDF5 subgroup
-    # /measurement/experimenter
-    f.add_entry( DataExchangeEntry.experimenter(name={'value':"Michael Drakopoulos"},
-                                                role={'value':"Project PI"},
-                    )
-        )
-
-    f.close()
-    print "Done creating data exchange file: ", hdf5_file_name
+    
+    mydata = ex.Export()
+    # Create minimal data exchange hdf5 file
+    mydata.xtomo_exchange(data = data,
+                          data_white = white,
+                          data_dark = dark,
+                          theta = theta,
+                          hdf5_file_name = hdf5_file_name,
+                          data_exchange_type = 'tomography_raw_projections')
 
 if __name__ == "__main__":
     main()

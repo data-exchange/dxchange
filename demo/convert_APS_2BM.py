@@ -1,13 +1,23 @@
 # -*- coding: utf-8 -*-
 """
-.. module:: main_convert_APS_2BM.py
+.. module:: convert_APS_2BM.py
    :platform: Unix
    :synopsis: Convert APS 2-BM HDF4 files in data exchange.
 
-.. moduleauthor:: Francesco De Carlo <decarlof@gmail.com>
+Example on how to use the `xtomo_raw`_ module to read APS 2-BM HDF4 raw tomographic data and save them as Data Exchange
+
+:Author:
+  `Francesco De Carlo <mailto: decarlof@gmail.com>`_
+
+:Organization:
+  Argonne National Laboratory, Argonne, IL 60439 USA
+
+:Version: 2014.08.15
+
+.. _xtomo_raw: dataexchange.xtomo.xtomo_importer.html
+"""
 
 
-""" 
 from pyhdf import SD
 import os
 
@@ -16,9 +26,9 @@ import dataexchange.xtomo.xtomo_exporter as ex
 
 def main():
 
-    log_file = '/local/dataraid/databank/Sangid/Sam02/Sam02_exp.hdf'
+    log_file = '/local/dataraid/databank/Sangid/Sam01/Sam01_exp.hdf'
 
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/Sangid_LongFiber.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/APS_2_BM_hdf4.h5'
 
     #Read APS 2-BM log file data
     f = SD.SD(log_file)
@@ -52,10 +62,10 @@ def main():
     dark_end = dark_start + num_dark_fields
 
     sample_name = base_name
-    
+
     mydata = dx.Import()
     # Read series of images
-    data, white, dark, theta = mydata.series_of_images(file_name,
+    data, white, dark, theta = mydata.xtomo_raw(file_name,
                                                      projections_start = projections_start,
                                                      projections_end = projections_end,
                                                      white_start = white_start,

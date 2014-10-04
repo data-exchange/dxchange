@@ -1,12 +1,21 @@
+# -*- coding: utf-8 -*-
 """
-.. module:: convert_APS_13BM.py
+.. module:: convert_APS_13BM_SPE.py
    :platform: Unix
    :synopsis: Convert APS 13-BM SPE files in data exchange.
 
-.. moduleauthor:: Francesco De Carlo <decarlof@gmail.com>
+Example on how to use the `xtomo_raw`_ module to read APS 13-BM SPE raw tomographic data and save them as Data Exchange
 
+:Author:
+  `Francesco De Carlo <mailto: decarlof@gmail.com>`_
 
-""" 
+:Organization:
+  Argonne National Laboratory, Argonne, IL 60439 USA
+
+:Version: 2014.08.15
+
+.. _xtomo_raw: dataexchange.xtomo.xtomo_importer.html
+"""
 
 import dataexchange.xtomo.xtomo_importer as dx
 import dataexchange.xtomo.xtomo_exporter as ex
@@ -14,7 +23,8 @@ import dataexchange.xtomo.xtomo_exporter as ex
 def main():
 
     file_name = '/local/dataraid/databank/APS_13_BM/SPE/run2_soln1_2_.SPE'
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/APS_13_BM_test_07.h5'
+
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/APS_13_BM_spe.h5'
 
     white_start = 1
     white_end = 8
@@ -23,19 +33,14 @@ def main():
     projections_end = 7
     projections_step = 2
 
-    # set to convert slices between slices_start and slices_end
-    # if omitted all data set will be converted   
-    slices_start = 100    
-    slices_end = 104    
-
     mydata = dx.Import()
     # Read series of images
-    data, white, dark, theta = mydata.series_of_images(file_name,
+    data, white, dark, theta = mydata.xtomo_raw(file_name,
                                                        projections_start = projections_start,
                                                        projections_end = projections_end,
                                                        projections_step = projections_step,
-                                                       slices_start = slices_start,
-                                                       slices_end = slices_end,
+#                                                       slices_start = slices_start,
+#                                                       slices_end = slices_end,
                                                        white_start = white_start,
                                                        white_end = white_end,
                                                        white_step = white_step,

@@ -1,13 +1,21 @@
 # -*- coding: utf-8 -*-
 """
-.. module:: main_convert_esrf.py
+.. module:: convert_SRC.py
    :platform: Unix
-   :synopsis: Convert SRC dpt files in data exchange.
+   :synopsis: Convert Synchrotron Radiation Center DPT files in data exchange.
 
-.. moduleauthor:: Francesco De Carlo <decarlof@gmail.com>
+Example on how to use the `xtomo_raw`_ module to read Synchrotron Radiation Center Infrared raw tomographic data and save them as Data Exchange
 
+:Author:
+  `Francesco De Carlo <mailto: decarlof@gmail.com>`_
 
-""" 
+:Organization:
+  Argonne National Laboratory, Argonne, IL 60439 USA
+
+:Version: 2014.08.15
+
+.. _xtomo_raw: dataexchange.xtomo.xtomo_importer.html
+"""
 
 import dataexchange.xtomo.xtomo_importer as dx
 import dataexchange.xtomo.xtomo_exporter as ex
@@ -15,7 +23,7 @@ import dataexchange.xtomo.xtomo_exporter as ex
 def main():
 
     raw_tiff_base_name = "/local/dataraid/databank/dataExchange/microCT/SRC/raw/FPA_16_18_18_TOMO_243_Fiber_2500_50_50_"    
-    hdf5_base_name = "/local/dataraid/databank/dataExchange/microCT/SRC/dx/FPA_16_18_18_TOMO_243_Fiber_2500_50_50_"    
+    hdf5_base_name = "/local/dataraid/databank/dataExchange/tmp/SRC_"    
    
     log_file = raw_tiff_base_name + "wavelength.dpt"
     angle_file = raw_tiff_base_name + "angle.dpt"
@@ -37,7 +45,7 @@ def main():
 
         mydata = dx.Import()
         # Read series of images from a single dpt file
-        data, white, dark, theta = mydata.series_of_images(file_name,
+        data, white, dark, theta = mydata.xtomo_raw(file_name,
                                                         data_type='dpt',
                                                         projections_angle_end = projections_angle_end,
                                                         log='INFO'

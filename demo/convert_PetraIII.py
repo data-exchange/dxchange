@@ -1,13 +1,21 @@
 # -*- coding: utf-8 -*-
 """
-.. module:: main_convert_PetraIII.py
+.. module:: convert_PetraIII.py
    :platform: Unix
-   :synopsis: Convert PetraIII P06 TIFF files in data exchange.
+   :synopsis: Convert Petra III P05 and P06 TIFF files in data exchange.
 
-.. moduleauthor:: Francesco De Carlo <decarlof@gmail.com>
+Example on how to use the `xtomo_raw`_ module to read  Petra III P05 and P06 TIFF raw tomographic data and save them as Data Exchange
 
+:Author:
+  `Francesco De Carlo <mailto: decarlof@gmail.com>`_
 
-""" 
+:Organization:
+  Argonne National Laboratory, Argonne, IL 60439 USA
+
+:Version: 2014.08.15
+
+.. _xtomo_raw: dataexchange.xtomo.xtomo_importer.html
+"""
 
 import dataexchange.xtomo.xtomo_importer as dx
 import dataexchange.xtomo.xtomo_exporter as ex
@@ -77,47 +85,45 @@ def main():
     #dark_step = 1
 
     # oster: pj: from 0 -> 1440; bf from 0 -> 19; df from 3 -> 19
-    file_name = '/local/dataraid/databank/PetraIII/2011_KW16_oster/oster02_0002/scan_0002/ccd/pco01/ccd_.tif'
-    dark_file_name = '/local/dataraid/databank/PetraIII/2011_KW16_oster/oster02_0002/scan_0000/ccd/pco01/ccd_.tif'
-    white_file_name = '/local/dataraid/databank/PetraIII/2011_KW16_oster/oster02_0002/scan_0001/ccd/pco01/ccd_.tif'
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/PetraIII_oster02_0002.h5'
+    #file_name = '/local/dataraid/databank/PetraIII/2011_KW16_oster/oster02_0002/scan_0002/ccd/pco01/ccd_.tif'
+    #dark_file_name = '/local/dataraid/databank/PetraIII/2011_KW16_oster/oster02_0002/scan_0000/ccd/pco01/ccd_.tif'
+    #white_file_name = '/local/dataraid/databank/PetraIII/2011_KW16_oster/oster02_0002/scan_0001/ccd/pco01/ccd_.tif'
+    #hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/PetraIII_oster02_0002.h5'
 
+    #projections_start = 0
+    #projections_end = 1441
+    #white_start = 0
+    #white_end = 20
+    #white_step = 1
+    #dark_start = 3
+    #dark_end = 20
+    #dark_step = 1
 
-    projections_start = 0
-    projections_end = 1441
-    white_start = 0
-    white_end = 20
-    white_step = 1
-    dark_start = 3
-    dark_end = 20
-    dark_step = 1
-
-    sample_name = 'PetraIII P06 oster02_0002'
+    #sample_name = 'PetraIII P06 oster02_0002'
 
     # oster: pj: from 0 -> 1440; bf from 0 -> 19; df from 0 -> 19
-    file_name = '/local/dataraid/databank/PetraIII/2011_KW16_oster/oster02_0000/scan_0002/ccd/pco01/ccd_.tif'
-    dark_file_name = '/local/dataraid/databank/PetraIII/2011_KW16_oster/oster02_0000/scan_0000/ccd/pco01/ccd_.tif'
-    white_file_name = '/local/dataraid/databank/PetraIII/2011_KW16_oster/oster02_0000/scan_0001/ccd/pco01/ccd_.tif'
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/PetraIII_oster02_0000.h5'
+    #file_name = '/local/dataraid/databank/PetraIII/2011_KW16_oster/oster02_0000/scan_0002/ccd/pco01/ccd_.tif'
+    #dark_file_name = '/local/dataraid/databank/PetraIII/2011_KW16_oster/oster02_0000/scan_0000/ccd/pco01/ccd_.tif'
+    #white_file_name = '/local/dataraid/databank/PetraIII/2011_KW16_oster/oster02_0000/scan_0001/ccd/pco01/ccd_.tif'
+    #hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/PetraIII.h5'
 
+    #projections_start = 0
+    #projections_end = 1441
+    #white_start = 0
+    #white_end = 20
+    #white_step = 1
+    #dark_start = 0
+    #dark_end = 20
+    #dark_step = 1
 
-    projections_start = 0
-    projections_end = 1441
-    white_start = 0
-    white_end = 20
-    white_step = 1
-    dark_start = 0
-    dark_end = 20
-    dark_step = 1
-
-    sample_name = 'PetraIII P06 oster02_0000'
+    #sample_name = 'PetraIII P06 oster02_0000'
 
     # oster: pj: from 0 -> 1440; bf from 0 -> 19; df from 0 -> 19
     file_name = '/local/dataraid/databank/PetraIII/2011_KW16_oster/oster02_0001/scan_0002/ccd/pco01/ccd_.tif'
     dark_file_name = '/local/dataraid/databank/PetraIII/2011_KW16_oster/oster02_0001/scan_0000/ccd/pco01/ccd_.tif'
     white_file_name = '/local/dataraid/databank/PetraIII/2011_KW16_oster/oster02_0001/scan_0001/ccd/pco01/ccd_.tif'
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/PetraIII_oster02_0001.h5'
 
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/PetraIII.h5'
 
     projections_start = 0
     projections_end = 1441
@@ -129,19 +135,12 @@ def main():
     dark_step = 1
 
     sample_name = 'PetraIII P06 oster02_0001'
-
-    # to reconstruct slices from slices_start to slices_end
-    # if omitted all data set is recontructed
-#    slices_start = 800    
-#    slices_end = 804    
     
     mydata = dx.Import()
     # Read series of images
-    data, white, dark, theta = mydata.series_of_images(file_name,
+    data, white, dark, theta = mydata.xtomo_raw(file_name,
                                                        projections_start = projections_start,
                                                        projections_end = projections_end,
-#                                                       slices_start = slices_start,
-#                                                       slices_end = slices_end,
                                                        #projections_angle_range=360,
                                                        white_file_name = white_file_name,
                                                        white_start = white_start,
@@ -151,7 +150,6 @@ def main():
                                                        dark_start = dark_start,
                                                        dark_end = dark_end,
                                                        dark_step = dark_step,
-                                                       sample_name = sample_name,
                                                        projections_digits = 4,
                                                        projections_zeros = True,
                                                        log='INFO'
@@ -163,6 +161,7 @@ def main():
                           data_dark = dark,
                           theta = theta,
                           hdf5_file_name = hdf5_file_name,
+                          sample_name = sample_name,
                           data_exchange_type = 'tomography_raw_projections'
                           )
 if __name__ == "__main__":

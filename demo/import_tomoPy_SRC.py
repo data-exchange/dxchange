@@ -1,20 +1,28 @@
 # -*- coding: utf-8 -*-
 """
-.. module:: import_tomoPy_SLS.py
+.. module:: import_tomoPy_SRC.py
    :platform: Unix
-   :synopsis: reconstruct SLS Tomcat data with TomoPy
-   :INPUT
-       series of tiff and log file or data exchange 
+   :synopsis: Import Synchrotron Radiation Center DPT files in data exchange.
 
-.. moduleauthor:: Francesco De Carlo <decarlof@gmail.com>
+Example on how to use the `xtomo_raw`_ module to read Synchrotron Radiation Center Infrared raw tomographic data and reconstruct with tomoPy
 
+:Author:
+  `Francesco De Carlo <mailto: decarlof@gmail.com>`_
 
-""" 
+:Organization:
+  Argonne National Laboratory, Argonne, IL 60439 USA
+
+:Version: 2014.08.15
+
+.. _xtomo_raw: dataexchange.xtomo.xtomo_importer.html
+"""
+
 # tomoPy: https://github.com/tomopy/tomopy
 import tomopy 
 
 # Data Exchange: https://github.com/data-exchange/data-exchange
 import dataexchange.xtomo.xtomo_importer as dx
+import dataexchange.xtomo.xtomo_exporter as ex
 
 import re
 import os
@@ -65,7 +73,10 @@ def main():
         # Write to stack of TIFFs.
         rec_name = dir_name + "/rec/" + sample_name_prefix + linelist[0] + "cm-1"
 
-        tomopy.xtomo_writer(d.data_recon, rec_name, axis=0)
+        # Write to stack of TIFFs.
+        mydata = ex.Export()
+        mydata.xtomo_tiff(data = d.data_recon, output_file = rec_name, axis=0)
+
     file.close()
 
 if __name__ == "__main__":

@@ -1,13 +1,21 @@
-_test# -*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 """
 .. module:: convert_Elettra.py
    :platform: Unix
-   :synopsis: Convert Elettra Synchrotron facility, 12bit tiff compressed data LZV method, c files in data exchange.
+   :synopsis: Convert Elettra TIFF files in data exchange.
 
-.. moduleauthor:: Francesco De Carlo <decarlof@gmail.com>
+Example on how to use the `xtomo_raw`_ module to read Elettra TIFF raw tomographic data and save them as Data Exchange
 
+:Author:
+  `Francesco De Carlo <mailto: decarlof@gmail.com>`_
 
-""" 
+:Organization:
+  Argonne National Laboratory, Argonne, IL 60439 USA
+
+:Version: 2014.08.15
+
+.. _xtomo_raw: dataexchange.xtomo.xtomo_importer.html
+"""
 
 import dataexchange.xtomo.xtomo_importer as dx
 import dataexchange.xtomo.xtomo_exporter as ex
@@ -18,7 +26,7 @@ def main():
     dark_file_name = '/local/dataraid/databank/Elettra/Volcanic_rock/dark_.tif'
     white_file_name = '/local/dataraid/databank/Elettra/Volcanic_rock/flat_.tif'
 
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/Elettra_test.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/Elettra.h5'
 
     projections_start = 1
     projections_end = 1441
@@ -33,17 +41,17 @@ def main():
 
     # set to convert slices between slices_start and slices_end
     # if omitted all data set will be converted   
-    slices_start = 150    
-    slices_end = 154    
+#    slices_start = 150    
+#    slices_end = 154    
 
     mydata = dx.Import()
     # Read series of images
-    data, white, dark, theta = mydata.series_of_images(file_name,
+    data, white, dark, theta = mydata.xtomo_raw(file_name,
                                                        projections_start = projections_start,
                                                        projections_end = projections_end,
                                                        projections_digits = 4,
-                                                       slices_start = slices_start,
-                                                       slices_end = slices_end,
+#                                                       slices_start = slices_start,
+#                                                       slices_end = slices_end,
                                                        white_file_name = white_file_name,
                                                        white_start = white_start,
                                                        white_end = white_end,
@@ -56,7 +64,6 @@ def main():
                                                        projections_zeros = True,
                                                        white_zeros = False,
                                                        dark_zeros = False,
-                                                       sample_name = sample_name,
                                                        log='INFO'
                                                        )
     mydata = ex.Export()
@@ -66,7 +73,8 @@ def main():
                           data_dark = dark,
                           theta = theta,
                           hdf5_file_name = hdf5_file_name,
-                          data_exchange_type = 'tomography_raw_projections'
+                          data_exchange_type = 'tomography_raw_projections',
+                          sample_name = sample_name
                           )
 
 if __name__ == "__main__":

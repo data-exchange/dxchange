@@ -4,10 +4,18 @@
    :platform: Unix
    :synopsis: Convert CHESS TIFF files in data exchange.
 
-.. moduleauthor:: Francesco De Carlo <decarlof@gmail.com>
+Example on how to use the `xtomo_raw`_ module to read CHESS TIFF raw tomographic data and save them as Data Exchange
 
+:Author:
+  `Francesco De Carlo <mailto: decarlof@gmail.com>`_
 
-""" 
+:Organization:
+  Argonne National Laboratory, Argonne, IL 60439 USA
+
+:Version: 2014.08.15
+
+.. _xtomo_raw: dataexchange.xtomo.xtomo_importer.html
+"""
 
 import dataexchange.xtomo.xtomo_importer as dx
 import dataexchange.xtomo.xtomo_exporter as ex
@@ -18,7 +26,8 @@ def main():
     dark_file_name = '/local/dataraid/databank/CHESS/scan1/scan1_dark_.tiff'
     white_file_name = '/local/dataraid/databank/CHESS/scan1/scan1_white_.tiff'
 
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/CHESS_02.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/CHESS.h5'
+
     sample_name = 'Dummy'
 
     projections_start = 1
@@ -30,33 +39,24 @@ def main():
     dark_end = 1
     dark_step = 1
 
-
-    # set to convert slices between slices_start and slices_end
-    # if omitted all data set will be converted   
-    slices_start = 400    
-    slices_end = 405    
-
     mydata = dx.Import()
     # Read series of images
-    data, white, dark, theta = mydata.series_of_images(file_name,
+    data, white, dark, theta = mydata.xtomo_raw(file_name,
                                                        projections_start = projections_start,
                                                        projections_end = projections_end,
-                                                       slices_start = slices_start,
-                                                       slices_end = slices_end,
-                                                       sample_name = sample_name,
                                                        projections_digits = 3,
                                                        projections_zeros = True,
                                                        log='INFO'
                                                     )    
-##    mydata = ex.Export()
-##    # Create minimal data exchange hdf5 file
-##    mydata.xtomo_exchange(data = data,
-##                          data_white = white,
-##                          data_dark = dark,
-##                          theta = theta,
-##                          hdf5_file_name = hdf5_file_name,
-##                          data_exchange_type = 'tomography_raw_projections'
-##                          )
+    mydata = ex.Export()
+    # Create minimal data exchange hdf5 file
+    mydata.xtomo_exchange(data = data,
+                          data_white = white,
+                          data_dark = dark,
+                          theta = theta,
+                          hdf5_file_name = hdf5_file_name,
+                          data_exchange_type = 'tomography_raw_projections'
+                          )
 
 if __name__ == "__main__":
     main()

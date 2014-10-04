@@ -2,14 +2,21 @@
 """
 .. module:: import_tomoPy_APS_2BM.py
    :platform: Unix
-   :synopsis: reconstruct APS 2-BM hdf4 data with TomoPy
-   :INPUT
-       APS 2_BM exp file or data exchange 
+   :synopsis: Import APS 2-BM HDF4 files in data exchange.
 
-.. moduleauthor:: Francesco De Carlo <decarlof@gmail.com>
+Example on how to use the `xtomo_raw`_ module to read APS 2-BM HDF4 raw tomographic data and reconstruct using tomoPy
 
+:Author:
+  `Francesco De Carlo <mailto: decarlof@gmail.com>`_
 
-""" 
+:Organization:
+  Argonne National Laboratory, Argonne, IL 60439 USA
+
+:Version: 2014.08.15
+
+.. _xtomo_raw: dataexchange.xtomo.xtomo_importer.html
+"""
+
 from pyhdf import SD
 import os
 
@@ -18,11 +25,12 @@ import tomopy
 
 # Data Exchange: https://github.com/data-exchange/data-exchange
 import dataexchange.xtomo.xtomo_importer as dx
+import dataexchange.xtomo.xtomo_exporter as ex
 
 import re
 
 def main():
-    log_file = '/local/dataraid/databank/APS_2_BM/Sam18_hornby/Sam18_exp.hdf'
+    log_file = '/local/dataraid/databank/Sangid/Sam01/Sam01_exp.hdf'
 
     #Read APS 2-BM log file data
     f = SD.SD(log_file)
@@ -49,7 +57,7 @@ def main():
     f.end()
     
     white_start = 1
-    white_end = 2
+    white_end = 2 
     projections_start = 2
     projections_end = projections_start + (int)((end_angle -  start_angle) / angle_interval) + 1
     dark_start = projections_end + 1 
@@ -60,12 +68,12 @@ def main():
     # to reconstruct a subset of slices set slices_start and slices_end
     # if omitted the full data set is recontructed
     
-    slices_start = 800    
-    slices_end = 804    
+    slices_start = 1365
+    slices_end = 1369
 
     mydata = dx.Import()
     # Read series of images
-    data, white, dark, theta = mydata.series_of_images(file_name,
+    data, white, dark, theta = mydata.xtomo_raw(file_name,
                                                        projections_start = projections_start,
                                                        projections_end = projections_end,
                                                        slices_start = slices_start,
@@ -79,14 +87,6 @@ def main():
                                                        log='INFO'
                                                        )
 
-##    # if you have already created a data exchange file using convert_APS_2BM.py module,
-##    # comment the call above and read the data set as data exchange 
-##    # Read HDF5 file.
-##
-##    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/Hornby_19keV_10x_APS_2011_01.h5'
-##    data, white, dark, theta = tomopy.xtomo_reader(hdf5_file_name,
-##                                                   slices_start=0,
-##                                                   slices_end=2)
 
     # TomoPy xtomo object creation and pipeline of methods.  
     d = tomopy.xtomo_dataset(log='debug')
@@ -96,12 +96,12 @@ def main():
     #d.optimize_center()
     #d.phase_retrieval()
     #d.correct_drift()
-    d.center=1023.4
+    d.center=1059.2
     d.gridrec()
 
-
     # Write to stack of TIFFs.
-    tomopy.xtomo_writer(d.data_recon, 'tmp/APS_2_BM_', axis=0)
+    mydata = ex.Export()
+    mydata.xtomo_tiff(data = d.data_recon, output_file = 'tmp/APS_2_BM_hdf4_2_tomoPy_', axis=0)
 
 if __name__ == "__main__":
     main()

@@ -2,19 +2,26 @@
 """
 .. module:: import_tomoPy_Elettra.py
    :platform: Unix
-   :synopsis: reconstruct Elettra Synchrotron Facility data with TomoPy
-   :INPUT
-       series of tiff or data exchange 
+   :synopsis: Import Elettra TIFF files in data exchange.
 
-.. moduleauthor:: Francesco De Carlo <decarlof@gmail.com>
+Example on how to use the `xtomo_raw`_ module to read Elettra TIFF raw tomographic data and save them as Data Exchange
 
+:Author:
+  `Francesco De Carlo <mailto: decarlof@gmail.com>`_
 
-""" 
+:Organization:
+  Argonne National Laboratory, Argonne, IL 60439 USA
+
+:Version: 2014.08.15
+
+.. _xtomo_raw: dataexchange.xtomo.xtomo_importer.html
+"""
 # tomoPy: https://github.com/tomopy/tomopy
 import tomopy 
 
 # Data Exchange: https://github.com/data-exchange/data-exchange
 import dataexchange.xtomo.xtomo_importer as dx
+import dataexchange.xtomo.xtomo_exporter as ex
 
 
 def main():
@@ -22,8 +29,6 @@ def main():
     file_name = '/local/dataraid/databank/Elettra/Volcanic_rock/tomo_.tif'
     dark_file_name = '/local/dataraid/databank/Elettra/Volcanic_rock/dark_.tif'
     white_file_name = '/local/dataraid/databank/Elettra/Volcanic_rock/flat_.tif'
-
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/Elettra_test.h5'
 
     projections_start = 1
     projections_end = 1441
@@ -38,13 +43,12 @@ def main():
 
     # to reconstruct slices from slices_start to slices_end
     # if omitted all data set is recontructed
-    
     slices_start = 150    
     slices_end = 154    
 
     mydata = dx.Import()
     # Read series of images
-    data, white, dark, theta = mydata.series_of_images(file_name,
+    data, white, dark, theta = mydata.xtomo_raw(file_name,
                                                        projections_start = projections_start,
                                                        projections_end = projections_end,
                                                        projections_digits = 4,
@@ -62,31 +66,23 @@ def main():
                                                        projections_zeros = True,
                                                        white_zeros = False,
                                                        dark_zeros = False,
-                                                       sample_name = sample_name,
                                                        log='INFO'
                                                        )
-
-##    # if you have already created a data exchange file using convert_SLS.py module,
-##    # comment the call above and read the data set as data exchange 
-##    # Read HDF5 file.
-##    data, white, dark, theta = tomopy.xtomo_reader(hdf5_file_name,
-##                                                   slices_start=0,
-##                                                   slices_end=2)
 
     # TomoPy xtomo object creation and pipeline of methods.  
     d = tomopy.xtomo_dataset(log='debug')
     d.dataset(data, white, dark, theta)
     d.normalize()
     d.correct_drift()
-    d.optimize_center()
+    #d.optimize_center()
     #d.phase_retrieval()
     #d.correct_drift()
-    #d.center=1010.0
+    d.center=1096.375
     d.gridrec()
 
-
     # Write to stack of TIFFs.
-    tomopy.xtomo_writer(d.data_recon, 'tmp/Elettra_', axis=0)
+    mydata = ex.Export()
+    mydata.xtomo_tiff(data = d.data_recon, output_file = 'tmp/Elettra_tiff_2_tomoPy_', axis=0)
 
 if __name__ == "__main__":
     main()
