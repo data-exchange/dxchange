@@ -21,23 +21,23 @@ Examples
 
 >>> import dataexchange.xtomo.xtomo_importer as dx
 >>> import dataexchange.xtomo.xtomo_exporter as ex
-
-
+>>> 
+>>> 
 >>> file_name = '/local/data/radios/image_.tif'
 >>> dark_file_name = '/local/data/darks/image_.tif'
 >>> white_file_name = '/local/data/flats/image_.tif'
-
+>>> 
 >>> hdf5_file_name = '/local/data/dataExchange/Anka.h5'
-
+>>> 
 >>> projections_start = 0
 >>> projections_end = 3167
 >>> white_start = 0
 >>> white_end = 100
 >>> dark_start = 0
 >>> dark_end = 100
-
+>>> 
 >>> sample_name = 'Anka'
-    
+>>>     
 >>> mydata = dx.Import()
 >>> # Read series of images
 >>> data, white, dark, theta = mydata.xtomo_raw(file_name,
