@@ -50,14 +50,7 @@ def main():
                                                        white_step = white_step,
                                                        log='INFO'
                                                        )
-
-##    # if you have already created a data exchange file using convert_SLS.py module,
-##    # comment the call above and read the data set as data exchange 
-##    # Read HDF5 file.
-##    data, white, dark, theta = tomopy.xtomo_reader(hdf5_file_name,
-##                                                   slices_start=0,
-##                                                   slices_end=2)
-
+s
     # TomoPy xtomo object creation and pipeline of methods.  
     d = tomopy.xtomo_dataset(log='debug')
     d.dataset(data, white, dark, theta)
