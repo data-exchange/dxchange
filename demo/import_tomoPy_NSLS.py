@@ -50,7 +50,7 @@ def main():
                                                        white_step = white_step,
                                                        log='INFO'
                                                        )
-s
+
     # TomoPy xtomo object creation and pipeline of methods.  
     d = tomopy.xtomo_dataset(log='debug')
     d.dataset(data, white, dark, theta)
