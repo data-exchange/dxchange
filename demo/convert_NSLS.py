@@ -35,27 +35,15 @@ def main():
 
     # set to convert slices between slices_start and slices_end
     # if omitted all data set will be converted   
-<<<<<<< HEAD
-#    slices_start = 900    
-#    slices_end = 904    
-=======
-    slices_start = 800    
-    slices_end = 804    
->>>>>>> master
 
     mydata = dx.Import()
     # Read series of images
     data, white, dark, theta = mydata.xtomo_raw(file_name,
                                                        projections_start = projections_start,
                                                        projections_end = projections_end,
-<<<<<<< HEAD
-#                                                       slices_start = slices_start,
-#                                                       slices_end = slices_end,
-=======
                                                        projections_digits=4,
                                                        slices_start = slices_start,
                                                        slices_end = slices_end,
->>>>>>> master
                                                        white_file_name = white_file_name,
                                                        white_start = white_start,
                                                        white_end = white_end,
