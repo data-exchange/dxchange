@@ -60,6 +60,9 @@ def main():
     log_file = '/local/dataraid/databank/als/20140715_141352_NaCl/20140715_141352_NaCl-15_NaMgF3-85_01475_5x.sct'
     hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/ALS_20140715_141352_NaCl.h5'    
 
+    # for validate to work
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/ALS.h5'    
+
     verbose = True
 
     # Read ALS log file data
