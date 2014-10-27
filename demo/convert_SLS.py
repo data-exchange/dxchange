@@ -28,6 +28,8 @@ def main():
     log_file = '/local/dataraid/databank/SLS_2011/Hornby_SLS/Hornby.log'
 
     hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/SLS.h5'
+
+    sample_name = 'Hornby_b'
     
     #Read SLS log file data
     file = open(log_file, 'r')
@@ -74,6 +76,7 @@ def main():
                           data_dark = dark,
                           theta = theta,
                           hdf5_file_name = hdf5_file_name,
+                          sample_name = sample_name,
                           data_exchange_type = 'tomography_raw_projections'
                           )
 if __name__ == "__main__":

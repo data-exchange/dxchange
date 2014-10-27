@@ -134,7 +134,7 @@ def main():
     dark_end = 20
     dark_step = 1
 
-    sample_name = 'PetraIII P06 oster02_0001'
+    sample_name = 'oster02_0001'
     
     mydata = dx.Import()
     # Read series of images

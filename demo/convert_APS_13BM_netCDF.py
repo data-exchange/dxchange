@@ -33,6 +33,8 @@ def main():
     projections_end = 3
     projections_step = 1
 
+    sample_name = 'Dorthe_F'
+
     mydata = dx.Import()    
     # Read series of images
     data, white, dark, theta = mydata.xtomo_raw(file_name,
@@ -53,6 +55,7 @@ def main():
                           data_dark = dark,
                           theta = theta,
                           hdf5_file_name = hdf5_file_name,
+                          sample_name = sample_name,
                           data_exchange_type = 'tomography_raw_projections'
                           )
 

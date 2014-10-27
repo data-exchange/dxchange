@@ -35,7 +35,7 @@ def main():
     dark_start = 0
     dark_end = 100
 
-    sample_name = 'Anka'
+    sample_name = 'insect'
     
     mydata = dx.Import()
     # Read series of images
@@ -59,8 +59,8 @@ def main():
                           data_dark = dark,
                           theta = theta,
                           hdf5_file_name = hdf5_file_name,
-                          data_exchange_type = 'tomography_raw_projections',
-                          sample_name = sample_name
+                          sample_name = sample_name,
+                          data_exchange_type = 'tomography_raw_projections'
                           )
     
 if __name__ == "__main__":
