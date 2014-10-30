@@ -152,6 +152,7 @@ There is a geometry group common to many of the subgroups under measurement. The
 \midrule
 \hyperref[table:sample]{sample} & group &  \\
 \hyperref[table:instrument]{instrument} & group & \\
+description & string dataset &  "Tomography of a rock" \\   
 \bottomrule
 \end{tabular}
 \end{table}
@@ -162,6 +163,10 @@ There is a geometry group common to many of the subgroups under measurement. The
 
 \item[\tt {instrument}] \hfill \\
 {The instrument used to collect this data.}
+
+\item[\tt {description}] \hfill \\
+{Measurement description.}
+
 \end{description}
 
 \subsubsection{Sample}
@@ -289,7 +294,6 @@ activity, and safety form.
 \toprule
 \bfseries Member     & \bfseries Type & \bfseries Example \\
 \midrule
-title & string dataset & "Tomography of a rock"\\
 proposal & string dataset &  "1234" \\
 activity & string dataset &  "9876" \\
 safety & string dataset &  "9876" \\
@@ -299,9 +303,6 @@ safety & string dataset &  "9876" \\
 \end{table}
 
 \begin{description}
-\item[\tt {title}] \hfill \\
-{Proposal title. For the APS this is the General User Proposal title.}
-
 \item[\tt {proposal}] \hfill \\
 {Proposal reference number. For the APS this is the General User Proposal
 number.}
