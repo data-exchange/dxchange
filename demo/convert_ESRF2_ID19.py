@@ -28,7 +28,7 @@ def main():
 
     hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/ESRF2.h5'
 
-    sample_name = 'edf test'
+    sample_name = '0006_AV67_016_offsetAngleMinus12'
 
     projections_start = 0
     projections_end = 2003
@@ -60,7 +60,7 @@ def main():
 #                                                       dark_step = dark_step,
                                                        projections_digits = 4,
                                                        white_digits = 4,
-#                                                       dark_digits = 2,
+#                                                       dark_digits = 4,
                                                        projections_zeros = True,
 #                                                       slices_start = slices_start,
 #                                                       slices_end = slices_end,

@@ -169,7 +169,8 @@ class Import():
             supported options are:
                 - ``compressed_tiff``: tiff files used at elettra
                 - ``dpt``: ASCII data from SRC infrared tomography
-                - ``edf``: ESRF file format
+                - ``edf``: ESRF file format when projections, dark and white are in a single (large) edf files
+                - ``edf2``: ESRF file format when projections, dark and white are each in a single file (series of files)s
                 - ``nc``: netCDF data from 13-BM
                 - ``nxs``: NeXuS Diamond Light Source
                 - ``hdf4``: HDF4 files used on old detectors at APS 2-BM

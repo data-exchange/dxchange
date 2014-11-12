@@ -703,17 +703,17 @@ class XTomoReader:
         dic = f.GetStaticHeader(0)
         tmpdata = np.empty((int(dic['Dim_2']), int(dic['Dim_1'])))
         
-        print tmpdata.shape
         tmpdata[::] = f.GetData(0)
 
         num_y, num_x = np.shape(tmpdata)
+
         if x_end is 0:
             x_end = num_x
         if y_end is 0:
             y_end = num_y
 
-        return tmpdata[x_start:x_end:x_step,
-                   y_start:y_end:y_step]
+        return tmpdata[y_start:y_end:y_step,
+                   x_start:x_end:x_step]
 
     def dpt(self,
              x_start=0,
