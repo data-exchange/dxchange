@@ -302,6 +302,18 @@ class Import():
                 dark_file_name.endswith('edf'):
                 data_file_dark = os.path.splitext(dark_file_name)[0]
 
+        elif (data_type is 'edf2'):
+            if file_name.endswith('EDF') or \
+                file_name.endswith('edf'):
+                data_file = os.path.splitext(file_name)[0]
+                dataExtension = os.path.splitext(file_name)[1]
+            if white_file_name.endswith('EDF') or \
+                white_file_name.endswith('edf'):
+                data_file_white = os.path.splitext(white_file_name)[0]
+            if dark_file_name.endswith('EDF') or \
+                dark_file_name.endswith('edf'):
+                data_file_dark = os.path.splitext(dark_file_name)[0]
+
         elif (data_type is 'dpt'):
             if file_name.endswith('DPT') or \
                 file_name.endswith('dpt'):
@@ -420,9 +432,15 @@ class Import():
                                      x_step=slices_step,
                                      dtype=dtype)
 
+                elif (data_type is 'edf2'):
+                    tmpdata = f.edf2(x_start=slices_start,
+                                     x_end=slices_end,
+                                     x_step=slices_step)
+
                 if ((data_type is 'tiff') or
                     (data_type is 'compressed_tiff') or
                     (data_type is 'hdf4') or
+                    (data_type is 'edf2') or
                     (data_type is 'hdf5')):
                     if m == 0: # Get resolution once.
                         input_data = np.empty((len(ind), tmpdata.shape[0], tmpdata.shape[1]), dtype=dtype)
@@ -560,9 +578,15 @@ class Import():
                                      x_step = slices_step,
                                      dtype = dtype)
 
+                elif (data_type is 'edf2'):
+                    tmpdata = f.edf2(x_start = slices_start,
+                                     x_end = slices_end,
+                                     x_step = slices_step)
+
                 if ((data_type is 'tiff') or
                     (data_type is 'compressed_tiff') or
                     (data_type is 'hdf4') or
+                    (data_type is 'edf2') or
                     (data_type is 'hdf5')):
                     if m == 0: # Get resolution once.
                         input_data = np.empty((len(ind),
@@ -721,9 +745,15 @@ class Import():
                                      x_step=slices_step,
                                      dtype=dtype)
 
+                elif (data_type is 'edf2'):
+                    tmpdata = f.edf2(x_start=slices_start,
+                                     x_end=slices_end,
+                                     x_step=slices_step)
+
                 if ((data_type is 'tiff') or
                     (data_type is 'compressed_tiff') or
                     (data_type is 'hdf4') or 
+                    (data_type is 'edf2') or
                     (data_type is 'hdf5')):
                     if m == 0: # Get resolution once.
                         input_data = np.empty((len(ind),

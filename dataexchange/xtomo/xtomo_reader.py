@@ -669,6 +669,52 @@ class XTomoReader:
                           x_start:x_end:x_step]
         return dataset
         
+    def edf2(self,
+             x_start=0,
+             x_end=0,
+             x_step=1,
+             y_start=0,
+             y_end=0,
+             y_step=1):
+        """ 
+        Read 2-D tomographic projection data from an EDF (ESRF) file.
+        
+        Parameters
+        
+        file_name : str
+            Input edf file.
+            
+        x_start, x_end, x_step : scalar, optional
+            Values of the start, end and step of the
+            slicing for the whole array.
+        
+        y_start, y_end, y_step : scalar, optional
+            Values of the start, end and step of the
+            slicing for the whole array.
+                
+        Returns
+        
+        out : array
+            Output 2-D matrix as numpy array.
+        """
+ 
+        # Read data from file.
+        f = EdfFile(self.file_name, access='r')
+        dic = f.GetStaticHeader(0)
+        tmpdata = np.empty((int(dic['Dim_2']), int(dic['Dim_1'])))
+        
+        print tmpdata.shape
+        tmpdata[::] = f.GetData(0)
+
+        num_y, num_x = np.shape(tmpdata)
+        if x_end is 0:
+            x_end = num_x
+        if y_end is 0:
+            y_end = num_y
+
+        return tmpdata[x_start:x_end:x_step,
+                   y_start:y_end:y_step]
+
     def dpt(self,
              x_start=0,
              x_end=0,
