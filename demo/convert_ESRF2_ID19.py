@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-.. module:: convert_ESRF.py
+.. module:: convert_ESRF2.py
    :platform: Unix
    :synopsis: Convert ESRF edf files in data exchange.
 
-Example on how to use the `xtomo_raw`_ module to read ESRF edf raw tomographic data and save them as Data Exchange
+Example on how to use the `xtomo_raw`_ module to read a series of ESRF edf raw tomographic data and save them as Data Exchange
 
 :Author:
   `Francesco De Carlo <mailto: decarlof@gmail.com>`_
@@ -12,7 +12,7 @@ Example on how to use the `xtomo_raw`_ module to read ESRF edf raw tomographic d
 :Organization:
   Argonne National Laboratory, Argonne, IL 60439 USA
 
-:Version: 2014.08.15
+:Version: 2014.11.12
 
 .. _xtomo_raw: dataexchange.xtomo.xtomo_importer.html
 """

@@ -20,7 +20,7 @@ Synchrotron Facilities
 * Elettra
     - tiff PackBits and LZW encoded strings
 * ESRF
-    - EDF (ID-19)
+    - EDF One file per projection (EDF) or multiple projections in a file (EDF2) (ID-19)
 * Diamond  
     - NeXuS HDF5 (JEEP)
 * Petra III

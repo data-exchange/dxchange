@@ -16,6 +16,7 @@ Data Exchange Converters
    demo.convert_Australian
    demo.convert_CHESS
    demo.convert_ESRF_ID19
+   demo.convert_ESRF2_ID19
    demo.convert_Elettra
    demo.convert_Diamond
    demo.convert_NSLS
