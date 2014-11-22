@@ -22,28 +22,110 @@ import dataexchange.xtomo.xtomo_exporter as ex
 
 def main():
 
-    file_name = '/local/dataraid/databank/ESRF2/0006_AV67_016_offsetAngleMinus12/0006_AV67_016_offsetAngleMinus12.edf'
-    #dark_file_name = '/local/dataraid/databank/ESRF2/0006_AV67_016_offsetAngleMinus12/dark2_.edf'
-    white_file_name = '/local/dataraid/databank/ESRF2/0006_AV67_016_offsetAngleMinus12/ref.edf'
-
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/ESRF2.h5'
-
-    sample_name = '0006_AV67_016_offsetAngleMinus12'
-
     projections_start = 0
-    projections_end = 2003
+    projections_end = 2000
     white_start = 0
-    white_end = 40
+    white_end = 82
     white_step = 1
-#    dark_start = 0
-#    dark_end = 10
-#    dark_step = 1
+    dark_start = 0
+    dark_end = 1
+    dark_step = 1
 
-    
-    # set to convert slices between slices_start and slices_end
-    # if omitted all data set will be converted   
-#    slices_start = 300    
-#    slices_end = 304    
+##    file_name = '/local/dataraid/databank/ESRF_2013Dec/0001_0210675/0001_0210675.edf'
+##    dark_file_name = '/local/dataraid/databank/ESRF_2013Dec/0001_0210675/dark.edf'
+##    white_file_name = '/local/dataraid/databank/ESRF_2013Dec/0001_0210675/ref.edf'
+##    hdf5_file_name = '/local/dataraid/databank/dataExchange/ESRF_0001.h5'
+##    sample_name = '0001_0210675'
+
+##    file_name = '/local/dataraid/databank/ESRF_2013Dec/0002_0210675_2nd/0002_0210675_2nd.edf'
+##    dark_file_name = '/local/dataraid/databank/ESRF_2013Dec/dark.edf'
+##    white_file_name = '/local/dataraid/databank/ESRF_2013Dec/ref.edf'
+##    hdf5_file_name = '/local/dataraid/databank/dataExchange/ESRF_0002.h5'
+##    sample_name = '0002_0210675_2nd'
+
+##    file_name = '/local/dataraid/databank/ESRF_2013Dec/0006_AV67_016_offsetAngleMinus12/0006_AV67_016_offsetAngleMinus12.edf'
+##    dark_file_name = '/local/dataraid/databank/ESRF_2013Dec/0006_AV67_016_offsetAngleMinus12/dark.edf'
+##    white_file_name = '/local/dataraid/databank/ESRF_2013Dec/0006_AV67_016_offsetAngleMinus12/ref.edf'
+##    hdf5_file_name = '/local/dataraid/databank/dataExchange/ESRF_0006.h5'
+##    sample_name = '0006_AV67_016_offsetAngleMinus12'
+
+    # white are missing
+#    file_name = '/local/dataraid/databank/ESRF_2013Dec/0007_AV67_017_offsetAngle0/0007_AV67_017_offsetAngle0.edf'
+#    dark_file_name = '/local/dataraid/databank/ESRF_2013Dec/0007_AV67_017_offsetAngle0/dark.edf'
+#    white_file_name = '/local/dataraid/databank/ESRF_2013Dec/0007_AV67_017_offsetAngle0/ref.edf'
+#    hdf5_file_name = '/local/dataraid/databank/dataExchange/ESRF_0007.h5'
+#    sample_name = '0007_AV67_017_offsetAngle0'
+
+##    file_name = '/local/dataraid/databank/ESRF_2013Dec/0008_AV67_024_offsetAngle0/0008_AV67_024_offsetAngle0.edf'
+##    dark_file_name = '/local/dataraid/databank/ESRF_2013Dec/0008_AV67_024_offsetAngle0/dark.edf'
+##    white_file_name = '/local/dataraid/databank/ESRF_2013Dec/0008_AV67_024_offsetAngle0/ref.edf'
+##    hdf5_file_name = '/local/dataraid/databank/dataExchange/ESRF_0008.h5'
+##    sample_name = '0008_AV67_024_offsetAngle0'
+
+    # dark are missing, only pre-white
+##    file_name = '/local/dataraid/databank/ESRF_2013Dec/0009_AV67_018_offsetAngle0/0009_AV67_018_offsetAngle0.edf'
+##    dark_file_name = '/local/dataraid/databank/ESRF_2013Dec/0009_AV67_018_offsetAngle0/dark.edf'
+##    white_file_name = '/local/dataraid/databank/ESRF_2013Dec/0009_AV67_018_offsetAngle0/ref.edf'
+##    hdf5_file_name = '/local/dataraid/databank/dataExchange/ESRF_0009.h5'
+##    sample_name = '0009_AV67_018_offsetAngle0'
+##    white_end = 41
+
+##    file_name = '/local/dataraid/databank/ESRF_2013Dec/0009_AV67_018_offsetAngle0_Redo/0009_AV67_018_offsetAngle0_Redo.edf'
+##    dark_file_name = '/local/dataraid/databank/ESRF_2013Dec/0009_AV67_018_offsetAngle0_Redo/dark.edf'
+##    white_file_name = '/local/dataraid/databank/ESRF_2013Dec/0009_AV67_018_offsetAngle0_Redo/ref.edf'
+##    hdf5_file_name = '/local/dataraid/databank/dataExchange/ESRF_0009_Redo.h5'
+##    sample_name = '0009_AV67_018_offsetAngle0_Redo'
+
+    # DO NOT CONVERT stopped during data collection 
+##    file_name = '/local/dataraid/databank/ESRF_2013Dec/0011_AV67_022_offsetAngle0/0011_AV67_022_offsetAngle0.edf'
+##    dark_file_name = '/local/dataraid/databank/ESRF_2013Dec/0011_AV67_022_offsetAngle0/dark.edf'
+##    white_file_name = '/local/dataraid/databank/ESRF_2013Dec/0011_AV67_022_offsetAngle0/ref.edf'
+##    hdf5_file_name = '/local/dataraid/databank/dataExchange/ESRF_0011.h5'
+##    sample_name = '0011_AV67_022_offsetAngle0'
+##    white_end = 41
+
+##    file_name = '/local/dataraid/databank/ESRF_2013Dec/0012_AV67_022_offsetAngle0/0012_AV67_022_offsetAngle0.edf'
+##    dark_file_name = '/local/dataraid/databank/ESRF_2013Dec/0012_AV67_022_offsetAngle0/dark.edf'
+##    white_file_name = '/local/dataraid/databank/ESRF_2013Dec/0012_AV67_022_offsetAngle0/ref.edf'
+##    hdf5_file_name = '/local/dataraid/databank/dataExchange/ESRF_0012.h5'
+##    sample_name = '0012_AV67_022_offsetAngle0'
+
+##    file_name = '/local/dataraid/databank/ESRF_2013Dec/0013_AV67_026_offsetAngle0/0013_AV67_026_offsetAngle0.edf'
+##    dark_file_name = '/local/dataraid/databank/ESRF_2013Dec/0013_AV67_026_offsetAngle0/dark.edf'
+##    white_file_name = '/local/dataraid/databank/ESRF_2013Dec/0013_AV67_026_offsetAngle0/ref.edf'
+##    hdf5_file_name = '/local/dataraid/databank/dataExchange/ESRF_0013.h5'
+##    sample_name = '0013_AV67_026_offsetAngle0'
+
+##    file_name = '/local/dataraid/databank/ESRF_2013Dec/0014_AV67_028_offsetAngle0/0014_AV67_028_offsetAngle0.edf'
+##    dark_file_name = '/local/dataraid/databank/ESRF_2013Dec/0014_AV67_028_offsetAngle0/dark.edf'
+##    white_file_name = '/local/dataraid/databank/ESRF_2013Dec/0014_AV67_028_offsetAngle0/ref.edf'
+##    hdf5_file_name = '/local/dataraid/databank/dataExchange/ESRF_0014.h5'
+##    sample_name = '0014_AV67_028_offsetAngle0'
+
+##    file_name = '/local/dataraid/databank/ESRF_2013Dec/0015_AV67_020_offsetAngle0/0015_AV67_020_offsetAngle0.edf'
+##    dark_file_name = '/local/dataraid/databank/ESRF_2013Dec/0015_AV67_020_offsetAngle0/dark.edf'
+##    white_file_name = '/local/dataraid/databank/ESRF_2013Dec/0015_AV67_020_offsetAngle0/ref.edf'
+##    hdf5_file_name = '/local/dataraid/databank/dataExchange/ESRF_0015.h5'
+##    sample_name = '0015_AV67_020_offsetAngle0'
+
+##    file_name = '/local/dataraid/databank/ESRF_2013Dec/0016_AV67_029_offsetAngle0/0016_AV67_029_offsetAngle0.edf'
+##    dark_file_name = '/local/dataraid/databank/ESRF_2013Dec/0016_AV67_029_offsetAngle0/dark.edf'
+##    white_file_name = '/local/dataraid/databank/ESRF_2013Dec/0016_AV67_029_offsetAngle0/ref.edf'
+##    hdf5_file_name = '/local/dataraid/databank/dataExchange/ESRF_0016.h5'
+##    sample_name = '0016_AV67_029_offsetAngle0'
+
+##    file_name = '/local/dataraid/databank/ESRF_2013Dec/0017_AV67_025_offsetAngle0/0017_AV67_025_offsetAngle0.edf'
+##    dark_file_name = '/local/dataraid/databank/ESRF_2013Dec/0017_AV67_025_offsetAngle0/dark.edf'
+##    white_file_name = '/local/dataraid/databank/ESRF_2013Dec/0017_AV67_025_offsetAngle0/ref.edf'
+##    hdf5_file_name = '/local/dataraid/databank/dataExchange/ESRF_0017.h5'
+##    sample_name = '0017_AV67_025_offsetAngle0'
+
+    # white are missing
+    file_name = '/local/dataraid/databank/ESRF_2013Dec/0018_AV67_011_offsetAngle0/0018_AV67_011_offsetAngle0.edf'
+    dark_file_name = '/local/dataraid/databank/ESRF_2013Dec/0018_AV67_011_offsetAngle0/dark.edf'
+    white_file_name = '/local/dataraid/databank/ESRF_2013Dec/0018_AV67_011_offsetAngle0/ref.edf'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/ESRF_0018.h5'
+    sample_name = '0018_AV67_011_offsetAngle0'
 
     mydata = dx.Import()
     # Read series of images
@@ -54,16 +136,14 @@ def main():
                                                        white_start = white_start,
                                                        white_end = white_end,
                                                        white_step = white_step,
-#                                                       dark_file_name = dark_file_name,
-#                                                       dark_start = dark_start,
-#                                                       dark_end = dark_end,
-#                                                       dark_step = dark_step,
+                                                       dark_file_name = dark_file_name,
+                                                       dark_start = dark_start,
+                                                       dark_end = dark_end,
+                                                       dark_step = dark_step,
                                                        projections_digits = 4,
                                                        white_digits = 4,
-#                                                       dark_digits = 4,
+                                                       dark_digits = 4,
                                                        projections_zeros = True,
-#                                                       slices_start = slices_start,
-#                                                       slices_end = slices_end,
                                                        data_type='edf2',
                                                        log='INFO'
                                                        )
