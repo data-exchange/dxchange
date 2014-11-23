@@ -243,6 +243,11 @@ class DataExchangeEntry(object):
                 'value': None,
                 'units': 'text',
                 'docstring': 'Sample position in the sample changer/robot.'
+            },
+            'comment': {
+                'value': None,
+                'units': 'text',
+                'docstring': 'comment'
             }
         }
 
@@ -334,6 +339,11 @@ class DataExchangeEntry(object):
                 'units': 'text',
                 'docstring': 'Name of the instrument.'
             },
+            'comment': {
+                'value': None,
+                'units': 'text',
+                'docstring': 'comment'
+            },
         }
 
         self._source = {
@@ -375,10 +385,10 @@ class DataExchangeEntry(object):
                 'units': 's',
                 'docstring': 'Duration of the pulse (s).'
             },
-            'source': {
+            'mode': {
                 'value': None,
                 'units': 'text',
-                'docstring': 'Beam mode: TOPUP'
+                'docstring': 'top-up'
             },
             'beam intensity incident': {
                 'value': None,
@@ -830,6 +840,16 @@ class DataExchangeEntry(object):
                 'value': None,
                 'units': 'degree',
                 'docstring': 'Rotation axis angular step used during data collection.'
+            },
+            'mode': {
+                'value': None,
+                'units': 'text',
+                'docstring': 'Scan mode: continuos or stop-go.'
+            },
+            'comment': {
+                'value': None,
+                'units': 'text',
+                'docstring': 'comment'
             },
         }
 
