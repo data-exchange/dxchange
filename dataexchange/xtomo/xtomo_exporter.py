@@ -100,9 +100,33 @@ class Export():
             Data acquisition angles corresponding
             to each projection.
 
-        data_excahnge_type : str
+        data_excahnge_type : str, optional
             label defyining the type of data contained in data exchange file
             for raw data tomography data use 'tomography_raw_projections'
+
+        source_name, source_mode, source_datetime : str, optional
+            label defining the source name, operation mode and date/time when these values were taken
+
+        beamline : str, optional
+            label defining the beamline name
+        
+        energy, current : float, optional
+            X-ray energy and bean current
+
+        actual_pixel_size : float, optional
+            pixel size on the sample plane
+ 
+        experimenter_name, experimenter_affiliation, experimenter_email : str, optional
+            user name, affiliation and e-mail address
+
+        instrument_comment : str, optional
+            instrument comment
+
+        sample_name, sample_comment : str, optional
+            sample name and comment
+        
+        acquisition_mode, acquisition_comment : str, optional
+            acquisition mode and comment
 
         hd5_file_name : str
             Output file.
@@ -237,7 +261,7 @@ class Export():
                     f.add_entry(DataExchangeEntry.instrument(comment={'value': instrument_comment}))
                 if (sample_name == None):
                     sample_name = end[0]
-                    f.add_entry(DataExchangeEntry.sample( name={'value':sample_name}, description={'value':'Sample name was assigned by the HDF5 converter and based on the HDF5 file name'}))
+                    f.add_entry(DataExchangeEntry.sample( name={'value':sample_name}, description={'value':'Sample name assigned by the HDF5 converter and based on the HDF5 file name'}))
                 else:
                     f.add_entry(DataExchangeEntry.sample( name={'value':sample_name}))
                 if (sample_comment != None):

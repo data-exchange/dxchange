@@ -36,14 +36,13 @@ def main():
     dark_end = 1
     dark_step = 1
 
-    sample = 14
+    sample = 1
     
     if (sample == 1):
         file_name = '/local/dataraid/databank/ESRF_2013Dec/0001_0210675/0001_0210675.edf'
         dark_file_name = '/local/dataraid/databank/ESRF_2013Dec/0001_0210675/dark.edf'
         white_file_name = '/local/dataraid/databank/ESRF_2013Dec/0001_0210675/ref.edf'
         hdf5_file_name = '/local/dataraid/databank/dataExchange/ESRF_0001.h5'
-#        sample_name = '0001_0210675'
         log_file = '/local/dataraid/databank/ESRF_2013Dec/0001_0210675/0001_0210675.info'
 
     if (sample == 2):
@@ -51,7 +50,6 @@ def main():
         dark_file_name = '/local/dataraid/databank/ESRF_2013Dec/dark.edf'
         white_file_name = '/local/dataraid/databank/ESRF_2013Dec/ref.edf'
         hdf5_file_name = '/local/dataraid/databank/dataExchange/ESRF_0002.h5'
-#        sample_name = '0002_0210675_2nd'
         log_file = '/local/dataraid/databank/ESRF_2013Dec/0002_0210675_2nd/0002_0210675_2nd.info'
 
     if (sample == 3):
@@ -59,7 +57,6 @@ def main():
         dark_file_name = '/local/dataraid/databank/ESRF_2013Dec/0006_AV67_016_offsetAngleMinus12/dark.edf'
         white_file_name = '/local/dataraid/databank/ESRF_2013Dec/0006_AV67_016_offsetAngleMinus12/ref.edf'
         hdf5_file_name = '/local/dataraid/databank/dataExchange/ESRF_0006.h5'
-#        sample_name = '0006_AV67_016_offsetAngleMinus12'
         log_file = '/local/dataraid/databank/ESRF_2013Dec/0006_AV67_016_offsetAngleMinus12/0006_AV67_016_offsetAngleMinus12.info'
 
     if (sample == 4):
@@ -68,7 +65,6 @@ def main():
         dark_file_name = '/local/dataraid/databank/ESRF_2013Dec/0007_AV67_017_offsetAngle0/dark.edf'
         white_file_name = '/local/dataraid/databank/ESRF_2013Dec/0007_AV67_017_offsetAngle0/ref.edf'
         hdf5_file_name = '/local/dataraid/databank/dataExchange/ESRF_0007.h5'
-#        sample_name = '0007_AV67_017_offsetAngle0'
         log_file = '/local/dataraid/databank/ESRF_2013Dec/0007_AV67_017_offsetAngle0/0007_AV67_017_offsetAngle0.info'
 
     if (sample == 5):
@@ -76,7 +72,6 @@ def main():
         dark_file_name = '/local/dataraid/databank/ESRF_2013Dec/0008_AV67_024_offsetAngle0/dark.edf'
         white_file_name = '/local/dataraid/databank/ESRF_2013Dec/0008_AV67_024_offsetAngle0/ref.edf'
         hdf5_file_name = '/local/dataraid/databank/dataExchange/ESRF_0008.h5'
-#        sample_name = '0008_AV67_024_offsetAngle0'
         log_file = '/local/dataraid/databank/ESRF_2013Dec/0008_AV67_024_offsetAngle0/0008_AV67_024_offsetAngle0.info'
 
     if (sample == 6):
@@ -84,7 +79,6 @@ def main():
         dark_file_name = '/local/dataraid/databank/ESRF_2013Dec/0009_AV67_018_offsetAngle0/dark.edf'
         white_file_name = '/local/dataraid/databank/ESRF_2013Dec/0009_AV67_018_offsetAngle0/ref.edf'
         hdf5_file_name = '/local/dataraid/databank/dataExchange/ESRF_0009.h5'
-#        sample_name = '0009_AV67_018_offsetAngle0'
         log_file = '/local/dataraid/databank/ESRF_2013Dec/0009_AV67_018_offsetAngle0/0009_AV67_018_offsetAngle0.info'
 
         # only pre-white, dark are missing
@@ -95,7 +89,6 @@ def main():
         dark_file_name = '/local/dataraid/databank/ESRF_2013Dec/0009_AV67_018_offsetAngle0_Redo/dark.edf'
         white_file_name = '/local/dataraid/databank/ESRF_2013Dec/0009_AV67_018_offsetAngle0_Redo/ref.edf'
         hdf5_file_name = '/local/dataraid/databank/dataExchange/ESRF_0009_Redo.h5'
-#        sample_name = '0009_AV67_018_offsetAngle0_Redo'
         log_file = '/local/dataraid/databank/ESRF_2013Dec/0009_AV67_018_offsetAngle0_Redo/0009_AV67_018_offsetAngle0_Redo.info'
 
         # DO NOT CONVERT stopped during data collection 
@@ -111,7 +104,6 @@ def main():
         dark_file_name = '/local/dataraid/databank/ESRF_2013Dec/0012_AV67_022_offsetAngle0/dark.edf'
         white_file_name = '/local/dataraid/databank/ESRF_2013Dec/0012_AV67_022_offsetAngle0/ref.edf'
         hdf5_file_name = '/local/dataraid/databank/dataExchange/ESRF_0012.h5'
-#        sample_name = '0012_AV67_022_offsetAngle0'
         log_file = '/local/dataraid/databank/ESRF_2013Dec/0012_AV67_022_offsetAngle0/0012_AV67_022_offsetAngle0.info'
 
     if (sample == 9):
@@ -119,7 +111,6 @@ def main():
         dark_file_name = '/local/dataraid/databank/ESRF_2013Dec/0013_AV67_026_offsetAngle0/dark.edf'
         white_file_name = '/local/dataraid/databank/ESRF_2013Dec/0013_AV67_026_offsetAngle0/ref.edf'
         hdf5_file_name = '/local/dataraid/databank/dataExchange/ESRF_0013.h5'
-#        sample_name = '0013_AV67_026_offsetAngle0'
         log_file = '/local/dataraid/databank/ESRF_2013Dec/0013_AV67_026_offsetAngle0/0013_AV67_026_offsetAngle0.info'
 
     if (sample == 10):
@@ -127,7 +118,6 @@ def main():
         dark_file_name = '/local/dataraid/databank/ESRF_2013Dec/0014_AV67_028_offsetAngle0/dark.edf'
         white_file_name = '/local/dataraid/databank/ESRF_2013Dec/0014_AV67_028_offsetAngle0/ref.edf'
         hdf5_file_name = '/local/dataraid/databank/dataExchange/ESRF_0014.h5'
-#        sample_name = '0014_AV67_028_offsetAngle0'
         log_file = '/local/dataraid/databank/ESRF_2013Dec/0014_AV67_028_offsetAngle0/0014_AV67_028_offsetAngle0.info'
 
     if (sample == 11):
@@ -135,7 +125,6 @@ def main():
         dark_file_name = '/local/dataraid/databank/ESRF_2013Dec/0015_AV67_020_offsetAngle0/dark.edf'
         white_file_name = '/local/dataraid/databank/ESRF_2013Dec/0015_AV67_020_offsetAngle0/ref.edf'
         hdf5_file_name = '/local/dataraid/databank/dataExchange/ESRF_0015.h5'
-#        sample_name = '0015_AV67_020_offsetAngle0'
         log_file = '/local/dataraid/databank/ESRF_2013Dec/0015_AV67_020_offsetAngle0/0015_AV67_020_offsetAngle0.info'
 
     if (sample == 12):
@@ -143,7 +132,6 @@ def main():
         dark_file_name = '/local/dataraid/databank/ESRF_2013Dec/0016_AV67_029_offsetAngle0/dark.edf'
         white_file_name = '/local/dataraid/databank/ESRF_2013Dec/0016_AV67_029_offsetAngle0/ref.edf'
         hdf5_file_name = '/local/dataraid/databank/dataExchange/ESRF_0016.h5'
-#        sample_name = '0016_AV67_029_offsetAngle0'
         log_file = '/local/dataraid/databank/ESRF_2013Dec/0016_AV67_029_offsetAngle0/0016_AV67_029_offsetAngle0.info'
 
     if (sample == 13):
@@ -160,7 +148,6 @@ def main():
         dark_file_name = '/local/dataraid/databank/ESRF_2013Dec/0018_AV67_011_offsetAngle0/dark.edf'
         white_file_name = '/local/dataraid/databank/ESRF_2013Dec/0018_AV67_011_offsetAngle0/ref.edf'
         hdf5_file_name = '/local/dataraid/databank/dataExchange/ESRF_0018.h5'
-#        sample_name = '0018_AV67_011_offsetAngle0'
         log_file = '/local/dataraid/databank/ESRF_2013Dec/0018_AV67_011_offsetAngle0/0018_AV67_011_offsetAngle0.info'
 
     #Read ESRF log file data
