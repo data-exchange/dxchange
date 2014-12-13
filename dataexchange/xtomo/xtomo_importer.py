@@ -73,7 +73,7 @@ class Import():
 
         # Logging init.
         if color_log: # enable colored logging
-            from tomopy.tools import colorer
+            from dataexchange.tools import colorer
 
         # Set the log level.
         self.logger = None
