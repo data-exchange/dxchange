@@ -269,7 +269,7 @@ class XTomoReader:
         sds.endaccess()
         f.end()
 	
-        num_y, num_x = hdfdata.shape
+        num_x, num_y = hdfdata.shape
 	if x_end is 0:
             x_end = num_x
         if y_end is 0:
@@ -278,6 +278,7 @@ class XTomoReader:
         # Construct dataset.
         dataset = hdfdata[x_start:x_end:x_step,
                           y_start:y_end:y_step]
+
         return dataset
         
     def hdf5_2d(self,
