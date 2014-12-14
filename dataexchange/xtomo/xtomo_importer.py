@@ -21,23 +21,23 @@ Examples
 
 >>> import dataexchange.xtomo.xtomo_importer as dx
 >>> import dataexchange.xtomo.xtomo_exporter as ex
-
-
+>>> 
+>>> 
 >>> file_name = '/local/data/radios/image_.tif'
 >>> dark_file_name = '/local/data/darks/image_.tif'
 >>> white_file_name = '/local/data/flats/image_.tif'
-
+>>> 
 >>> hdf5_file_name = '/local/data/dataExchange/Anka.h5'
-
+>>> 
 >>> projections_start = 0
 >>> projections_end = 3167
 >>> white_start = 0
 >>> white_end = 100
 >>> dark_start = 0
 >>> dark_end = 100
-
+>>> 
 >>> sample_name = 'Anka'
-    
+>>>     
 >>> mydata = dx.Import()
 >>> # Read series of images
 >>> data, white, dark, theta = mydata.xtomo_raw(file_name,
@@ -73,7 +73,7 @@ class Import():
 
         # Logging init.
         if color_log: # enable colored logging
-            from tomopy.tools import colorer
+            from dataexchange.tools import colorer
 
         # Set the log level.
         self.logger = None
@@ -114,7 +114,7 @@ class Import():
         Read a stack of 2-D HDF4, TIFF, spe or netCDF images.
 
         Parameters
-        ----------
+        
         file_name : str
             Base name of the input HDF4 or TIFF files.
             For example if the projections names are /local/data/test_XXXX.hdf
@@ -169,7 +169,8 @@ class Import():
             supported options are:
                 - ``compressed_tiff``: tiff files used at elettra
                 - ``dpt``: ASCII data from SRC infrared tomography
-                - ``edf``: ESRF file format
+                - ``edf``: ESRF file format when projections, dark and white are in a single (large) edf files
+                - ``edf2``: ESRF file format when projections, dark and white are each in a single file (series of files)s
                 - ``nc``: netCDF data from 13-BM
                 - ``nxs``: NeXuS Diamond Light Source
                 - ``hdf4``: HDF4 files used on old detectors at APS 2-BM
@@ -187,7 +188,7 @@ class Import():
             processing step then exchange_rank = 1 will direct tomopy to process "exchange1/..."
 
         Returns
-        -------
+        
         Output : data, data_white, data_dark, theta
 
        """
@@ -291,6 +292,18 @@ class Import():
                 data_file_dark = os.path.splitext(dark_file_name)[0]
 
         elif (data_type is 'edf'):
+            if file_name.endswith('EDF') or \
+                file_name.endswith('edf'):
+                data_file = os.path.splitext(file_name)[0]
+                dataExtension = os.path.splitext(file_name)[1]
+            if white_file_name.endswith('EDF') or \
+                white_file_name.endswith('edf'):
+                data_file_white = os.path.splitext(white_file_name)[0]
+            if dark_file_name.endswith('EDF') or \
+                dark_file_name.endswith('edf'):
+                data_file_dark = os.path.splitext(dark_file_name)[0]
+
+        elif (data_type is 'edf2'):
             if file_name.endswith('EDF') or \
                 file_name.endswith('edf'):
                 data_file = os.path.splitext(file_name)[0]
@@ -420,9 +433,15 @@ class Import():
                                      x_step=slices_step,
                                      dtype=dtype)
 
+                elif (data_type is 'edf2'):
+                    tmpdata = f.edf2(x_start=slices_start,
+                                     x_end=slices_end,
+                                     x_step=slices_step)
+
                 if ((data_type is 'tiff') or
                     (data_type is 'compressed_tiff') or
                     (data_type is 'hdf4') or
+                    (data_type is 'edf2') or
                     (data_type is 'hdf5')):
                     if m == 0: # Get resolution once.
                         input_data = np.empty((len(ind), tmpdata.shape[0], tmpdata.shape[1]), dtype=dtype)
@@ -560,9 +579,15 @@ class Import():
                                      x_step = slices_step,
                                      dtype = dtype)
 
+                elif (data_type is 'edf2'):
+                    tmpdata = f.edf2(x_start = slices_start,
+                                     x_end = slices_end,
+                                     x_step = slices_step)
+
                 if ((data_type is 'tiff') or
                     (data_type is 'compressed_tiff') or
                     (data_type is 'hdf4') or
+                    (data_type is 'edf2') or
                     (data_type is 'hdf5')):
                     if m == 0: # Get resolution once.
                         input_data = np.empty((len(ind),
@@ -721,9 +746,15 @@ class Import():
                                      x_step=slices_step,
                                      dtype=dtype)
 
+                elif (data_type is 'edf2'):
+                    tmpdata = f.edf2(x_start=slices_start,
+                                     x_end=slices_end,
+                                     x_step=slices_step)
+
                 if ((data_type is 'tiff') or
                     (data_type is 'compressed_tiff') or
                     (data_type is 'hdf4') or 
+                    (data_type is 'edf2') or
                     (data_type is 'hdf5')):
                     if m == 0: # Get resolution once.
                         input_data = np.empty((len(ind),

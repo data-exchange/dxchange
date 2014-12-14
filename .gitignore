@@ -107,3 +107,9 @@ coverage.xml
 *.sublime-project
 *.sublime-workspace
 docs/trunk/*
+
+# Francesco's #
+################
+tmp/
+validate*
+workingOn/

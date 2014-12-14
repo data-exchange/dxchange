@@ -27,27 +27,64 @@ from skimage import io as skimage_io
 from data_exchange import DataExchangeFile, DataExchangeEntry
 
 class Export():
-    def __init__(self, data=None, data_white=None, 
-                 data_dark=None, theta=None,
-                 hdf5_file_name=None, data_exchange_type=None,
-                 sample_name=None, logger=None, log='INFO'):
-
+    def __init__(self, 
+                    data=None, 
+                    data_white=None, 
+                    data_dark=None, 
+                    theta=None,
+                    data_exchange_type=None,
+                    source_name=None,
+                    source_mode=None,
+                    source_datetime=None,
+                    beamline=None,
+                    energy=None,
+                    current=None,
+                    actual_pixel_size=None,
+                    experimenter_name=None, 
+                    experimenter_affiliation=None, 
+                    experimenter_email=None, 
+                    instrument_comment=None,  
+                    sample_name=None, 
+                    sample_comment=None,
+                    acquisition_mode=None,
+                    acquisition_comment=None,
+                    hdf5_file_name=None, 
+                    logger=None, 
+                    log='INFO'):
         # Set the log level.
         self.logger = None
         self._log_level = str(log).upper()
         self._init_logging()
 
-
-    def xtomo_exchange(self, data, data_white=None, data_dark=None, theta=None, sample_name=None,
-                       data_exchange_type=None,
-                       hdf5_file_name=None,
-                       log='INFO'
+    def xtomo_exchange(self,
+                        data, 
+                        data_white=None, 
+                        data_dark=None, 
+                        theta=None, 
+                        data_exchange_type=None,
+                        source_name=None,
+                        source_mode=None, 
+                        source_datetime=None,
+                        beamline=None,
+                        energy=None,
+                        current=None,
+                        actual_pixel_size=None,
+                        experimenter_name=None, 
+                        experimenter_affiliation=None, 
+                        experimenter_email=None, 
+                        instrument_comment=None,  
+                        sample_name=None,
+                        sample_comment=None,
+                        acquisition_mode=None,
+                        acquisition_comment=None,
+                        hdf5_file_name=None,
+                        log='INFO'
                        ):
         """ 
         Write 3-D data to a data-exchange file.
 
         Parameters
-        ----------            
+                    
         data : ndarray
             3-D X-ray absorption tomography raw data.
             Size of the dimensions should be:
@@ -63,9 +100,33 @@ class Export():
             Data acquisition angles corresponding
             to each projection.
 
-        data_excahnge_type : str
+        data_excahnge_type : str, optional
             label defyining the type of data contained in data exchange file
             for raw data tomography data use 'tomography_raw_projections'
+
+        source_name, source_mode, source_datetime : str, optional
+            label defining the source name, operation mode and date/time when these values were taken
+
+        beamline : str, optional
+            label defining the beamline name
+        
+        energy, current : float, optional
+            X-ray energy and bean current
+
+        actual_pixel_size : float, optional
+            pixel size on the sample plane
+ 
+        experimenter_name, experimenter_affiliation, experimenter_email : str, optional
+            user name, affiliation and e-mail address
+
+        instrument_comment : str, optional
+            instrument comment
+
+        sample_name, sample_comment : str, optional
+            sample name and comment
+        
+        acquisition_mode, acquisition_comment : str, optional
+            acquisition mode and comment
 
         hd5_file_name : str
             Output file.
@@ -75,7 +136,7 @@ class Export():
         If file exists, does nothing
                 
         Examples
-        --------
+        
         - Convert tomographic projection series (raw, dark, white)  of tiff in data exchange:
             
             >>> from dataexchange import xtomo_importer as dx
@@ -169,14 +230,51 @@ class Export():
                     self.logger.warning("data white is not defined")
                 if (data_exchange_type != None):
                     self.logger.info("Adding data type to  Data Exchange File [%s]", hdf5_file_name)
-                    f.add_entry( DataExchangeEntry.data(title={'value': data_exchange_type}))
+                    f.add_entry(DataExchangeEntry.data(title={'value': data_exchange_type}))
+
+                if (source_name != None):
+                    f.add_entry(DataExchangeEntry.source(name={'value': source_name}))
+                if (source_mode != None):
+                    f.add_entry(DataExchangeEntry.source(mode={'value':source_mode}))
+                if (source_datetime != None):
+                    f.add_entry(DataExchangeEntry.source(datetime={'value': source_datetime}))
+
+                if (beamline != None):
+                    f.add_entry(DataExchangeEntry.source(beamline={'value': beamline}))
+                if (energy != None):
+                    f.add_entry(DataExchangeEntry.monochromator(energy={'value': energy, 'units': 'keV', 'dataset_opts': {'dtype': 'd'}}))                    
+                if (current != None):
+                    f.add_entry(DataExchangeEntry.source(current={'value': current, 'units': 'mA', 'dataset_opts': {'dtype': 'd'}}))
+
+                if (actual_pixel_size != None):
+                    f.add_entry(DataExchangeEntry.detector(x_actual_pixel_size={'value': actual_pixel_size, 'units': 'microns', 'dataset_opts': {'dtype': 'd'}}, 
+                                                            y_actual_pixel_size={'value': actual_pixel_size, 'units': 'microns', 'dataset_opts': {'dtype': 'd'}}))
+
+                if (experimenter_name != None):
+                    f.add_entry(DataExchangeEntry.experimenter(name={'value':experimenter_name}))
+                if (experimenter_affiliation != None):
+                    f.add_entry(DataExchangeEntry.experimenter(affiliation={'value':experimenter_affiliation}))
+                if (experimenter_email != None):
+                    f.add_entry(DataExchangeEntry.experimenter(email={'value':experimenter_email}))
+
+                if (instrument_comment != None):
+                    f.add_entry(DataExchangeEntry.instrument(comment={'value': instrument_comment}))
                 if (sample_name == None):
                     sample_name = end[0]
-                    f.add_entry( DataExchangeEntry.sample( name={'value':sample_name}, description={'value':'Sample name was assigned by the HDF5 converter and based on the HDF5 file name'}))
+                    f.add_entry(DataExchangeEntry.sample( name={'value':sample_name}, description={'value':'Sample name assigned by the HDF5 converter and based on the HDF5 file name'}))
                 else:
-                    f.add_entry( DataExchangeEntry.sample( name={'value':sample_name}, description={'value':'Sample name was read from the user log file'}))
+                    f.add_entry(DataExchangeEntry.sample( name={'value':sample_name}))
+                if (sample_comment != None):
+                    f.add_entry(DataExchangeEntry.sample(comment={'value':sample_comment}))
+
+                if (acquisition_mode != None):
+                    f.add_entry(DataExchangeEntry.acquisition(mode={'value':acquisition_mode}))
+                if (acquisition_comment != None):
+                    f.add_entry(DataExchangeEntry.acquisition(comment={'value':acquisition_comment}))
+
                 f.close()
                 self.logger.info("DONE!!!!. Created Data Exchange File [%s]", hdf5_file_name)
+
         else:
             self.logger.warning("Nothing to do ...")
             
@@ -188,7 +286,7 @@ class Export():
         Write 3-D data to a stack of tif files.
 
         Parameters
-        -----------
+        
         output_file : str, optional
             Name of the output file.
 
@@ -221,7 +319,7 @@ class Export():
             the dataset when saving.
         
         Notes
-        -----
+        
         If file exists, saves it with a modified name.
         
         If output location is not specified, the data is
@@ -230,7 +328,7 @@ class Export():
         be initialized with ``recon``
         
         Examples
-        --------
+        
         - Save sinogram data:
             
             >>> import dataexchange.xtomo.xtomo_importer as dx

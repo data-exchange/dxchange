@@ -27,6 +27,8 @@ def main():
 
     hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/NSLS.h5'
 
+    sample_name = 'rad_0400ms'
+
     white_start = 0
     white_end = 2580
     white_step = 30
@@ -58,6 +60,7 @@ def main():
                           data_dark = dark,
                           theta = theta,
                           hdf5_file_name = hdf5_file_name,
+                          sample_name = sample_name,
                           data_exchange_type = 'tomography_raw_projections'
                           )
 

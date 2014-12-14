@@ -16,6 +16,7 @@ Data Exchange Converters
    demo.convert_Australian
    demo.convert_CHESS
    demo.convert_ESRF_ID19
+   demo.convert_ESRF2_ID19
    demo.convert_Elettra
    demo.convert_Diamond
    demo.convert_NSLS
@@ -35,6 +36,7 @@ tomoPy Importers
    demo.import_tomoPy_APS_1ID
    demo.import_tomoPy_APS_2BM
    demo.import_tomoPy_APS_26ID_XRADIA
+   demo.import_tomoPy_APS_32ID
    demo.import_tomoPy_Anka
    demo.import_tomoPy_Australian
    demo.import_tomoPy_CHESS
