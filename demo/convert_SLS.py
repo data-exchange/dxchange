@@ -17,8 +17,8 @@ Example on how to use the `xtomo_raw`_ module to read SLS TOMCAT TIFF raw tomogr
 .. _xtomo_raw: dataexchange.xtomo.xtomo_importer.html
 """
 
-import dataexchange.xtomo.xtomo_importer as dx
-import dataexchange.xtomo.xtomo_exporter as ex
+# Data Exchange: https://github.com/data-exchange/data-exchange
+import dataexchange
 
 import re
 
@@ -58,9 +58,9 @@ def main():
     projections_end = projections_start + number_of_projections
     projections_angle_end = 180 + angular_step
 
-    mydata = dx.Import()
-    # Read series of images
-    data, white, dark, theta = mydata.xtomo_raw(file_name,
+    # Read raw data
+    read = dataexchange.Import()
+    data, white, dark, theta = read.xtomo_raw(file_name,
                                                        projections_start = projections_start,
                                                        projections_end = projections_end,
 						       projections_angle_end = projections_angle_end,
@@ -71,9 +71,9 @@ def main():
                                                        dark_end = dark_end,
                                                        log='INFO'
                                                        )
-    mydata = ex.Export()
-    # Create minimal data exchange hdf5 file
-    mydata.xtomo_exchange(data = data,
+    # Save data as dataExchange
+    write = dataexchange.Export()
+    write.xtomo_exchange(data = data,
                           data_white = white,
                           data_dark = dark,
                           theta = theta,

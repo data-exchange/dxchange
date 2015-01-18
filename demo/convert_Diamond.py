@@ -21,8 +21,7 @@ Example on how to use the `xtomo_raw`_ module to read Diamond NeXuS raw tomograp
 import tomopy 
 
 # Data Exchange: https://github.com/data-exchange/data-exchange
-import dataexchange.xtomo.xtomo_importer as dx
-import dataexchange.xtomo.xtomo_exporter as ex
+import dataexchange
 
 #import numpy as np
 #import os
@@ -37,9 +36,9 @@ def main():
     file_name = '/local/dataraid/databank/Diamond/13429_subx.nxs'
     hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/Diamond_04.h5'
 
-    mydata = dx.Import()
-    # Read series of images
-    data, white, dark, theta = mydata.xtomo_raw(file_name, 
+    # Read raw data
+    read = dataexchange.Import()
+    data, white, dark, theta = read.xtomo_raw(file_name, 
                                                         data_type='nxs', 
                                                         slices_start=1600,
                                                         slices_end=1610,
@@ -47,9 +46,9 @@ def main():
                                                         log='INFO')
     
     
-    mydata = ex.Export()
-    # Create minimal data exchange hdf5 file
-    mydata.xtomo_exchange(data = data,
+    # Save data as dataExchange
+    write = dataexchange.Export()
+    write.xtomo_exchange(data = data,
                           data_white = white,
                           data_dark = dark,
                           theta = theta,

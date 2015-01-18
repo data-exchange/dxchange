@@ -21,8 +21,7 @@ Example on how to use the `xtomo_raw`_ module to read Synchrotron Radiation Cent
 import tomopy 
 
 # Data Exchange: https://github.com/data-exchange/data-exchange
-import dataexchange.xtomo.xtomo_importer as dx
-import dataexchange.xtomo.xtomo_exporter as ex
+import dataexchange
 
 import re
 import os
@@ -74,8 +73,8 @@ def main():
         rec_name = dir_name + "/rec/" + sample_name_prefix + linelist[0] + "cm-1"
 
         # Write to stack of TIFFs.
-        mydata = ex.Export()
-        mydata.xtomo_tiff(data = d.data_recon, output_file = rec_name, axis=0)
+    	write = dataexchange.Export()
+    	write.xtomo_tiff(data = d.data_recon, output_file = rec_name, axis=0)
 
     file.close()
 

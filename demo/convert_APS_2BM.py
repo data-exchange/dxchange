@@ -17,12 +17,11 @@ Example on how to use the `xtomo_raw`_ module to read APS 2-BM HDF4 raw tomograp
 .. _xtomo_raw: dataexchange.xtomo.xtomo_importer.html
 """
 
+# Data Exchange: https://github.com/data-exchange/data-exchange
+import dataexchange
 
 from pyhdf import SD
 import os
-
-import dataexchange.xtomo.xtomo_importer as dx
-import dataexchange.xtomo.xtomo_exporter as ex
 
 def main():
 
@@ -63,9 +62,9 @@ def main():
 
     sample_name = base_name
 
-    mydata = dx.Import()
-    # Read series of images
-    data, white, dark, theta = mydata.xtomo_raw(file_name,
+    # Read raw data
+    read = dataexchange.Import()
+    data, white, dark, theta = read.xtomo_raw(file_name,
                                                      projections_start = projections_start,
                                                      projections_end = projections_end,
                                                      white_start = white_start,
@@ -76,9 +75,9 @@ def main():
                                                      data_type = 'hdf4',
                                                      log='INFO'
                                                      )
-    mydata = ex.Export()
-    # Create minimal data exchange hdf5 file
-    mydata.xtomo_exchange(data = data,
+    # Save data as dataExchange
+    write = dataexchange.Export()
+    write.xtomo_exchange(data = data,
                           data_white = white,
                           data_dark = dark,
                           theta = theta,

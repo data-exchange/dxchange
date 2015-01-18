@@ -21,22 +21,20 @@ Example on how to use the `xtomo_raw`_ module to read APS Data Exchange raw tomo
 import tomopy 
 
 # Data Exchange: https://github.com/data-exchange/data-exchange
-import dataexchange.xtomo.xtomo_importer as dx
-import dataexchange.xtomo.xtomo_exporter as ex
-
+import dataexchange
 
 def main():
 
     file_name = '/local/dataraid/databank/dataExchange/microCT/Elettra.h5'
     file_name_out = '/local/dataraid/databank/dataExchange/microCT/Elettra_out.h5'
 
-    mydata = dx.Import()
-    # Read series of images
-    data, white, dark, theta = mydata.xtomo_raw(file_name, data_type='h5', log='INFO')
+    # Read raw data
+    read = dataexchange.Import()
+    data, white, dark, theta = read.xtomo_raw(file_name, data_type='h5', log='INFO')
 
-    mydata = ex.Export()
-    # Create minimal data exchange hdf5 file
-    mydata.xtomo_exchange(data = data,
+    # Save data as dataExchange
+    write = dataexchange.Export()
+    write.xtomo_exchange(data = data,
                           data_white = white,
                           data_dark = dark,
                           theta = theta,

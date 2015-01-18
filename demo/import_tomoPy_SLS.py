@@ -21,11 +21,9 @@ Example on how to use the `xtomo_raw`_ module to read SLS TOMCAT TIFF raw tomogr
 import tomopy 
 
 # Data Exchange: https://github.com/data-exchange/data-exchange
-import dataexchange.xtomo.xtomo_importer as dx
-import dataexchange.xtomo.xtomo_exporter as ex
+import dataexchange
 
 import re
-
 
 def main():
     # read a series of tiff
@@ -64,9 +62,9 @@ def main():
     slices_start = 800    
     slices_end = 804    
 
-    mydata = dx.Import()
-    # Read series of images
-    data, white, dark, theta = mydata.xtomo_raw(file_name,
+    # Read raw data
+    read = dataexchange.Import()
+    data, white, dark, theta = read.xtomo_raw(file_name,
                                                        projections_start = projections_start,
                                                        projections_end = projections_end,
                                                        projections_digits=4,
@@ -91,8 +89,8 @@ def main():
     d.gridrec()
 
     # Write to stack of TIFFs.
-    mydata = ex.Export()
-    mydata.xtomo_tiff(data = d.data_recon, output_file = 'tmp/SLS_tiff_2_tomoPy_', axis=0)
+    write = dataexchange.Export()
+    write.xtomo_tiff(data = d.data_recon, output_file = 'tmp/SLS_tiff_2_tomoPy_', axis=0)
 
 if __name__ == "__main__":
     main()
