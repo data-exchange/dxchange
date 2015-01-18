@@ -1,5 +1,5 @@
-dataexchange.xtomo.formats.tifffile module
-==========================================
+tiff
+====
 
 .. automodule:: dataexchange.xtomo.formats.tifffile
     :members:

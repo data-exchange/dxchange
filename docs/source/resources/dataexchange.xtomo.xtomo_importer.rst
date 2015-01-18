@@ -1,4 +1,4 @@
-xtomo_importer
+xtomo importer
 ==============
 
 .. automodule:: dataexchange.xtomo.xtomo_importer

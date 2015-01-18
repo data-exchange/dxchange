@@ -113,3 +113,5 @@ docs/trunk/*
 tmp/
 validate*
 workingOn/
+rec_*
+convert*

@@ -1,5 +1,5 @@
-Elettra
-=======
+Elettra SYRMEP
+==============
 
 .. automodule:: demo.import_tomoPy_Elettra
     :members:

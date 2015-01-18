@@ -18,35 +18,32 @@ Example on how to use the `xtomo_raw`_ module to read APS Data Exchange raw tomo
 """
 
 # Data Exchange: https://github.com/data-exchange/data-exchange
-import dataexchange.xtomo.xtomo_importer as dx
-import dataexchange.xtomo.xtomo_exporter as ex
-
+import dataexchange
 
 def main():
 
     file_name = '/local/dataraid/databank/dataExchange/microCT/Elettra.h5'
     file_name_out = 'tmp/projection_'
     
-    mydata = dx.Import()
-    # Read series of images
-    data, white, dark, theta = mydata.xtomo_raw(file_name, data_type='h5', projections_start=0, projections_end=16)
+    # Read raw data
+    read = dataexchange.Import()
+    data, white, dark, theta = read.xtomo_raw(file_name, data_type='h5', projections_start=0, projections_end=16)
 
-    # Save data
-    mydata = ex.Export()
-    mydata.xtomo_tiff(data = data, output_file = file_name_out, axis=0)
+    # Save data as dataExchange
+    write = dataexchange.Export()
+    write.xtomo_tiff(data = data, output_file = file_name_out, axis=0)
 
     
     file_name = '/local/dataraid/databank/dataExchange/microCT/Elettra.h5'
     file_name_out = 'tmp/sinogram_'
     
-    # Load data
-    mydata = dx.Import()
-    # Read series of images
-    data, white, dark, theta = mydata.xtomo_raw(file_name, data_type='h5', slices_start=0, slices_end=16)
+    # Read raw data
+    read = dataexchange.Import()
+    data, white, dark, theta = read.xtomo_raw(file_name, data_type='h5', slices_start=0, slices_end=16)
 
-    # Save data
-    mydata = ex.Export()
-    mydata.xtomo_tiff(data = data, output_file = file_name_out, axis=1)
+    # Save data as tiff
+    write = dataexchange.Export()
+    write.xtomo_tiff(data = data, output_file = file_name_out, axis=1)
 
 if __name__ == "__main__":
     main()

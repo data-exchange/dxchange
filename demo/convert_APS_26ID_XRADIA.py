@@ -17,8 +17,8 @@ Example on how to use the `xtomo_raw`_ module to read APS 26-ID XRADIA raw tomog
 .. _xtomo_raw: dataexchange.xtomo.xtomo_importer.html
 """
 
-import dataexchange.xtomo.xtomo_importer as dx
-import dataexchange.xtomo.xtomo_exporter as ex
+# Data Exchange: https://github.com/data-exchange/data-exchange
+import dataexchange
 
 def main():
 
@@ -29,17 +29,17 @@ def main():
 
     sample_name = '20130731_004_Stripe_Solder_Sample_Tip1'
 
-    mydata = dx.Import()
-    # Read series of images
-    data, white, dark, theta = mydata.xtomo_raw(file_name,
+    # Read raw data
+    read = dataexchange.Import()
+    data, white, dark, theta = read.xtomo_raw(file_name,
                                                        white_file_name = white_file_name,                                                       
                                                        data_type='xradia',
                                                        log='INFO'
                                                     )    
 
-    mydata = ex.Export()
-    # Create minimal data exchange hdf5 file
-    mydata.xtomo_exchange(data = data,
+    # Save data as dataExchange
+    write = dataexchange.Export()
+    write.xtomo_exchange(data = data,
                           data_white = white,
                           data_dark = dark,
                           theta = theta,

@@ -19,10 +19,8 @@ DPT, netCDF.
 
 Examples
 
->>> import dataexchange.xtomo.xtomo_importer as dx
->>> import dataexchange.xtomo.xtomo_exporter as ex
->>> 
->>> 
+>>> import dataexchange
+>>>  
 >>> file_name = '/local/data/radios/image_.tif'
 >>> dark_file_name = '/local/data/darks/image_.tif'
 >>> white_file_name = '/local/data/flats/image_.tif'
@@ -38,9 +36,9 @@ Examples
 >>> 
 >>> sample_name = 'Anka'
 >>>     
->>> mydata = dx.Import()
->>> # Read series of images
->>> data, white, dark, theta = mydata.xtomo_raw(file_name,
+>>> # Read raw data
+>>> read = dataexchange.Import()
+>>> data, white, dark, theta = read.xtomo_raw(file_name,
 >>>                                                    projections_start = projections_start,
 >>>                                                    projections_end = projections_end,
 >>>                                                    white_file_name = white_file_name,

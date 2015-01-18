@@ -1,5 +1,5 @@
-PetraIII P06
-============
+Petra III P06
+=============
 
 .. automodule:: demo.import_tomoPy_PetraIII
     :members:

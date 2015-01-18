@@ -1,5 +1,5 @@
-data_exchange
-=============
+data exchange interface
+=======================
 
 .. automodule:: dataexchange.xtomo.data_exchange
     :members:

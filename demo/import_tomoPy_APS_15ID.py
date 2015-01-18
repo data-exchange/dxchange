@@ -16,17 +16,16 @@ Example on how to use the `xtomo_raw`_ module to read APS 15-ID raw tomographic 
 
 .. _xtomo_raw: dataexchange.xtomo.xtomo_importer.html
 """
-from pyhdf import SD
-import os
 
 # tomoPy: https://github.com/tomopy/tomopy
 import tomopy 
 
 # Data Exchange: https://github.com/data-exchange/data-exchange
-import dataexchange.xtomo.xtomo_importer as dx
-import dataexchange.xtomo.xtomo_exporter as ex
+import dataexchange
 
 import re
+from pyhdf import SD
+import os
 
 def main():
 
@@ -40,10 +39,9 @@ def main():
     slices_start = 800    
     slices_end = 804    
 
-    mydata = dx.Import()
-
-    # Read series of images
-    data, white, dark, theta = mydata.xtomo_raw(file_name,
+    # Read raw data
+    read = dataexchange.Import()
+    data, white, dark, theta = read.xtomo_raw(file_name,
                                                        projections_start = projections_start,
                                                        projections_end = projections_end,
                                                        slices_start = slices_start,
@@ -65,8 +63,8 @@ def main():
     d.gridrec()
 
     # Write to stack of TIFFs.
-    mydata = ex.Export()
-    mydata.xtomo_tiff(data = d.data_recon, output_file = 'tmp/AluminaStick_0A_', axis=0)
+    write = dataexchange.Export()
+    write.xtomo_tiff(data = d.data_recon, output_file = 'tmp/AluminaStick_0A_', axis=0)
 
 if __name__ == "__main__":
     main()

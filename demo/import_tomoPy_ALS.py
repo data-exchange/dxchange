@@ -21,11 +21,10 @@ Example on how to use the `xtomo_raw`_ module to read ALS raw tomographic data a
 import tomopy 
 
 # Data Exchange: https://github.com/data-exchange/data-exchange
-import dataexchange.xtomo.xtomo_importer as dx
-import dataexchange.xtomo.xtomo_exporter as ex
+# Data Exchange: https://github.com/data-exchange/data-exchange
+import dataexchange
 
 import re
-
 
 def main():
 
@@ -112,9 +111,9 @@ def main():
     slices_start = 1445    
     slices_end = 1449  
 
-    mydata = dx.Import()
-    # Read series of images
-    data, white, dark, theta = mydata.xtomo_raw(file_name = file_name,
+    # Read raw data
+    read = dataexchange.Import()
+    data, white, dark, theta = read.xtomo_raw(file_name = file_name,
                                                        projections_start = projections_start,
                                                        projections_end = projections_end,
                                                        slices_start = slices_start,
@@ -139,8 +138,8 @@ def main():
     d.gridrec()
 
     # Write to stack of TIFFs.
-    mydata = ex.Export()
-    mydata.xtomo_tiff(data = d.data_recon, output_file = 'tmp/ALS_tiff_2_tomoPy_', axis=0)
+    write = dataexchange.Export()
+    write.xtomo_tiff(data = d.data_recon, output_file = 'tmp/ALS_tiff_2_tomoPy_', axis=0)
 
 if __name__ == "__main__":
     main()

@@ -21,8 +21,7 @@ Example on how to use the `xtomo_raw`_ module to read APS 26-ID TIFF files (from
 import tomopy 
 
 # Data Exchange: https://github.com/data-exchange/data-exchange
-import dataexchange.xtomo.xtomo_importer as dx
-import dataexchange.xtomo.xtomo_exporter as ex
+import dataexchange
 
 def main():
 
@@ -36,9 +35,9 @@ def main():
     slices_start = 620    
     slices_end = 624    
 
-    mydata = dx.Import()
-    # Read series of images
-    data, white, dark, theta = mydata.xtomo_raw(file_name,
+    # Read raw data
+    read = dataexchange.Import()
+    data, white, dark, theta = read.xtomo_raw(file_name,
                                                         white_file_name = white_file_name, 
                                                         slices_start = slices_start, 
                                                         slices_end = slices_end, 
@@ -59,8 +58,8 @@ def main():
     d.gridrec()
 
     # Write to stack of TIFFs.
-    mydata = ex.Export()
-    mydata.xtomo_tiff(data = d.data_recon, output_file = 'tmp/APS_26_ID_xradia_2_tomoPy_', axis=0)
+    write = dataexchange.Export()
+    write.xtomo_tiff(data = d.data_recon, output_file = 'tmp/APS_26_ID_xradia_2_tomoPy_', axis=0)
 
 if __name__ == "__main__":
     main()

@@ -14,10 +14,9 @@
 import tomopy 
 
 # Data Exchange: https://github.com/data-exchange/data-exchange
-import dataexchange.xtomo.xtomo_importer as dx
+import dataexchange
 
 import re
-
 
 def main():
     file_name = '/local/dataraid/2013_11/Vincent_201311/GA_exp/92_2_01/rad_0400ms_.tiff'
@@ -36,9 +35,9 @@ def main():
     slices_start = 800    
     slices_end = 804    
 
-    mydata = dx.Import()
-    # Read series of images
-    data, white, dark, theta = mydata.series_of_images(file_name,
+    # Read raw data
+    read = dataexchange.Import()
+    data, white, dark, theta = read.series_of_images(file_name,
                                                        projections_start = projections_start,
                                                        projections_end = projections_end,
                                                        projections_digits=4,
@@ -64,7 +63,8 @@ def main():
 
 
     # Write to stack of TIFFs.
-    tomopy.xtomo_writer(d.data_recon, 'tmp/SLS_', axis=0)
+    write = dataexchange.Export()
+    write.xtomo_writer(d.data_recon, 'tmp/SLS_', axis=0)
 
 if __name__ == "__main__":
     main()

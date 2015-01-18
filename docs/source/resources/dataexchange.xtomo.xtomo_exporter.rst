@@ -1,4 +1,4 @@
-xtomo_exporter
+xtomo exporter
 ==============
 
 .. automodule:: dataexchange.xtomo.xtomo_exporter

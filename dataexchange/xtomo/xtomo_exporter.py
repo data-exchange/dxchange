@@ -15,6 +15,26 @@ Supported image fomats include HDF5 Data Exchange and TIFF.
 
 :Version: 2014.08.15
 
+Examples
+
+>>> import dataexchange
+>>> 
+>>> sample_name = 'Sample Name'
+>>>     
+>>> write = dataexchange.Export()
+>>> 
+>>> # Save data as dataExchange
+>>> write.xtomo_exchange(data = data,
+>>>                       data_white = white,
+>>>                       data_dark = dark,
+>>>                       theta = theta,
+>>>                       hdf5_file_name = hdf5_file_name,
+>>>                       sample_name = sample_name,
+>>>                       data_exchange_type = 'tomography_raw_projections' 
+>>>                       )
+>>> # Save data as TIFF
+>>>  write.xtomo_tiff(data = d.data_recon, output_file = 'rec/rec_', axis=0)
+
 """
 
 import numpy as np
@@ -139,8 +159,7 @@ class Export():
         
         - Convert tomographic projection series (raw, dark, white)  of tiff in data exchange:
             
-            >>> from dataexchange import xtomo_importer as dx
-            >>> from dataexchange import xtomo_exporter as ex
+            >>> import dataexchange
 
             >>> file_name = '/local/dataraid/databank/Anka/radios/image_.tif'
             >>> dark_file_name = '/local/dataraid/databank/Anka/darks/image_.tif'
@@ -157,9 +176,9 @@ class Export():
 
             >>> sample_name = 'Anka'
             >>> 
-            >>> mydata = dx.Import()
-            >>> # Read series of images
-            >>> data, white, dark, theta = mydata.xtomo_raw(file_name,
+            >>> # Read raw data
+            >>> read = dataexchange.Import()
+            >>> data, white, dark, theta = read.xtomo_raw(file_name,
             >>>                                                    projections_start = projections_start,
             >>>                                                    projections_end = projections_end,
             >>>                                                    white_file_name = white_file_name,
@@ -171,10 +190,10 @@ class Export():
             >>>                                                    projections_digits = 5,
             >>>                                                    log='INFO'
             >>>                                                    )
-
-            >>> mydata = ex.Export()
-            >>> # Create minimal data exchange hdf5 file
-            >>> mydata.xtomo_exchange(data = data,
+            >>>
+            >>> # Save data
+            >>> write = dataexchange.Export()
+            >>> write.xtomo_exchange(data = data,
             >>>                       data_white = white,
             >>>                       data_dark = dark,
             >>>                       theta = theta,
@@ -338,13 +357,13 @@ class Export():
             >>> file_name_out = 'tmp/sinogram_'
             >>>     
             >>> # Load data
-            >>> mydata = dx.Import()
+            >>> read = dataexchange.Import()
             >>> # Read series of images
-            >>> data, white, dark, theta = mydata.xtomo_raw(file_name, data_type='h5', slices_start=0, slices_end=16)
+            >>> data, white, dark, theta = read.xtomo_raw(file_name, data_type='h5', slices_start=0, slices_end=16)
             >>> 
             >>> # Save data
-            >>> mydata = ex.Export()
-            >>> mydata.xtomo_tiff(data = data, output_file = file_name_out, axis=1)
+            >>> write = dataexchange.Export()
+            >>> write.xtomo_tiff(data = data, output_file = file_name_out, axis=1)
             >>>             
         - Save first 16 projections:
             
@@ -355,13 +374,13 @@ class Export():
             >>> file_name_out = 'tmp/projection_'
             >>> 
             >>> # Load data
-            >>> mydata = dx.Import()
+            >>> read = dataexchange.Import()
             >>> # Read series of images
-            >>> data, white, dark, theta = mydata.xtomo_raw(file_name, data_type='h5', projections_start=0, projections_end=16)
+            >>> data, white, dark, theta = read.xtomo_raw(file_name, data_type='h5', projections_start=0, projections_end=16)
 
             >>> # Save data
-            >>> mydata = ex.Export()
-            >>> mydata.xtomo_tiff(data = data, output_file = file_name_out, axis=0)
+            >>> write = dataexchange.Export()
+            >>> write.xtomo_tiff(data = data, output_file = file_name_out, axis=0)
             
         - Save reconstructed slices:
             
@@ -370,8 +389,8 @@ class Export():
             >>> import dataexchange.xtomo.xtomo_exporter as ex
 
             >>> hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/Elettra.h5'
-            >>> mydata = dx.Import()
-            >>> data, white, dark, theta = mydata.xtomo_raw(hdf5_file_name, slices_start = 150, slices_end = 154, data_type='h5', log='INFO')
+            >>> read = dataexchange.Import()
+            >>> data, white, dark, theta = read.xtomo_raw(hdf5_file_name, slices_start = 150, slices_end = 154, data_type='h5', log='INFO')
             >>> d = tomopy.xtomo_dataset(log='debug')
             >>> d.dataset(data, white, dark, theta)
             >>> d.normalize()
@@ -380,8 +399,8 @@ class Export():
             >>> d.gridrec()
             >>> 
             >>> # Save data
-            >>> mydata = ex.Export()
-            >>> mydata.xtomo_tiff(data = d.data_recon, output_file = 'tmp/Elettra_dataExchange_2_tomoPy_', axis=0)
+            >>> write = dataexchange.Export()
+            >>> write.xtomo_tiff(data = d.data_recon, output_file = 'tmp/Elettra_dataExchange_2_tomoPy_', axis=0)
         """
         output_file =  os.path.abspath(output_file)
         dir_path = os.path.dirname(output_file)

@@ -1,3 +1,9 @@
+.. Data Exchange license
+
+=======
+License
+=======
+
 Copyright (c) 2013-2015, UChicago Argonne, LLC. All rights reserved.
 
 Copyright 2013-2015. UChicago Argonne, LLC. This software was produced 

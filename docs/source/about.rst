@@ -1,8 +1,8 @@
 .. APS Data Exchange toolbox
 
-===================
-About Data Exchange
-===================
+=====
+About
+=====
 
 Data Exchange is a simple data model that is designed to interface, or "exchange" data among different instruments, and to enable sharing of data analysis tools. Its implementation uses the Heirarchical Data Format (HDF5), a widely used and supported storage format for scientific data.
 

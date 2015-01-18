@@ -17,8 +17,8 @@ Example on how to use the `xtomo_raw`_ module to read ESRF edf raw tomographic d
 .. _xtomo_raw: dataexchange.xtomo.xtomo_importer.html
 """
 
-import dataexchange.xtomo.xtomo_importer as dx
-import dataexchange.xtomo.xtomo_exporter as ex
+# Data Exchange: https://github.com/data-exchange/data-exchange
+import dataexchange
 
 def main():
 
@@ -37,9 +37,9 @@ def main():
 #    slices_start = 300    
 #    slices_end = 304    
 
-    mydata = dx.Import()
-    # Read series of images
-    data, white, dark, theta = mydata.xtomo_raw(file_name,
+    # Read raw data
+    read = dataexchange.Import()
+    data, white, dark, theta = read.xtomo_raw(file_name,
                                                        white_file_name = white_file_name,
                                                        dark_file_name = dark_file_name,
 #                                                       slices_start = slices_start,
@@ -48,9 +48,9 @@ def main():
                                                        log='INFO'
                                                        )
 
-    mydata = ex.Export()
-    # Create minimal data exchange hdf5 file
-    mydata.xtomo_exchange(data = data,
+    # Save data as dataExchange
+    write = dataexchange.Export()
+    write.xtomo_exchange(data = data,
                           data_white = white,
                           data_dark = dark,
                           theta = theta,

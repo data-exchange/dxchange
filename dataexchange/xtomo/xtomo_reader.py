@@ -368,13 +368,14 @@ class XTomoReader:
             Output 2-D matrix as numpy array.
         """
 #        This ONLY works on little-endian platforms only
-#        im = Image.open(self.file_name)
-#        out = np.fromstring(im.tostring(), dtype).reshape(
-#                               tuple(list(im.size[::-1])))
+        im = Image.open(self.file_name)
+        out = np.fromstring(im.tostring(), dtype).reshape(
+                               tuple(list(im.size[::-1])))
 
 
 #        This seeem to work on both big and little-endian platforms
-        out = misc.imread(self.file_name)
+#        out = misc.imread(self.file_name)
+
         num_x, num_y = out.shape
 
         if x_end is 0:

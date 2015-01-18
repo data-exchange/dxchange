@@ -1,5 +1,5 @@
-dataexchange.xtomo.formats.data_stack_sim module
-================================================
+data_stack_sim
+==============
 
 .. automodule:: dataexchange.xtomo.formats.data_stack_sim
     :members:
