@@ -56,12 +56,14 @@ def main():
     white_end = white_start + number_of_flats
     projections_start = white_end
     projections_end = projections_start + number_of_projections
+    projections_angle_end = 180 + angular_step
 
     mydata = dx.Import()
     # Read series of images
     data, white, dark, theta = mydata.xtomo_raw(file_name,
                                                        projections_start = projections_start,
                                                        projections_end = projections_end,
+						       projections_angle_end = projections_angle_end,
                                                        projections_digits=4,
                                                        white_start = white_start,
                                                        white_end = white_end,
