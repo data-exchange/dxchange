@@ -1,4 +1,4 @@
-xtomo_reader
+xtomo reader
 ============
 
 .. automodule:: dataexchange.xtomo.xtomo_reader

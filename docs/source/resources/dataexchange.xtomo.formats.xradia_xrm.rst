@@ -1,5 +1,5 @@
-dataexchange.xtomo.formats.xradia_xrm module
-============================================
+xrm (xradia)
+============
 
 .. automodule:: dataexchange.xtomo.formats.xradia_xrm
     :members:

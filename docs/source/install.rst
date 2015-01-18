@@ -52,13 +52,14 @@ tifffile.c     -     http://www.lfd.uci.edu/~gohlke/code/tifffile.c.html
 Quick Install
 *************
 
-==========  ==============================================================================================================
+==========  ====================================================================================================================
 from        procedure
-==========  ==============================================================================================================
+==========  ====================================================================================================================
+github      #. clone the data exchange repository ``git clone https://github.com/data-exchange/data-exchange.git data-exchange``
+            #. ``python setup.py install`` in the ``data-exchange`` directory where *setup.py* resides
 source      #. download the source from `release`_, `master`_ or `beta`_ then
             #. ``python setup.py install`` or ``python setup.py install --user`` in the directory where *setup.py* resides 
-==========  ==============================================================================================================
-
+==========  ====================================================================================================================
 
 To test if installation was succesfull:
 

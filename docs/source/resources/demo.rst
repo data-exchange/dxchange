@@ -45,11 +45,3 @@ tomoPy Importers
    demo.import_tomoPy_PetraIII
    demo.import_tomoPy_SLS
    demo.import_tomoPy_SRC
-
-Module contents
----------------
-
-.. automodule:: demo
-    :members:
-    :undoc-members:
-    :show-inheritance:

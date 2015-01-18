@@ -1,5 +1,5 @@
-dataexchange.xtomo.formats.data_struct module
-=============================================
+data_struct
+===========
 
 .. automodule:: dataexchange.xtomo.formats.data_struct
     :members:

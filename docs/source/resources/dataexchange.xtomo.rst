@@ -1,13 +1,3 @@
-dataexchange.xtomo package
-==========================
-
-Subpackages
------------
-
-.. toctree::
-
-    dataexchange.xtomo.formats
-
 Submodules
 ----------
 
@@ -18,10 +8,9 @@ Submodules
    dataexchange.xtomo.xtomo_reader
    dataexchange.xtomo.xtomo_exporter
 
-Module contents
----------------
+Subpackages
+-----------
 
-.. automodule:: dataexchange.xtomo
-    :members:
-    :undoc-members:
-    :show-inheritance:
+.. toctree::
+
+    dataexchange.xtomo.formats

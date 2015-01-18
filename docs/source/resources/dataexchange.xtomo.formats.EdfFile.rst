@@ -1,5 +1,5 @@
-dataexchange.xtomo.formats.EdfFile module
-=========================================
+EDF
+===
 
 .. automodule:: dataexchange.xtomo.formats.EdfFile
     :members:

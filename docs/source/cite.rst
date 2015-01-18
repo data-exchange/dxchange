@@ -1,8 +1,8 @@
 .. APS Data Exchange toolbox
 
-====================
-Citing Data Exchange
-====================
+======
+Citing
+======
 
 We request that you cite the following paper in any published work that use Data Exchange.
 

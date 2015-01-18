@@ -1,5 +1,5 @@
-dataexchange.xtomo.formats.data_spe module
-==========================================
+SPE
+===
 
 .. automodule:: dataexchange.xtomo.formats.data_spe
     :members:

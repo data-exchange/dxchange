@@ -18,8 +18,8 @@ Contents:
    cite
    install
    resources/dataexchange
+   license
    resources/demo
-
 
 Indices and tables
 ==================
