@@ -107,6 +107,7 @@ class Import():
                          dtype='uint16',
                          data_type='tiff',
                          exchange_rank = 0,
+                         flip='false',
                          log='INFO'):
         """
         Read a stack of 2-D HDF4, TIFF, spe or netCDF images.
@@ -429,7 +430,8 @@ class Import():
                     tmpdata = f.tiff(x_start=slices_start,
                                      x_end=slices_end,
                                      x_step=slices_step,
-                                     dtype=dtype)
+                                     dtype=dtype,
+                                     flip=flip)
 
                 elif (data_type is 'edf2'):
                     tmpdata = f.edf2(x_start=slices_start,
@@ -575,7 +577,8 @@ class Import():
                     tmpdata = f.tiff(x_start = slices_start,
                                      x_end = slices_end,
                                      x_step = slices_step,
-                                     dtype = dtype)
+                                     dtype=dtype,
+                                     flip=flip)
 
                 elif (data_type is 'edf2'):
                     tmpdata = f.edf2(x_start = slices_start,
@@ -742,7 +745,8 @@ class Import():
                     tmpdata = f.tiff(x_start=slices_start,
                                      x_end=slices_end,
                                      x_step=slices_step,
-                                     dtype=dtype)
+                                     dtype=dtype,
+                                     flip=flip)
 
                 elif (data_type is 'edf2'):
                     tmpdata = f.edf2(x_start=slices_start,

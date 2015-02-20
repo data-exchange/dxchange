@@ -27,8 +27,8 @@ import re
 
 def main():
     # read a series of tiff
-    file_name = '/local/dataraid/databank/SLS_2011/Hornby_SLS/Hornby_b.tif'
-    log_file = '/local/dataraid/databank/SLS_2011/Hornby_SLS/Hornby.log'
+    file_name = '/local/dataraid/databank/SLS/Hornby_SLS/Hornby_b.tif'
+    log_file = '/local/dataraid/databank/SLS/Hornby_SLS/Hornby.log'
 
     
     #Read SLS log file data
