@@ -98,6 +98,7 @@ class Export():
                         acquisition_mode=None,
                         acquisition_comment=None,
                         hdf5_file_name=None,
+                        axes='theta:y:x',
                         log='INFO'
                        ):
         """ 
@@ -228,7 +229,7 @@ class Export():
                 # Create core HDF5 dataset in exchange group for projections_theta_range
                 # deep stack of x,y images /exchange/data
                 self.logger.info("Adding projections to Data Exchange File [%s]", hdf5_file_name)
-                f.add_entry( DataExchangeEntry.data(data={'value': data, 'units':'counts', 'description': 'transmission', 'axes':'theta:y:x' }))
+                f.add_entry( DataExchangeEntry.data(data={'value': data, 'units':'counts', 'description': 'transmission', 'axes': axes }))
 #                f.add_entry( DataExchangeEntry.data(data={'value': data, 'units':'counts', 'description': 'transmission', 'axes':'theta:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
                 if (theta != None):
                     f.add_entry( DataExchangeEntry.data(theta={'value': theta, 'units':'degrees'}))
