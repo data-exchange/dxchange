@@ -478,7 +478,7 @@ class XTomoReader:
         array = dstruct
 
         try:
-            reader.read_txrm(self.file_name,array)
+            reader.read_txrm(self.file_name, array)
             if (array_name == "theta"):
                 theta = np.asarray(array.exchange.angles)                
                 num_z = theta.size
