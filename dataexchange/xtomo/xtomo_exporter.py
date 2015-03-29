@@ -298,16 +298,16 @@ class Export():
                     f.add_entry(DataExchangeEntry.acquisition(comment={'value':acquisition_comment}))
 
                 if (sample_position_x != None):
-                    f.add_entry(DataExchangeEntry.acquisition(sample_position_x={'value':sample_position_x, 'units': 'mm', 'dataset_opts': {'dtype': 'd'}}))
+                    f.add_entry(DataExchangeEntry.acquisition(sample_position_x={'value':sample_position_x, 'units': 'microns', 'dataset_opts': {'dtype': 'd'}}))
                 if (sample_position_y != None):
-                    f.add_entry(DataExchangeEntry.acquisition(sample_position_y={'value':sample_position_y, 'units': 'mm', 'dataset_opts': {'dtype': 'd'}}))
+                    f.add_entry(DataExchangeEntry.acquisition(sample_position_y={'value':sample_position_y, 'units': 'microns', 'dataset_opts': {'dtype': 'd'}}))
                 if (sample_position_z != None):
-                    f.add_entry(DataExchangeEntry.acquisition(sample_position_z={'value':sample_position_z, 'units': 'mm', 'dataset_opts': {'dtype': 'd'}}))
+                    f.add_entry(DataExchangeEntry.acquisition(sample_position_z={'value':sample_position_z, 'units': 'microns', 'dataset_opts': {'dtype': 'd'}}))
 
                 if (sample_image_shift_x != None):
-                    f.add_entry(DataExchangeEntry.acquisition(sample_image_shift_x={'value':sample_image_shift_x, 'units': 'mm', 'dataset_opts': {'dtype': 'd'}}))
+                    f.add_entry(DataExchangeEntry.acquisition(sample_image_shift_x={'value':sample_image_shift_x, 'units': 'microns', 'dataset_opts': {'dtype': 'd'}}))
                 if (sample_image_shift_y != None):
-                    f.add_entry(DataExchangeEntry.acquisition(sample_image_shift_y={'value':sample_image_shift_y, 'units': 'mm', 'dataset_opts': {'dtype': 'd'}}))
+                    f.add_entry(DataExchangeEntry.acquisition(sample_image_shift_y={'value':sample_image_shift_y, 'units': 'microns', 'dataset_opts': {'dtype': 'd'}}))
 
 
                 f.close()
