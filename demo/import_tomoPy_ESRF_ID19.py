@@ -26,9 +26,9 @@ import dataexchange
 import re
 
 def main():
-    file_name = '/local/dataraid/databank/ESRF/scan.edf'
-    dark_file_name = '/local/dataraid/databank/ESRF/dark.edf'
-    white_file_name = '/local/dataraid/databank/ESRF/flat.edf'
+    file_name = '/local/dataraid/databank/ESRF/esrf_01/scan.edf'
+    dark_file_name = '/local/dataraid/databank/ESRF/esrf_01/dark.edf'
+    white_file_name = '/local/dataraid/databank/ESRF/esrf_01/flat.edf'
 
     sample_name = 'esrf'
     

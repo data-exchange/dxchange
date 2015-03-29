@@ -134,7 +134,7 @@ def main():
     d.normalize()
     d.correct_drift()
     #d.optimize_center()
-    d.center=1282.5
+    d.center=2042.75
     d.gridrec()
 
     # Write to stack of TIFFs.

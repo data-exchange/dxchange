@@ -39,116 +39,172 @@ def main():
     sample = 1
     
     if (sample == 1):
-        file_name = '/local/dataraid/databank/ESRF_2013Dec/0001_0210675/0001_0210675.edf'
-        dark_file_name = '/local/dataraid/databank/ESRF_2013Dec/0001_0210675/dark.edf'
-        white_file_name = '/local/dataraid/databank/ESRF_2013Dec/0001_0210675/ref.edf'
+        file_name = '/local/dataraid/databank/ESRF/esrf_02/0001_0210675/0001_0210675.edf'
+        dark_file_name = '/local/dataraid/databank/ESRF/esrf_02/0001_0210675/dark.edf'
+        white_file_name = '/local/dataraid/databank/ESRF/esrf_02/0001_0210675/ref.edf'
         hdf5_file_name = '/local/dataraid/databank/dataExchange/ESRF_0001.h5'
-        log_file = '/local/dataraid/databank/ESRF_2013Dec/0001_0210675/0001_0210675.info'
+        log_file = '/local/dataraid/databank/ESRF/esrf_02/0001_0210675/0001_0210675.info'
 
     if (sample == 2):
-        file_name = '/local/dataraid/databank/ESRF_2013Dec/0002_0210675_2nd/0002_0210675_2nd.edf'
-        dark_file_name = '/local/dataraid/databank/ESRF_2013Dec/dark.edf'
-        white_file_name = '/local/dataraid/databank/ESRF_2013Dec/ref.edf'
+        file_name = '/local/dataraid/databank/ESRF/esrf_02/0002_0210675_2nd/0002_0210675_2nd.edf'
+        dark_file_name = '/local/dataraid/databank/ESRF/esrf_02/dark.edf'
+        white_file_name = '/local/dataraid/databank/ESRF/esrf_02/ref.edf'
         hdf5_file_name = '/local/dataraid/databank/dataExchange/ESRF_0002.h5'
-        log_file = '/local/dataraid/databank/ESRF_2013Dec/0002_0210675_2nd/0002_0210675_2nd.info'
+        log_file = '/local/dataraid/databank/ESRF/esrf_02/0002_0210675_2nd/0002_0210675_2nd.info'
 
     if (sample == 3):
-        file_name = '/local/dataraid/databank/ESRF_2013Dec/0006_AV67_016_offsetAngleMinus12/0006_AV67_016_offsetAngleMinus12.edf'
-        dark_file_name = '/local/dataraid/databank/ESRF_2013Dec/0006_AV67_016_offsetAngleMinus12/dark.edf'
-        white_file_name = '/local/dataraid/databank/ESRF_2013Dec/0006_AV67_016_offsetAngleMinus12/ref.edf'
+        file_name = '/local/dataraid/databank/ESRF/esrf_02/0006_AV67_016_offsetAngleMinus12/0006_AV67_016_offsetAngleMinus12.edf'
+        dark_file_name = '/local/dataraid/databank/ESRF/esrf_02/0006_AV67_016_offsetAngleMinus12/dark.edf'
+        white_file_name = '/local/dataraid/databank/ESRF/esrf_02/0006_AV67_016_offsetAngleMinus12/ref.edf'
         hdf5_file_name = '/local/dataraid/databank/dataExchange/ESRF_0006.h5'
-        log_file = '/local/dataraid/databank/ESRF_2013Dec/0006_AV67_016_offsetAngleMinus12/0006_AV67_016_offsetAngleMinus12.info'
+        log_file = '/local/dataraid/databank/ESRF/esrf_02/0006_AV67_016_offsetAngleMinus12/0006_AV67_016_offsetAngleMinus12.info'
 
     if (sample == 4):
         # white are missing
-        file_name = '/local/dataraid/databank/ESRF_2013Dec/0007_AV67_017_offsetAngle0/0007_AV67_017_offsetAngle0.edf'
-        dark_file_name = '/local/dataraid/databank/ESRF_2013Dec/0007_AV67_017_offsetAngle0/dark.edf'
-        white_file_name = '/local/dataraid/databank/ESRF_2013Dec/0007_AV67_017_offsetAngle0/ref.edf'
+        file_name = '/local/dataraid/databank/ESRF/esrf_02/0007_AV67_017_offsetAngle0/0007_AV67_017_offsetAngle0.edf'
+        dark_file_name = '/local/dataraid/databank/ESRF/esrf_02/0007_AV67_017_offsetAngle0/dark.edf'
+        white_file_name = '/local/dataraid/databank/ESRF/esrf_02/0007_AV67_017_offsetAngle0/ref.edf'
         hdf5_file_name = '/local/dataraid/databank/dataExchange/ESRF_0007.h5'
-        log_file = '/local/dataraid/databank/ESRF_2013Dec/0007_AV67_017_offsetAngle0/0007_AV67_017_offsetAngle0.info'
+        log_file = '/local/dataraid/databank/ESRF/esrf_02/0007_AV67_017_offsetAngle0/0007_AV67_017_offsetAngle0.info'
 
     if (sample == 5):
-        file_name = '/local/dataraid/databank/ESRF_2013Dec/0008_AV67_024_offsetAngle0/0008_AV67_024_offsetAngle0.edf'
-        dark_file_name = '/local/dataraid/databank/ESRF_2013Dec/0008_AV67_024_offsetAngle0/dark.edf'
-        white_file_name = '/local/dataraid/databank/ESRF_2013Dec/0008_AV67_024_offsetAngle0/ref.edf'
+        file_name = '/local/dataraid/databank/ESRF/esrf_02/0008_AV67_024_offsetAngle0/0008_AV67_024_offsetAngle0.edf'
+        dark_file_name = '/local/dataraid/databank/ESRF/esrf_02/0008_AV67_024_offsetAngle0/dark.edf'
+        white_file_name = '/local/dataraid/databank/ESRF/esrf_02/0008_AV67_024_offsetAngle0/ref.edf'
         hdf5_file_name = '/local/dataraid/databank/dataExchange/ESRF_0008.h5'
-        log_file = '/local/dataraid/databank/ESRF_2013Dec/0008_AV67_024_offsetAngle0/0008_AV67_024_offsetAngle0.info'
+        log_file = '/local/dataraid/databank/ESRF/esrf_02/0008_AV67_024_offsetAngle0/0008_AV67_024_offsetAngle0.info'
 
     if (sample == 6):
-        file_name = '/local/dataraid/databank/ESRF_2013Dec/0009_AV67_018_offsetAngle0/0009_AV67_018_offsetAngle0.edf'
-        dark_file_name = '/local/dataraid/databank/ESRF_2013Dec/0009_AV67_018_offsetAngle0/dark.edf'
-        white_file_name = '/local/dataraid/databank/ESRF_2013Dec/0009_AV67_018_offsetAngle0/ref.edf'
+        file_name = '/local/dataraid/databank/ESRF/esrf_02/0009_AV67_018_offsetAngle0/0009_AV67_018_offsetAngle0.edf'
+        dark_file_name = '/local/dataraid/databank/ESRF/esrf_02/0009_AV67_018_offsetAngle0/dark.edf'
+        white_file_name = '/local/dataraid/databank/ESRF/esrf_02/0009_AV67_018_offsetAngle0/ref.edf'
         hdf5_file_name = '/local/dataraid/databank/dataExchange/ESRF_0009.h5'
-        log_file = '/local/dataraid/databank/ESRF_2013Dec/0009_AV67_018_offsetAngle0/0009_AV67_018_offsetAngle0.info'
+        log_file = '/local/dataraid/databank/ESRF/esrf_02/0009_AV67_018_offsetAngle0/0009_AV67_018_offsetAngle0.info'
 
         # only pre-white, dark are missing
         white_end = 41
 
     if (sample == 7):
-        file_name = '/local/dataraid/databank/ESRF_2013Dec/0009_AV67_018_offsetAngle0_Redo/0009_AV67_018_offsetAngle0_Redo.edf'
-        dark_file_name = '/local/dataraid/databank/ESRF_2013Dec/0009_AV67_018_offsetAngle0_Redo/dark.edf'
-        white_file_name = '/local/dataraid/databank/ESRF_2013Dec/0009_AV67_018_offsetAngle0_Redo/ref.edf'
+        file_name = '/local/dataraid/databank/ESRF/esrf_02/0009_AV67_018_offsetAngle0_Redo/0009_AV67_018_offsetAngle0_Redo.edf'
+        dark_file_name = '/local/dataraid/databank/ESRF/esrf_02/0009_AV67_018_offsetAngle0_Redo/dark.edf'
+        white_file_name = '/local/dataraid/databank/ESRF/esrf_02/0009_AV67_018_offsetAngle0_Redo/ref.edf'
         hdf5_file_name = '/local/dataraid/databank/dataExchange/ESRF_0009_Redo.h5'
-        log_file = '/local/dataraid/databank/ESRF_2013Dec/0009_AV67_018_offsetAngle0_Redo/0009_AV67_018_offsetAngle0_Redo.info'
+        log_file = '/local/dataraid/databank/ESRF/esrf_02/0009_AV67_018_offsetAngle0_Redo/0009_AV67_018_offsetAngle0_Redo.info'
 
         # DO NOT CONVERT stopped during data collection 
-    ##    file_name = '/local/dataraid/databank/ESRF_2013Dec/0011_AV67_022_offsetAngle0/0011_AV67_022_offsetAngle0.edf'
-    ##    dark_file_name = '/local/dataraid/databank/ESRF_2013Dec/0011_AV67_022_offsetAngle0/dark.edf'
-    ##    white_file_name = '/local/dataraid/databank/ESRF_2013Dec/0011_AV67_022_offsetAngle0/ref.edf'
+    ##    file_name = '/local/dataraid/databank/ESRF/esrf_02/0011_AV67_022_offsetAngle0/0011_AV67_022_offsetAngle0.edf'
+    ##    dark_file_name = '/local/dataraid/databank/ESRF/esrf_02/0011_AV67_022_offsetAngle0/dark.edf'
+    ##    white_file_name = '/local/dataraid/databank/ESRF/esrf_02/0011_AV67_022_offsetAngle0/ref.edf'
     ##    hdf5_file_name = '/local/dataraid/databank/dataExchange/ESRF_0011.h5'
     ##    sample_name = '0011_AV67_022_offsetAngle0'
     ##    white_end = 41
 
     if (sample == 8):
-        file_name = '/local/dataraid/databank/ESRF_2013Dec/0012_AV67_022_offsetAngle0/0012_AV67_022_offsetAngle0.edf'
-        dark_file_name = '/local/dataraid/databank/ESRF_2013Dec/0012_AV67_022_offsetAngle0/dark.edf'
-        white_file_name = '/local/dataraid/databank/ESRF_2013Dec/0012_AV67_022_offsetAngle0/ref.edf'
+        file_name = '/local/dataraid/databank/ESRF/esrf_02/0012_AV67_022_offsetAngle0/0012_AV67_022_offsetAngle0.edf'
+        dark_file_name = '/local/dataraid/databank/ESRF/esrf_02/0012_AV67_022_offsetAngle0/dark.edf'
+        white_file_name = '/local/dataraid/databank/ESRF/esrf_02/0012_AV67_022_offsetAngle0/ref.edf'
         hdf5_file_name = '/local/dataraid/databank/dataExchange/ESRF_0012.h5'
-        log_file = '/local/dataraid/databank/ESRF_2013Dec/0012_AV67_022_offsetAngle0/0012_AV67_022_offsetAngle0.info'
+        log_file = '/local/dataraid/databank/ESRF/esrf_02/0012_AV67_022_offsetAngle0/0012_AV67_022_offsetAngle0.info'
 
     if (sample == 9):
-        file_name = '/local/dataraid/databank/ESRF_2013Dec/0013_AV67_026_offsetAngle0/0013_AV67_026_offsetAngle0.edf'
-        dark_file_name = '/local/dataraid/databank/ESRF_2013Dec/0013_AV67_026_offsetAngle0/dark.edf'
-        white_file_name = '/local/dataraid/databank/ESRF_2013Dec/0013_AV67_026_offsetAngle0/ref.edf'
+        file_name = '/local/dataraid/databank/ESRF/esrf_02/0013_AV67_026_offsetAngle0/0013_AV67_026_offsetAngle0.edf'
+        dark_file_name = '/local/dataraid/databank/ESRF/esrf_02/0013_AV67_026_offsetAngle0/dark.edf'
+        white_file_name = '/local/dataraid/databank/ESRF/esrf_02/0013_AV67_026_offsetAngle0/ref.edf'
         hdf5_file_name = '/local/dataraid/databank/dataExchange/ESRF_0013.h5'
-        log_file = '/local/dataraid/databank/ESRF_2013Dec/0013_AV67_026_offsetAngle0/0013_AV67_026_offsetAngle0.info'
+        log_file = '/local/dataraid/databank/ESRF/esrf_02/0013_AV67_026_offsetAngle0/0013_AV67_026_offsetAngle0.info'
 
     if (sample == 10):
-        file_name = '/local/dataraid/databank/ESRF_2013Dec/0014_AV67_028_offsetAngle0/0014_AV67_028_offsetAngle0.edf'
-        dark_file_name = '/local/dataraid/databank/ESRF_2013Dec/0014_AV67_028_offsetAngle0/dark.edf'
-        white_file_name = '/local/dataraid/databank/ESRF_2013Dec/0014_AV67_028_offsetAngle0/ref.edf'
+        file_name = '/local/dataraid/databank/ESRF/esrf_02/0014_AV67_028_offsetAngle0/0014_AV67_028_offsetAngle0.edf'
+        dark_file_name = '/local/dataraid/databank/ESRF/esrf_02/0014_AV67_028_offsetAngle0/dark.edf'
+        white_file_name = '/local/dataraid/databank/ESRF/esrf_02/0014_AV67_028_offsetAngle0/ref.edf'
         hdf5_file_name = '/local/dataraid/databank/dataExchange/ESRF_0014.h5'
-        log_file = '/local/dataraid/databank/ESRF_2013Dec/0014_AV67_028_offsetAngle0/0014_AV67_028_offsetAngle0.info'
+        log_file = '/local/dataraid/databank/ESRF/esrf_02/0014_AV67_028_offsetAngle0/0014_AV67_028_offsetAngle0.info'
 
     if (sample == 11):
-        file_name = '/local/dataraid/databank/ESRF_2013Dec/0015_AV67_020_offsetAngle0/0015_AV67_020_offsetAngle0.edf'
-        dark_file_name = '/local/dataraid/databank/ESRF_2013Dec/0015_AV67_020_offsetAngle0/dark.edf'
-        white_file_name = '/local/dataraid/databank/ESRF_2013Dec/0015_AV67_020_offsetAngle0/ref.edf'
+        file_name = '/local/dataraid/databank/ESRF/esrf_02/0015_AV67_020_offsetAngle0/0015_AV67_020_offsetAngle0.edf'
+        dark_file_name = '/local/dataraid/databank/ESRF/esrf_02/0015_AV67_020_offsetAngle0/dark.edf'
+        white_file_name = '/local/dataraid/databank/ESRF/esrf_02/0015_AV67_020_offsetAngle0/ref.edf'
         hdf5_file_name = '/local/dataraid/databank/dataExchange/ESRF_0015.h5'
-        log_file = '/local/dataraid/databank/ESRF_2013Dec/0015_AV67_020_offsetAngle0/0015_AV67_020_offsetAngle0.info'
+        log_file = '/local/dataraid/databank/ESRF/esrf_02/0015_AV67_020_offsetAngle0/0015_AV67_020_offsetAngle0.info'
 
     if (sample == 12):
-        file_name = '/local/dataraid/databank/ESRF_2013Dec/0016_AV67_029_offsetAngle0/0016_AV67_029_offsetAngle0.edf'
-        dark_file_name = '/local/dataraid/databank/ESRF_2013Dec/0016_AV67_029_offsetAngle0/dark.edf'
-        white_file_name = '/local/dataraid/databank/ESRF_2013Dec/0016_AV67_029_offsetAngle0/ref.edf'
+        file_name = '/local/dataraid/databank/ESRF/esrf_02/0016_AV67_029_offsetAngle0/0016_AV67_029_offsetAngle0.edf'
+        dark_file_name = '/local/dataraid/databank/ESRF/esrf_02/0016_AV67_029_offsetAngle0/dark.edf'
+        white_file_name = '/local/dataraid/databank/ESRF/esrf_02/0016_AV67_029_offsetAngle0/ref.edf'
         hdf5_file_name = '/local/dataraid/databank/dataExchange/ESRF_0016.h5'
-        log_file = '/local/dataraid/databank/ESRF_2013Dec/0016_AV67_029_offsetAngle0/0016_AV67_029_offsetAngle0.info'
+        log_file = '/local/dataraid/databank/ESRF/esrf_02/0016_AV67_029_offsetAngle0/0016_AV67_029_offsetAngle0.info'
 
     if (sample == 13):
-        file_name = '/local/dataraid/databank/ESRF_2013Dec/0017_AV67_025_offsetAngle0/0017_AV67_025_offsetAngle0.edf'
-        dark_file_name = '/local/dataraid/databank/ESRF_2013Dec/0017_AV67_025_offsetAngle0/dark.edf'
-        white_file_name = '/local/dataraid/databank/ESRF_2013Dec/0017_AV67_025_offsetAngle0/ref.edf'
+        file_name = '/local/dataraid/databank/ESRF/esrf_02/0017_AV67_025_offsetAngle0/0017_AV67_025_offsetAngle0.edf'
+        dark_file_name = '/local/dataraid/databank/ESRF/esrf_02/0017_AV67_025_offsetAngle0/dark.edf'
+        white_file_name = '/local/dataraid/databank/ESRF/esrf_02/0017_AV67_025_offsetAngle0/ref.edf'
         hdf5_file_name = '/local/dataraid/databank/dataExchange/ESRF_0017.h5'
         sample_name = '0017_AV67_025_offsetAngle0'
-        log_file = '/local/dataraid/databank/ESRF_2013Dec/0017_AV67_025_offsetAngle0/0017_AV67_025_offsetAngle0.info'
+        log_file = '/local/dataraid/databank/ESRF/esrf_02/0017_AV67_025_offsetAngle0/0017_AV67_025_offsetAngle0.info'
 
     if (sample == 14):
         # white are missing
-        file_name = '/local/dataraid/databank/ESRF_2013Dec/0018_AV67_011_offsetAngle0/0018_AV67_011_offsetAngle0.edf'
-        dark_file_name = '/local/dataraid/databank/ESRF_2013Dec/0018_AV67_011_offsetAngle0/dark.edf'
-        white_file_name = '/local/dataraid/databank/ESRF_2013Dec/0018_AV67_011_offsetAngle0/ref.edf'
+        file_name = '/local/dataraid/databank/ESRF/esrf_02/0018_AV67_011_offsetAngle0/0018_AV67_011_offsetAngle0.edf'
+        dark_file_name = '/local/dataraid/databank/ESRF/esrf_02/0018_AV67_011_offsetAngle0/dark.edf'
+        white_file_name = '/local/dataraid/databank/ESRF/esrf_02/0018_AV67_011_offsetAngle0/ref.edf'
         hdf5_file_name = '/local/dataraid/databank/dataExchange/ESRF_0018.h5'
-        log_file = '/local/dataraid/databank/ESRF_2013Dec/0018_AV67_011_offsetAngle0/0018_AV67_011_offsetAngle0.info'
+        log_file = '/local/dataraid/databank/ESRF/esrf_02/0018_AV67_011_offsetAngle0/0018_AV67_011_offsetAngle0.info'
+
+    source_name = "ESRF"
+    beamline = "ID11"
+    experimenter_name = "Wolfgang Ludwig"
+    experimenter_affiliation = "Laboratoire Materiaux, Ingenierie et Science, MATEIS"
+    experimenter_email = "ludwig@esrf.fr"
+    source_mode = "non top-up"
+
+    projections_start = 0
+    white_start = 0
+    white_step = 1
+    dark_start = 0
+    dark_end = 2
+    dark_step = 1
+
+    sample = 19
+
+    if (sample == 15):
+        file_name = '/local/dataraid/databank/ESRF/discrete_phase_tomo/p2_pct_/p2_pct_.edf'
+        dark_file_name = '/local/dataraid/databank/ESRF/discrete_phase_tomo/p2_pct_/dark.edf'
+        white_file_name = '/local/dataraid/databank/ESRF/discrete_phase_tomo/p2_pct_/refHST.edf'
+        hdf5_file_name = '/local/dataraid/databank/dataExchange/Lorentz/esrf/p2_pct.h5'
+        sample_name = 'p2_pct_1'
+        log_file = '/local/dataraid/databank/ESRF/discrete_phase_tomo/p2_pct_/p2_pct_.info'
+
+    if (sample == 16):
+        file_name = '/local/dataraid/databank/ESRF/discrete_phase_tomo/p2_pct_1_/p2_pct_1_.edf'
+        dark_file_name = '/local/dataraid/databank/ESRF/discrete_phase_tomo/p2_pct_1_/dark.edf'
+        white_file_name = '/local/dataraid/databank/ESRF/discrete_phase_tomo/p2_pct_1_/refHST.edf'
+        hdf5_file_name = '/local/dataraid/databank/dataExchange/Lorentz/esrf/p2_pct_1.h5'
+        sample_name = 'p2_pct_1'
+        log_file = '/local/dataraid/databank/ESRF/discrete_phase_tomo/p2_pct_1_/p2_pct_1_.info'
+
+    if (sample == 17):
+        file_name = '/local/dataraid/databank/ESRF/discrete_phase_tomo/p2_pct_2_/p2_pct_2_.edf'
+        dark_file_name = '/local/dataraid/databank/ESRF/discrete_phase_tomo/p2_pct_2_/dark.edf'
+        white_file_name = '/local/dataraid/databank/ESRF/discrete_phase_tomo/p2_pct_2_/refHST.edf'
+        hdf5_file_name = '/local/dataraid/databank/dataExchange/Lorentz/esrf/p2_pct_2.h5'
+        sample_name = 'p2_pct_2'
+        log_file = '/local/dataraid/databank/ESRF/discrete_phase_tomo/p2_pct_2_/p2_pct_2_.info'
+
+    if (sample == 18):
+        file_name = '/local/dataraid/databank/ESRF/discrete_phase_tomo/p2_pct_3_/p2_pct_3_.edf'
+        dark_file_name = '/local/dataraid/databank/ESRF/discrete_phase_tomo/p2_pct_3_/dark.edf'
+        white_file_name = '/local/dataraid/databank/ESRF/discrete_phase_tomo/p2_pct_3_/refHST.edf'
+        hdf5_file_name = '/local/dataraid/databank/dataExchange/Lorentz/esrf/p2_pct_3.h5'
+        sample_name = 'p2_pct_3'
+        log_file = '/local/dataraid/databank/ESRF/discrete_phase_tomo/p2_pct_3_/p2_pct_3_.info'
+
+    if (sample == 19):
+        file_name = '/local/dataraid/databank/ESRF/discrete_phase_tomo/p2_pct_4_/p2_pct_4_.edf'
+        dark_file_name = '/local/dataraid/databank/ESRF/discrete_phase_tomo/p2_pct_4_/dark.edf'
+        white_file_name = '/local/dataraid/databank/ESRF/discrete_phase_tomo/p2_pct_4_/refHST.edf'
+        hdf5_file_name = '/local/dataraid/databank/dataExchange/Lorentz/esrf/p2_pct_4.h5'
+        sample_name = 'p2_pct_3'
+        log_file = '/local/dataraid/databank/ESRF/discrete_phase_tomo/p2_pct_4_/p2_pct_4_.info'
 
     #Read ESRF log file data
     file = open(log_file, 'r')
@@ -162,7 +218,8 @@ def main():
             elif (linelist[0]=="PixelSize"):
                  actual_pixel_size = float(linelist[1])
             elif (linelist[0]=="Distance"):
-                 acquisition_comment = 'Distance sample to detector = ' + linelist[1].lstrip().replace("\n", "") + ' mm'
+                 distance = int(linelist[1])
+		 acquisition_comment =  'Distance sample to detector = ' + linelist[1].lstrip().replace("\n", "") + ' mm'
             elif (linelist[0]=="TOMO_N"):
                  projections_end = int(linelist[1])
             elif (linelist[0]=="REF_N"):
@@ -171,6 +228,8 @@ def main():
                  source_datetime = linelist[1].lstrip().replace("\n", "")
             elif (linelist[0]=="Scan_Type"):
                  acquisition_mode = linelist[1].lstrip().replace("\n", "")
+            elif (linelist[0]=="ScanRange"):
+                 scan_range = float(linelist[1])
             elif (linelist[0]=="SrCurrent"):
                  current = float(linelist[1])
             elif (linelist[0]=="Comment"):
@@ -178,10 +237,16 @@ def main():
     file.close()
 
     # Read raw data
+    if (sample == 15):
+	white_end = 1 # for discrete_phase_tomo data
+    if (sample > 15):
+	white_end = 4 # for discrete_phase_tomo data
+	
     read = dataexchange.Import()
     data, white, dark, theta = read.xtomo_raw(file_name,
                                                        projections_start = projections_start,
                                                        projections_end = projections_end,
+                         			       projections_angle_end = 360,
                                                        white_file_name = white_file_name,
                                                        white_start = white_start,
                                                        white_end = white_end,
@@ -215,22 +280,24 @@ def main():
                           experimenter_name = experimenter_name,
                           experimenter_affiliation = experimenter_affiliation,
                           experimenter_email = experimenter_email,
-                          instrument_comment = instrument_comment,
+                          #instrument_comment = instrument_comment,
                           sample_name = sample_name,
                           acquisition_mode = acquisition_mode,
                           acquisition_comment = acquisition_comment,
                           hdf5_file_name = hdf5_file_name,
                           )
-    print "energy: ", energy
+
+    print "energy (keV): ", energy
     print "sample name: ", sample_name
     print "pixel size: ", actual_pixel_size
     print "projections: ", projections_end
     print "whites: ", white_end
     print "experiment date: ", source_datetime
     print "scan mode: ", acquisition_mode
-    print "acquitition comment: ", acquisition_comment
-    print "current: ", current
-    print "instrument comment: ", instrument_comment
+    print "scan range: ", scan_range
+    print "Distance sample to detector (mm): ", distance
+    print "current (mA): ", current
+#    print "instrument comment: ", instrument_comment
 
 if __name__ == "__main__":
     main()

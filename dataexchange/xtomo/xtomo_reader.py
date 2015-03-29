@@ -340,7 +340,8 @@ class XTomoReader:
              y_start=0,
              y_end=0,
              y_step=1,
-             dtype='uint16'
+             dtype='uint16',
+             flip='false'
              ):
              
         """
@@ -384,8 +385,12 @@ class XTomoReader:
             y_end = num_y
         
         #im.close()
-        return out[x_start:x_end:x_step,
+        array = out[x_start:x_end:x_step,
                    y_start:y_end:y_step]
+	if flip == 'true':
+		array=np.rot90(array)
+	
+        return array
         
     def tiffc(self, 
               dtype='uint16',
@@ -473,7 +478,7 @@ class XTomoReader:
         array = dstruct
 
         try:
-            reader.read_txrm(self.file_name,array)
+            reader.read_txrm(self.file_name, array)
             if (array_name == "theta"):
                 theta = np.asarray(array.exchange.angles)                
                 num_z = theta.size

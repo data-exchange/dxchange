@@ -111,6 +111,7 @@ docs/trunk/*
 # Francesco's #
 ################
 tmp/
+tmp2/
 validate*
 workingOn/
 rec_*
