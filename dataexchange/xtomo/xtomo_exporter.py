@@ -306,8 +306,10 @@ class Export():
 
                 if (sample_image_shift_x != None):
                     f.add_entry(DataExchangeEntry.acquisition(sample_image_shift_x={'value':sample_image_shift_x, 'units': 'microns', 'dataset_opts': {'dtype': 'd'}}))
+                    f.add_entry(DataExchangeEntry.data(data_shift_x={'value':sample_image_shift_x, 'units': 'microns', 'dataset_opts': {'dtype': 'd'}}))
                 if (sample_image_shift_y != None):
                     f.add_entry(DataExchangeEntry.acquisition(sample_image_shift_y={'value':sample_image_shift_y, 'units': 'microns', 'dataset_opts': {'dtype': 'd'}}))
+                    f.add_entry(DataExchangeEntry.data(data_shift_y={'value':sample_image_shift_y, 'units': 'microns', 'dataset_opts': {'dtype': 'd'}}))
 
 
                 f.close()
