@@ -11,7 +11,7 @@ Data Exchange is a Python toolbox for reading and writing Data Exchange (http://
 Citing TomoPy
 =============
 
-We request that you cite the following paper in any published work that use Data Exchange or TomoPy:
+We request that you cite the following papers in any published work that use Data Exchange or TomoPy:
 
 - De Carlo F, et al.(2014). **J. Synchrotron Rad.** 21, doi:10.1107/S160057751401604X
 - Gursoy D, et al. (2014). **J. Synchrotron Rad.** 21,  doi:10.1107/S1600577514013939
