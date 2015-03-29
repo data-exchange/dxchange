@@ -40,7 +40,7 @@ class xrm:
         # Open OLE file:
         ole = OleFileIO(filename)
         
-        verbose = False
+        verbose = True
         
         if ole.exists('ImageInfo/ImagesTaken'):                  
             stream = ole.openstream('ImageInfo/ImagesTaken')
@@ -50,9 +50,9 @@ class xrm:
             nimgs = nev[0]
             nimgs = np.int(nimgs)
             
-        if nimgs > 1:
-            print 'This file has more than one image and cannot be used to make a stack.'
-            return 0, 0, 0
+#        if nimgs > 1:
+#            print 'This file has more than one image and cannot be used to make a stack.'
+#            return 0, 0, 0
 
                 
         if ole.exists('ImageInfo/ImageWidth'):                 
@@ -76,9 +76,23 @@ class xrm:
             size = ole.get_size('ImageInfo/Energy')
             struct_fmt = "<{}f".format(size/4)
             eV = struct.unpack(struct_fmt, data)
-            if verbose: print "ImageInfo/Energy: \n ",  eV 
+            if verbose: print "ImageInfo/Energy: ",  eV[0] 
             
+
+        if ole.exists('MultiReferenceImage/TotalRefImages'):                  
+            stream = ole.openstream('MultiReferenceImage/TotalRefImages')
+            data = stream.read()
+            nev = struct.unpack('<I', data)
+            if verbose: print "MultiReferenceImage/TotalRefImages = %i" % nev[0]  
+            #n_rows = np.int(nev[0])
             
+        if ole.exists('ReferenceData/Image'):                  
+            stream = ole.openstream('ReferenceData/Image')
+            data = stream.read()
+            size = ole.get_size('ReferenceData/Image')
+            struct_fmt = "<{}f".format(size/4)
+            eV = struct.unpack(struct_fmt, data)
+            if verbose: print "ReferenceData/Image: ",  eV[0] 
             
         if readimgdata == True:
             
@@ -299,7 +313,6 @@ class xrm:
         if ev[-1]<ev[0]:
             ev = ev[::-1]
             absdata = absdata[:,:, ::-1]
-            
        
         
         #Fill the data structure with data: 
@@ -320,8 +333,7 @@ class xrm:
         
         ds.exchange.energy=ev
         ds.exchange.energy_units = 'ev'
-        
-        
+         
         #Since we do not have a scanning microscope we fill the x_dist and y_dist from pixel_size
         x_dist = np.arange(np.float(ncols))*pixelsize
         y_dist = np.arange(np.float(nrows))*pixelsize
@@ -331,14 +343,8 @@ class xrm:
         ds.exchange.y = y_dist
         ds.exchange.y_units = 'um'     
         
-        
-        
         self.data_dwell = np.ones((nev))*exptimes[0]
-        ds.spectromicroscopy.data_dwell = self.data_dwell
-        
-
-            
-        
+        ds.spectromicroscopy.data_dwell = self.data_dwell    
         
         return
     
@@ -531,9 +537,7 @@ class xrm:
           
           
         return
-    
-             
-    
+        
 #----------------------------------------------------------------------
     def read_txrm(self, filename, ds):
             
@@ -547,7 +551,6 @@ class xrm:
         #print list
         
         verbose = False
-
 
         # Test if known streams/storages exist:
         if ole.exists('Version'):
@@ -603,6 +606,52 @@ class xrm:
         except:
             pass
                 
+        if ole.exists('Alignment/StageShiftsApplied'):
+            stream = ole.openstream('Alignment/StageShiftsApplied')
+            data = stream.read()
+            shift = struct.unpack('<I', data)
+            if verbose: print "shift = ", shift[0]  
+
+        if ole.exists('Alignment/X-Shifts'):                  
+            stream = ole.openstream('Alignment/X-Shifts')
+            data = stream.read()
+            size = ole.get_size('Alignment/X-Shifts')
+            struct_fmt = "<{}f".format(size/4)
+            XShift = struct.unpack(struct_fmt, data)
+            if verbose: print "Alignment/X-Shifts: \n ",  XShift  
+
+        if ole.exists('Alignment/Y-Shifts'):                  
+            stream = ole.openstream('Alignment/Y-Shifts')
+            data = stream.read()
+            size = ole.get_size('Alignment/Y-Shifts')
+            struct_fmt = "<{}f".format(size/4)
+            YShift = struct.unpack(struct_fmt, data)
+            if verbose: print "Alignment/Y-Shifts: \n ",  YShift  
+
+        if ole.exists('ImageInfo/XPosition'):                  
+            stream = ole.openstream('ImageInfo/XPosition')
+            data = stream.read()
+            size = ole.get_size('ImageInfo/XPosition')
+            struct_fmt = "<{}f".format(size/4)
+            XPosition = struct.unpack(struct_fmt, data)
+            if verbose: print "ImageInfo/XPosition: \n ",  XPosition  
+
+        if ole.exists('ImageInfo/YPosition'):                  
+            stream = ole.openstream('ImageInfo/YPosition')
+            data = stream.read()
+            size = ole.get_size('ImageInfo/YPosition')
+            struct_fmt = "<{}f".format(size/4)
+            YPosition = struct.unpack(struct_fmt, data)
+            if verbose: print "ImageInfo/YPosition: \n ",  YPosition  
+
+        if ole.exists('ImageInfo/ZPosition'):                  
+            stream = ole.openstream('ImageInfo/ZPosition')
+            data = stream.read()
+            size = ole.get_size('ImageInfo/ZPosition')
+            struct_fmt = "<{}f".format(size/4)
+            ZPosition = struct.unpack(struct_fmt, data)
+            if verbose: print "ImageInfo/ZPosition: \n ",  ZPosition  
+
         if ole.exists('ImageInfo/ImageWidth'):                 
             stream = ole.openstream('ImageInfo/ImageWidth')
             data = stream.read()
@@ -633,9 +682,7 @@ class xrm:
             struct_fmt = "<{}f".format(size/4)
             eng = struct.unpack(struct_fmt, data)
             if verbose: print "ImageInfo/Energy: \n ",  eng  
-            self.ev = np.array(eng)
-
-                           
+            self.ev = np.array(eng)                           
                 
         if ole.exists('ImageInfo/PixelSize'):                  
             stream = ole.openstream('ImageInfo/PixelSize')
@@ -722,7 +769,14 @@ class xrm:
         
         self.data_dwell = np.ones((self.n_ev))*exptimes[0]
           
-          
+        ds.exchange.sample_position_x = XPosition
+        ds.exchange.sample_position_y = YPosition
+        ds.exchange.sample_position_z = ZPosition
+
+        ds.exchange.sample_image_shift_x = XShift
+        ds.exchange.sample_image_shift_y = YShift
+
+        ds.exchange.actual_pixel_size =  pixelsize 
         return
     
     

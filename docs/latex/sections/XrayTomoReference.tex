@@ -190,14 +190,14 @@ This class holds information about the detector used during the experiment. If  
 \tt{model} & string dataset &  "pco dimax" \\
 \tt{serial\_number} & string dataset &  "1234XW2" \\  
 \tt{bit\_depth} & integer & 12 \\     
-\tt{x\_pixel\_size} & float & 6.7e-6 \\
-\tt{y\_pixel\_size} & float & 6.7e-6 \\
-\tt{x\_actual\_pixel\_size} & float & 1.2e-6 \\
-\tt{y\_actual\_pixel\_size} & float & 1.2e-6 \\
-\tt{x\_dimension} & integer & 2048 \\
-\tt{y\_dimension} & integer & 2048 \\
-\tt{x\_binning} & integer & 1 \\
-\tt{y\_binning} & integer & 1 \\
+\tt{pixel\_size\_x} & float & 6.7e-6 \\
+\tt{pixel\_size\_y} & float & 6.7e-6 \\
+\tt{actual\_pixel\_size\_x} & float & 1.2e-6 \\
+\tt{actual\_pixel\_size\_y} & float & 1.2e-6 \\
+\tt{dimension\_x} & integer & 2048 \\
+\tt{dimension\_y} & integer & 2048 \\
+\tt{binning\_x} & integer & 1 \\
+\tt{binning\_y} & integer & 1 \\
 \tt{operating\_temperature} & float &  270 \\     
 \tt{exposure\_time} & float & 1.7e-3 \\   
 \tt{delay\_time} & float & 1.7e-3 \\   
@@ -228,18 +228,18 @@ This class holds information about the detector used during the experiment. If  
 \item[\tt{bit\_depth}] \hfill \\
 {The detector bit depth.}
 
-\item[\tt{x\_pixel\_size, y\_pixel\_size}] \hfill \\
+\item[\tt{pixel\_size\_x, pixel\_size\_y}] \hfill \\
 {Physical detector pixel size (m).}
 
-\item[\tt{x\_dimension, y\_dimension}] \hfill \\
+\item[\tt{dimension\_x, dimension\_y}] \hfill \\
 {The detector horiz./vertical dimension.}
 
-\item[\tt{x\_actual\_pixel\_size, y\_actual\_pixel\_size}] \hfill \\
+\item[\tt{actual\_pixel\_size\_x, actual\_pixel\_size\_y}] \hfill \\
 {Actual pixel size on the sample plane.}
 
 
-\item[\tt{x\_binning, y\_binning}] \hfill \\
-{If the data are collected binning the detector x\_binning and y\_binning store the binning factor.}
+\item[\tt{binning\_x, binning\_y}] \hfill \\
+{If the data are collected binning the detector binning\_x and binning\_y store the binning factor.}
 
 \item[\tt{operating\_temperature}] \hfill \\
 {The detector operating temperature (K).}

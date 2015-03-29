@@ -32,7 +32,7 @@ def main():
     #sample_name = '20130731_004_Stripe_Solder_Sample_Tip1'
 
     file_name = '/local/dataraid/databank/DTU_Imaging_Center/halvmaane_150kV-HE6-20X-60s.txrm'
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/Lorentz/dtu/DTU_02.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/Lorentz/dtu/DTU_02k.h5'
     sample_name = 'halvmaane_150kV-HE6-20X-60s'
 
     experimenter_name="Martin Skovgaard Andersen"
@@ -48,7 +48,7 @@ def main():
     print "axes", array.exchange.data_axes
     print "energy:", array.exchange.energy[0]
     print "energy units:",  array.exchange.energy_units
-    print "angles:", array.exchange.angles
+    #print "angles:", array.exchange.angles
     print "exposure time:", array.spectromicroscopy.data_dwell[0]
 
 
@@ -71,6 +71,12 @@ def main():
                           experimenter_email=experimenter_email, 
                           instrument_comment=instrument_comment,  
                           sample_name = sample_name,
+                          sample_position_x = array.exchange.sample_position_x,
+                          sample_position_y = array.exchange.sample_position_y,
+                          sample_position_z = array.exchange.sample_position_z,
+                          sample_image_shift_x = array.exchange.sample_image_shift_x,
+                          sample_image_shift_y = array.exchange.sample_image_shift_y,
+                          actual_pixel_size = array.exchange.actual_pixel_size,
                           data_exchange_type = 'tomography_raw_projections'
                           )
 

@@ -521,42 +521,42 @@ class DataExchangeEntry(object):
                 'units': 'dimensionless',
                 'docstring': 'The detector ADC bit depth.'
             },
-            'x_pixel_size': {
+            'pixel_size_x': {
                 'value': None,
                 'units': 'm',
                 'docstring': 'Physical detector pixel size (m).'
             },
-            'y_pixel_size': {
+            'pixel_size_y': {
                 'value': None,
                 'units': 'm',
                 'docstring': 'Physical detector pixel size (m).'
             },
-            'x_actual_pixel_size': {
+            'actual_pixel_size_x': {
                 'value': None,
                 'units': 'm',
                 'docstring': 'Pixel size on the sample plane (m).'
             },
-            'y_actual_pixel_size': {
+            'actual_pixel_size_y': {
                 'value': None,
                 'units': 'm',
                 'docstring': 'Pixel size on the sample plane (m).'
             },
-            'x_dimension': {
+            'dimension_x': {
                 'value': None,
                 'units': 'pixels',
                 'docstring': 'The detector horiz. dimension.'
             },
-            'y_dimension': {
+            'dimension_y': {
                 'value': None,
                 'units': 'text',
                 'docstring': 'The detector vertical dimension.'
             },
-            'x_binning': {
+            'binning_x': {
                 'value': None,
                 'units': 'pixels',
                 'docstring': 'If the data are collected binning the detector x binning and y binning store the binning factor.'
             },
-            'y_binning': {
+            'binning_y': {
                 'value': None,
                 'units': 'dimensionless',
                 'docstring': 'If the data are collected binning the detector x binning and y binning store the binning factor.'
@@ -852,6 +852,31 @@ class DataExchangeEntry(object):
                 'units': 'text',
                 'docstring': 'comment'
             },
+            'sample_position_x': {
+                'value': None,
+                'units': 'mm',
+                'docstring': 'Vector containing the position of the sample axis x at each projection image collection.'
+            },        
+            'sample_position_y': {
+                'value': None,
+                'units': 'mm',
+                'docstring': 'Vector containing the position of the sample axis y at each projection image collection.'
+            },        
+            'sample_position_z': {
+                'value': None,
+                'units': 'mm',
+                'docstring': 'Vector containing the position of the sample axis z at each projection image collection.'
+            },
+            'sample_image_shift_x': {
+                'value': None,
+                'units': 'pixels',
+                'docstring': 'Vector containing the shift of the sample axis x at each projection on the detector plane.'        
+            },        
+            'sample_image_shift_y': {
+                'value': None,
+                'units': 'pixels',
+                'docstring': 'Vector containing the shift of the sample axis y at each projection on the detector plane.'        
+            },        
         }
 
     def _generate_classes(self):

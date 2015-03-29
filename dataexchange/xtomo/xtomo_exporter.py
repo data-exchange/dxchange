@@ -97,6 +97,11 @@ class Export():
                         sample_comment=None,
                         acquisition_mode=None,
                         acquisition_comment=None,
+                        sample_position_x=None,
+                        sample_position_y=None,
+                        sample_position_z=None,
+                        sample_image_shift_x=None,
+                        sample_image_shift_y=None,
                         hdf5_file_name=None,
                         axes='theta:y:x',
                         log='INFO'
@@ -267,8 +272,8 @@ class Export():
                     f.add_entry(DataExchangeEntry.source(current={'value': current, 'units': 'mA', 'dataset_opts': {'dtype': 'd'}}))
 
                 if (actual_pixel_size != None):
-                    f.add_entry(DataExchangeEntry.detector(x_actual_pixel_size={'value': actual_pixel_size, 'units': 'microns', 'dataset_opts': {'dtype': 'd'}}, 
-                                                            y_actual_pixel_size={'value': actual_pixel_size, 'units': 'microns', 'dataset_opts': {'dtype': 'd'}}))
+                    f.add_entry(DataExchangeEntry.detector(actual_pixel_size_x={'value': actual_pixel_size, 'units': 'microns', 'dataset_opts': {'dtype': 'd'}}, 
+                                                           actual_pixel_size_y={'value': actual_pixel_size, 'units': 'microns', 'dataset_opts': {'dtype': 'd'}}))
 
                 if (experimenter_name != None):
                     f.add_entry(DataExchangeEntry.experimenter(name={'value':experimenter_name}))
@@ -291,6 +296,19 @@ class Export():
                     f.add_entry(DataExchangeEntry.acquisition(mode={'value':acquisition_mode}))
                 if (acquisition_comment != None):
                     f.add_entry(DataExchangeEntry.acquisition(comment={'value':acquisition_comment}))
+
+                if (sample_position_x != None):
+                    f.add_entry(DataExchangeEntry.acquisition(sample_position_x={'value':sample_position_x, 'units': 'mm', 'dataset_opts': {'dtype': 'd'}}))
+                if (sample_position_y != None):
+                    f.add_entry(DataExchangeEntry.acquisition(sample_position_y={'value':sample_position_y, 'units': 'mm', 'dataset_opts': {'dtype': 'd'}}))
+                if (sample_position_z != None):
+                    f.add_entry(DataExchangeEntry.acquisition(sample_position_z={'value':sample_position_z, 'units': 'mm', 'dataset_opts': {'dtype': 'd'}}))
+
+                if (sample_image_shift_x != None):
+                    f.add_entry(DataExchangeEntry.acquisition(sample_image_shift_x={'value':sample_image_shift_x, 'units': 'mm', 'dataset_opts': {'dtype': 'd'}}))
+                if (sample_image_shift_y != None):
+                    f.add_entry(DataExchangeEntry.acquisition(sample_image_shift_y={'value':sample_image_shift_y, 'units': 'mm', 'dataset_opts': {'dtype': 'd'}}))
+
 
                 f.close()
                 self.logger.info("DONE!!!!. Created Data Exchange File [%s]", hdf5_file_name)
