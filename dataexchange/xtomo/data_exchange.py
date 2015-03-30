@@ -536,7 +536,7 @@ class DataExchangeEntry(object):
         self._detector = {
             'root': '/measurement/instrument',
             'entry_name': 'detector',
-            'docstring': 'X-ray detector.',
+            'docstring': 'X-ray area detector.',
             'manufacturer': {
                 'value': None,
                 'units': 'text',
@@ -891,28 +891,18 @@ class DataExchangeEntry(object):
             'sample_position_x': {
                 'value': None,
                 'units': 'mm',
-                'docstring': 'Vector containing the position of the sample axis x at each projection image collection.'
+                'docstring': 'Vector containing the set position of the sample axis x at each projection image collection.'
             },        
             'sample_position_y': {
                 'value': None,
                 'units': 'mm',
-                'docstring': 'Vector containing the position of the sample axis y at each projection image collection.'
+                'docstring': 'Vector containing the set position of the sample axis y at each projection image collection.'
             },        
             'sample_position_z': {
                 'value': None,
                 'units': 'mm',
-                'docstring': 'Vector containing the position of the sample axis z at each projection image collection.'
+                'docstring': 'Vector containing the set position of the sample axis z at each projection image collection.'
             },
-            'sample_image_shift_x': {
-                'value': None,
-                'units': 'pixels',
-                'docstring': 'Vector containing the shift of the sample axis x at each projection on the detector plane.'        
-            },        
-            'sample_image_shift_y': {
-                'value': None,
-                'units': 'pixels',
-                'docstring': 'Vector containing the shift of the sample axis y at each projection on the detector plane.'        
-            },        
         }
 
     def _generate_classes(self):
