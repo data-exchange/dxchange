@@ -334,7 +334,7 @@ class DataExchangeEntry(object):
         self._instrument = {
             'root': '/measurement',
             'entry_name': 'instrument',
-            'docstring': 'All relevant beamline components status at the beginning of a measurement',
+            'docstring': 'All relevant beamline components status during the measurement',
             'name': {
                 'value': None,
                 'units': 'text',
@@ -443,6 +443,42 @@ class DataExchangeEntry(object):
                 'units': 'text',
                 'docstring': 'The current recorded by the amplifier.'
             },
+        }
+
+        self._capacitive_sensors = {
+            'root': '/measurement/instrument',
+            'entry_name': 'capacitive_sensors',
+            'docstring': 'Capacitive Sensors settings.',
+            'name': {
+                'value': None,
+                'units': 'text',
+                'docstring': 'Name of the capacitive sensor.'
+            },
+            'gain': {
+                'value': None,
+                'units': 'text',
+                'docstring': 'Capacitive sensor gain setting'
+            },
+            'gain units': {
+                'value': None,
+                'units': 'text',
+                'docstring': 'Capacitive sensor gain units'
+            },
+            'shift_x': {
+                'value': None,
+                'units': 'm',
+                'docstring': 'The position recorded by the capacitive sersor in the X direction.'
+            },
+            'shift_y': {
+                'value': None,
+                'units': 'm',
+                'docstring': 'The position recorded by the capacitive sersor in the Y direction.'
+            },
+            'shift_z': {
+                'value': None,
+                'units': 'm',
+                'docstring': 'The position recorded by the capacitive sersor in the Z direction.'
+            }
         }
 
         self._attenuator = {
