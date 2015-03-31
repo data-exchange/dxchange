@@ -32,7 +32,7 @@ from setuptools import setup, Extension, find_packages
 #    raise ImportError("data-exchange requires  PIL 1.1.7 (hint: pip install PIL)")
 
 # installing C class supporting compressed TIFF
-setup(name='_tifffile', ext_modules=[Extension('_tifffile', ['dataexchange/xtomo/formats/tifffile.c'], include_dirs=[numpy.get_include()])])
+#setup(name='_tifffile', ext_modules=[Extension('_tifffile', ['dataexchange/xtomo/formats/tifffile.c'], include_dirs=[numpy.get_include()])])
 
 # Main setup configuration.
 setup(
