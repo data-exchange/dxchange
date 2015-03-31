@@ -5,8 +5,8 @@ import io
 import platform
 import warnings
 
-from ez_setup import use_setuptools
-use_setuptools()
+#from ez_setup import use_setuptools
+#use_setuptools()
 from setuptools import setup, Extension, find_packages
 
 # Check Python packages.
