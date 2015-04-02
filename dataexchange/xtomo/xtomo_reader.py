@@ -44,7 +44,7 @@ import h5py
 from pyhdf import SD
 import numpy as np 
 import PIL.Image as Image
-import netcdf4 as nc
+import netCDF4 as nc
 import math
 import os
 from scipy import misc
