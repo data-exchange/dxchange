@@ -54,7 +54,7 @@ import formats.data_struct as dstruct
 import formats.data_spe as spe
 
 from formats.EdfFile import EdfFile
-from formats.tifffile import TiffFile
+from tifffile import TiffFile
 
 class XTomoReader:
 
