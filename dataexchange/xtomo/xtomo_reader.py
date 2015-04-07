@@ -55,7 +55,7 @@ import formats.data_spe as spe
 
 from formats.EdfFile import EdfFile
 from tifffile import TiffFile
-
+quit
 class XTomoReader:
 
     def __init__(self, file_name):
