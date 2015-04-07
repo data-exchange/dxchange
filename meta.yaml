@@ -1,6 +1,6 @@
 package:
   name: data-exchange
-  version: '0.1.11'
+  version: '0.1.14'
 
 source:
   git_url: https://github.com/decarlof/data-exchange.git
@@ -13,11 +13,13 @@ requirements:
     - python
     - h5py
     - pyhdf
+    - tifffile
     - netcdf4
  
   run:
     - h5py
     - pyhdf
+    - tifffile
     - netcdf4
 
 about:
