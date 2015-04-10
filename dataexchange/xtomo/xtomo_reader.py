@@ -51,9 +51,9 @@ from scipy import misc
 
 import formats.xradia_xrm as xradia
 import formats.data_struct as dstruct
-import formats.data_spe as spe
+import spefile as spe
 
-from formats.EdfFile import EdfFile
+from EdfFile import EdfFile
 from tifffile import TiffFile
 quit
 class XTomoReader:
