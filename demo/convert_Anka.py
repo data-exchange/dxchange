@@ -22,9 +22,9 @@ import dataexchange
 
 def main():
 
-    file_name = '/local/dataraid/databank/Anka/radios/image_.tif'
-    dark_file_name = '/local/dataraid/databank/Anka/darks/image_.tif'
-    white_file_name = '/local/dataraid/databank/Anka/flats/image_.tif'
+    file_name = '/local/dataraid/databank/templates/anka_topo-tomo/radios/image_.tif'
+    dark_file_name = '/local/dataraid/databank/templates/anka_topo-tomo/darks/image_.tif'
+    white_file_name = '/local/dataraid/databank/templates/anka_topo-tomo/flats/image_.tif'
 
     hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/Anka.h5'
 

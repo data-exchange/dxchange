@@ -22,9 +22,9 @@ import dataexchange
 
 def main():
 
-    file_name = '/local/dataraid/databank/Elettra/Volcanic_rock/tomo_.tif'
-    dark_file_name = '/local/dataraid/databank/Elettra/Volcanic_rock/dark_.tif'
-    white_file_name = '/local/dataraid/databank/Elettra/Volcanic_rock/flat_.tif'
+    file_name = '/local/dataraid/databank/templates/elettra_SYRMEP/Volcanic_rock/tomo_.tif'
+    dark_file_name = '/local/dataraid/databank/templates/elettra_SYRMEP/Volcanic_rock/dark_.tif'
+    white_file_name = '/local/dataraid/databank/templates/elettra_SYRMEP/Volcanic_rock/flat_.tif'
 
     hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/Elettra.h5'
 

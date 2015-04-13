@@ -24,8 +24,8 @@ import re
 
 def main():
 
-    file_name = '/local/dataraid/databank/APS_1_ID/APS1ID_Cat4B_2/CAT4B_2_.tif'
-    log_file = '/local/dataraid/databank/APS_1_ID/APS1ID_Cat4B_2/CAT4B_2_TomoStillScan.dat'
+    file_name = '/local/dataraid/databank/templates/aps_1-ID/APS1ID_Cat4B_2/CAT4B_2_.tif'
+    log_file = '/local/dataraid/databank/templates/aps_1-ID/APS1ID_Cat4B_2/CAT4B_2_TomoStillScan.dat'
 
     hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/APS_1_ID.h5'
 
