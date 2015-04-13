@@ -37,13 +37,13 @@ Examples
 
 """
 
-import numpy as np
-import os
 import h5py
 import logging
+import numpy as np
+import os
 import warnings
-from skimage import io as skimage_io 
 
+from skimage import io as skimage_io 
 from data_exchange import DataExchangeFile, DataExchangeEntry
 
 class Export():

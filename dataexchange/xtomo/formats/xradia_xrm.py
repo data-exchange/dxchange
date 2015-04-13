@@ -20,6 +20,8 @@
 import numpy as np
 import scipy as scy
 import struct
+
+import olefile
             
 import data_struct
 

@@ -40,19 +40,21 @@ Examples
 .. _xtomo_importer: dataexchange.xtomo.xtomo_importer.html
 """
 
-import h5py
-from pyhdf import SD
-import numpy as np 
-import PIL.Image as Image
-import netCDF4 as nc
-import math
 import os
-from scipy import misc
+import numpy as np 
+import math
+
+#from scipy import misc
 
 import formats.xradia_xrm as xradia
 import formats.data_struct as dstruct
+
+import h5py
+import netCDF4 as nc
+import PIL.Image as Image
 import spefile as spe
 
+from pyhdf import SD
 from EdfFile import EdfFile
 from tifffile import TiffFile
 

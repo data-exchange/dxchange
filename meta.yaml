@@ -1,6 +1,6 @@
 package:
   name: data-exchange
-  version: '0.1.22'
+  version: '0.1.23'
 
 source:
   git_url: https://github.com/decarlof/data-exchange.git

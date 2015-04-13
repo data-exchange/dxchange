@@ -53,10 +53,10 @@ Examples
 
 """
 
-import numpy as np
-import os
 import h5py
 import logging
+import numpy as np
+import os
 
 from dataexchange.xtomo.xtomo_reader import XTomoReader
 
