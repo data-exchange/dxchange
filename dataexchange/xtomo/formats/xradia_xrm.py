@@ -21,7 +21,7 @@ import numpy as np
 import scipy as scy
 import struct
 
-import olefile
+import olefile as olef
             
 import data_struct
 
@@ -36,11 +36,11 @@ class xrm:
 #----------------------------------------------------------------------
     def read_xrm_fileinfo(self, filename, readimgdata = False): 
         
-        if not isOleFile(filename):
+        if not olef.isOleFile(filename):
             print "File not valid OLE type."
             return
         # Open OLE file:
-        ole = OleFileIO(filename)
+        ole = olef.OleFileIO(filename)
         
         verbose = True
         
@@ -163,11 +163,11 @@ class xrm:
         file1 = os.path.join(filepath, filelist[0])   
 
 
-        if not isOleFile(file1):
+        if not olef.isOleFile(file1):
             print "File not valid OLE type."
             return
         # Open OLE file:
-        ole = OleFileIO(file1)
+        ole = olef.OleFileIO(file1)
         
         verbose = False
         
@@ -263,7 +263,7 @@ class xrm:
         for j in range(len(filelist)):
             fn = filelist[j]
             filename = os.path.join(filepath, fn)   
-            ole = OleFileIO(filename)  
+            ole = olef.OleFileIO(filename)  
             
             #folder contains 100 images 1-100, 101-200...           
             for i in range(1, nimgs+1):
@@ -353,11 +353,11 @@ class xrm:
 #----------------------------------------------------------------------
     def read_xrm(self, filename, ds):
             
-        if not isOleFile(filename):
+        if not olef.isOleFile(filename):
             print "File not valid OLE type."
             return
         # Open OLE file:
-        ole = OleFileIO(filename)
+        ole = olef.OleFileIO(filename)
         # Get list of streams:
         #list = ole.listdir()
         #print list
@@ -543,11 +543,11 @@ class xrm:
 #----------------------------------------------------------------------
     def read_txrm(self, filename, ds):
             
-        if not isOleFile(filename):
+        if not olef.isOleFile(filename):
             print "File not valid OLE type."
             return
         # Open OLE file:
-        ole = OleFileIO(filename)
+        ole = olef.OleFileIO(filename)
         # Get list of streams:
         #list = ole.listdir()
         #print list
