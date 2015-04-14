@@ -45,7 +45,7 @@ import numpy as np
 import math
 
 #import PIL.Image as Image
-import pil as Image
+import pillow as Image
 
 import formats.xradia_xrm as xradia
 import formats.data_struct as dstruct
