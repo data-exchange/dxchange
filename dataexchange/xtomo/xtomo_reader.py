@@ -44,14 +44,13 @@ import os
 import numpy as np 
 import math
 
-#from scipy import misc
+import PIL.Image as Image
 
 import formats.xradia_xrm as xradia
 import formats.data_struct as dstruct
 
 import h5py
 import netCDF4 as nc
-import PIL.Image as Image
 import spefile as spe
 
 from pyhdf import SD
