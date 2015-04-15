@@ -45,7 +45,6 @@ import numpy as np
 import math
 
 import PIL.Image as Image
-#import pillow as Image
 
 import formats.xradia_xrm as xradia
 import formats.data_struct as dstruct
@@ -53,6 +52,7 @@ import formats.data_struct as dstruct
 import h5py
 import netCDF4 as nc
 import spefile as spe
+import olefile as olef
 
 from pyhdf import SD
 from EdfFile import EdfFile
@@ -439,6 +439,135 @@ class XTomoReader:
         return out[x_start:x_end:x_step,
                    y_start:y_end:y_step]
         
+    def txrm_test(self,
+             array_name=None,
+             x_start=0,
+             x_end=0,
+             x_step=1,
+             y_start=0,
+             y_end=0,
+             y_step=1,
+             z_start=0,
+             z_end=0,
+             z_step=1):
+        """ 
+        Read 3-D tomographic projection data from a TXRM file 
+        
+        Parameters
+        
+        file_name : str
+            Input txrm file.
+        
+        x_start, x_end, x_step : scalar, optional
+            Values of the start, end and step of the
+            slicing for the whole array.
+        
+        y_start, y_end, y_step : scalar, optional
+            Values of the start, end and step of the
+            slicing for the whole array.
+        
+        z_start, z_end, z_step : scalar, optional
+            Values of the start, end and step of the
+            slicing for the whole array.
+        
+        Returns
+        
+        out : array
+            Returns the data as a matrix.
+        """
+        try:
+            olef.isOleFile(self.filename)
+            #reader.read_txrm(self.file_name, array)
+            ole = olef.OleFileIO(self.filename)
+            if (array_name == "theta"):
+                if ole.exists('ImageInfo/Angles'):                  
+                    stream = ole.openstream('ImageInfo/Angles')
+                    data = stream.read()
+                    struct_fmt = "<{}f".format(nimgs)
+                    angles = struct.unpack(struct_fmt, data)
+                    if verbose: print "ImageInfo/Angles: \n ",  angles  
+                    theta = np.asarray(angles)                
+                    num_z = theta.size
+        	    if z_end is 0: z_end = num_z
+		    # Construct theta.
+                dataset = theta[z_start:z_end:z_step]
+            else:
+                datasize = np.empty((3), dtype=np.int)
+                if ole.exists('ImageInfo/ImageWidth'):                 
+                    stream = ole.openstream('ImageInfo/ImageWidth')
+                    data = stream.read()
+                    nev = struct.unpack('<I', data)
+                    if verbose: print "ImageInfo/ImageWidth = %i" % nev[0]  
+                    datasize[0] = np.int(nev[0])
+                    n_cols = datasize[0]
+
+                if ole.exists('ImageInfo/ImageHeight'):                  
+                    stream = ole.openstream('ImageInfo/ImageHeight')
+                    data = stream.read()
+                    nev = struct.unpack('<I', data)
+                    if verbose: print "ImageInfo/ImageHeight = %i" % nev[0]  
+                    datasize[1] = np.int(nev[0])
+                    n_rows = datasize[1]
+
+                if ole.exists('ImageInfo/ImagesTaken'):                  
+                    stream = ole.openstream('ImageInfo/ImagesTaken')
+                    data = stream.read()
+                    nev = struct.unpack('<I', data)
+                    if verbose: print "ImageInfo/ImagesTaken = %i" % nev[0]  
+                    nimgs = nev[0]
+                    datasize[2] = np.int(nimgs)
+                    n_images = datasize[2]
+
+                # 10 float; 5 uint16 (unsigned 16-bit (2-byte) integers)
+                if ole.exists('ImageInfo/DataType'):                  
+                    stream = ole.openstream('ImageInfo/DataType')
+                    data = stream.read()
+                    struct_fmt = '<1I'
+                    datatype = struct.unpack(struct_fmt, data)
+                    datatype = int(datatype[0])
+                    if verbose: print "ImageInfo/DataType: %f " %  datatype  
+
+                if verbose: print 'Reading images - please wait...'
+                absdata = np.empty((n_cols, n_rows, n_images), dtype=np.float32)
+                #Read the images - They are stored in ImageData1, ImageData2... Each
+                #folder contains 100 images 1-100, 101-200...           
+                for i in range(1, nimgs+1):
+                    img_string = "ImageData%i/Image%i" % (np.ceil(i/100.0), i)
+                    stream = ole.openstream(img_string)
+                    data = stream.read()
+                    # 10 float; 5 uint16 (unsigned 16-bit (2-byte) integers)
+                    if datatype == 10:
+                        struct_fmt = "<{}f".format(self.n_cols*self.n_rows)
+                        imgdata = struct.unpack(struct_fmt, data)
+                    elif datatype == 5:                   
+                        struct_fmt = "<{}h".format(self.n_cols*self.n_rows)
+                        imgdata = struct.unpack(struct_fmt, data)
+                    else:                            
+                        print "Wrong data type"
+                        return
+                    
+                absdata[:,:,i-1] = np.reshape(imgdata, (self.n_cols, self.n_rows), order='F')
+
+                num_x, num_y, num_z = np.shape(absdata)
+                data = np.swapaxes(data,0,2)
+                num_z, num_y, num_x = np.shape(absdata)
+                if x_end is 0:
+                    x_end = num_x
+                if y_end is 0:
+                    y_end = num_y
+                if z_end is 0:
+                    z_end = num_z
+                # Construct dataset from desired z, y, x.
+                dataset = absdata[z_start:z_end:z_step,
+                                y_start:y_end:y_step,
+                                x_start:x_end:x_step]    
+            ole.close()
+            
+        except KeyError:
+            dataset = None
+
+        return dataset
+
     def txrm(self,
              array_name=None,
              x_start=0,
