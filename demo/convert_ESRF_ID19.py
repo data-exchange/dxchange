@@ -22,9 +22,9 @@ import dataexchange
 
 def main():
 
-    file_name = '/local/dataraid/databank/templates/esrf_ID19/esrf_01/scan.edf'
-    dark_file_name = '/local/dataraid/databank/templates/esrf_ID19/esrf_01/dark.edf'
-    white_file_name = '/local/dataraid/databank/templates/esrf_ID19/esrf_01/flat.edf'
+    file_name = '/local/dataraid/databank/templates/esrf_ID19/tomo.edf'
+    dark_file_name = '/local/dataraid/databank/templates/esrf_ID19/dark.edf'
+    white_file_name = '/local/dataraid/databank/templates/esrf_ID19/flat.edf'
 
     hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/ESRF.h5'
 

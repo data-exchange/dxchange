@@ -22,11 +22,11 @@ import dataexchange
 
 def main():
 
-    file_name = '/local/dataraid/databank/templates/australian_micro-tomography/Mayo_tooth_AS/SAMPLE_T_.tif'
-    dark_file_name = '/local/dataraid/databank/templates/australian_micro-tomography/Mayo_tooth_AS/DF__BEFORE_.tif'
-    white_file_name = '/local/dataraid/databank/templates/australian_micro-tomography/Mayo_tooth_AS/BG__BEFORE_.tif'
+    file_name = '/local/dataraid/databank/templates/australian_micro-tomography/SAMPLE_T_.tif'
+    dark_file_name = '/local/dataraid/databank/templates/australian_micro-tomography/DF__BEFORE_.tif'
+    white_file_name = '/local/dataraid/databank/templates/australian_micro-tomography/BG__BEFORE_.tif'
 
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/Australian.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/Australian_test.h5'
 
     sample_name = 'Teeth'
 

@@ -24,11 +24,11 @@ import re
 
 def main():
 
-    file_name = '/local/dataraid/databank/templates/als_beamline_8.3.2/20140715_141352_NaCl/20140715_141352_NaCl-15_NaMgF3-85_01475_5x_0000_.tif'
-    dark_file_name = '/local/dataraid/databank/templates/als_beamline_8.3.2/20140715_141352_NaCl/20140715_141352_NaCl-15_NaMgF3-85_01475_5xdrk_.tif'
-    white_file_name = '/local/dataraid/databank/templates/als_beamline_8.3.2/20140715_141352_NaCl/20140715_141352_NaCl-15_NaMgF3-85_01475_5xbak_.tif'
-    log_file = '/local/dataraid/databank/templates/als_beamline_8.3.2/20140715_141352_NaCl/20140715_141352_NaCl-15_NaMgF3-85_01475_5x.sct'
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/ALS.h5'    
+    file_name = '/local/dataraid/databank/templates/als_beamline_8.3.2/tomo_.tif'
+    dark_file_name = '/local/dataraid/databank/templates/als_beamline_8.3.2/dark_.tif'
+    white_file_name = '/local/dataraid/databank/templates/als_beamline_8.3.2/flat_.tif'
+    log_file = '/local/dataraid/databank/templates/als_beamline_8.3.2/log.sct'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/ALS_test.h5'    
 
     verbose = True
 
