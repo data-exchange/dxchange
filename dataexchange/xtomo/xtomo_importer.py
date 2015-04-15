@@ -509,7 +509,7 @@ class Import():
                 if os.path.isfile(file_name):
                     self.logger.info("Projection file: [%s] exists", file_name)                    
                     f = XTomoReader(file_name)
-                    tmpdata = f.txrm_test(y_start = slices_start,
+                    tmpdata = f.txrm(y_start = slices_start,
                                     y_end = slices_end,
                                     y_step = slices_step)
                     dtype = tmpdata.dtype                    
@@ -880,7 +880,7 @@ class Import():
 		self.logger.info("Attempt reading angles from file: [%s]", file_name)                    
 		f = XTomoReader(file_name)
         	self.logger.info("Angle file: [%s] exists", file_name)                    
-		tmpdata = f.txrm_test(array_name='theta')
+		tmpdata = f.txrm(array_name='theta')
 		self.theta = tmpdata
 	else:
 	        # Fabricate theta values

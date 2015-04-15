@@ -46,8 +46,8 @@ import math
 
 import PIL.Image as Image
 
-import formats.xradia_xrm as xradia
-import formats.data_struct as dstruct
+#import formats.xradia_xrm as xradia
+#import formats.data_struct as dstruct
 
 import h5py
 import netCDF4 as nc
@@ -439,7 +439,7 @@ class XTomoReader:
         return out[x_start:x_end:x_step,
                    y_start:y_end:y_step]
         
-    def txrm_test(self,
+    def txrm(self,
              array_name=None,
              x_start=0,
              x_end=0,
@@ -569,134 +569,6 @@ class XTomoReader:
 
         return dataset
 
-    def txrm(self,
-             array_name=None,
-             x_start=0,
-             x_end=0,
-             x_step=1,
-             y_start=0,
-             y_end=0,
-             y_step=1,
-             z_start=0,
-             z_end=0,
-             z_step=1):
-        """ 
-        Read 3-D tomographic projection data from a TXRM file 
-        
-        Parameters
-        
-        file_name : str
-            Input txrm file.
-        
-        x_start, x_end, x_step : scalar, optional
-            Values of the start, end and step of the
-            slicing for the whole array.
-        
-        y_start, y_end, y_step : scalar, optional
-            Values of the start, end and step of the
-            slicing for the whole array.
-        
-        z_start, z_end, z_step : scalar, optional
-            Values of the start, end and step of the
-            slicing for the whole array.
-        
-        Returns
-        
-        out : array
-            Returns the data as a matrix.
-        """
-        # Read data from file.
-        reader = xradia.xrm()
-        array = dstruct
-
-        try:
-            reader.read_txrm(self.file_name, array)
-            if (array_name == "theta"):
-                theta = np.asarray(array.exchange.angles)                
-                num_z = theta.size
-        	if z_end is 0:
-                    z_end = num_z
-		# Construct theta.
-        	dataset = theta[z_start:z_end:z_step]
-            else:
-                data = np.asarray(array.exchange.data)
-                num_x, num_y, num_z = np.shape(array.exchange.data)
-                data = np.swapaxes(data,0,2)
-                num_z, num_y, num_x = np.shape(data)
-                if x_end is 0:
-                    x_end = num_x
-                if y_end is 0:
-                    y_end = num_y
-                if z_end is 0:
-                    z_end = num_z
-                # Construct dataset from desired z, y, x.
-                dataset = data[z_start:z_end:z_step,
-                                y_start:y_end:y_step,
-                                x_start:x_end:x_step]                
-        except KeyError:
-            dataset = None
-
-        return dataset
-       
-    def xrm(self,
-            x_start=0,
-            x_end=0,
-            x_step=1,
-            y_start=0,
-            y_end=0,
-            y_step=1,
-            z_start=0,
-            z_end=0,
-            z_step=1):
-        """ 
-        Read 3-D tomographic projection data from an XRM file.
-        
-        Parameters
-        
-        file_name : str
-            Input xrm file.
-        
-        x_start, x_end, x_step : scalar, optional
-            Values of the start, end and step of the
-            slicing for the whole array.
-        
-        y_start, y_end, y_step : scalar, optional
-            Values of the start, end and step of the
-            slicing for the whole array.
-        
-        z_start, z_end, z_step : scalar, optional
-            Values of the start, end and step of the
-            slicing for the whole array.
-        
-        Returns
-        
-        out : array
-            Returns the data as a matrix.
-        """
-        # Read data from file.
-        reader = xradia.xrm()
-        array = dstruct
-
-        try:
-            reader.read_xrm(self.file_name,array)
-            data = np.asarray(array.exchange.data)
-            num_x, num_y, num_z = np.shape(array.exchange.data)
-            data = np.swapaxes(data,0,2)
-            num_z, num_y, num_x = np.shape(data)
-            if x_end is 0:
-                x_end = num_x
-            if y_end is 0:
-                y_end = num_y
-            if z_end is 0:
-                z_end = num_z
-            # Construct dataset from desired z, y, x.
-            dataset = data[z_start:z_end:z_step,
-                            y_start:y_end:y_step,
-                            x_start:x_end:x_step]                
-        except KeyError:
-            dataset = None
-
-        return dataset
         
     def spe(self,
             x_start=0,
