@@ -52,7 +52,7 @@ import formats.data_struct as dstruct
 import h5py
 import netCDF4 as nc
 import spefile as spe
-import olefile as olex
+import olefile as olef
 
 from pyhdf import SD
 from EdfFile import EdfFile
@@ -478,9 +478,8 @@ class XTomoReader:
         verbose = True
         try:
             olef.isOleFile(self.filename)
-            #reader.read_txrm(self.file_name, array)
-            ole = olef.OleFileIO(self.filename)
             if (array_name == "theta"):
+                ole = olef.OleFileIO(self.filename)
                 if ole.exists('ImageInfo/Angles'):                  
                     stream = ole.openstream('ImageInfo/Angles')
                     data = stream.read()
@@ -493,6 +492,7 @@ class XTomoReader:
 		    # Construct theta.
                 dataset = theta[z_start:z_end:z_step]
             else:
+                ole = olef.OleFileIO(self.filename)
                 datasize = np.empty((3), dtype=np.int)
                 if ole.exists('ImageInfo/ImageWidth'):                 
                     stream = ole.openstream('ImageInfo/ImageWidth')
