@@ -52,7 +52,7 @@ import formats.data_struct as dstruct
 import h5py
 import netCDF4 as nc
 import spefile as spe
-import olefile as olef
+import olefile
 
 from pyhdf import SD
 from EdfFile import EdfFile
@@ -475,8 +475,9 @@ class XTomoReader:
         out : array
             Returns the data as a matrix.
         """
+        verbose = True
         try:
-            olef.isOleFile(self.filename)
+            OleFileIO.isOleFile(self.filename)
             #reader.read_txrm(self.file_name, array)
             ole = olef.OleFileIO(self.filename)
             if (array_name == "theta"):
