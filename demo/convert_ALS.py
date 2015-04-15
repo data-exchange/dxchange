@@ -28,7 +28,7 @@ def main():
     dark_file_name = '/local/dataraid/databank/templates/als_beamline_8.3.2/dark_.tif'
     white_file_name = '/local/dataraid/databank/templates/als_beamline_8.3.2/flat_.tif'
     log_file = '/local/dataraid/databank/templates/als_beamline_8.3.2/log.sct'
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/ALS_test.h5'    
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/ALS.h5'    
 
     verbose = True
 

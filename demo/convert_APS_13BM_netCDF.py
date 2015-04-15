@@ -22,9 +22,9 @@ import dataexchange
 
 def main():
 
-    file_name = '/local/dataraid/databank/templates/aps_13-BM/NC/Dorthe_F_.nc'
+    file_name = '/local/dataraid/databank/templates/aps_13-BM/NC/data_.nc'
 
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/APS_13_BM_netCDF.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/APS_13_BM_netCDF_test.h5'
 
     white_start = 1
     white_end = 4

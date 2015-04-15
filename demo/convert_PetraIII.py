@@ -28,7 +28,7 @@ def main():
     dark_file_name = '/local/dataraid/databank/templates/petraIII_P05/dark/ccd_.tif'
     white_file_name = '/local/dataraid/databank/templates/petraIII_P05/flat/ccd_.tif'
 
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/PetraIII_test.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/PetraIII.h5'
 
     projections_start = 0
     projections_end = 1441

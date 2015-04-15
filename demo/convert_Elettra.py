@@ -26,7 +26,7 @@ def main():
     dark_file_name = '/local/dataraid/databank/templates/elettra_SYRMEP/dark_.tif'
     white_file_name = '/local/dataraid/databank/templates/elettra_SYRMEP/flat_.tif'
 
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/Elettra_test.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/Elettra.h5'
 
     projections_start = 1
     projections_end = 1441

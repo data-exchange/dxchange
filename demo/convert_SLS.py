@@ -24,8 +24,8 @@ import re
 
 def main():
 
-    file_name = '/local/dataraid/databank/templates/sls_tomcat/sls_tomcat_.tif'
-    log_file = '/local/dataraid/databank/templates/sls_tomcat/sls_tomcat.log'
+    file_name = '/local/dataraid/databank/templates/sls_tomcat/data_.tif'
+    log_file = '/local/dataraid/databank/templates/sls_tomcat/tomcat.log'
 
     hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/SLS.h5'
 

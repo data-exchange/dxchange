@@ -26,7 +26,7 @@ def main():
     dark_file_name = '/local/dataraid/databank/templates/australian_micro-tomography/DF__BEFORE_.tif'
     white_file_name = '/local/dataraid/databank/templates/australian_micro-tomography/BG__BEFORE_.tif'
 
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/Australian_test.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/Australian.h5'
 
     sample_name = 'Teeth'
 
