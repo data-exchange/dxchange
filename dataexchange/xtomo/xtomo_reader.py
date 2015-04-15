@@ -46,9 +46,6 @@ import math
 
 import PIL.Image as Image
 
-#import formats.xradia_xrm as xradia
-#import formats.data_struct as dstruct
-
 import h5py
 import netCDF4 as nc
 import spefile as spe
