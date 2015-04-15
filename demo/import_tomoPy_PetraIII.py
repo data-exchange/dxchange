@@ -26,10 +26,9 @@ import dataexchange
 def main():
     # read a series of tiff
 
-    # oster: pj: from 0 -> 1440; bf from 0 -> 19; df from 0 -> 19
-    file_name = '/local/dataraid/databank/PetraIII/2011_KW16_oster/oster02_0001/scan_0002/ccd/pco01/ccd_.tif'
-    dark_file_name = '/local/dataraid/databank/PetraIII/2011_KW16_oster/oster02_0001/scan_0000/ccd/pco01/ccd_.tif'
-    white_file_name = '/local/dataraid/databank/PetraIII/2011_KW16_oster/oster02_0001/scan_0001/ccd/pco01/ccd_.tif'
+    file_name = '/local/dataraid/databank/templates/petraIII_P05/tomo/ccd_.tif'
+    dark_file_name = '/local/dataraid/databank/templates/petraIII_P05/dark/ccd_.tif'
+    white_file_name = '/local/dataraid/databank/templates/petraIII_P05/flat/ccd_.tif'
 
     projections_start = 0
     projections_end = 1441

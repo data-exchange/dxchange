@@ -22,8 +22,6 @@ def main():
     file_name = '/local/dataraid/2013_11/Vincent_201311/GA_exp/92_2_01/rad_0400ms_.tiff'
     white_file_name = '/local/dataraid/2013_11/Vincent_201311/GA_exp/92_2_01/ff_0350ms_.tiff'
 
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/microCT/NSLS.h5'
-
     white_start = 0
     white_end = 2580
     white_step = 30

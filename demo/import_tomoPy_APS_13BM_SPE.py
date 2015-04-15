@@ -27,7 +27,7 @@ import re
 
 def main():
     # read a series of SPE
-    file_name = '/local/dataraid/databank/APS_13_BM/SPE/run2_soln1_2_.SPE'
+    file_name = '/local/dataraid/databank/templates/aps_13-BM/SPE/sample_name_.SPE'
 
     white_start = 1
     white_end = 8

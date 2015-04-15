@@ -22,8 +22,6 @@ import dataexchange
 
 def main():
 
-
-    # oster: pj: from 0 -> 1440; bf from 0 -> 19; df from 0 -> 19
     file_name = '/local/dataraid/databank/templates/petraIII_P05/tomo/ccd_.tif'
     dark_file_name = '/local/dataraid/databank/templates/petraIII_P05/dark/ccd_.tif'
     white_file_name = '/local/dataraid/databank/templates/petraIII_P05/flat/ccd_.tif'

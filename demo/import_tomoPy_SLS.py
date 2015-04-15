@@ -27,9 +27,8 @@ import re
 
 def main():
     # read a series of tiff
-    file_name = '/local/dataraid/databank/SLS/Hornby_SLS/Hornby_b.tif'
-    log_file = '/local/dataraid/databank/SLS/Hornby_SLS/Hornby.log'
-
+    file_name = '/local/dataraid/databank/templates/sls_tomcat/sample_name.tif'
+    log_file = '/local/dataraid/databank/templates/sls_tomcat/sample_name.log'
     
     #Read SLS log file data
     file = open(log_file, 'r')

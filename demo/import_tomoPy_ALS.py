@@ -28,41 +28,10 @@ import re
 
 def main():
 
-# sct missing dark and white counters
-
-    file_name = '/local/dataraid/databank/als/20130626_140005_sorghum_dry_400K/20130626_140005_sorghum_dry_400K_0000_.tif'
-    dark_file_name = '/local/dataraid/databank/als/20130626_140005_sorghum_dry_400K/20130626_140005_sorghum_dry_400Kdrk_.tif'
-    white_file_name = '/local/dataraid/databank/als/20130626_140005_sorghum_dry_400K/20130626_140005_sorghum_dry_400Kbak_.tif'
-    log_file = '/local/dataraid/databank/als/20130626_140005_sorghum_dry_400K/20130626_140005_sorghum_dry_400K.sct'
-
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/ALS_20130626_140005_sorghum_dry_400K.h5'
-
-# sct OK
-
-    file_name = '/local/dataraid/databank/als/20140731_001306_2477A/data/raw/sacarroll/20140731_001306_2477A_x00y08/20140731_001306_2477A_x00y08_0000_.tif'
-    dark_file_name = '/local/dataraid/databank/als/20140731_001306_2477A/data/raw/sacarroll/20140731_001306_2477A_x00y08/20140731_001306_2477A_x00y08drk_.tif'
-    white_file_name = '/local/dataraid/databank/als/20140731_001306_2477A/data/raw/sacarroll/20140731_001306_2477A_x00y08/20140731_001306_2477A_x00y08bak_.tif'
-    log_file = '/local/dataraid/databank/als/20140731_001306_2477A/data/raw/sacarroll/20140731_001306_2477A_x00y08/20140731_001306_2477A_x00y08.sct'
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/ALS_20140731_001306_2477A_x00y08.h5'
-
-    file_name = '/local/dataraid/databank/als/20140411_045212_SF5/20140411_045212_SF5_medium_size_Wheeler_postcut_scan_relaxed_node_0452_0000_.tif'
-    dark_file_name = '/local/dataraid/databank/als/20140411_045212_SF5/20140411_045212_SF5_medium_size_Wheeler_postcut_scan_relaxed_node_0452drk_.tif'
-    white_file_name = '/local/dataraid/databank/als/20140411_045212_SF5/20140411_045212_SF5_medium_size_Wheeler_postcut_scan_relaxed_node_0452bak_.tif'
-    log_file = '/local/dataraid/databank/als/20140411_045212_SF5/20140411_045212_SF5_medium_size_Wheeler_postcut_scan_relaxed_node_0452.sct'
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/ALS_20140411_045212_SF5.h5'
-
-    file_name = '/local/dataraid/databank/als/20140321_094025_wood_aluminum/20140321_094025_wood_aluminum_0000_.tif'
-    dark_file_name = '/local/dataraid/databank/als/20140321_094025_wood_aluminum/20140321_094025_wood_aluminumdrk_.tif'
-    white_file_name = '/local/dataraid/databank/als/20140321_094025_wood_aluminum/20140321_094025_wood_aluminumbak_.tif'
-    log_file = '/local/dataraid/databank/als/20140321_094025_wood_aluminum/20140321_094025_wood_aluminum.sct'
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/ALS_20140321_094025_wood_aluminum.h5'
-
-    file_name = '/local/dataraid/databank/als/20140715_141352_NaCl/20140715_141352_NaCl-15_NaMgF3-85_01475_5x_0000_.tif'
-    dark_file_name = '/local/dataraid/databank/als/20140715_141352_NaCl/20140715_141352_NaCl-15_NaMgF3-85_01475_5xdrk_.tif'
-    white_file_name = '/local/dataraid/databank/als/20140715_141352_NaCl/20140715_141352_NaCl-15_NaMgF3-85_01475_5xbak_.tif'
-    log_file = '/local/dataraid/databank/als/20140715_141352_NaCl/20140715_141352_NaCl-15_NaMgF3-85_01475_5x.sct'
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/ALS_20140715_141352_NaCl.h5'    
-
+    file_name = '/local/dataraid/databank/templates/als_beamline_8.3.2/sample_name_0000_.tif'
+    dark_file_name = '/local/dataraid/databank/templates/als_beamline_8.3.2/sample_namedrk_.tif'
+    white_file_name = '/local/dataraid/databank/templates/als_beamline_8.3.2/sample_namedrk_.tif'
+    log_file = '/local/dataraid/databank/templates/als_beamline_8.3.2/sample_name.sct'
 
     verbose = True
 

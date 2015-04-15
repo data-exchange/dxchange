@@ -25,9 +25,9 @@ import dataexchange
 
 def main():
     # read a series of tiff
-    file_name = '/local/dataraid/databank/Elettra/Volcanic_rock/tomo_.tif'
-    dark_file_name = '/local/dataraid/databank/Elettra/Volcanic_rock/dark_.tif'
-    white_file_name = '/local/dataraid/databank/Elettra/Volcanic_rock/flat_.tif'
+    file_name = '/local/dataraid/databank/templates/elettra_SYRMEP/tomo_.tif'
+    dark_file_name = '/local/dataraid/databank/templates/elettra_SYRMEP/dark_.tif'
+    white_file_name = '/local/dataraid/databank/templates/elettra_SYRMEP/flat_.tif'
 
     projections_start = 1
     projections_end = 1441
