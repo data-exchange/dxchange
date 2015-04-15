@@ -489,7 +489,7 @@ class XTomoReader:
                     theta = np.asarray(angles)                
                     num_z = theta.size
         	    if z_end is 0: z_end = num_z
-		    # Construct theta.
+		    if verbose: print "Constructed theta"
                 dataset = theta[z_start:z_end:z_step]
             else:
                 ole = olef.OleFileIO(self.filename)
