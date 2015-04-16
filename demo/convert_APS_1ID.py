@@ -24,9 +24,8 @@ import re
 
 def main():
 
-    file_name = '/media/DISK_02/databank/templates/aps_1-ID/APS1ID_Cat4B_2/CAT4B_2_.tif'
-    log_file = '/media/DISK_02/databank/templates/aps_1-ID/APS1ID_Cat4B_2/CAT4B_2_TomoStillScan.dat'
-
+    file_name = '/media/DISK_02/databank/templates/aps_1-ID/data_.tif'
+    log_file = '/media/DISK_02/databank/templates/aps_1-ID/TomoStillScan.dat'
     hdf5_file_name = '/media/DISK_02/databank/templates/dataExchange/tmp/APS_1_ID.h5'
 
     #Read APS 1-ID log file data

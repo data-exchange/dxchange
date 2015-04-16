@@ -1,4 +1,0 @@
-        Mar 15 2014 -- code design revised to better integrate in tomopy
-        Jan 09 2014 -- code design revised
-        Dec 15 2013 -- added converters from all major tomography synchrotron facilities
-v0.0.1, Nov 31 2013 -- Initial release.

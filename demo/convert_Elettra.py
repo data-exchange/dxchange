@@ -22,9 +22,9 @@ import dataexchange
 
 def main():
 
-    file_name = '/media/DISK_02/databank/templates/elettra_SYRMEP/Volcanic_rock/tomo_.tif'
-    dark_file_name = '/media/DISK_02/databank/templates/elettra_SYRMEP/Volcanic_rock/dark_.tif'
-    white_file_name = '/media/DISK_02/databank/templates/elettra_SYRMEP/Volcanic_rock/flat_.tif'
+    file_name = '/media/DISK_02/databank/templates/elettra_SYRMEP/tomo_.tif'
+    dark_file_name = '/media/DISK_02/databank/templates/elettra_SYRMEP/dark_.tif'
+    white_file_name = '/media/DISK_02/databank/templates/elettra_SYRMEP/flat_.tif'
 
     hdf5_file_name = '/media/DISK_02/databank/templates/dataExchange/tmp/Elettra.h5'
 

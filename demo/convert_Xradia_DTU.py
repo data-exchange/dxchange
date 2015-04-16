@@ -25,8 +25,8 @@ import dataexchange
 
 def main():
 
-    file_name = '/media/DISK_02/databank/templates/xradia_dtu/halvmaane_150kV-HE6-20X-60s.txrm'
-    hdf5_file_name = '/media/DISK_02/databank/templates/dataExchange/tmp/DTU_02.h5'
+    file_name = '/media/DISK_02/databank/templates/xradia_dtu/sample_name.txrm'
+    hdf5_file_name = '/media/DISK_02/databank/templates/dataExchange/tmp/DTU.h5'
     sample_name = 'halvmaane_150kV-HE6-20X-60s'
 
     experimenter_name="Martin Skovgaard Andersen"
@@ -52,6 +52,7 @@ def main():
                                                        #white_file_name = white_file_name,                                                       
                                                        data_type='xradia',
                                                        log='INFO'
+# NOT FINISHED YET
                                                     )    
     # Save data as dataExchange
     write = dataexchange.Export()

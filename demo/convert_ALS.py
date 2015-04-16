@@ -24,10 +24,10 @@ import re
 
 def main():
 
-    file_name = '/media/DISK_02/databank/templates/als_beamline_8.3.2//sample_name_0000_.tif'
-    dark_file_name = '/media/DISK_02/databank/templates/als_beamline_8.3.2//sample_namedrk_.tif'
-    white_file_name = '/media/DISK_02/databank/templates/als_beamline_8.3.2//sample_namebak_.tif'
-    log_file = '/media/DISK_02/databank/templates/als_beamline_8.3.2//sample_name.sct'
+    file_name = '/media/DISK_02/databank/templates/als_beamline_8.3.2/sample_name_0000_.tif'
+    dark_file_name = '/media/DISK_02/databank/templates/als_beamline_8.3.2/sample_namedrk_.tif'
+    white_file_name = '/media/DISK_02/databank/templates/als_beamline_8.3.2/sample_namebak_.tif'
+    log_file = '/media/DISK_02/databank/templates/als_beamline_8.3.2/sample_name.sct'
     hdf5_file_name = '/media/DISK_02/databank/templates/dataExchange/tmp/ALS.h5'    
 
     verbose = True
