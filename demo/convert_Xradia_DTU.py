@@ -34,7 +34,6 @@ def main():
     # Read raw data
     read = dataexchange.Import()
     data, white, dark, theta = read.xtomo_raw(file_name,
-                                                       #white_file_name = white_file_name,
                                                        data_type='xradia',
                                                        log='INFO'
                                                     )    
