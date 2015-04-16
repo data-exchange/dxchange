@@ -43,6 +43,7 @@ Examples
 import os
 import numpy as np 
 import math
+import struct
 
 import PIL.Image as Image
 
