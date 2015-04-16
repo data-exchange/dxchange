@@ -25,7 +25,6 @@ def main():
     file_name = '/media/DISK_02/databank/templates/anka_topo-tomo/radios/image_.tif'
     dark_file_name = '/media/DISK_02/databank/templates/anka_topo-tomo/darks/image_.tif'
     white_file_name = '/media/DISK_02/databank/templates/anka_topo-tomo/flats/image_.tif'
-
     hdf5_file_name = '/media/DISK_02/databank/templates/dataExchange/tmp/Anka.h5'
 
     projections_start = 0

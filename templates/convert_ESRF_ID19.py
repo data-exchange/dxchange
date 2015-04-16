@@ -25,25 +25,16 @@ def main():
     file_name = '/media/DISK_02/databank/templates/esrf_ID19/tomo.edf'
     dark_file_name = '/media/DISK_02/databank/templates/esrf_ID19/dark.edf'
     white_file_name = '/media/DISK_02/databank/templates/esrf_ID19/flat.edf'
-
     hdf5_file_name = '/media/DISK_02/databank/templates/dataExchange/tmp/ESRF.h5'
 
     sample_name = 'edf test'
 
-
-    
-    # set to convert slices between slices_start and slices_end
-    # if omitted all data set will be converted   
-#    slices_start = 300    
-#    slices_end = 304    
 
     # Read raw data
     read = dataexchange.Import()
     data, white, dark, theta = read.xtomo_raw(file_name,
                                                        white_file_name = white_file_name,
                                                        dark_file_name = dark_file_name,
-#                                                       slices_start = slices_start,
-#                                                       slices_end = slices_end,
                                                        data_type='edf',
                                                        log='INFO'
                                                        )

@@ -27,7 +27,6 @@ def main():
     file_name = '/media/DISK_02/databank/templates/petraIII_P05/tomo/ccd_.tif'
     dark_file_name = '/media/DISK_02/databank/templates/petraIII_P05/dark/ccd_.tif'
     white_file_name = '/media/DISK_02/databank/templates/petraIII_P05/flat/ccd_.tif'
-
     hdf5_file_name = '/media/DISK_02/databank/templates/dataExchange/tmp/PetraIII.h5'
 
     projections_start = 0
@@ -46,7 +45,6 @@ def main():
     data, white, dark, theta = read.xtomo_raw(file_name,
                                                        projections_start = projections_start,
                                                        projections_end = projections_end,
-                                                       #projections_angle_range=360,
                                                        white_file_name = white_file_name,
                                                        white_start = white_start,
                                                        white_end = white_end,

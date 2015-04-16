@@ -26,7 +26,6 @@ def main():
 
     file_name = '/media/DISK_02/databank/templates/sls_tomcat/Hornby_SLS/Hornby_b.tif'
     log_file = '/media/DISK_02/databank/templates/sls_tomcat/Hornby_SLS/Hornby.log'
-
     hdf5_file_name = '/media/DISK_02/databank/templates/dataExchange/tmp/SLS.h5'
 
     sample_name = 'Hornby_b'

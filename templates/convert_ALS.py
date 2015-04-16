@@ -89,7 +89,6 @@ def main():
                                                        log='INFO'
                                                        )
 
-
     # Save data as dataExchange
     write = dataexchange.Export()
     write.xtomo_exchange(data = data,

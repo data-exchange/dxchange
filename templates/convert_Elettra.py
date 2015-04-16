@@ -25,7 +25,6 @@ def main():
     file_name = '/media/DISK_02/databank/templates/elettra_SYRMEP/tomo_.tif'
     dark_file_name = '/media/DISK_02/databank/templates/elettra_SYRMEP/dark_.tif'
     white_file_name = '/media/DISK_02/databank/templates/elettra_SYRMEP/flat_.tif'
-
     hdf5_file_name = '/media/DISK_02/databank/templates/dataExchange/tmp/Elettra.h5'
 
     projections_start = 1
@@ -39,19 +38,12 @@ def main():
     
     sample_name = 'Volcanic_rock'
 
-    # set to convert slices between slices_start and slices_end
-    # if omitted all data set will be converted   
-#    slices_start = 150    
-#    slices_end = 154    
-
     # Read raw data
     read = dataexchange.Import()
     data, white, dark, theta = read.xtomo_raw(file_name,
                                                        projections_start = projections_start,
                                                        projections_end = projections_end,
                                                        projections_digits = 4,
-#                                                       slices_start = slices_start,
-#                                                       slices_end = slices_end,
                                                        white_file_name = white_file_name,
                                                        white_start = white_start,
                                                        white_end = white_end,
@@ -60,7 +52,7 @@ def main():
                                                        dark_start = dark_start,
                                                        dark_end = dark_end,
                                                        dark_step = dark_step,
-                                                       data_type =  'compressed_tiff', # comment this line if regular tiff
+                                                       data_type =  'compressed_tiff',
                                                        projections_zeros = True,
                                                        white_zeros = False,
                                                        dark_zeros = False,

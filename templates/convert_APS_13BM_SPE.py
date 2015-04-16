@@ -23,7 +23,6 @@ import dataexchange
 def main():
 
     file_name = '/media/DISK_02/databank/templates/aps_13-BM/SPE/sample_name_.SPE'
-
     hdf5_file_name = '/media/DISK_02/databank/templates/dataExchange/tmp/APS_13_BM_spe.h5'
 
     white_start = 1
@@ -41,8 +40,6 @@ def main():
                                                        projections_start = projections_start,
                                                        projections_end = projections_end,
                                                        projections_step = projections_step,
-#                                                       slices_start = slices_start,
-#                                                       slices_end = slices_end,
                                                        white_start = white_start,
                                                        white_end = white_end,
                                                        white_step = white_step,

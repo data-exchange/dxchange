@@ -23,7 +23,6 @@ import dataexchange
 def main():
 
     file_name = '/media/DISK_02/databank/templates/aps_13-BM/NC/sample_name_.nc'
-
     hdf5_file_name = '/media/DISK_02/databank/templates/dataExchange/tmp/APS_13_BM_netCDF.h5'
 
     white_start = 1
