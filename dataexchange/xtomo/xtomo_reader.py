@@ -474,9 +474,9 @@ class XTomoReader:
         """
         verbose = True
         try:
-            olef.isOleFile(self.filename)
+            olef.isOleFile(self.file_name)
             if (array_name == "theta"):
-                ole = olef.OleFileIO(self.filename)
+                ole = olef.OleFileIO(self.file_name)
                 if ole.exists('ImageInfo/Angles'):                  
                     stream = ole.openstream('ImageInfo/Angles')
                     data = stream.read()
@@ -489,7 +489,7 @@ class XTomoReader:
 		    if verbose: print "Constructed theta"
                 dataset = theta[z_start:z_end:z_step]
             else:
-                ole = olef.OleFileIO(self.filename)
+                ole = olef.OleFileIO(self.file_name)
                 datasize = np.empty((3), dtype=np.int)
                 if ole.exists('ImageInfo/ImageWidth'):                 
                     stream = ole.openstream('ImageInfo/ImageWidth')
