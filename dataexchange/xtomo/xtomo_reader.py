@@ -536,16 +536,16 @@ class XTomoReader:
                     data = stream.read()
                     # 10 float; 5 uint16 (unsigned 16-bit (2-byte) integers)
                     if datatype == 10:
-                        struct_fmt = "<{}f".format(self.n_cols*self.n_rows)
+                        struct_fmt = "<{}f".format(n_cols*n_rows)
                         imgdata = struct.unpack(struct_fmt, data)
                     elif datatype == 5:                   
-                        struct_fmt = "<{}h".format(self.n_cols*self.n_rows)
+                        struct_fmt = "<{}h".format(n_cols*n_rows)
                         imgdata = struct.unpack(struct_fmt, data)
                     else:                            
                         print "Wrong data type"
                         return
                     
-                absdata[:,:,i-1] = np.reshape(imgdata, (self.n_cols, self.n_rows), order='F')
+                absdata[:,:,i-1] = np.reshape(imgdata, (n_cols, n_rows), order='F')
 
                 num_x, num_y, num_z = np.shape(absdata)
                 data = np.swapaxes(data,0,2)
