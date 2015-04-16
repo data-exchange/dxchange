@@ -478,10 +478,16 @@ class XTomoReader:
             olef.isOleFile(self.file_name)
             if (array_name == "theta"):
                 ole = olef.OleFileIO(self.file_name)
+                if ole.exists('ImageInfo/ImagesTaken'):                  
+                    stream = ole.openstream('ImageInfo/ImagesTaken')
+                    data = stream.read()
+                    nev = struct.unpack('<I', data)
+                    if verbose: print "ImageInfo/ImagesTaken = %i" % nev[0]  
+                    n_images = nev[0]
                 if ole.exists('ImageInfo/Angles'):                  
                     stream = ole.openstream('ImageInfo/Angles')
                     data = stream.read()
-                    struct_fmt = "<{}f".format(nimgs)
+                    struct_fmt = "<{}f".format(n_images)
                     angles = struct.unpack(struct_fmt, data)
                     if verbose: print "ImageInfo/Angles: \n ",  angles  
                     theta = np.asarray(angles)                
