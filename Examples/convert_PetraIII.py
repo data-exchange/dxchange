@@ -24,10 +24,11 @@ def main():
 
 
     # oster: pj: from 0 -> 1440; bf from 0 -> 19; df from 0 -> 19
-    file_name = '/media/DISK_02/databank/templates/petraIII_P05/tomo/ccd_.tif'
-    dark_file_name = '/media/DISK_02/databank/templates/petraIII_P05/dark/ccd_.tif'
-    white_file_name = '/media/DISK_02/databank/templates/petraIII_P05/flat/ccd_.tif'
+    file_name = '/media/DISK_02/databank/templates/petraIII_P05/sample_name00_0000/scan_0002/ccd/pco01/ccd_.tif'
+    dark_file_name = '/media/DISK_02/databank/templates/petraIII_P05/sample_name00_0000/scan_0000/ccd/pco01/ccd_.tif'
+    white_file_name = '/media/DISK_02/databank/templates/petraIII_P05/sample_name00_0000/scan_0001/ccd/pco01/ccd_.tif'
     hdf5_file_name = '/media/DISK_02/databank/templates/dataExchange/tmp/PetraIII.h5'
+
 
     projections_start = 0
     projections_end = 1441
@@ -38,7 +39,7 @@ def main():
     dark_end = 20
     dark_step = 1
 
-    sample_name = 'oster02_0001'
+    sample_name = 'sample_name00_0000'
     
     # Read raw data
     read = dataexchange.Import()
