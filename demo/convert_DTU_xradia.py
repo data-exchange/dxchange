@@ -25,14 +25,8 @@ import dataexchange.xtomo.formats.data_struct as dstruct
 
 def main():
 
-    #file_name = '/local/dataraid/databank/TXM_26_ID/20130731_004_Stripe_Solder_Sample_Tip1_TomoScript_181imgs_p1s_b1.txrm'
-    # white is saturated .... 
-    #white_file_name = '/local/dataraid/databank/TXM_26_ID/20130731_001_Background_Reference_20imgs_p5s_b1.xrm'
-    #hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/xradia_033.h5'
-    #sample_name = '20130731_004_Stripe_Solder_Sample_Tip1'
-
     file_name = '/local/dataraid/databank/DTU_Imaging_Center/halvmaane_150kV-HE6-20X-60s.txrm'
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/Lorentz/dtu/DTU_02k.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/Lorentz/dtu/DTU_02.h5'
     sample_name = 'halvmaane_150kV-HE6-20X-60s'
 
     experimenter_name="Martin Skovgaard Andersen"

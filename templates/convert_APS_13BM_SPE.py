@@ -22,7 +22,7 @@ import dataexchange
 
 def main():
 
-    file_name = '/local/dataraid/databank/templates/aps_13-BM/SPE/sample_name_.SPE'
+    file_name = '/local/dataraid/databank/templates/aps_13-BM/SPE/run2_soln1_2_.SPE'
 
     hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/APS_13_BM_spe.h5'
 

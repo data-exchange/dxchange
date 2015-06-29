@@ -27,7 +27,7 @@ import re
 
 def main():
     # read a series of netCDF
-    file_name = '/local/dataraid/databank/APS_13_BM/NC/Dorthe_F_.nc'
+    file_name = '/local/dataraid/databank/templates/aps_13-BM/NC/sample_name_.nc'
 
     white_start = 1
     white_end = 4

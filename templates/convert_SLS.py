@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-.. module:: import_tomoPy_SLS.py
+.. module:: convert_SLS.py
    :platform: Unix
-   :synopsis: Import SLS TOMCAT TIFF files in data exchange.
+   :synopsis: Convert SLS TOMCAT TIFF files in data exchange.
 
-Example on how to use the `xtomo_raw`_ module to read SLS TOMCAT TIFF raw tomographic data and reconstruct with tomoPy
+Example on how to use the `xtomo_raw`_ module to read SLS TOMCAT TIFF raw tomographic data and save them as Data Exchange
 
 :Author:
   `Francesco De Carlo <mailto: decarlof@gmail.com>`_
@@ -17,18 +17,19 @@ Example on how to use the `xtomo_raw`_ module to read SLS TOMCAT TIFF raw tomogr
 .. _xtomo_raw: dataexchange.xtomo.xtomo_importer.html
 """
 
-# tomoPy: https://github.com/tomopy/tomopy
-import tomopy 
-
 # Data Exchange: https://github.com/data-exchange/data-exchange
 import dataexchange
 
 import re
 
 def main():
-    # read a series of tiff
-    file_name = '/local/dataraid/databank/templates/sls_tomcat/sample_name.tif'
-    log_file = '/local/dataraid/databank/templates/sls_tomcat/sample_name.log'
+
+    file_name = '/local/dataraid/databank/templates/sls_tomcat/Hornby_SLS/Hornby_b.tif'
+    log_file = '/local/dataraid/databank/templates/sls_tomcat/Hornby_SLS/Hornby.log'
+
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/SLS.h5'
+
+    sample_name = 'Hornby_b'
     
     #Read SLS log file data
     file = open(log_file, 'r')
@@ -55,42 +56,31 @@ def main():
     white_end = white_start + number_of_flats
     projections_start = white_end
     projections_end = projections_start + number_of_projections
-
-    # to reconstruct a subset of slices set slices_start and slices_end
-    # if omitted the full data set is recontructed 
-    slices_start = 800    
-    slices_end = 804    
+    projections_angle_end = 180 + angular_step
 
     # Read raw data
     read = dataexchange.Import()
     data, white, dark, theta = read.xtomo_raw(file_name,
                                                        projections_start = projections_start,
                                                        projections_end = projections_end,
+						       projections_angle_end = projections_angle_end,
                                                        projections_digits=4,
-                                                       slices_start = slices_start,
-                                                       slices_end = slices_end,
                                                        white_start = white_start,
                                                        white_end = white_end,
                                                        dark_start = dark_start,
                                                        dark_end = dark_end,
                                                        log='INFO'
                                                        )
-
-    # TomoPy xtomo object creation and pipeline of methods.  
-    d = tomopy.xtomo_dataset(log='debug')
-    d.dataset(data, white, dark, theta)
-    d.normalize()
-    d.correct_drift()
-    #d.optimize_center()
-    #d.phase_retrieval()
-    #d.correct_drift()
-    d.center=1010.0
-    d.gridrec()
-
-    # Write to stack of TIFFs.
+    # Save data as dataExchange
     write = dataexchange.Export()
-    write.xtomo_tiff(data = d.data_recon, output_file = 'tmp/SLS_tiff_2_tomoPy_', axis=0)
-
+    write.xtomo_exchange(data = data,
+                          data_white = white,
+                          data_dark = dark,
+                          theta = theta,
+                          hdf5_file_name = hdf5_file_name,
+                          sample_name = sample_name,
+                          data_exchange_type = 'tomography_raw_projections'
+                          )
 if __name__ == "__main__":
     main()
 

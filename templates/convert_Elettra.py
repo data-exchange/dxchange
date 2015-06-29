@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 """
-.. module:: import_tomoPy_Elettra.py
+.. module:: convert_Elettra.py
    :platform: Unix
-   :synopsis: Import Elettra TIFF files in data exchange.
+   :synopsis: Convert Elettra TIFF files in data exchange.
 
 Example on how to use the `xtomo_raw`_ module to read Elettra TIFF raw tomographic data and save them as Data Exchange
 
@@ -17,17 +17,16 @@ Example on how to use the `xtomo_raw`_ module to read Elettra TIFF raw tomograph
 .. _xtomo_raw: dataexchange.xtomo.xtomo_importer.html
 """
 
-# tomoPy: https://github.com/tomopy/tomopy
-import tomopy 
-
 # Data Exchange: https://github.com/data-exchange/data-exchange
 import dataexchange
 
 def main():
-    # read a series of tiff
-    file_name = '/local/dataraid/databank/templates/elettra_SYRMEP/tomo_.tif'
-    dark_file_name = '/local/dataraid/databank/templates/elettra_SYRMEP/dark_.tif'
-    white_file_name = '/local/dataraid/databank/templates/elettra_SYRMEP/flat_.tif'
+
+    file_name = '/local/dataraid/databank/templates/elettra_SYRMEP/Volcanic_rock/tomo_.tif'
+    dark_file_name = '/local/dataraid/databank/templates/elettra_SYRMEP/Volcanic_rock/dark_.tif'
+    white_file_name = '/local/dataraid/databank/templates/elettra_SYRMEP/Volcanic_rock/flat_.tif'
+
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/Elettra.h5'
 
     projections_start = 1
     projections_end = 1441
@@ -40,10 +39,10 @@ def main():
     
     sample_name = 'Volcanic_rock'
 
-    # to reconstruct slices from slices_start to slices_end
-    # if omitted all data set is recontructed
-    slices_start = 150    
-    slices_end = 154    
+    # set to convert slices between slices_start and slices_end
+    # if omitted all data set will be converted   
+#    slices_start = 150    
+#    slices_end = 154    
 
     # Read raw data
     read = dataexchange.Import()
@@ -51,8 +50,8 @@ def main():
                                                        projections_start = projections_start,
                                                        projections_end = projections_end,
                                                        projections_digits = 4,
-                                                       slices_start = slices_start,
-                                                       slices_end = slices_end,
+#                                                       slices_start = slices_start,
+#                                                       slices_end = slices_end,
                                                        white_file_name = white_file_name,
                                                        white_start = white_start,
                                                        white_end = white_end,
@@ -67,21 +66,16 @@ def main():
                                                        dark_zeros = False,
                                                        log='INFO'
                                                        )
-
-    # TomoPy xtomo object creation and pipeline of methods.  
-    d = tomopy.xtomo_dataset(log='debug')
-    d.dataset(data, white, dark, theta)
-    d.normalize()
-    d.correct_drift()
-    #d.optimize_center()
-    #d.phase_retrieval()
-    #d.correct_drift()
-    d.center=1096.375
-    d.gridrec()
-
-    # Write to stack of TIFFs.
+    # Save data as dataExchange
     write = dataexchange.Export()
-    write.xtomo_tiff(data = d.data_recon, output_file = 'tmp/Elettra_tiff_2_tomoPy_', axis=0)
+    write.xtomo_exchange(data = data,
+                          data_white = white,
+                          data_dark = dark,
+                          theta = theta,
+                          hdf5_file_name = hdf5_file_name,
+                          sample_name = sample_name,
+                          data_exchange_type = 'tomography_raw_projections'
+                          )
 
 if __name__ == "__main__":
     main()

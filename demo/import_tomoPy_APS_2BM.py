@@ -29,7 +29,7 @@ import dataexchange
 import re
 
 def main():
-    log_file = '/local/dataraid/databank/Sangid/Sam01/Sam01_exp.hdf'
+    log_file = '/local/dataraid/databank/templates/aps_2-BM/Sam01_exp.hdf'
 
     #Read APS 2-BM log file data
     f = SD.SD(log_file)

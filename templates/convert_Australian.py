@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-.. module:: import_tomoPy_Australian.py
+.. module:: convert_Australian.py
    :platform: Unix
-   :synopsis: import Australian Synchrotron Facility TIFF files in data exchange.
+   :synopsis: Convert Australian Synchrotron Facility TIFF files in data exchange.
 
-Example on how to use the `xtomo_raw`_ module to read Australian Synchrotron Facility TIFF raw tomographic data and reconstruct with tomoPy
+Example on how to use the `xtomo_raw`_ module to read Australian Synchrotron Facility TIFF raw tomographic data and save them as Data Exchange
 
 :Author:
   `Francesco De Carlo <mailto: decarlof@gmail.com>`_
@@ -17,17 +17,16 @@ Example on how to use the `xtomo_raw`_ module to read Australian Synchrotron Fac
 .. _xtomo_raw: dataexchange.xtomo.xtomo_importer.html
 """
 
-# tomoPy: https://github.com/tomopy/tomopy
-import tomopy 
-
 # Data Exchange: https://github.com/data-exchange/data-exchange
 import dataexchange
 
 def main():
-    # read a series of tiff
-    file_name = '/local/dataraid/databank/templates/australian_micro-tomography/SAMPLE_T_.tif'
-    dark_file_name = '/local/dataraid/databank/templates/australian_micro-tomography/DF__BEFORE_.tif'
-    white_file_name = '/local/dataraid/databank/templates/australian_micro-tomography/BG__BEFORE_.tif'
+
+    file_name = '/local/dataraid/databank/templates/australian_micro-tomography/Mayo_tooth_AS/SAMPLE_T_.tif'
+    dark_file_name = '/local/dataraid/databank/templates/australian_micro-tomography/Mayo_tooth_AS/DF__BEFORE_.tif'
+    white_file_name = '/local/dataraid/databank/templates/australian_micro-tomography/Mayo_tooth_AS/BG__BEFORE_.tif'
+
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/Australian.h5'
 
     sample_name = 'Teeth'
 
@@ -40,18 +39,11 @@ def main():
     dark_end = 10
     dark_step = 1
 
-    # to reconstruct slices from slices_start to slices_end
-    # if omitted all data set is recontructed
-    slices_start = 290    
-    slices_end = 294    
-
     # Read raw data
     read = dataexchange.Import()
     data, white, dark, theta = read.xtomo_raw(file_name,
                                                        projections_start = projections_start,
                                                        projections_end = projections_end,
-                                                       slices_start = slices_start,
-                                                       slices_end = slices_end,
                                                        white_file_name = white_file_name,
                                                        white_start = white_start,
                                                        white_end = white_end,
@@ -66,21 +58,16 @@ def main():
                                                        projections_zeros = True,
                                                        log='INFO'
                                                     )    
-
-    # TomoPy xtomo object creation and pipeline of methods.  
-    d = tomopy.xtomo_dataset(log='debug')
-    d.dataset(data, white, dark, theta)
-    d.normalize()
-    d.correct_drift()
-    #d.optimize_center()
-    #d.phase_retrieval()
-    #d.correct_drift()
-    d.center=1184.0
-    d.gridrec()
-
-    # Write to stack of TIFFs.
+    # Save data as dataExchange
     write = dataexchange.Export()
-    write.xtomo_tiff(data = d.data_recon, output_file = 'tmp/Australian_tiff_2_tomoPy_', axis=0)
+    write.xtomo_exchange(data = data,
+                          data_white = white,
+                          data_dark = dark,
+                          theta = theta,
+                          hdf5_file_name = hdf5_file_name,
+                          sample_name = sample_name,
+                          data_exchange_type = 'tomography_raw_projections'
+                          )
 
 if __name__ == "__main__":
     main()

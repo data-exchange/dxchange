@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-.. module:: import_tomoPy_APS_1ID.py
+.. module:: convert_APS_1ID.py
    :platform: Unix
-   :synopsis: Import APS 1-ID TIFF files in data exchange.
+   :synopsis: Convert APS 1-ID TIFF files in data exchange.
 
-Example on how to use the `xtomo_raw`_ module to read APS 1-ID TIFF raw tomographic data and reconstruct using tomoPy
+Example on how to use the `xtomo_raw`_ module to read APS 1-ID TIFF raw tomographic data and save them as Data Exchange
 
 :Author:
   `Francesco De Carlo <mailto: decarlof@gmail.com>`_
@@ -17,17 +17,17 @@ Example on how to use the `xtomo_raw`_ module to read APS 1-ID TIFF raw tomograp
 .. _xtomo_raw: dataexchange.xtomo.xtomo_importer.html
 """
 
-# tomoPy: https://github.com/tomopy/tomopy
-import tomopy 
-
 # Data Exchange: https://github.com/data-exchange/data-exchange
 import dataexchange
 
 import re
 
 def main():
-    file_name = '/local/dataraid/databank/templates/aps_1-ID/data_.tif'
-    log_file = '/local/dataraid/databank/templates/aps_1-ID/TomoStillScan.dat'
+
+    file_name = '/local/dataraid/databank/templates/aps_1-ID/APS1ID_Cat4B_2/CAT4B_2_.tif'
+    log_file = '/local/dataraid/databank/templates/aps_1-ID/APS1ID_Cat4B_2/CAT4B_2_TomoStillScan.dat'
+
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/APS_1_ID.h5'
 
     #Read APS 1-ID log file data
     file = open(log_file, 'r')
@@ -65,19 +65,14 @@ def main():
 ##    white_end = 1853
 ##    dark_start = 1854
 ##    dark_end = 1863
-
-    # set to convert slices between slices_start and slices_end
-    # if omitted all data set will be converted   
-    slices_start = 1000    
-    slices_end = 1004    
+   
+    sample_name = 'CAT4B_2'
 
     # Read raw data
     read = dataexchange.Import()
     data, white, dark, theta = read.xtomo_raw(file_name,
                                                        projections_start = projections_start,
                                                        projections_end = projections_end,
-                                                       slices_start = slices_start,
-                                                       slices_end = slices_end,
                                                        white_start = white_start,
                                                        white_end = white_end,
                                                        dark_start = dark_start,
@@ -85,22 +80,16 @@ def main():
                                                        projections_digits = 6,
                                                        log='INFO'
                                                        )
-
-
-    # TomoPy xtomo object creation and pipeline of methods.  
-    d = tomopy.xtomo_dataset(log='debug')
-    d.dataset(data, white, dark, theta)
-    d.normalize()
-    d.correct_drift()
-    #d.optimize_center()
-    #d.phase_retrieval()
-    #d.correct_drift()
-    d.center=1026.0
-    d.gridrec()
-
-    # Write to stack of TIFFs.
+    # Save data as dataExchange
     write = dataexchange.Export()
-    write.xtomo_tiff(data = d.data_recon, output_file = 'tmp/APS_1_ID_tiff_2_tomoPy_', axis=0)
+    write.xtomo_exchange(data = data,
+                          data_white = white,
+                          data_dark = dark,
+                          theta = theta,
+                          hdf5_file_name = hdf5_file_name,
+                          sample_name = sample_name,
+                          data_exchange_type = 'tomography_raw_projections'
+                          )
 
 if __name__ == "__main__":
     main()

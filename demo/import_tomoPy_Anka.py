@@ -25,9 +25,9 @@ import dataexchange
 
 def main():
     # read a series of tiff
-    file_name = '/local/dataraid/databank/Anka/radios/image_.tif'
-    dark_file_name = '/local/dataraid/databank/Anka/darks/image_.tif'
-    white_file_name = '/local/dataraid/databank/Anka/flats/image_.tif'
+    file_name = '/local/dataraid/databank/templates/anka_topo-tomo/radios/image_.tif'
+    dark_file_name = '/local/dataraid/databank/templates/anka_topo-tomo/darks/image_.tif'
+    white_file_name = '/local/dataraid/databank/templates/anka_topo-tomo/flats/image_.tif'
 
     projections_start = 0
     projections_end = 3167

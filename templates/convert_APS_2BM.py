@@ -25,7 +25,8 @@ import os
 
 def main():
 
-    log_file = '/local/dataraid/databank/templates/aps_2-BM/Sam01_exp.hdf'
+    log_file = '/local/dataraid/databank/templates/aps_2-BM/Sam01/Sam01_exp.hdf'
+
     hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/APS_2_BM_hdf4.h5'
 
     #Read APS 2-BM log file data

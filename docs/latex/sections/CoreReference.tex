@@ -377,6 +377,8 @@ should appear within this parentage of groups.
 \hyperref[table:shutter]{shutter\_$N$}  &  group & \\
 \hyperref[table:attenuator]{attenuator\_$N$} & group & \\
 \hyperref[table:monochromator]{monochromator} & group & \\
+\hyperref[table:capacitive]{capacitive\_sensors} & group & \\
+\hyperref[table:amplifier]{amplifier} & group & \\
 \hyperref[table:detector]{detector\_$N$} & group & \\
 \bottomrule
 \end{tabular}
@@ -397,6 +399,12 @@ should appear within this parentage of groups.
 
 \item[\tt {monochromator}] \hfill \\
 {The monochromator used by the instrument.}
+
+\item[\tt {capacitive\_sensors}] \hfill \\
+{The capacitive\_sensors used to monitor for example the sample position during data collection.}
+
+\item[\tt {amplifier}] \hfill \\
+{The amplifier used by the instrument.}
 
 \item[\tt {detector\_$N$}] \hfill \\
 {The detectors that compose the instrument.}
@@ -567,6 +575,73 @@ is not defined this field is in J.}
 \item[\tt {mono\_stripe}] \hfill \\
 {Type of multilayer coating or crystal.}
 \end{description}
+
+\paragraph{Capacitive Sensors}
+\label{table:capacitive}
+
+Define the capacitive sensors used in the instrument.
+
+\begin{table}[h!]\sffamily \footnotesize
+\centering
+\caption{Capacitive Sensors Group Members}
+\rowcolors{1}{white}{tableBlue}
+\begin{tabular}{l l l}
+\toprule
+\bfseries Member     & \bfseries Type & \bfseries Example \\
+\midrule
+name & string dataset & "Capacitive Sensors" \\
+gain & float dataset & 1.602e-15 \\
+shift\_x & float dataset & vector of float \\
+shift\_y & float dataset & vector of float \\
+shift\_z & float dataset & vector of float \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{description}
+\item[\tt {name}] \hfill \\
+{Capacitive Sensors name.}
+
+\item[\tt {gain}] \hfill \\
+{Capacitive Sensors gain in V/m.}
+
+\item[\tt {shift\_x, shift\_y, shift\_z}] \hfill \\
+{vectors containing for each scan point the position monitored by the capacitive sensor.}
+
+\end{description}
+
+\paragraph{Amplifier}
+\label{table:amplifier}
+
+Define the capacitive sensors used in the instrument.
+
+\begin{table}[h!]\sffamily \footnotesize
+\centering
+\caption{Amplifier Group Members}
+\rowcolors{1}{white}{tableBlue}
+\begin{tabular}{l l l}
+\toprule
+\bfseries Member     & \bfseries Type & \bfseries Example \\
+\midrule
+name & string dataset & "Amplifier" \\
+gain & float dataset & 1.602e-15 \\
+current & float dataset &  vector of float  \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{description}
+\item[\tt {name}] \hfill \\
+{Amplifier name.}
+
+\item[\tt {gain}] \hfill \\
+{Amplifier gain.}
+
+\item[\tt {current}] \hfill \\
+{vectors containing for each scan point the current recorded  by the Amplifier.}
+
+\end{description}
+
 
 
 \paragraph{Detector}

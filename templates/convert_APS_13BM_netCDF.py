@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-.. module:: convert_APS_13BM_SPE.py
+.. module:: convert_APS_13BM_netCDF.py
    :platform: Unix
-   :synopsis: Convert APS 13-BM SPE files in data exchange.
+   :synopsis: Convert APS 13-BM netCDF files in data exchange.
 
-Example on how to use the `xtomo_raw`_ module to read APS 13-BM SPE raw tomographic data and save them as Data Exchange
+Example on how to use the `xtomo_raw`_ module to read APS 13-BM netCDF raw tomographic data and save them as Data Exchange
 
 :Author:
   `Francesco De Carlo <mailto: decarlof@gmail.com>`_
@@ -22,18 +22,18 @@ import dataexchange
 
 def main():
 
-    file_name = '/local/dataraid/databank/templates/aps_13-BM/SPE/sample_name_.SPE'
+    file_name = '/local/dataraid/databank/templates/aps_13-BM/NC/Dorthe_F_.nc'
 
-    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/APS_13_BM_spe.h5'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/APS_13_BM_netCDF.h5'
 
     white_start = 1
-    white_end = 8
+    white_end = 4
     white_step = 2
     projections_start = 2
-    projections_end = 7
-    projections_step = 2
+    projections_end = 3
+    projections_step = 1
 
-    sample_name = 'run2_soln1_2'
+    sample_name = 'Dorthe_F'
 
     # Read raw data
     read = dataexchange.Import()
@@ -41,16 +41,11 @@ def main():
                                                        projections_start = projections_start,
                                                        projections_end = projections_end,
                                                        projections_step = projections_step,
-#                                                       slices_start = slices_start,
-#                                                       slices_end = slices_end,
                                                        white_start = white_start,
                                                        white_end = white_end,
                                                        white_step = white_step,
-                                                       projections_zeros=False,
-                                                       white_zeros=False,
-                                                       dark_zeros=False,
-                                                       projections_digits = 1,
-                                                       data_type='spe',
+                                                       projections_digits = 3,
+                                                       data_type='nc',
                                                        log='INFO'
                                                        )
     # Save data as dataExchange
@@ -63,7 +58,6 @@ def main():
                           sample_name = sample_name,
                           data_exchange_type = 'tomography_raw_projections'
                           )
-   
+
 if __name__ == "__main__":
     main()
-

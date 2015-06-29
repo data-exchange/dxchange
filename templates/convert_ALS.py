@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
-.. module:: import_tomoPy_ALS.py
+.. module:: convert_ALS.py
    :platform: Unix
-   :synopsis: Import ALS TIFF files in data exchange.
+   :synopsis: Convert ALS TIFF files in data exchange.
 
-Example on how to use the `xtomo_raw`_ module to read ALS raw tomographic data and reconstruct using tomoPy
+Example on how to use the `xtomo_raw`_ module to read ALS raw tomographic data and save them as Data Exchange
 
 :Author:
   `Francesco De Carlo <mailto: decarlof@gmail.com>`_
@@ -17,10 +17,6 @@ Example on how to use the `xtomo_raw`_ module to read ALS raw tomographic data a
 .. _xtomo_raw: dataexchange.xtomo.xtomo_importer.html
 """
 
-# tomoPy: https://github.com/tomopy/tomopy
-import tomopy 
-
-# Data Exchange: https://github.com/data-exchange/data-exchange
 # Data Exchange: https://github.com/data-exchange/data-exchange
 import dataexchange
 
@@ -28,10 +24,11 @@ import re
 
 def main():
 
-    file_name = '/local/dataraid/databank/templates/als_beamline_8.3.2/sample_name_0000_.tif'
-    dark_file_name = '/local/dataraid/databank/templates/als_beamline_8.3.2/sample_namedrk_.tif'
-    white_file_name = '/local/dataraid/databank/templates/als_beamline_8.3.2/sample_namedrk_.tif'
-    log_file = '/local/dataraid/databank/templates/als_beamline_8.3.2/sample_name.sct'
+    file_name = '/local/dataraid/databank/templates/als_beamline_8.3.2/20140715_141352_NaCl/20140715_141352_NaCl-15_NaMgF3-85_01475_5x_0000_.tif'
+    dark_file_name = '/local/dataraid/databank/templates/als_beamline_8.3.2/20140715_141352_NaCl/20140715_141352_NaCl-15_NaMgF3-85_01475_5xdrk_.tif'
+    white_file_name = '/local/dataraid/databank/templates/als_beamline_8.3.2/20140715_141352_NaCl/20140715_141352_NaCl-15_NaMgF3-85_01475_5xbak_.tif'
+    log_file = '/local/dataraid/databank/templates/als_beamline_8.3.2/20140715_141352_NaCl/20140715_141352_NaCl-15_NaMgF3-85_01475_5x.sct'
+    hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/ALS.h5'    
 
     verbose = True
 
@@ -75,18 +72,13 @@ def main():
     projections_start = 0
     projections_end = int(Angles[0])
 
-    # set to convert slices between slices_start and slices_end
-    # if omitted all data set will be converted   
-    slices_start = 1445    
-    slices_end = 1449  
+    print dark_end, white_end, projections_end
 
     # Read raw data
     read = dataexchange.Import()
     data, white, dark, theta = read.xtomo_raw(file_name = file_name,
                                                        projections_start = projections_start,
                                                        projections_end = projections_end,
-                                                       slices_start = slices_start,
-                                                       slices_end = slices_end,
                                                        white_file_name = white_file_name,
                                                        white_start = white_start,
                                                        white_end = white_end,
@@ -97,18 +89,18 @@ def main():
                                                        log='INFO'
                                                        )
 
-    # TomoPy xtomo object creation and pipeline of methods.  
-    d = tomopy.xtomo_dataset(log='debug')
-    d.dataset(data, white, dark, theta)
-    d.normalize()
-    d.correct_drift()
-    #d.optimize_center()
-    d.center=2042.75
-    d.gridrec()
 
-    # Write to stack of TIFFs.
+    # Save data as dataExchange
     write = dataexchange.Export()
-    write.xtomo_tiff(data = d.data_recon, output_file = 'tmp/ALS_tiff_2_tomoPy_', axis=0)
+    write.xtomo_exchange(data = data,
+                          data_white = white,
+                          data_dark = dark,
+                          theta = theta,
+                          hdf5_file_name = hdf5_file_name,
+                          sample_name = Sample,
+                          data_exchange_type = 'tomography_raw_projections'
+                          )
+
 
 if __name__ == "__main__":
     main()

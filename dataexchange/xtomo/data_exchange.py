@@ -334,7 +334,7 @@ class DataExchangeEntry(object):
         self._instrument = {
             'root': '/measurement',
             'entry_name': 'instrument',
-            'docstring': 'All relevant beamline components status at the beginning of a measurement',
+            'docstring': 'All relevant beamline components status during the measurement',
             'name': {
                 'value': None,
                 'units': 'text',
@@ -445,6 +445,42 @@ class DataExchangeEntry(object):
             },
         }
 
+        self._capacitive_sensors = {
+            'root': '/measurement/instrument',
+            'entry_name': 'capacitive_sensors',
+            'docstring': 'Capacitive Sensors settings.',
+            'name': {
+                'value': None,
+                'units': 'text',
+                'docstring': 'Name of the capacitive sensor.'
+            },
+            'gain': {
+                'value': None,
+                'units': 'text',
+                'docstring': 'Capacitive sensor gain setting'
+            },
+            'gain units': {
+                'value': None,
+                'units': 'text',
+                'docstring': 'Capacitive sensor gain units'
+            },
+            'shift_x': {
+                'value': None,
+                'units': 'm',
+                'docstring': 'The position recorded by the capacitive sersor in the X direction.'
+            },
+            'shift_y': {
+                'value': None,
+                'units': 'm',
+                'docstring': 'The position recorded by the capacitive sersor in the Y direction.'
+            },
+            'shift_z': {
+                'value': None,
+                'units': 'm',
+                'docstring': 'The position recorded by the capacitive sersor in the Z direction.'
+            }
+        }
+
         self._attenuator = {
             'root': '/measurement/instrument',
             'entry_name': 'attenuator',
@@ -500,7 +536,7 @@ class DataExchangeEntry(object):
         self._detector = {
             'root': '/measurement/instrument',
             'entry_name': 'detector',
-            'docstring': 'X-ray detector.',
+            'docstring': 'X-ray area detector.',
             'manufacturer': {
                 'value': None,
                 'units': 'text',
@@ -855,28 +891,18 @@ class DataExchangeEntry(object):
             'sample_position_x': {
                 'value': None,
                 'units': 'mm',
-                'docstring': 'Vector containing the position of the sample axis x at each projection image collection.'
+                'docstring': 'Vector containing the set position of the sample axis x at each projection image collection.'
             },        
             'sample_position_y': {
                 'value': None,
                 'units': 'mm',
-                'docstring': 'Vector containing the position of the sample axis y at each projection image collection.'
+                'docstring': 'Vector containing the set position of the sample axis y at each projection image collection.'
             },        
             'sample_position_z': {
                 'value': None,
                 'units': 'mm',
-                'docstring': 'Vector containing the position of the sample axis z at each projection image collection.'
+                'docstring': 'Vector containing the set position of the sample axis z at each projection image collection.'
             },
-            'sample_image_shift_x': {
-                'value': None,
-                'units': 'pixels',
-                'docstring': 'Vector containing the shift of the sample axis x at each projection on the detector plane.'        
-            },        
-            'sample_image_shift_y': {
-                'value': None,
-                'units': 'pixels',
-                'docstring': 'Vector containing the shift of the sample axis y at each projection on the detector plane.'        
-            },        
         }
 
     def _generate_classes(self):

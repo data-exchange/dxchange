@@ -24,8 +24,8 @@ import re
 
 def main():
 
-    file_name = '/local/dataraid/databank/SLS/Hornby_SLS/Hornby_b.tif'
-    log_file = '/local/dataraid/databank/SLS/Hornby_SLS/Hornby.log'
+    file_name = '/local/dataraid/databank/templates/sls_tomcat/sample_name.tif'
+    log_file = '/local/dataraid/databank/templates/sls_tomcat/sample_name.log'
 
     hdf5_file_name = '/local/dataraid/databank/dataExchange/tmp/SLS.h5'
 
@@ -58,6 +58,11 @@ def main():
     projections_end = projections_start + number_of_projections
     projections_angle_end = 180 + angular_step
 
+    print dark_start, dark_end
+    print white_start, white_end
+    print projections_start, projections_end
+    print projections_angle_end
+
     # Read raw data
     read = dataexchange.Import()
     data, white, dark, theta = read.xtomo_raw(file_name,
@@ -81,6 +86,8 @@ def main():
                           sample_name = sample_name,
                           data_exchange_type = 'tomography_raw_projections'
                           )
+
 if __name__ == "__main__":
     main()
+
 
