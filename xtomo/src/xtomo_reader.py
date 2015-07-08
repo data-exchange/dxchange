@@ -143,7 +143,7 @@ class XTomoReader():
                           			y_start:y_end:y_step,
                           			x_start:x_end:x_step]
 	except KeyError:
-                print "FILE DOES NOT CONTAIN A VALID TOMOGRAPHY DATA SET"
+                self.logger.error("FILE DOES NOT CONTAIN A VALID TOMOGRAPHY DATA SET")
 		dataset = None        
 
 	f.close()
@@ -237,7 +237,7 @@ class XTomoReader():
                           			x_start:x_end:x_step]
                         print dataset.shape
 	except KeyError:
-                print "FILE DOES NOT CONTAIN A VALID TOMOGRAPHY DATA SET"
+                self.logger.error("FILE DOES NOT CONTAIN A VALID TOMOGRAPHY DATA SET")
 		dataset = None        
 
 	f.close()
@@ -349,8 +349,8 @@ class XTomoReader():
         #im.close()
         array = out[x_start:x_end:x_step,
                    y_start:y_end:y_step]
-	if flip == 'true':
-		array=np.rot90(array)
+        if flip == 'true':
+            array=np.rot90(array)
 	
         return array
         
@@ -402,8 +402,8 @@ class XTomoReader():
         
         array = out[x_start:x_end:x_step,
                    y_start:y_end:y_step]
-	if flip == 'true':
-		array=np.rot90(array)
+        if flip == 'true':
+            array=np.rot90(array)
 	
         return array
 
@@ -561,7 +561,7 @@ class XTomoReader():
                         struct_fmt = "<{}h".format(n_cols*n_rows)
                         imgdata = struct.unpack(struct_fmt, data)
                     else:                            
-                        print "Wrong data type"
+                        self.logger.error("Wrong data type")
                         return
                     absdata[:,:,i-1] = np.reshape(imgdata, (n_cols, n_rows), order='F')
 

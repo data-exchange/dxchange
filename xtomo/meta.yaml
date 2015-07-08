@@ -1,6 +1,6 @@
 package:
   name: xtomo
-  version: '0.1.48'
+  version: '0.1.49'
 
 source:
   git_url: https://github.com/decarlof/data-exchange.git
