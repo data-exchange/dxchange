@@ -1,0 +1,14 @@
+python convert_ALS.py
+python convert_APS_13BM_netCDF.py  
+python convert_APS_1ID.py     
+python convert_diamond_JEEP_hdf.py   
+python convert_Elettra.py	
+python convert_PetraIII.py  
+python convert_Xradia_DTU.py
+python convert_Anka.py  
+python convert_APS_13BM_SPE.py     
+python convert_Australian.py  
+python convert_diamond_JEEP_tiff.py  
+python convert_ESRF_ID19.py	
+python convert_SLS.py
+
