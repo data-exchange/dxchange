@@ -2,6 +2,7 @@
 xtomo: Data Exchange for X-ray Tomography
 =========================================
 xtomo is a Python toolbox for reading tomographic raw datasets collected at different synchrotron facilities and writing them as Data Exchange files (http://www.aps.anl.gov/DataExchange/). 
+
 xtomo provides an interface between tomographic raw datasets and tomoPy (https://github.com/tomopy/), a Python toolbox to perform tomographic data processing and image reconstruction tasks developed at the Advanced Photon Source (http://www.aps.anl.gov/).
 
 :home: http://www.aps.anl.gov/DataExchange
@@ -11,8 +12,8 @@ xtomo provides an interface between tomographic raw datasets and tomoPy (https:/
 Installing xtomo
 ================
 
-To intall xtomo you must have `Conda <http://continuum.io/downloads>`_ 
-installed first then pen a terminal or a command prompt window and run::
+To install xtomo you must have `Conda <http://continuum.io/downloads>`_ 
+installed first then open a terminal or a command prompt window and run::
 
 conda install -c decarlof xtomo
 
