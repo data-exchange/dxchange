@@ -203,16 +203,16 @@ class Import():
         if (projections_digits == -1):
             # Set default dark/white file names
             if white_file_name is None:
-                white_file_name = "does_not_exist"
+                    white_file_name = "does_not_exist"
             if dark_file_name is None:
-                dark_file_name = "does_not_exist"
+                    dark_file_name = "does_not_exist"
             
         else:    
             # Set default prefix for white and dark series of files.
             if white_file_name is None:
-                white_file_name = file_name
+                    white_file_name = file_name
             if dark_file_name is None:
-                dark_file_name = file_name
+                    dark_file_name = file_name
 
         # Set default digits.
         if white_digits is None:
@@ -220,138 +220,11 @@ class Import():
         if dark_digits is None:
             dark_digits = projections_digits
 
-
         # Determine file name and extension type.
-        if (data_type is 'hdf5'):
-            if file_name.endswith('HDF') or \
-                file_name.endswith('hdf'):
-                data_file = os.path.splitext(file_name)[0]
-                dataExtension = os.path.splitext(file_name)[1]
-            if white_file_name.endswith('HDF') or \
-                white_file_name.endswith('hdf'):
-                data_file_white = os.path.splitext(white_file_name)[0]
-            if dark_file_name.endswith('HDF') or \
-                dark_file_name.endswith('hdf'):
-                data_file_dark = os.path.splitext(dark_file_name)[0]
-
-        elif (data_type is 'nxs'):
-            if file_name.endswith('NXS') or \
-                file_name.endswith('nxs'):
-                data_file = os.path.splitext(file_name)[0]
-                dataExtension = os.path.splitext(file_name)[1]
-            if white_file_name.endswith('NXS') or \
-                white_file_name.endswith('nxs'):
-                data_file_white = os.path.splitext(white_file_name)[0]
-            if dark_file_name.endswith('NXS') or \
-                dark_file_name.endswith('nxs'):
-                data_file_dark = os.path.splitext(dark_file_name)[0]
-
-        elif (data_type is 'spe'):
-            if file_name.endswith('SPE') or \
-                file_name.endswith('spe'):
-                data_file = os.path.splitext(file_name)[0]
-                dataExtension = os.path.splitext(file_name)[1]
-            if white_file_name.endswith('SPE') or \
-                white_file_name.endswith('spe'):
-                data_file_white = os.path.splitext(white_file_name)[0]
-            if dark_file_name.endswith('SPE') or \
-                dark_file_name.endswith('spe'):
-                data_file_dark = os.path.splitext(dark_file_name)[0]
-
-        elif (data_type is 'nc'):
-            if file_name.endswith('NC') or \
-                file_name.endswith('nc'):
-                data_file = os.path.splitext(file_name)[0]
-                dataExtension = os.path.splitext(file_name)[1]
-            if white_file_name.endswith('NC') or \
-                white_file_name.endswith('nc'):
-                data_file_white = os.path.splitext(white_file_name)[0]
-            if dark_file_name.endswith('NC') or \
-                dark_file_name.endswith('nc'):
-                data_file_dark = os.path.splitext(dark_file_name)[0]
-
-        elif ((data_type is 'tiff') or (data_type is 'compressed_tiff')):
-            if file_name.endswith('tif') or \
-                file_name.endswith('tiff'):
-                data_file = os.path.splitext(file_name)[0]
-                dataExtension = os.path.splitext(file_name)[1]
-            if white_file_name.endswith('tif') or \
-                white_file_name.endswith('tiff'):
-                data_file_white = os.path.splitext(white_file_name)[0]
-            if dark_file_name.endswith('tif') or \
-                dark_file_name.endswith('tiff'):
-                data_file_dark = os.path.splitext(dark_file_name)[0]
-
-        elif (data_type is 'edf'):
-            if file_name.endswith('EDF') or \
-                file_name.endswith('edf'):
-                data_file = os.path.splitext(file_name)[0]
-                dataExtension = os.path.splitext(file_name)[1]
-            if white_file_name.endswith('EDF') or \
-                white_file_name.endswith('edf'):
-                data_file_white = os.path.splitext(white_file_name)[0]
-            if dark_file_name.endswith('EDF') or \
-                dark_file_name.endswith('edf'):
-                data_file_dark = os.path.splitext(dark_file_name)[0]
-
-        elif (data_type is 'edf2'):
-            if file_name.endswith('EDF') or \
-                file_name.endswith('edf'):
-                data_file = os.path.splitext(file_name)[0]
-                dataExtension = os.path.splitext(file_name)[1]
-            if white_file_name.endswith('EDF') or \
-                white_file_name.endswith('edf'):
-                data_file_white = os.path.splitext(white_file_name)[0]
-            if dark_file_name.endswith('EDF') or \
-                dark_file_name.endswith('edf'):
-                data_file_dark = os.path.splitext(dark_file_name)[0]
-
-        elif (data_type is 'dpt'):
-            if file_name.endswith('DPT') or \
-                file_name.endswith('dpt'):
-                data_file = os.path.splitext(file_name)[0]
-                dataExtension = os.path.splitext(file_name)[1]
-            if white_file_name.endswith('DPT') or \
-                white_file_name.endswith('dpt'):
-                data_file_white = os.path.splitext(white_file_name)[0]
-            if dark_file_name.endswith('DPT') or \
-                dark_file_name.endswith('dpt'):
-                data_file_dark = os.path.splitext(dark_file_name)[0]
-
-        elif (data_type is 'h5'):
-            if exchange_rank > 0:
-                exchange_base = 'exchange{:d}'.format(int(exchange_rank))
-            else:
-                exchange_base = "exchange"     
-
-            if file_name.endswith('H5') or \
-                file_name.endswith('h5'):
-                data_file = os.path.splitext(file_name)[0]
-                dataExtension = os.path.splitext(file_name)[1]
-            if white_file_name.endswith('H5') or \
-                white_file_name.endswith('h5'):
-                data_file_white = os.path.splitext(white_file_name)[0]
-            if dark_file_name.endswith('H5') or \
-                dark_file_name.endswith('h5'):
-                data_file_dark = os.path.splitext(dark_file_name)[0]
-
-        elif (data_type is 'xradia'):
-            if file_name.endswith('TXRM') or \
-                file_name.endswith('txrm'):
-                data_file = os.path.splitext(file_name)[0]
-                dataExtension = os.path.splitext(file_name)[1]
-            if white_file_name.endswith('XRM') or \
-                white_file_name.endswith('xrm'):
-                data_file_white = os.path.splitext(white_file_name)[0]
-            if dark_file_name.endswith('XRM') or \
-                dark_file_name.endswith('xrm'):
-                data_file_dark = os.path.splitext(dark_file_name)[0]
-
-        elif (data_type is 'fabio'):
-            data_file = os.path.splitext(file_name)[0]
-            dataExtension = os.path.splitext(file_name)[1]
-            data_file_white = os.path.splitext(white_file_name)[0]
-            data_file_dark = os.path.splitext(dark_file_name)[0]
+        data_file = os.path.splitext(file_name)[0]
+        dataExtension = os.path.splitext(file_name)[1]
+        data_file_white = os.path.splitext(white_file_name)[0]
+        data_file_dark = os.path.splitext(dark_file_name)[0]
         
         projections_file_index = ["" for x in range(projections_digits)]
         for m in range(projections_digits):
@@ -396,19 +269,7 @@ class Import():
 
                 f = XTomoReader(_file_name)
 
-                if (data_type is 'hdf5'):
-                    tmpdata = f.hdf5_2d(x_start=slices_start,
-                                     x_end=slices_end,
-                                     x_step=slices_step,
-                                     array_name='/entry/data/data')
-
-                elif (data_type is 'compressed_tiff'):
-                    tmpdata = f.tiffc(x_start=slices_start,
-                                      x_end=slices_end,
-                                      x_step=slices_step,
-                                      dtype=dtype)
-
-                elif (data_type is 'spe'):
+                if (data_type is 'spe'):
                     tmpdata = f.spe(y_start = slices_start,
                                     y_end = slices_end,
                                     y_step = slices_step)
@@ -417,7 +278,7 @@ class Import():
                     tmpdata = f.netcdf(y_start = slices_start,
                                     y_end = slices_end,
                                     y_step = slices_step)
- 
+
                 elif (data_type is 'tiff'):
                     tmpdata = f.tiff(x_start=slices_start,
                                      x_end=slices_end,
@@ -425,25 +286,28 @@ class Import():
                                      dtype=dtype,
                                      flip=flip)
 
-                elif (data_type is 'fabio'):
-                    tmpdata = f.fabio(x_start=slices_start,
+                elif (data_type is 'compressed_tiff'):
+                    tmpdata = f.tiffc(x_start=slices_start,
+                                      x_end=slices_end,
+                                      x_step=slices_step,
+                                      dtype=dtype)
+ 
+                elif (data_type is 'hdf5'):
+                    tmpdata = f.hdf5_2d(x_start=slices_start,
                                      x_end=slices_end,
                                      x_step=slices_step,
-                                     flip=flip)
+                                     array_name='/entry/data/data')
 
                 elif (data_type is 'edf2'):
                     tmpdata = f.edf2(x_start=slices_start,
                                      x_end=slices_end,
                                      x_step=slices_step)
 
-                if ((data_type is 'tiff') or
-                    (data_type is 'compressed_tiff') or
-                    (data_type is 'edf2') or
-                    (data_type is 'fabio') or
-                    (data_type is 'hdf5')):
-                    if m == 0: # Get resolution once.
-                        input_data = np.empty((len(ind), tmpdata.shape[0], tmpdata.shape[1]), dtype=dtype)
-                    input_data[m, :, :] = tmpdata
+                elif (data_type is 'fabio'):
+                    tmpdata = f.fabio(x_start=slices_start,
+                                     x_end=slices_end,
+                                     x_step=slices_step,
+                                     flip=flip)
 
                 if ((data_type is 'spe') or
                     (data_type is 'nc')):
@@ -451,6 +315,15 @@ class Import():
                         input_data = np.vstack([tmpdata])
                     else:
                         input_data = np.concatenate((input_data, tmpdata), axis=0)
+
+                if ((data_type is 'tiff') or
+                    (data_type is 'compressed_tiff') or
+                    (data_type is 'hdf5') or
+                    (data_type is 'edf2') or
+                    (data_type is 'fabio')):
+                    if m == 0: # Get resolution once.
+                        input_data = np.empty((len(ind), tmpdata.shape[0], tmpdata.shape[1]), dtype=dtype)
+                    input_data[m, :, :] = tmpdata
 
         # Update data.
         if projection_exist:
@@ -541,24 +414,10 @@ class Import():
                 self.logger.info("data type: [%s]", data_type)
 
                 f = XTomoReader(_file_name)
-                if (data_type is 'hdf5'):
-                    # to check on real data set from APS 15-ID
-                    tmpdata = f.hdf5_2d(x_start=slices_start,
-                                     x_end=slices_end,
-                                     x_step=slices_step,
-                                     array_name='data')
-
-                elif (data_type is 'compressed_tiff'):
-                    tmpdata = f.tiffc(x_start=slices_start,
-                                      x_end=slices_end,
-                                      x_step=slices_step,
-                                      dtype=dtype)
-
-                elif (data_type is 'spe'):
+                if (data_type is 'spe'):
                     tmpdata = f.spe(y_start = slices_start,
                                     y_end = slices_end,
                                     y_step = slices_step)
-
 
                 elif (data_type is 'nc'):
                     tmpdata = f.netcdf(y_start = slices_start,
@@ -572,28 +431,29 @@ class Import():
                                      dtype=dtype,
                                      flip=flip)
 
-                elif (data_type is 'fabio'):
-                    tmpdata = f.fabio(x_start=slices_start,
+                elif (data_type is 'compressed_tiff'):
+                    tmpdata = f.tiffc(x_start=slices_start,
+                                      x_end=slices_end,
+                                      x_step=slices_step,
+                                      dtype=dtype)
+
+                elif (data_type is 'hdf5'):
+                    # data set from APS 15-ID
+                    tmpdata = f.hdf5_2d(x_start=slices_start,
                                      x_end=slices_end,
                                      x_step=slices_step,
-                                     flip=flip)
+                                     array_name='data')
 
                 elif (data_type is 'edf2'):
                     tmpdata = f.edf2(x_start = slices_start,
                                      x_end = slices_end,
                                      x_step = slices_step)
 
-                if ((data_type is 'tiff') or
-                    (data_type is 'compressed_tiff') or
-                    (data_type is 'edf2') or
-                    (data_type is 'fabio') or
-                    (data_type is 'hdf5')):
-                    if m == 0: # Get resolution once.
-                        input_data = np.empty((len(ind),
-                                             tmpdata.shape[0],
-                                             tmpdata.shape[1]),
-                                             dtype=dtype)
-                    input_data[m, :, :] = tmpdata
+                elif (data_type is 'fabio'):
+                    tmpdata = f.fabio(x_start=slices_start,
+                                     x_end=slices_end,
+                                     x_step=slices_step,
+                                     flip=flip)
 
                 if ((data_type is 'spe') or
                     (data_type is 'nc')):
@@ -601,6 +461,18 @@ class Import():
                         input_data = np.vstack([tmpdata])
                     else:
                         input_data = np.concatenate((input_data, tmpdata), axis=0)
+
+                if ((data_type is 'tiff') or
+                    (data_type is 'compressed_tiff') or
+                    (data_type is 'hdf5') or
+                    (data_type is 'edf2') or
+                    (data_type is 'fabio')):
+                    if m == 0: # Get resolution once.
+                        input_data = np.empty((len(ind),
+                                             tmpdata.shape[0],
+                                             tmpdata.shape[1]),
+                                             dtype=dtype)
+                    input_data[m, :, :] = tmpdata
 
         # Update white data.
         if white_exist:
@@ -710,20 +582,7 @@ class Import():
                 self.logger.info("data type: [%s]", data_type)
 
                 f = XTomoReader(_file_name)
-                if (data_type is 'hdf5'):
-                    # to check on real data set from APS 15-ID
-                    tmpdata = f.hdf5_2d(x_start=slices_start,
-                                     x_end=slices_end,
-                                     x_step=slices_step,
-                                     array_name='data')
-
-                elif (data_type is 'compressed_tiff'):
-                    tmpdata = f.tiffc(x_start=slices_start,
-                                      x_end=slices_end,
-                                      x_step=slices_step,
-                                      dtype=dtype)
-
-                elif (data_type is 'spe'):
+                if (data_type is 'spe'):
                     tmpdata = f.spe(y_start = slices_start,
                                     y_end = slices_end,
                                     y_step = slices_step)
@@ -740,28 +599,30 @@ class Import():
                                      dtype=dtype,
                                      flip=flip)
 
-                elif (data_type is 'fabio'):
-                    tmpdata = f.fabio(x_start=slices_start,
+                elif (data_type is 'compressed_tiff'):
+                    tmpdata = f.tiffc(x_start=slices_start,
+                                      x_end=slices_end,
+                                      x_step=slices_step,
+                                      dtype=dtype)
+
+
+                elif (data_type is 'hdf5'):
+                    # to check on real data set from APS 15-ID
+                    tmpdata = f.hdf5_2d(x_start=slices_start,
                                      x_end=slices_end,
                                      x_step=slices_step,
-                                     flip=flip)
+                                     array_name='data')
 
                 elif (data_type is 'edf2'):
                     tmpdata = f.edf2(x_start=slices_start,
                                      x_end=slices_end,
                                      x_step=slices_step)
 
-                if ((data_type is 'tiff') or
-                    (data_type is 'compressed_tiff') or
-                    (data_type is 'edf2') or
-                    (data_type is 'fabio') or
-                    (data_type is 'hdf5')):
-                    if m == 0: # Get resolution once.
-                        input_data = np.empty((len(ind),
-                                             tmpdata.shape[0],
-                                             tmpdata.shape[1]),
-                                             dtype=dtype)
-                    input_data[m, :, :] = tmpdata
+                elif (data_type is 'fabio'):
+                    tmpdata = f.fabio(x_start=slices_start,
+                                     x_end=slices_end,
+                                     x_step=slices_step,
+                                     flip=flip)
 
                 if ((data_type is 'spe') or
                     (data_type is 'nc')):
@@ -769,6 +630,18 @@ class Import():
                         input_data = np.vstack([tmpdata])
                     else:
                         input_data = np.concatenate((input_data, tmpdata), axis=0)
+
+                if ((data_type is 'tiff') or
+                    (data_type is 'compressed_tiff') or
+                    (data_type is 'hdf5') or
+                    (data_type is 'edf2') or
+                    (data_type is 'fabio')):
+                    if m == 0: # Get resolution once.
+                        input_data = np.empty((len(ind),
+                                             tmpdata.shape[0],
+                                             tmpdata.shape[1]),
+                                             dtype=dtype)
+                    input_data[m, :, :] = tmpdata
 
         # Update dark data.
         if dark_exist > 0:
