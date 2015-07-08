@@ -1,0 +1,763 @@
+
+\section{Data Exchange Core Reference}
+\label{sec:corereference}
+
+%****************************************************************************
+\subsection{Top level (root)}
+\label{table:top}
+
+This node represents the top level of the HDF5 file and holds some general 
+information about the file.
+
+\begin{table}[h!]\sffamily
+\centering
+\footnotesize
+\caption{Top Level Members}
+\rowcolors{1}{white}{tableBlue}
+\begin{tabular}{l l l}
+\toprule
+\bfseries Member & \bfseries Type & \bfseries Example \\
+\midrule
+
+\emph{implements} & string dataset & "exchange:measurement:provenance" \\
+\hyperref[exchange:tomography]{\emph{exchange\_$N$}} & group & \\
+\hyperref[table:measurement]{\tt{measurement\_$N$}} & group & \\
+\hyperref[table:provenance]{\tt{provenance}} & group & \\
+
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{description}
+\item[\emph{implements}] \hfill \\
+{A colon separated list that shows which components are present in the file. The
+only \emph{mandatory} component is \emph{exchange}. A more general Data Exchange
+file also contains {\tt measurement} and {\tt provenance} information, if so 
+these will be declared in implements as "exchange:measurement:provenance"}
+
+\item[\emph{exchange\_$N$}] \hfill \\
+{The data taken from measurements or processing. Dimension descriptors within the group may also serve to describe "positioner" values involved in a scan. }
+
+\item[\tt{measurement\_$N$}] \hfill \\
+{Description of the sample and instrument as configured for the measurement. This group is appropriate for relatively static metadata.  For measurements where there are many "positioner" values (aka a "scan"), it is more sensible to add dimension(s) to the exchange dataset, and describe the "positioner" values as dimension scales rather than record the data via multiple matching measurement\_N and exchange\_N groups. This is a judgement left to the user.}
+
+\item[\tt{provenance}] \hfill \\
+{The Provenance group describes all process steps that have been applied to the
+data.}
+\end{description}
+
+\clearpage
+
+%****************************************************************************
+\subsection{Exchange}
+\label {sec:exchange}
+The exchange group is where scientific datasets reside. This group
+contains one or more array datasets containing n-dimensional data and optional 
+descriptions of the axes (dimension scale datasets). Exactly how this group is
+used is dependent on the application, however the general idea is that
+one exchange group contains one cohesive dataset. If, for example, the
+dataset is processed into some other form, then another exchange group is
+used to store the derived data.
+
+Multiple exchange groups are numbered consecutively as exchange\_$N$. At a 
+minimum, each exchange group should have a primary dataset named
+data. The title is optional.
+
+\begin{table}[h!]\sffamily \footnotesize
+\centering
+\caption{Exchange Group Members}
+\rowcolors{1}{white}{tableBlue}
+\begin{tabular}{l l l}
+\toprule
+\bfseries Member     & \bfseries Type & \bfseries Example \\
+\midrule
+\tt{title}  & string dataset & "absorption\_tomography" \\
+\hyperref[data:attr]{\emph{data}}  &  array dataset & {n-dimensional dataset} \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{description}
+\item[\tt{title}] \hfill \\
+{Descriptive title for data dataset. Current types include: absorption\_tomography, phase\_tomography, dpc\_tomography }
+
+\item[\emph{data}] \hfill \\
+{The primary scientific dataset. Additional related datasets may have any
+arbitrary name. Each dataset should have a units and description attribute.
+Discussion of dimension descriptors and optional axes attribute is covered
+in Section \ref{sec:multidims}.}
+\end{description}
+
+\begin{table}[h!]\sffamily \footnotesize
+\centering
+\caption{data attributes}
+\label{data:attr}
+\rowcolors{1}{white}{tableBlue}
+\begin{tabular}{l l l}
+\toprule
+\bfseries Attribute     & \bfseries Type & \bfseries Example \\
+\midrule
+\tt{description}  & string attribute & "transmission"  \\
+\tt{units}  & string attribute & "counts"  \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsubsection{Storing and describing a multidimensional dataset}
+\label{sec:multidims}
+A multidimensional dataset should be described as fully as possible, with units for the dataset as well as 
+dimension descriptors (that also have units defined). There are also additional descriptive fields available 
+such as title and description. The order of dimensions in the dataset should put the slowest changing 
+dimension first, and the fastest changing dimension last. 
+
+It is strongly encouraged that all datasets have a units attribute. The string value for units should preferably 
+be an SI unit, however well understood non-SI units are acceptable, in particular "degrees". The units 
+strings should conform to those defined by UDUNITS at {http://www.unidata.ucar.edu/software/udunits}. 
+While UDUNITS is a software package, it contains simple XML files that describe units strings and 
+acceptable aliases.
+
+The axes of a multidimensional dataset are described through the use of additional one-dimensional 
+datasets (dimension descriptors), one for each axis in the main dataset. Take for example a 3-dimensional 
+cube of images, with axes of x, y, and z where z represents the angle of the sample when each image was 
+taken. There should be 3 additional one-dimensional datasets called x, y, and z where x and y contain an 
+integer sequence, and z contains a list of angles. X and y have units of "counts" and z has units of 
+"degrees". To simplify, it is acceptable to omit x and y, since the default interpretation will always be an 
+integer sequence. 
+
+The dimension descriptors (x, y, and z) can be associated with the main dataset through two mechanisms. 
+The HDF5 libraries contain a function call to "attach" a dimension descriptor dataset to a given dimension of 
+the main dataset. HDF5 takes care of entering several attributes in the file that serve to keep track of this 
+association. If the particular programming language you work in does not support this HDF5 function, then 
+you can instead add a string attribute to your main dataset called axes. The axes attribute is simply a colon 
+separated string naming the dimension descriptor datasets in order, so "z:y:x" in this case. 
+
+\newpage
+
+%****************************************************************************
+\subsection{Measurement}
+\label{table:measurement}
+
+This group holds sample and instrument information. These groups are designed to hold relatively static data about the sample and instrument configuration at the time of the measurement. Rapidly changing "positioner" values (aka scan) are better represented in the exchange group dataset.
+
+There is a geometry group common to many of the subgroups under measurement. The intent is to describe the translation and rotation (orientation) of the sample or instrument component relative to some coordinate system. Since we believe it is not possible to determine all possible uses at this time, we leave the precise definition of geometry up to the technique. We do encourage the use of separate translation and orientation subgroups within geometry. As such, we do not describe geometry further here.
+
+\begin{table}[h!]\sffamily
+\centering
+\footnotesize
+\caption{Measurement Group Members}
+\rowcolors{1}{white}{tableBlue}
+\begin{tabular}{l l l}
+\toprule
+\bfseries Member     & \bfseries Type & \bfseries Example \\
+\midrule
+\hyperref[table:sample]{sample} & group &  \\
+\hyperref[table:instrument]{instrument} & group & \\
+description & string dataset &  "Tomography of a rock" \\   
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{description}
+\item[\tt{sample}] \hfill \\
+{The sample measured.}
+
+\item[\tt {instrument}] \hfill \\
+{The instrument used to collect this data.}
+
+\item[\tt {description}] \hfill \\
+{Measurement description.}
+
+\end{description}
+
+\subsubsection{Sample}
+\label{table:sample}
+
+This group holds basic information about the sample, its geometry, properties,
+the sample owner (user) and sample proposal information. While all these fields
+are optional, if you do intend to include them they should appear within this parentage of
+groups.
+
+\begin{table}[h!]\sffamily \footnotesize
+\centering
+\caption{Sample Group Members}
+\rowcolors{1}{white}{tableBlue}
+\begin{tabular}{l l l}
+\toprule
+\bfseries Member     & \bfseries Type & \bfseries Example \\
+\midrule
+name & string dataset &  "cells sample 1" \\     
+description & string dataset &  "malaria cells" \\   
+preparation\_date  & string dataset (ISO 8601) & "2012-07-31T21:15:22+0600" \\    
+chemical\_formula  & string dataset (abbr. CIF format) & "(Cd 2+)3,  2(H2 O)" \\   
+mass & float dataset & 0.25 \\
+concentration & float dataset & 0.4 \\
+environment & string dataset & "air" \\  
+temperature     & float dataset & 25.4  \\
+temperature\_set & float dataset & 26.0 \\
+pressure & float dataset &  101325 \\ 
+thickness & float dataset & 0.001 \\
+position & string dataset & "2D"  APS robot coord. \\
+\hyperref[table:geometry]{geometry} &  group & \\
+\hyperref[table:experiment]{experiment} & group & \\
+\hyperref[table:experimenter]{experimenter} & group & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{description}
+\item[\tt {name}] \hfill \\
+{Descriptive name of the sample.}
+
+\item[\tt {description}] \hfill \\
+{Description of the sample.}
+
+\item[\tt {preparation\_date}] \hfill \\
+{Date and time the sample was prepared.}
+
+\item[\tt {chemical\_formula}] \hfill \\
+{Sample chemical formula using the CIF format.}
+
+\item[\tt {mass}] \hfill \\
+{Mass of the sample.}
+
+\item[\tt {concentration}] \hfill \\
+{Mass/volume.}
+
+\item[\tt {environment}] \hfill \\
+{Sample environment.}
+
+\item[\tt {temperature}] \hfill \\
+{Sample temperature.}
+
+\item[\tt {temperature\_set}] \hfill \\
+{Sample temperature set point.}
+
+\item[\tt {pressure}] \hfill \\
+{Sample pressure.}
+
+\item[\tt {thickness}] \hfill \\
+{Sample thickness.}
+
+\item[\tt {position}] \hfill \\
+{Sample position in the sample changer/robot.}
+
+\item[\tt {geometry}] \hfill \\
+{Sample center of mass position and orientation.}
+
+\item[\tt {experiment}] \hfill \\
+{Facility experiment identifiers.}
+
+\item[\tt {experimenter}] \hfill \\
+{Experimenter identifiers.}
+\end{description}
+
+\paragraph{Geometry}
+\label{table:geometry}
+
+This class holds the general position and orientation of a component. We do not define this
+further here.
+
+\begin{table}[h!]\sffamily \footnotesize
+\centering
+\caption{Geometry Group Members}
+\rowcolors{1}{white}{tableBlue}
+\begin{tabular}{l l l}
+\toprule
+\bfseries Member     & \bfseries Type & \bfseries Example \\
+\midrule
+
+\emph{translation} & group &  \\
+\emph{orientation} & group & \\
+
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{description}
+\item[\emph{translation}] \hfill \\
+{The position of the object with respect to the origin of your coordinate system.}
+
+\item[\emph{orientation}] \hfill \\
+{The rotation of the object with respect to your coordinate system.}
+\end{description}
+
+\paragraph{Experiment}
+
+This provides references to facility ids for the proposal, scheduled
+activity, and safety form.
+
+\begin{table}[h!]\sffamily \footnotesize
+\centering
+\caption{Experiment Group Members}
+\rowcolors{1}{white}{tableBlue}
+\begin{tabular}{l l l}
+\toprule
+\bfseries Member     & \bfseries Type & \bfseries Example \\
+\midrule
+proposal & string dataset &  "1234" \\
+activity & string dataset &  "9876" \\
+safety & string dataset &  "9876" \\
+\bottomrule
+\end{tabular}
+\label{table:experiment}
+\end{table}
+
+\begin{description}
+\item[\tt {proposal}] \hfill \\
+{Proposal reference number. For the APS this is the General User Proposal
+number.}
+
+\item[\tt {activity}] \hfill \\
+{Proposal scheduler id. For the APS this is the beamline scheduler activity id.}
+
+\item[\tt {safety}] \hfill \\
+{Safety reference document. For the APS this is the Experiment Safety Approval
+Form number.}
+\end{description}
+
+\paragraph{Experimenter}
+
+Description of a single experimenter. Multiple experimenters can be represented
+through numbered entries such as experimenter\_1, experimenter\_2.
+
+\begin{table}[h!]\sffamily \footnotesize
+\centering
+\caption{Experimenter Group Members}
+\rowcolors{1}{white}{tableBlue}
+\begin{tabular}{l l l}
+\toprule
+\bfseries Member     & \bfseries Type & \bfseries Example \\
+\midrule
+name & string dataset & "John Doe" \\    
+role & string dataset & "Project PI"     \\ 
+affiliation & string dataset &  "University of California, Berkeley" \\  
+address & string dataset & "EPS  UC Berkeley CA  94720 4767 USA" \\  
+phone & string dataset & "+1 123 456 0000" \\    
+email & string dataset &  "johndoe@berkeley.edu" \\  
+facility\_user\_id & string dataset &  "a123456" \\ 
+\bottomrule
+\end{tabular}
+\label{table:experimenter}
+\end{table}
+
+\begin{description}
+\item[\tt {name}] {User name.}    
+
+\item[\tt {role}] {User role.}
+
+\item[\tt {affiliation}] {User affiliation.} 
+
+\item[\tt {address}] {User address.}  
+
+\item[\tt {phone}] {User phone number.} 
+
+\item[\tt {email}] {User e-mail address} 
+
+\item[\tt {facility\_user\_id}] {User badge number }
+\end{description}
+
+\subsubsection{Instrument}
+\label{table:instrument}
+
+The instrument group stores all relevant beamline components status at the beginning of 
+a measurement. While all these fields are optional, if you do intend to include them they 
+should appear within this parentage of groups.
+
+\begin{table}[h!]\sffamily \footnotesize
+\centering
+\caption{Instrument Group Members}
+\rowcolors{1}{white}{tableBlue}
+\begin{tabular}{l l l}
+\toprule
+\bfseries Member     & \bfseries Type & \bfseries Example \\
+\midrule
+
+\tt{name} & string dataset & "XSD/2-BM" \\
+\hyperref[table:source]{source} &  group & \\
+\hyperref[table:shutter]{shutter\_$N$}  &  group & \\
+\hyperref[table:attenuator]{attenuator\_$N$} & group & \\
+\hyperref[table:monochromator]{monochromator} & group & \\
+\hyperref[table:capacitive]{capacitive\_sensors} & group & \\
+\hyperref[table:amplifier]{amplifier} & group & \\
+\hyperref[table:detector]{detector\_$N$} & group & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{description}
+\item[\tt {name}] \hfill \\
+{Name of the instrument.}
+
+\item[\tt {source}] \hfill \\
+{The source used by the instrument.}
+
+\item[\tt {shutter\_$N$}] \hfill \\
+{The shutter(s) used by the instrument.}
+
+\item[\tt {attenuator\_$N$}] \hfill \\
+{The attenuators that are part of the instrument.}
+
+\item[\tt {monochromator}] \hfill \\
+{The monochromator used by the instrument.}
+
+\item[\tt {capacitive\_sensors}] \hfill \\
+{The capacitive\_sensors used to monitor for example the sample position during data collection.}
+
+\item[\tt {amplifier}] \hfill \\
+{The amplifier used by the instrument.}
+
+\item[\tt {detector\_$N$}] \hfill \\
+{The detectors that compose the instrument.}
+\end{description}
+
+
+\paragraph{Source}
+\label{table:source}
+
+Class describing the light source being used.
+
+\begin{table}[h!]\sffamily \footnotesize
+\centering
+\caption{Source Group Members}
+\rowcolors{1}{white}{tableBlue}
+\begin{tabular}{l l l}
+\toprule
+\bfseries Member     & \bfseries Type & \bfseries Example \\
+\midrule
+name & string dataset & "APS" \\ 
+datetime & string dataset (ISO 8601) & "2011-07-15T15:10Z" \\
+beamline & string dataset & "2-BM" \\ 
+current & float dataset &  0.094 \\
+energy & float dataset & 4.807e-15 \\
+pulse\_energy & float dataset & 1.602e-15 \\
+pulse\_width & float dataset & 15e-11 \\
+mode & string dataset & "TOPUP" \\
+beam\_intensity\_incident & float dataset & 55.93 \\
+beam\_intensity\_transmitted & float dataset & 100.0 \\
+\hyperref[table:geometry]{geometry} &  group & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{description}
+
+\item[\tt {name}] \hfill \\
+{Name of the facility.}
+
+\item[\tt {datetime}] \hfill \\
+{Date and time source was measured.}
+
+\item[\tt {beamline}] \hfill \\
+{Name of the beamline.}
+
+\item[\tt {current}] \hfill \\
+{Electron beam current (A).}
+
+\item[\tt {energy}] \hfill \\
+{Characteristic photon energy of the source (J). For an APS bending magnet this
+is 30 keV or 4.807e-15 J.}
+
+\item[\tt {pulse\_energy}] \hfill \\
+{Sum of the energy of all the photons in the pulse (J).}
+
+\item[\tt {pulse\_width}] \hfill \\
+{Duration of the pulse (s).}
+
+\item[\tt {source}] \hfill \\
+{Beam mode: TOPUP.}
+
+\item[\tt {beam\_intensity\_incident}] \hfill \\
+{Incident beam intensity in (photons per s).}
+
+\item[\tt {beam\_intensity\_transmitted}] \hfill \\
+{Transmitted beam intensity (photons per s).}
+\end{description}
+
+
+\paragraph{Shutter}
+\label{table:shutter}
+
+Class describing the shutter being used.
+
+\begin{table}[h!]\sffamily \footnotesize
+\centering
+\caption{Shutter Group Members}
+\rowcolors{1}{white}{tableBlue}
+\begin{tabular}{l l l}
+\toprule
+\bfseries Member     & \bfseries Type & \bfseries Example \\
+\midrule
+name & string dataset & "Front End Shutter 1" \\ 
+status & string dataset & "OPEN" \\
+\hyperref[table:geometry]{geometry} &  group & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{description}
+\item[\tt {name}] \hfill \\
+{Shutter name.}
+
+\item[\tt {status}] \hfill \\
+{"OPEN" or "CLOSED" or "NORMAL"}
+\end{description}
+
+\paragraph{Attenuator}
+\label{table:attenuator}
+
+This class describes the beamline attenuator(s) used during data collection. If
+more than one attenuators are used they will be named as attenuator\_1, 
+attenuator\_2 etc.
+
+\begin{table}[h!]\sffamily \footnotesize
+\centering
+\caption{Attenuator Group Members}
+\rowcolors{1}{white}{tableBlue}
+\begin{tabular}{l l l}
+\toprule
+\bfseries Member     & \bfseries Type & \bfseries Example \\
+\midrule
+thickness & float dataset & 1e-3 \\
+attenuator\_transmission & float dataset & unit-less \\ 
+type & string dataset & "Al" \\
+\hyperref[table:geometry]{geometry} &  group & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{description}
+
+\item[\tt {thickness}] \hfill \\
+{Thickness of attenuator along beam direction.}
+
+\item[\tt {attenuator\_transmission}] \hfill \\
+{The nominal amount of the beam that gets through (transmitted
+intensity)/(incident intensity).}
+
+\item[\tt {type}] \hfill \\
+{Type or composition of attenuator.}
+\end{description}
+
+\paragraph{Monochromator}
+\label{table:monochromator}
+
+Define the monochromator used in the instrument.
+
+\begin{table}[h!]\sffamily \footnotesize
+\centering
+\caption{Monochromator Group Members}
+\rowcolors{1}{white}{tableBlue}
+\begin{tabular}{l l l}
+\toprule
+\bfseries Member     & \bfseries Type & \bfseries Example \\
+\midrule
+type & string dataset & "Multilayer" \\
+energy & float dataset & 1.602e-15 \\
+energy\_error & float dataset & 1.602e-17 \\
+mono\_stripe & string dataset & "Ru/C" \\
+\hyperref[table:geometry]{geometry} &  group & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{description}
+\item[\tt {type}] \hfill \\
+{Multilayer type.}
+
+\item[\tt {energy}] \hfill \\
+{Peak of the spectrum that the  monochromator selects. Since units is not
+defined this field is in J and corresponds to 10 keV.}
+
+\item[\tt {energy\_error}] \hfill \\
+{Standard deviation of the spectrum that the monochromator selects. Since units
+is not defined this field is in J.}
+
+\item[\tt {mono\_stripe}] \hfill \\
+{Type of multilayer coating or crystal.}
+\end{description}
+
+\paragraph{Capacitive Sensors}
+\label{table:capacitive}
+
+Define the capacitive sensors used in the instrument.
+
+\begin{table}[h!]\sffamily \footnotesize
+\centering
+\caption{Capacitive Sensors Group Members}
+\rowcolors{1}{white}{tableBlue}
+\begin{tabular}{l l l}
+\toprule
+\bfseries Member     & \bfseries Type & \bfseries Example \\
+\midrule
+name & string dataset & "Capacitive Sensors" \\
+gain & float dataset & 1.602e-15 \\
+shift\_x & float dataset & vector of float \\
+shift\_y & float dataset & vector of float \\
+shift\_z & float dataset & vector of float \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{description}
+\item[\tt {name}] \hfill \\
+{Capacitive Sensors name.}
+
+\item[\tt {gain}] \hfill \\
+{Capacitive Sensors gain in V/m.}
+
+\item[\tt {shift\_x, shift\_y, shift\_z}] \hfill \\
+{vectors containing for each scan point the position monitored by the capacitive sensor.}
+
+\end{description}
+
+\paragraph{Amplifier}
+\label{table:amplifier}
+
+Define the capacitive sensors used in the instrument.
+
+\begin{table}[h!]\sffamily \footnotesize
+\centering
+\caption{Amplifier Group Members}
+\rowcolors{1}{white}{tableBlue}
+\begin{tabular}{l l l}
+\toprule
+\bfseries Member     & \bfseries Type & \bfseries Example \\
+\midrule
+name & string dataset & "Amplifier" \\
+gain & float dataset & 1.602e-15 \\
+current & float dataset &  vector of float  \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{description}
+\item[\tt {name}] \hfill \\
+{Amplifier name.}
+
+\item[\tt {gain}] \hfill \\
+{Amplifier gain.}
+
+\item[\tt {current}] \hfill \\
+{vectors containing for each scan point the current recorded  by the Amplifier.}
+
+\end{description}
+
+
+
+\paragraph{Detector}
+\label{table:detector}
+
+This class holds information about the detector used during the experiment. 
+If more than one detector are used they will be all listed as detector\_$N$.
+
+\begin{table}[h!]\sffamily \footnotesize
+\caption{Detector Group Members}
+
+\rowcolors{1}{white}{tableBlue}
+\begin{tabular}{p{3.5cm} p{4.7cm}  p{4.5cm} }
+\toprule
+\bfseries Member     & \bfseries Type & \bfseries Example \\
+\midrule
+manufacturer & string dataset & "CooKe Corporation" \\   
+model & string dataset &  "pco dimax" \\
+serial\_number & string dataset &  "1234XW2" \\  
+\hyperref[table:geometry]{geometry} &  group & \\
+output\_data & string dataset & "/exchange" \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{description}
+\item[\tt {manufacturer}] \hfill \\
+{The detector manufacturer.}
+
+\item[\tt {model}] \hfill \\
+{The detector model.}
+
+\item[\tt {serial\_number}] \hfill \\
+{The detector serial number .}
+
+\item[\tt {output\_data}] \hfill \\
+{String HDF5 path to the exchange group where the detector output data is located.}
+\end{description}
+
+\newpage
+
+%****************************************************************************
+\subsection{Provenance}
+%****************************************************************************
+\label{section:provenance}
+
+Data provenance is the documentation of all transformations, analyses and 
+interpretations of data performed by a sequence of process functions or {\tt {actors}}. 
+
+Maintaining this history allows for reproducible data. The Data Exchange format 
+tracks provenance by allowing each actor to append provenance information to a process table. 
+The provenance process table tracks the execution order of a series of processes
+by appending sequential entries in the process table.
+
+Scientific users will not generally be expected to maintain data in
+this group. The expectation is that analysis pipeline tools will automatically
+record process steps using this group. In addition, it is possible to re-run
+an analysis using the information provided here.
+
+\begin{table}[h!]\sffamily \footnotesize
+%\centering
+\caption{Process table to log actors activity}
+\rowcolors{1}{white}{tableBlue}
+\begin{tabular}{l l l l l l l l l }
+\toprule
+\bfseries actor & \bfseries start\_time & \bfseries end\_time  & \bfseries status & \bfseries message & \bfseries reference & \bfseries description \\
+
+\midrule
+gridftp &  21:15:22   & 21:15:23 & FAILED  & auth. error & /provenance/griftp & transfer detector to cluster \\
+gridftp &  21:15:26   & 21:15:27 & FAILED  & auth. error & /provenance/griftp & transfer detector to cluster \\
+gridftp &  21:17:28   & 22:15:22 & SUCCESS  & OK & /provenance/griftp & transfer detector to cluster \\
+norm &  22:15:23   & 22:30:22 & SUCCESS  & OK & /provenance/norm & normalize the raw data \\
+rec &  22:30:23   & 22:50:22 & SUCCESS  & OK & /provenance/rec & reconstruct the norm. data \\
+convert &  22:50:23   &  & RUNNING  & OK & /provenance/export & convert reconstructed data \\
+gridftp &     &  & QUEUED  &  & /provenance/griftp\_2 & transfer data to user \\
+\midrule
+\bottomrule
+\end{tabular}
+\label{table:provenance}
+\end{table}
+
+\begin{description}
+
+\item[\tt {actor}] \hfill \\
+{Name of the process in the pipeline stage that is executed at this step.}
+
+\item[\emph{start\_time}] \hfill \\
+{Time the process started.}
+
+\item[\emph{end\_time}] \hfill \\
+{TIme the process ended.}
+
+\item[\emph{status}] \hfill \\
+{Current process status. May be one of the following: QUEUED, RUNNING, FAILED,
+or SUCCESS.}
+
+\item[\emph{message}] \hfill \\
+{A process specific message generated by the process. It may be a confirmation
+that the process was successful, or a detailed error message, for example.}
+
+\item[\emph{reference}] \hfill \\
+{Path to a process description group. The process description group contains all
+metadata to perform the specific process. This reference is simply the
+HDF5 path within this file of the technique specific process description group.
+The process description group should contain all parameters necessary to run
+the process, including the name and version of any external analysis tool
+used to process the data. It should also contain input and output references
+that point to the exchange\_$N$ groups that contain the input and output
+datasets of the process.}
+
+\item[\emph{description}] \hfill \\
+{Process description.}
+
+\end{description}
+
+
+
+
+

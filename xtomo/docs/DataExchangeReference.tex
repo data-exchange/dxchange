@@ -1,0 +1,229 @@
+% BEGIN HEADER **************************************************************
+\documentclass[usletter,11pt]{article}
+\hyphenpenalty=5000
+
+\usepackage[margin=1.40in]{geometry}
+
+% for including Python
+\usepackage{listings}
+\lstdefinelanguage{Python}{
+ keywords={typeof, null, catch, switch, in, int, str, float, self},
+ keywordstyle=\color{ForestGreen}\bfseries,
+ ndkeywords={boolean, throw, import},
+ ndkeywords={return, class, if ,elif, endif, while, do, else, True, False , catch, def},
+ ndkeywordstyle=\color{BrickRed}\bfseries,
+ identifierstyle=\color{black},
+ sensitive=false,
+ comment=[l]{\#},
+ morecomment=[s]{/*}{*/},
+ commentstyle=\color{purple}\ttfamily,
+ stringstyle=\color{red}\ttfamily,
+}
+% end for including Python
+
+% \usepackage{showkeys}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage[table]{xcolor}
+\usepackage[section]{placeins}
+\usepackage{booktabs}
+\usepackage{colortbl}
+\usepackage{newcent}
+\usepackage{sectsty}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\usepackage{calc}
+\usepackage{listings}
+\usepackage{array}
+\usepackage{tikz}
+\usepackage{amsmath}
+\renewcommand{\headrule}{{\color{brightOrange}%
+  \hrule width\headwidth height\headrulewidth \vskip-\headrulewidth}}
+\renewcommand{\footrule}{{\color{brightOrange}%
+  \hrule width\headwidth height\headrulewidth \vskip-\headrulewidth}}
+
+\newcommand{\referee}[1]{
+\begin{center}
+\begin{tikzpicture}
+\node[fill=paleOrange, rounded corners=0.3cm]{
+ \parbox{\textwidth}{
+  \vspace{0.15cm}
+#1
+  \vspace{0.15cm}
+ }
+};
+\end{tikzpicture}
+\end{center}
+}
+
+\newcommand{\member}[2]
+{ \noindent
+{ \color{softBlue}  #1 - } #2
+\vspace{0.2cm}
+}
+
+\fancyheadoffset[LE,RO]{\marginparwidth}
+\fancyfootoffset[LE,RO]{\marginparwidth}
+\fancyhead{} % clear all header fields
+\fancyhead[LE,RO]{\color{softBlue}  \sffamily The Data Exchange File Format}
+
+\fancyfoot{} % clear all header fields
+\fancyfoot[L]{\vspace{0.1cm}\includegraphics[width=0.35\textwidth]{figures/dx_logo_header.pdf}}
+\fancyfoot[R]{\vspace{1.0cm}\color{softBlue}\thepage}
+
+\usepackage{setspace}
+
+\definecolor{tableBlue}{RGB}{231,244,249}
+\definecolor{linkBlue}{RGB}{32,75,165}
+\definecolor{brightOrange}{RGB}{210,131,37}
+\definecolor{ironGrey}{RGB}{64,73,78}
+\definecolor{steelGrey}{RGB}{70,91,102}
+\definecolor{cloudyGrey}{RGB}{104,132,150}
+\definecolor{lightGrey}{RGB}{184,198,206}
+\definecolor{softBlue}{RGB}{29,97,134}
+\definecolor{paleOrange2}{RGB}{233,185,128}
+\definecolor{paleOrange}{RGB}{248,219,167}
+\definecolor{typeGreen}{RGB}{19,101,106}
+
+\usepackage{caption}
+\DeclareCaptionFont{white}{\color{white}}
+\DeclareCaptionFont{softBlue}{\color{softBlue}}
+\DeclareCaptionFormat{listing}{\colorbox{softBlue}{\parbox{\textwidth}{\hspace{15pt}#1#2#3}}}
+\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white,
+  singlelinecheck=false, margin=0pt, font={sf,footnotesize}}
+\captionsetup[figure]{labelfont={softBlue,bf},
+ singlelinecheck=false, margin=0pt, font={small}}
+\captionsetup[table]{labelfont={softBlue,bf},
+ singlelinecheck=false, margin=0pt, font={footnotesize},justification=centering}
+
+
+
+\newcommand{\HRule}{{\color{brightOrange} \rule{\linewidth}{0.5mm}}}
+
+\allsectionsfont{\color{softBlue} \usefont{OT1}{pag}{b}{n}\selectfont}
+
+\usepackage[linkcolor=softBlue,colorlinks=true,urlcolor=softBlue]{hyperref}
+
+\setcounter{secnumdepth}{6}
+\setcounter{tocdepth}{6}
+
+% END HEADER ****************************************************************
+
+% BEGIN MAIN DOCUMENT *******************************************************
+\begin{document}
+\pagestyle{empty}
+
+% BEGIN TITLE PAGE **********************************************************
+\begin{center}
+\vspace*{2.5cm}
+
+\HRule \\[0.6cm]
+\begin{spacing}{2.0}
+
+{\color{softBlue} \Huge \sffamily The Scientific Data Exchange}\\[0.15cm]
+{\color{softBlue} \Huge \sffamily Reference Guide}\\[0.15cm]
+{\color{softBlue} \sffamily Includes implementation for x-ray tomography}\\[0.15cm]
+
+\end{spacing}
+\HRule \\[1.0cm]
+{\Large \color{softBlue} \sffamily \url{http://www.aps.anl.gov/DataExchange}}\\[1.0cm]
+{\Large \color{softBlue} \sffamily Version 0.9.5}\\[1.0cm]
+{\Large \color{softBlue} \sffamily \today}
+
+\end{center}
+\newpage
+% END TITLE PAGE ************************************************************
+
+%****************************************************************************
+\include{sections/VersionHistory}
+%****************************************************************************
+\newpage
+
+\pagestyle{fancy}
+\pagenumbering{Roman}
+
+% TOC ***********************************************************************
+\tableofcontents
+% ***************************************************************************
+
+
+\newpage
+
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+%****************************************************************************
+\section{Introduction}
+
+This document is a complete reference to the Data Exchange file format, 
+including documented implementations for various beamline techniques. Briefly,
+Data Exchange is a set of guidelines for storing scientific data and metadata
+in a Hierarchical Data Format 5 (HDF5) file (\url{http://www.hdfgroup.org/HDF5}). 
+
+This reference guide describes the basic design principles, examples of their
+application, a core reference for guidelines common to most uses, and coding
+examples. The guide ends with a section devoted to each known implementation
+for a particular beamline technique.
+
+%****************************************************************************
+\include{./sections/CoreDesign}
+%****************************************************************************
+
+\newpage
+
+%****************************************************************************
+\include{sections/ByExample}
+%****************************************************************************
+
+\newpage
+
+%****************************************************************************
+\include{sections/CoreReference}
+%****************************************************************************
+
+\newpage
+
+%****************************************************************************
+\include{sections/XrayTomoReference}
+%****************************************************************************
+
+%\newpage
+
+%****************************************************************************
+% \include{sections/XPCSReference}  - not ready
+%****************************************************************************
+\section{Data Exchange for X-ray Photon Correlation}
+
+Extensions and additions to Data Exchange for X-ray Photon Correlation are being
+defined and will be incorporated into this reference soon.
+
+%\newpage
+
+%****************************************************************************
+% \include{sections/XrayFluorescenceReference}  - not ready
+%****************************************************************************
+\section{Data Exchange for X-ray Fluorescence}
+
+Extensions and additions to Data Exchange for X-ray Fluorescence are being defined
+and will be incorporated into this reference soon.
+
+\newpage
+
+%****************************************************************************
+\include{sections/CodeExamples}
+
+%****************************************************************************
+
+\newpage
+
+%****************************************************************************
+\include{sections/Appendix}
+%****************************************************************************
+
+\newpage
+
+% LOF ***********************************************************************
+\listoffigures
+% ***************************************************************************
+
+\end{document}
