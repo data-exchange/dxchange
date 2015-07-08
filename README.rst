@@ -11,6 +11,9 @@ xtomo provides an interface between tomographic raw datasets collected at differ
 Installing xtomo
 ================
 
+To use this you must have `Conda <http://continuum.io/downloads>`_ 
+installed first. Open a terminal or a command prompt window and run::
+
 conda install -c decarlof xtomo
 
 ===========
