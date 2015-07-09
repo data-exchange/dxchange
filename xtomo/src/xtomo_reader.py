@@ -122,34 +122,32 @@ class XTomoReader():
         """
         # Read data from file.
         f = h5py.File(self.file_name, 'r')
-	try:
-		hdfdata = f[array_name]
-		if (array_name.split('/')[1] == "theta"):
-			num_z = hdfdata.size
-        		if z_end is 0:
-            			z_end = num_z        		
-			# Construct theta.
-        		dataset = hdfdata[z_start:z_end:z_step]
-		else:	
-			num_z, num_y, num_x = hdfdata.shape
-        		if x_end is 0:
-            			x_end = num_x
-        		if y_end is 0:
-        			y_end = num_y
-        		if z_end is 0:
-            			z_end = num_z
-        		# Construct dataset.
-        		dataset = hdfdata[z_start:z_end:z_step,
-                          			y_start:y_end:y_step,
-                          			x_start:x_end:x_step]
-	except KeyError:
-                self.logger.error("FILE DOES NOT CONTAIN A VALID TOMOGRAPHY DATA SET")
-		dataset = None        
+        try:
+            hdfdata = f[array_name]
+            if (array_name.split('/')[1] == "theta"):
+                num_z = hdfdata.size
+                if z_end is 0:
+                    z_end = num_z        		
+                # Construct theta.
+                array = hdfdata[z_start:z_end:z_step]
+            else:
+                num_z, num_y, num_x = hdfdata.shape
+                if x_end is 0:
+                    x_end = num_x
+                if y_end is 0:
+                    y_end = num_y
+                if z_end is 0:
+                    z_end = num_z
+            # Construct array.
+            array = hdfdata[z_start:z_end:z_step, y_start:y_end:y_step, x_start:x_end:x_step]
 
-	f.close()
+        except KeyError:
+            self.logger.error("FILE DOES NOT CONTAIN A VALID TOMOGRAPHY DATA SET")
+            array = None        
 
-        return dataset
-                
+        f.close()
+        return array
+
     def nxs(self,
              array_type=None,
              x_start=0,
@@ -216,32 +214,32 @@ class XTomoReader():
         		if z_end is 0:
             			z_end = num_z        		
 			# Construct theta.
-        		dataset = hdfdata[z_start:z_end:z_step]
+        		array = hdfdata[z_start:z_end:z_step]
 		else:	
                         image_key = f[image_key_name].value
                         image_location = np.where(image_key == image_key_value)
-                        dataset = np.ndarray.take(hdfdata.value, image_location[0], axis = 0)
-			num_z, num_y, num_x = dataset.shape
+                        array = np.ndarray.take(hdfdata.value, image_location[0], axis = 0)
+			num_z, num_y, num_x = array.shape
         		if x_end is 0:
             			x_end = num_x
         		if y_end is 0:
         			y_end = num_y
         		if z_end is 0:
             			z_end = num_z
-        		# Construct dataset.
+        		# Construct array.
                         print "Z:", z_start, z_end, z_step
                         print "Y:", y_start, y_end, y_step
                         print "X:", x_start, x_end, x_step
-        		dataset = dataset[z_start:z_end:z_step,
+        		array = array[z_start:z_end:z_step,
                           			y_start:y_end:y_step,
                           			x_start:x_end:x_step]
-                        print dataset.shape
+                        print array.shape
 	except KeyError:
                 self.logger.error("FILE DOES NOT CONTAIN A VALID TOMOGRAPHY DATA SET")
-		dataset = None        
+		array = None        
 
 	f.close()
-        return dataset
+        return array
         
     def hdf5_2d(self,
              array_name=None,
@@ -279,21 +277,26 @@ class XTomoReader():
         out : ndarray
             Returns the data as a matrix.
         """
-        # Read data from file.
-        f = h5py.File(self.file_name, 'r')
-        hdfdata = f[array_name]
+        try:
+            # Read data from file.
+            f = h5py.File(self.file_name, 'r')
+            hdfdata = f[array_name]
 
-        num_x, num_y = hdfdata.shape
-        if x_end is None:
-            x_end = num_x
-        if y_end is None:
-            y_end = num_y
+            num_x, num_y = hdfdata.shape
+            if x_end is None:
+                x_end = num_x
+            if y_end is None:
+                y_end = num_y
 
-        # Construct dataset.
-        dataset = hdfdata[x_start:x_end:x_step,
-                          y_start:y_end:y_step]
-        f.close()
-        return dataset
+            # Construct array.
+            array = hdfdata[x_start:x_end:x_step, y_start:y_end:y_step]
+            f.close()
+
+        except KeyError:
+            self.logger.error("FILE DOES NOT CONTAIN A VALID TOMOGRAPHY DATA SET")
+            array = None
+
+        return array
         
     def tiff(self, 
              x_start=0,
@@ -330,28 +333,29 @@ class XTomoReader():
         out : ndarray
             Output 2-D matrix as numpy array.
         """
-#        This ONLY works on little-endian platforms only
-        im = Image.open(self.file_name)
-        out = np.fromstring(im.tostring(), dtype).reshape(
-                               tuple(list(im.size[::-1])))
+        try:        
+            # This ONLY works on little-endian platforms only
+            im = Image.open(self.file_name)
+            out = np.fromstring(im.tostring(), dtype).reshape(tuple(list(im.size[::-1])))
 
+            # This seeem to work on both big and little-endian platforms
+            # out = misc.imread(self.file_name)
+            num_x, num_y = out.shape
 
-#        This seeem to work on both big and little-endian platforms
-#        out = misc.imread(self.file_name)
-
-        num_x, num_y = out.shape
-
-        if x_end is 0:
-            x_end = num_x
-        if y_end is 0:
-            y_end = num_y
+            if x_end is 0:
+                x_end = num_x
+            if y_end is 0:
+                y_end = num_y
         
-        #im.close()
-        array = out[x_start:x_end:x_step,
-                   y_start:y_end:y_step]
-        if flip == 'true':
-            array=np.rot90(array)
-	
+            #im.close()
+            array = out[x_start:x_end:x_step, y_start:y_end:y_step]
+            if flip == 'true':
+                array=np.rot90(array)
+
+        except KeyError:
+            self.logger.error("FILE DOES NOT CONTAIN A VALID TOMOGRAPHY DATA SET")
+            array = None        
+
         return array
         
     def fabio(self, 
@@ -388,23 +392,26 @@ class XTomoReader():
         out : ndarray
             Output 2-D matrix as numpy array.
         """
+        try:
+            img = fb.open(self.file_name)
+            out = img.data
 
-        img = fb.open(self.file_name)
-        out = img.data
+            #self.logger.info("Accessing [%s] using fabio", self.file_name) 
+            num_x, num_y = out.shape
 
-        #self.logger.info("Accessing [%s] using fabio", self.file_name) 
-        num_x, num_y = out.shape
-
-        if x_end is 0:
-            x_end = num_x
-        if y_end is 0:
-            y_end = num_y
+            if x_end is 0:
+                x_end = num_x
+            if y_end is 0:
+                y_end = num_y
         
-        array = out[x_start:x_end:x_step,
-                   y_start:y_end:y_step]
-        if flip == 'true':
-            array=np.rot90(array)
-	
+            array = out[x_start:x_end:x_step, y_start:y_end:y_step]
+            if flip == 'true':
+                array=np.rot90(array)
+        
+        except KeyError:
+            self.logger.error("FILE DOES NOT CONTAIN A VALID TOMOGRAPHY DATA SET")
+            array = None        
+
         return array
 
     def tiffc(self, 
@@ -439,18 +446,24 @@ class XTomoReader():
         out : ndarray
             Output 2-D matrix as numpy array.
         """
-        im = TiffFile(self.file_name)
-        out = im[0].asarray()
+        try:
+            im = TiffFile(self.file_name)
+            out = im[0].asarray()
 
-        num_x, num_y = out.shape
-        if x_end is 0:
-            x_end = num_x
-        if y_end is 0:
-            y_end = num_y
+            num_x, num_y = out.shape
+            if x_end is 0:
+                x_end = num_x
+            if y_end is 0:
+                y_end = num_y
         
-        #im.close()
-        return out[x_start:x_end:x_step,
-                   y_start:y_end:y_step]
+            #im.close()
+            array = out[x_start:x_end:x_step, y_start:y_end:y_step]        
+
+        except KeyError:
+            self.logger.error("FILE DOES NOT CONTAIN A VALID TOMOGRAPHY DATA SET")
+            array = None        
+
+        return array
         
     def txrm(self,
              array_name=None,
@@ -507,7 +520,7 @@ class XTomoReader():
                     theta = np.asarray(angles)                
                     num_z = theta.size
         	    if z_end is 0: z_end = num_z
-                dataset = theta[z_start:z_end:z_step]
+                array = theta[z_start:z_end:z_step]
             else:
                 ole = olef.OleFileIO(self.file_name)
                 datasize = np.empty((3), dtype=np.int)
@@ -576,16 +589,17 @@ class XTomoReader():
             	if z_end is 0:
                 	z_end = num_z
 
-            	# Construct dataset from desired z, y, x.
-            	dataset = data[z_start:z_end:z_step,
+            	# Construct array from desired z, y, x.
+            	array = data[z_start:z_end:z_step,
                             	y_start:y_end:y_step,
                             	x_start:x_end:x_step]                
             ole.close()
             
         except KeyError:
-            dataset = None
+            self.logger.error("FILE DOES NOT CONTAIN A VALID TOMOGRAPHY DATA SET")
+            array = None
 
-        return dataset
+        return array
         
     def spe(self,
             x_start=0,
@@ -622,22 +636,26 @@ class XTomoReader():
         out : array
             Returns the data as a matrix.
         """
-        spe_data = spe.PrincetonSPEFile(self.file_name)
-        array = spe_data.getData()
-        num_z, num_y, num_x = np.shape(array)
+        try:
+            spe_data = spe.PrincetonSPEFile(self.file_name)
+            array = spe_data.getData()
+            num_z, num_y, num_x = np.shape(array)
 
-        if x_end is 0:
-            x_end = num_x
-        if y_end is 0:
-            y_end = num_y
-        if z_end is 0:
-            z_end = num_z
+            if x_end is 0:
+                x_end = num_x
+            if y_end is 0:
+                y_end = num_y
+            if z_end is 0:
+                z_end = num_z
 
-        # Construct dataset from desired y.
-        dataset = array[z_start:z_end:z_step,
-                        y_start:y_end:y_step,
-                        x_start:x_end:x_step]
-        return dataset
+            # Construct array from desired y.
+            array = array[z_start:z_end:z_step, y_start:y_end:y_step, x_start:x_end:x_step]
+
+        except KeyError:
+            self.logger.error("FILE DOES NOT CONTAIN A VALID TOMOGRAPHY DATA SET")
+            array = None
+
+        return array
         
     def edf(self,
              x_start=0,
@@ -675,27 +693,31 @@ class XTomoReader():
             Returns the data as a matrix.
         """
  
-        # Read data from file.
-        f = EdfFile(self.file_name, access='r')
-        dic = f.GetStaticHeader(0)
-        tmpdata = np.empty((f.NumImages, int(dic['Dim_2']), int(dic['Dim_1'])))
+        try:
+            # Read data from file.
+            f = EdfFile(self.file_name, access='r')
+            dic = f.GetStaticHeader(0)
+            tmpdata = np.empty((f.NumImages, int(dic['Dim_2']), int(dic['Dim_1'])))
 
-        for (i, ar) in enumerate(tmpdata):
-            tmpdata[i::] = f.GetData(i)
+            for (i, ar) in enumerate(tmpdata):
+                tmpdata[i::] = f.GetData(i)
 
-        num_z, num_y, num_x = np.shape(tmpdata)
-        if x_end is 0:
-            x_end = num_x
-        if y_end is 0:
-            y_end = num_y
-        if z_end is 0:
-            z_end = num_z
+            num_z, num_y, num_x = np.shape(tmpdata)
+            if x_end is 0:
+                x_end = num_x
+            if y_end is 0:
+                y_end = num_y
+            if z_end is 0:
+                z_end = num_z
 
-        # Construct dataset from desired y.
-        dataset = tmpdata[z_start:z_end:z_step,
-                          y_start:y_end:y_step,
-                          x_start:x_end:x_step]
-        return dataset
+            # Construct array from desired y.
+            array = tmpdata[z_start:z_end:z_step, y_start:y_end:y_step, x_start:x_end:x_step]
+
+        except KeyError:
+            self.logger.error("FILE DOES NOT CONTAIN A VALID TOMOGRAPHY DATA SET")
+            array = None
+
+        return array
         
     def edf2(self,
              x_start=0,
@@ -725,23 +747,27 @@ class XTomoReader():
         out : array
             Output 2-D matrix as numpy array.
         """
- 
-        # Read data from file.
-        f = EdfFile(self.file_name, access='r')
-        dic = f.GetStaticHeader(0)
-        tmpdata = np.empty((int(dic['Dim_2']), int(dic['Dim_1'])))
+        try: 
+            # Read data from file.
+            f = EdfFile(self.file_name, access='r')
+            dic = f.GetStaticHeader(0)
+            tmpdata = np.empty((int(dic['Dim_2']), int(dic['Dim_1'])))
         
-        tmpdata[::] = f.GetData(0)
+            tmpdata[::] = f.GetData(0)
 
-        num_y, num_x = np.shape(tmpdata)
+            num_y, num_x = np.shape(tmpdata)
 
-        if x_end is 0:
-            x_end = num_x
-        if y_end is 0:
-            y_end = num_y
+            if x_end is 0:
+                x_end = num_x
+            if y_end is 0:
+                y_end = num_y
+            array = tmpdata[y_start:y_end:y_step, x_start:x_end:x_step]
 
-        return tmpdata[y_start:y_end:y_step,
-                   x_start:x_end:x_step]
+        except KeyError:
+            self.logger.error("FILE DOES NOT CONTAIN A VALID TOMOGRAPHY DATA SET")
+            array = None
+
+        return array
 
     def dpt(self,
              x_start=0,
@@ -778,57 +804,59 @@ class XTomoReader():
         out : array
             Returns the data as a matrix.
         """
- 
-        # Read data from file.
-        offset = 2
+        try: 
+            # Read data from file.
+            offset = 2
 
-        # Count the number of projections
-        file = open(self.file_name, 'r')
-        num_of_projections = sum(1 for line in file)
-        file.close()
-
-        # Determine image size and dimentions        
-        file = open(self.file_name, 'r')
-        first_line = file.readline()
-        firstlinelist=first_line.split(",")
-
-        image_size = len(firstlinelist)-offset
-        image_dim = int(math.sqrt(image_size))
-        file.close()
-
-        tmpdata = np.empty((num_of_projections, image_dim, image_dim))
- 
-        num_z, num_y, num_x = np.shape(tmpdata)
-
-        if image_dim**2 == image_size: # check projections are square
-            print "Reading ", os.path.basename(self.file_name)
-            file = open(self.file_name, 'r')      
-            for line in file:
-                linelist=line.split(",")
-
-                projection = np.reshape(np.array(linelist)[offset:], (image_dim ,image_dim))
-
-                projection = projection.transpose()
-                projection = projection.astype(np.float)
-                projection = np.exp(-projection)
-
-                tmpdata[int(linelist[0])::] = projection
-
+            # Count the number of projections
+            file = open(self.file_name, 'r')
+            num_of_projections = sum(1 for line in file)
             file.close()
 
-        if x_end is 0:
-            x_end = num_x
-        if y_end is 0:
-            y_end = num_y
-        if z_end is 0:
-            z_end = num_z
+            # Determine image size and dimentions        
+            file = open(self.file_name, 'r')
+            first_line = file.readline()
+            firstlinelist=first_line.split(",")
 
-        # Construct dataset from desired y.
-        dataset = tmpdata[z_start:z_end:z_step,
-                          y_start:y_end:y_step,
-                          x_start:x_end:x_step]
+            image_size = len(firstlinelist)-offset
+            image_dim = int(math.sqrt(image_size))
+            file.close()
 
-        return dataset
+            tmpdata = np.empty((num_of_projections, image_dim, image_dim))
+ 
+            num_z, num_y, num_x = np.shape(tmpdata)
+
+            if image_dim**2 == image_size: # check projections are square
+                print "Reading ", os.path.basename(self.file_name)
+                file = open(self.file_name, 'r')      
+                for line in file:
+                    linelist=line.split(",")
+
+                    projection = np.reshape(np.array(linelist)[offset:], (image_dim ,image_dim))
+
+                    projection = projection.transpose()
+                    projection = projection.astype(np.float)
+                    projection = np.exp(-projection)
+
+                    tmpdata[int(linelist[0])::] = projection
+
+                file.close()
+
+            if x_end is 0:
+                x_end = num_x
+            if y_end is 0:
+                y_end = num_y
+            if z_end is 0:
+                z_end = num_z
+
+            # Construct array from desired y.
+            array = tmpdata[z_start:z_end:z_step, y_start:y_end:y_step, x_start:x_end:x_step]
+
+        except KeyError:
+            self.logger.error("FILE DOES NOT CONTAIN A VALID TOMOGRAPHY DATA SET")
+            array = None
+
+        return array
        
     def netcdf(self,
                x_start=0,
@@ -866,22 +894,26 @@ class XTomoReader():
         out : array
             Returns the data as a matrix.
         """
-        nc_data = nc.Dataset(self.file_name, 'r')
-        array = nc_data.variables['array_data'][:]
+        try:        
+            nc_data = nc.Dataset(self.file_name, 'r')
+            array = nc_data.variables['array_data'][:]
             
-        num_z, num_y, num_x = np.shape(array)
-        if x_end is 0:
-            x_end = num_x
-        if y_end is 0:
-            y_end = num_y
-        if z_end is 0:
-            z_end = num_z
+            num_z, num_y, num_x = np.shape(array)
+            if x_end is 0:
+                x_end = num_x
+            if y_end is 0:
+                y_end = num_y
+            if z_end is 0:
+                z_end = num_z
 
-        # Construct dataset from desired y.
-        dataset = array[z_start:z_end:z_step,
-                        y_start:y_end:y_step,
-                        x_start:x_end:x_step]
-        return dataset
+            # Construct array from desired y.
+            array = array[z_start:z_end:z_step, y_start:y_end:y_step, x_start:x_end:x_step]
+
+        except KeyError:
+            self.logger.error("FILE DOES NOT CONTAIN A VALID TOMOGRAPHY DATA SET")
+            array = None
+
+        return array
     
     def _hdf5_test(self,
                      array_name=None,
