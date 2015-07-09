@@ -77,7 +77,7 @@ def main():
 
     # Read raw data
     read = xtomo_imp.Import()
-    data, white, dark, theta = read.xtomo_raw(file_name, data_type='xradia', log='INFO')
+    data, white, dark, theta = read.xtomo_raw_test(file_name, data_type='xradia', log='INFO')
    
     # Save data as dataExchange
     write = xtomo_exp.Export()

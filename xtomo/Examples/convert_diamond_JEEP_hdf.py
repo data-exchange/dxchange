@@ -29,7 +29,7 @@ def main():
     # Read raw data 
     # set slice_start and slice_end to  full size. 1600-1610 is for testing only
     read = xtomo_imp.Import()
-    data, white, dark, theta = read.xtomo_raw(file_name, 
+    data, white, dark, theta = read.xtomo_raw_test(file_name, 
                                                         data_type='nxs', 
                                                         slices_start=1600,
                                                         slices_end=1610,

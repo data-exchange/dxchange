@@ -43,7 +43,7 @@ def main():
     
     # Read raw data
     read = xtomo_imp.Import()
-    data, white, dark, theta = read.xtomo_raw(file_name,
+    data, white, dark, theta = read.xtomo_raw_test(file_name,
                                                        projections_start = projections_start,
                                                        projections_end = projections_end,
                                                        white_file_name = white_file_name,

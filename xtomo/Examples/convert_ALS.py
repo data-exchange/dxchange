@@ -72,12 +72,13 @@ def main():
     white_step = 1
     projections_start = 0
     projections_end = int(Angles[0])
+    #projections_end = 18
 
     print dark_end, white_end, projections_end
 
     # Read raw data
     read = xtomo_imp.Import()
-    data, white, dark, theta = read.xtomo_raw(file_name = file_name,
+    data, white, dark, theta = read.xtomo_raw_test(file_name = file_name,
                                                        projections_start = projections_start,
                                                        projections_end = projections_end,
                                                        white_file_name = white_file_name,
@@ -87,6 +88,7 @@ def main():
                                                        dark_start = dark_start,
                                                        dark_end = dark_end,
                                                        projections_digits = 4,
+                                                       #data_type='tiff',
                                                        log='INFO'
                                                        )
 
