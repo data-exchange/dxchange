@@ -17,13 +17,14 @@ Supported image fomats include HDF5 Data Exchange and TIFF.
 
 Examples
 
->>> import dataexchange
+>>> Data Exchange: https://github.com/data-exchange/data-exchange
+>>> 
+>>> import xtomo_exporter as xtomo_exp
 >>> 
 >>> sample_name = 'Sample Name'
 >>>     
->>> write = dataexchange.Export()
->>> 
->>> # Save data as dataExchange
+>>> #Save data as dataExchange
+>>> write = xtomo_exp.Export()
 >>> write.xtomo_exchange(data = data,
 >>>                       data_white = white,
 >>>                       data_dark = dark,
@@ -33,7 +34,7 @@ Examples
 >>>                       data_exchange_type = 'tomography_raw_projections' 
 >>>                       )
 >>> # Save data as TIFF
->>>  write.xtomo_tiff(data = d.data_recon, output_file = 'rec/rec_', axis=0)
+>>> write.xtomo_tiff(data = d.data_recon, output_file = 'rec/rec_', axis=0)
 
 """
 
