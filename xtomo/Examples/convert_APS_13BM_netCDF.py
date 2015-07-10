@@ -17,7 +17,7 @@ Example on how to use the `xtomo_raw`_ module to read APS 13-BM netCDF raw tomog
 .. _xtomo_raw: dataexchange.xtomo.xtomo_importer.html
 """
 
-# Data Exchange: https://github.com/decarlof/conda-recipes
+# Data Exchange: https://github.com/data-exchange/data-exchange
 import xtomo_importer as xtomo_imp 
 import xtomo_exporter as xtomo_exp
 
@@ -37,7 +37,7 @@ def main():
 
     # Read raw data
     read = xtomo_imp.Import()
-    data, white, dark, theta = read.xtomo_raw_test(file_name,
+    data, white, dark, theta = read.xtomo_raw(file_name,
                                                        projections_start = projections_start,
                                                        projections_end = projections_end,
                                                        projections_step = projections_step,
