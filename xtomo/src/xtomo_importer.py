@@ -99,9 +99,9 @@ class Import():
                          projections_start=0,
                          projections_end=0,
                          projections_step=1,
-                         slices_start=0,
-                         slices_end=0,
-                         slices_step=1,
+                         sino_start=0,
+                         sino_end=0,
+                         sino_step=1,
                          pixels_start=0,
                          pixels_end=0,
                          pixels_step=1,
@@ -140,7 +140,7 @@ class Import():
             start and end index for the projection
             images to load. Use step to define a stride.
 
-        slices_start, slices_end, slices_step : scalar, optional
+        sino_start, sino_end, sino_step : scalar, optional
             start and end pixel of the projection image to load
             along the rotation axis. Use step to define a stride.
 
@@ -240,9 +240,9 @@ xradia``: txrm and xrm used by all Xradia systems
                          images_start=projections_start,
                          images_end=projections_end,
                          images_step=projections_step,
-                         slices_start=slices_start,
-                         slices_end=slices_end,
-                         slices_step=slices_step,
+                         sino_start=sino_start,
+                         sino_end=sino_end,
+                         sino_step=sino_step,
                          pixels_start=pixels_start,
                          pixels_end=pixels_end,
                          pixels_step=pixels_step,
@@ -257,9 +257,9 @@ xradia``: txrm and xrm used by all Xradia systems
                          images_start=white_start,
                          images_end=white_end,
                          images_step=white_step,
-                         slices_start=slices_start,
-                         slices_end=slices_end,
-                         slices_step=slices_step,
+                         sino_start=sino_start,
+                         sino_end=sino_end,
+                         sino_step=sino_step,
                          pixels_start=pixels_start,
                          pixels_end=pixels_end,
                          pixels_step=pixels_step,
@@ -274,9 +274,9 @@ xradia``: txrm and xrm used by all Xradia systems
                          images_start=dark_start,
                          images_end=dark_end,
                          images_step=dark_step,
-                         slices_start=slices_start,
-                         slices_end=slices_end,
-                         slices_step=slices_step,
+                         sino_start=sino_start,
+                         sino_end=sino_end,
+                         sino_step=sino_step,
                          pixels_start=pixels_start,
                          pixels_end=pixels_end,
                          pixels_step=pixels_step,
@@ -290,16 +290,22 @@ xradia``: txrm and xrm used by all Xradia systems
         self.theta = self.xtomo_generate_theta(images_angle_start = projections_angle_start,
                          images_angle_end = projections_angle_end)
 
-
+        if (self.data == None):
+                self.logger.error("Projection file is mandatory")                   
+        if (self.data_white == None):
+                self.data_white = self.xtomo_generate_white(tomo = self.data, dtype = dtype)              
+        if (self.data_dark == None):
+                self.data_dark = self.xtomo_generate_dark(tomo = self.data, dtype = dtype)              
+      
         return self.data, self.data_white, self.data_dark, self.theta
 
     def xtomo_read_images(self, file_name,
                          images_start=0,
                          images_end=0,
                          images_step=1,
-                         slices_start=0,
-                         slices_end=0,
-                         slices_step=1,
+                         sino_start=0,
+                         sino_end=0,
+                         sino_step=1,
                          pixels_start=0,
                          pixels_end=0,
                          pixels_step=1,
@@ -330,54 +336,54 @@ xradia``: txrm and xrm used by all Xradia systems
             for n in range(images_digits):
                 if ind[m] < np.power(10, n+1):
                     _file_name = data_file + images_file_index[n] + str(ind[m]) + data_extension
-                    self.logger.info("Generating projection file names: [%s]", _file_name)                    
+                    self.logger.info("Generating image file names: [%s]", _file_name)                    
                     break
 
             if os.path.isfile(_file_name):
                 image_exist = True
-                self.logger.info("Reading projection file: [%s]", os.path.realpath(_file_name))
+                self.logger.info("Reading image file: [%s]", os.path.realpath(_file_name))
                 self.logger.info("data type: [%s]", data_type)
 
                 f = XTomoReader(_file_name)
 
                 if (data_type is 'spe'):
-                    tmpdata = f.spe(y_start = slices_start,
-                                    y_end = slices_end,
-                                    y_step = slices_step)
+                    tmpdata = f.spe(y_start = sino_start,
+                                    y_end = sino_end,
+                                    y_step = sino_step)
 
                 elif (data_type is 'nc'):
-                    tmpdata = f.netcdf(y_start = slices_start,
-                                    y_end = slices_end,
-                                    y_step = slices_step)
+                    tmpdata = f.netcdf(y_start = sino_start,
+                                    y_end = sino_end,
+                                    y_step = sino_step)
 
                 elif (data_type is 'tiff'):
-                    tmpdata = f.tiff(x_start=slices_start,
-                                     x_end=slices_end,
-                                     x_step=slices_step,
+                    tmpdata = f.tiff(x_start=sino_start,
+                                     x_end=sino_end,
+                                     x_step=sino_step,
                                      dtype=dtype,
                                      flip=flip)
 
                 elif (data_type is 'compressed_tiff'):
-                    tmpdata = f.tiffc(x_start=slices_start,
-                                      x_end=slices_end,
-                                      x_step=slices_step,
+                    tmpdata = f.tiffc(x_start=sino_start,
+                                      x_end=sino_end,
+                                      x_step=sino_step,
                                       dtype=dtype)
  
                 elif (data_type is 'hdf5'):
-                    tmpdata = f.hdf5_2d(x_start=slices_start,
-                                     x_end=slices_end,
-                                     x_step=slices_step,
+                    tmpdata = f.hdf5_2d(x_start=sino_start,
+                                     x_end=sino_end,
+                                     x_step=sino_step,
                                      array_name ='/entry/data/data')
 
                 elif (data_type is 'edf2'):
-                    tmpdata = f.edf2(x_start=slices_start,
-                                     x_end=slices_end,
-                                     x_step=slices_step)
+                    tmpdata = f.edf2(x_start=sino_start,
+                                     x_end=sino_end,
+                                     x_step=sino_step)
 
                 elif (data_type is 'fabio'):
-                    tmpdata = f.fabio(x_start=slices_start,
-                                     x_end=slices_end,
-                                     x_step=slices_step,
+                    tmpdata = f.fabio(x_start=sino_start,
+                                     x_end=sino_end,
+                                     x_step=sino_step,
                                      flip=flip)
 
                 if ((data_type is 'spe') or
@@ -406,20 +412,20 @@ xradia``: txrm and xrm used by all Xradia systems
             data = None
 
         else:
-            self.logger.info("Attempt reading images from: [%s]", file_name)
+            self.logger.info("Attempt reading images from a single file: [%s]", file_name)
             data = None                    
             if (data_type is 'h5'):
                 # Read the projections that are all in a single file
                 if os.path.isfile(file_name):
-                    self.logger.info("Projection file: [%s] exists", file_name)                    
+                    self.logger.info("Image file: [%s] exists", file_name)                    
                     f = XTomoReader(file_name)
                     array_name = '/'.join([exchange_base, "data"])
                     tmpdata = f.hdf5(z_start = images_start,
                                     	z_end = images_end,
                                     	z_step = images_step,
-                                        y_start = slices_start,
-                                    	y_end = slices_end,
-                                    	y_step = slices_step,
+                                        y_start = sino_start,
+                                    	y_end = sino_end,
+                                    	y_step = sino_step,
                                         x_start = pixels_start,
                                     	x_end = pixels_end,
                                     	x_step = pixels_step,
@@ -428,15 +434,15 @@ xradia``: txrm and xrm used by all Xradia systems
             elif (data_type is 'nxs'):
                 # Read the projections that are all in a single file
                 if os.path.isfile(file_name):
-                    self.logger.info("Projection file: [%s] exists", file_name)                    
+                    self.logger.info("Image file: [%s] exists", file_name)                    
                     f = XTomoReader(file_name)
                     array_type = 'projections'
                     tmpdata = f.nxs(z_start = images_start,
                                     	z_end = images_end,
                                     	z_step = images_step,
-                                        y_start = slices_start,
-                                    	y_end = slices_end,
-                                    	y_step = slices_step,
+                                        y_start = sino_start,
+                                    	y_end = sino_end,
+                                    	y_step = sino_step,
                                         x_start = pixels_start,
                                     	x_end = pixels_end,
                                     	x_step = pixels_step,
@@ -445,36 +451,54 @@ xradia``: txrm and xrm used by all Xradia systems
             elif (data_type is 'edf'):
                 # Read the projections that are all in a single file
                 if os.path.isfile(file_name):
-                    self.logger.info("Projection file: [%s] exists", file_name)                    
+                    self.logger.info("Image file: [%s] exists", file_name)                    
                     f = XTomoReader(file_name)
-                    tmpdata = f.edf(y_start = slices_start,
-                                    y_end = slices_end,
-                                    y_step = slices_step)
+                    tmpdata = f.edf(y_start = sino_start,
+                                    y_end = sino_end,
+                                    y_step = sino_step)
                     data = tmpdata
             elif (data_type is 'xradia'):
                 # Read the projections that are all in a single file
                 if os.path.isfile(file_name):
-                    self.logger.info("Projection file: [%s] exists", file_name)                    
+                    self.logger.info("Image file: [%s] exists", file_name)                    
                     f = XTomoReader(file_name)
-                    tmpdata = f.txrm(y_start = slices_start,
-                                    y_end = slices_end,
-                                    y_step = slices_step)
+                    tmpdata = f.txrm(y_start = sino_start,
+                                    y_end = sino_end,
+                                    y_step = sino_step)
                     data = tmpdata
                     dtype = tmpdata.dtype                    
             elif (data_type is 'dpt'):
                 # Read the projections that are all in a single file
                 if os.path.isfile(file_name):
-                    self.logger.info("Projection file: [%s] exists", file_name)                    
+                    self.logger.info("Image file: [%s] exists", file_name)                    
                     f = XTomoReader(file_name)
-                    tmpdata = f.dpt(y_start = slices_start,
-                                    y_end = slices_end,
-                                    y_step = slices_step)
+                    tmpdata = f.dpt(y_start = sino_start,
+                                    y_end = sino_end,
+                                    y_step = sino_step)
                     data = tmpdata
             else:
                 data = None
                 self.logger.error("No valid images found")
+                self.logger.error("Missng white/dark images will be generated")
 
         return data
+
+
+    def xtomo_generate_dark(self, tomo, dtype):
+
+        self.logger.warning("Dark file is missing. Generating dark fields")
+        nz, ny, nx = np.shape(tomo)
+        dark = np.zeros((1, ny, nx), dtype=dtype)
+
+        return dark
+
+    def xtomo_generate_white(self, tomo, dtype):
+
+        self.logger.warning("White file is missing. Generating white fields")
+        nz, ny, nx = np.shape(tomo)
+        white = np.ones((1, ny, nx), dtype=dtype)
+
+        return white
 
     def xtomo_generate_theta(self,
                          images_angle_start,

@@ -32,9 +32,9 @@ Examples
 
 >>> f = XTomoReader(_file_name)
 >>> if (data_type is 'tiff'):
->>>     tmpdata = f.tiff(x_start = slices_start,
->>>                         x_end = slices_end,
->>>                         x_step=slices_step,
+>>>     tmpdata = f.tiff(x_start = sino_start,
+>>>                         x_end = sino_end,
+>>>                         x_step=sino_step,
 >>>                         dtype=dtype,
 >>>                         flip=flip)
 
