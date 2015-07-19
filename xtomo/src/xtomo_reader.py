@@ -298,66 +298,6 @@ class XTomoReader():
 
         return array
         
-    def tiff(self, 
-             x_start=0,
-             x_end=0,
-             x_step=1,
-             y_start=0,
-             y_end=0,
-             y_step=1,
-             dtype='uint16',
-             flip='false'
-             ):
-             
-        """
-        Read 2-D tomographic projection data from a TIFF file.
-
-        Parameters
-        
-        file_name : str
-            Name of the input TIFF file.
-        
-        dtype : str, optional
-            Corresponding numpy data type of the TIFF file.
-        
-        x_start, x_end, x_step : scalar, optional
-            Values of the start, end and step of the
-            slicing for the whole ndarray.
-        
-        y_start, y_end, y_step : scalar, optional
-            Values of the start, end and step of the
-            slicing for the whole ndarray.
-        
-        Returns
-        
-        out : ndarray
-            Output 2-D matrix as numpy array.
-        """
-        try:        
-            # This ONLY works on little-endian platforms only
-            im = Image.open(self.file_name)
-            out = np.fromstring(im.tostring(), dtype).reshape(tuple(list(im.size[::-1])))
-
-            # This seeem to work on both big and little-endian platforms
-            # out = misc.imread(self.file_name)
-            num_x, num_y = out.shape
-
-            if x_end is 0:
-                x_end = num_x
-            if y_end is 0:
-                y_end = num_y
-        
-            #im.close()
-            array = out[x_start:x_end:x_step, y_start:y_end:y_step]
-            if flip == 'true':
-                array=np.rot90(array)
-
-        except KeyError:
-            self.logger.error("FILE DOES NOT CONTAIN A VALID TOMOGRAPHY DATA SET")
-            array = None        
-
-        return array
-        
     def fabio(self, 
              x_start=0,
              x_end=0,
@@ -414,6 +354,60 @@ class XTomoReader():
 
         return array
 
+    def tiff(self, 
+              dtype='uint16',
+              x_start=0,
+              x_end=0,
+              x_step=1,
+              y_start=0,
+              y_end=0,
+              y_step=1,
+              flip='false'):
+        """
+        Read 2-D complex(!) tomographic projection data from a TIFF file.
+
+        Parameters
+        
+        file_name : str
+            Name of the input TIFF file.
+        
+        dtype : str, optional
+            Corresponding Numpy data type of the TIFF file.
+        
+        x_start, x_end, x_step : scalar, optional
+            Values of the start, end and step of the
+            slicing for the whole ndarray.
+        
+        y_start, y_end, y_step : scalar, optional
+            Values of the start, end and step of the
+            slicing for the whole ndarray.
+        
+        Returns
+        
+        out : ndarray
+            Output 2-D matrix as numpy array.
+        """
+        try:
+            im = TiffFile(self.file_name)
+            out = im[0].asarray(memmap=True) # Creates a memory-map
+            
+            num_x, num_y = out.shape
+            if x_end is 0:
+                x_end = num_x
+            if y_end is 0:
+                y_end = num_y
+        
+            #im.close()
+            array = out[x_start:x_end:x_step, y_start:y_end:y_step]        
+            if flip == 'true':
+                array=np.rot90(array)
+
+        except KeyError:
+            self.logger.error("FILE DOES NOT CONTAIN A VALID TOMOGRAPHY DATA SET")
+            array = None        
+
+        return array
+
     def tiffc(self, 
               dtype='uint16',
               x_start=0,
@@ -448,7 +442,7 @@ class XTomoReader():
         """
         try:
             im = TiffFile(self.file_name)
-            out = im[0].asarray()
+            out = im[0].asarray(memmap=True) # Creates a memory-map
 
             num_x, num_y = out.shape
             if x_end is 0:
@@ -464,7 +458,7 @@ class XTomoReader():
             array = None        
 
         return array
-        
+
     def txrm(self,
              array_name=None,
              x_start=0,
@@ -915,6 +909,66 @@ class XTomoReader():
 
         return array
     
+    def _tiff_test(self, 
+             x_start=0,
+             x_end=0,
+             x_step=1,
+             y_start=0,
+             y_end=0,
+             y_step=1,
+             dtype='uint16',
+             flip='false'
+             ):
+             
+        """
+        Read 2-D tomographic projection data from a TIFF file.
+
+        Parameters
+        
+        file_name : str
+            Name of the input TIFF file.
+        
+        dtype : str, optional
+            Corresponding numpy data type of the TIFF file.
+        
+        x_start, x_end, x_step : scalar, optional
+            Values of the start, end and step of the
+            slicing for the whole ndarray.
+        
+        y_start, y_end, y_step : scalar, optional
+            Values of the start, end and step of the
+            slicing for the whole ndarray.
+        
+        Returns
+        
+        out : ndarray
+            Output 2-D matrix as numpy array.
+        """
+        try:        
+            # This ONLY works on little-endian platforms only
+            im = Image.open(self.file_name)
+            out = np.fromstring(im.tostring(), dtype).reshape(tuple(list(im.size[::-1])))
+
+            # This seeem to work on both big and little-endian platforms
+            # out = misc.imread(self.file_name)
+            num_x, num_y = out.shape
+
+            if x_end is 0:
+                x_end = num_x
+            if y_end is 0:
+                y_end = num_y
+        
+            #im.close()
+            array = out[x_start:x_end:x_step, y_start:y_end:y_step]
+            if flip == 'true':
+                array=np.rot90(array)
+
+        except KeyError:
+            self.logger.error("FILE DOES NOT CONTAIN A VALID TOMOGRAPHY DATA SET")
+            array = None        
+
+        return array
+
     def _hdf5_test(self,
                      array_name=None,
                      x_start=0,
