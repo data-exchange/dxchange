@@ -1,9 +1,9 @@
 package:
   name: xtomo
-  version: '0.1.94'
+  version: '0.1.100'
 
-source:
-  git_url: https://github.com/decarlof/data-exchange.git
+#source:
+#  git_url: https://github.com/decarlof/data-exchange.git
   
 build:
   number: 0
@@ -26,10 +26,6 @@ requirements:
     - dxfile
     - fabio
 
-test:
-  imports:
-    - xtomo_importer
-    - xtomo_exporter
 
 about:
   home: http://dataexchange.readthedocs.org

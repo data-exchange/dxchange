@@ -23,6 +23,8 @@ import xtomo_exporter as xtomo_exp
 
 import olefile as olef
 import struct
+import numpy as np
+import datetime
 
 
 def read_meta_txm(file_name, meta_data_name=None):
@@ -53,12 +55,12 @@ def read_meta_txm(file_name, meta_data_name=None):
         print 'Reading: [%s] failed.' % file_name
         meta_data = None
 
-    return meta_data
+    return np.asarray(meta_data)
 
 def main():
 
     file_name = '/local/dataraid/databank/templates/xradia_dtu/sample_name.txrm'
-    hdf5_file_name = '/local/dataraid/databank/templates/dataExchange/tmp/DTU.h5'
+    hdf5_file_name = '/local/dataraid/databank/templates/dataExchange/tmp/DTU_103.h5'
     sample_name = 'halvmaane_150kV-HE6-20X-60s'
 
     experimenter_name="Martin Skovgaard Andersen"
@@ -67,13 +69,24 @@ def main():
     instrument_comment="Xradia Versa micro CT scanner"  
 
     image_exposure_time = read_meta_txm(file_name,'ImageInfo/ExpTimes')
-    image_time = read_meta_txm(file_name,'ImageInfo/Date')
+    image_datetime = read_meta_txm(file_name,'ImageInfo/Date')
     image_theta = read_meta_txm(file_name,'ImageInfo/Angles')
     sample_image_shift_x = read_meta_txm(file_name,'Alignment/X-Shifts')
     sample_image_shift_y = read_meta_txm(file_name,'Alignment/Y-Shifts')
     sample_position_x = read_meta_txm(file_name,'ImageInfo/XPosition')
     sample_position_y = read_meta_txm(file_name,'ImageInfo/YPosition')
     sample_position_z = read_meta_txm(file_name,'ImageInfo/ZPosition')
+
+    # Example of SLS multiple scan meta data
+    size  = image_theta.shape[0]
+    scan_index = np.zeros(size)
+    image_number  = np.arange(0, size)
+    time_stamp  =  np.arange(0, size*20000000, 20000000)
+    image_exposure_time = np.random.random_integers(10000000, 10005000, size)
+    image_is_complete  = np.ones(size)
+    today = datetime.datetime.today()
+    today = today.isoformat()
+    today = '2014-08-08T16:00:00'    scan_datetime = range(0, size)    scan_datetime = [today for i in scan_datetime]
 
     # Read raw data
     read = xtomo_imp.Import()
@@ -83,6 +96,7 @@ def main():
                                                 data_type='xradia', 
                                                 log='INFO')
    
+
     # Save data as dataExchange
     write = xtomo_exp.Export()
     write.xtomo_exchange(data = data,
@@ -101,8 +115,13 @@ def main():
                           sample_image_shift_x = sample_image_shift_x,
                           sample_image_shift_y = sample_image_shift_y,
                           image_exposure_time = image_exposure_time,
-                          image_time = image_time,
+                          image_datetime = image_datetime,
                           image_theta = image_theta,
+                          scan_index = scan_index,
+                          scan_datetime = scan_datetime,
+                          time_stamp = time_stamp,
+                          image_number = image_number,
+                          image_is_complete = image_is_complete,
                           data_exchange_type = 'tomography_raw_projections'
                           )
 

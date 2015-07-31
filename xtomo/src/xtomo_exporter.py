@@ -104,9 +104,14 @@ class Export():
                         sample_position_z=None,
                         sample_image_shift_x=None,
                         sample_image_shift_y=None,
-                        image_exposure_time=None,
-                        image_time=None,
+                        scan_index=None,
+                        scan_datetime=None,
                         image_theta=None,
+                        image_datetime=None,
+                        time_stamp=None,
+                        image_number=None,
+                        image_exposure_time=None,
+                        image_is_complete=None,
                         hdf5_file_name=None,
                         axes='theta:y:x',
                         log='INFO'
@@ -313,12 +318,23 @@ class Export():
                 if (sample_image_shift_y != None):
                     f.add_entry(DataExchangeEntry.acquisition(sample_image_shift_y={'value':sample_image_shift_y, 'units': 'microns', 'dataset_opts': {'dtype': 'd'}}))
 
-                if (image_exposure_time != None):
-                    f.add_entry(DataExchangeEntry.acquisition(image_exposure_time={'value':image_exposure_time, 'units': 's', 'dataset_opts': {'dtype': 'd'}}))
-                if (image_time != None):
-                    f.add_entry(DataExchangeEntry.acquisition(image_time={'value':image_time}))
+                if (scan_index != None):
+                    f.add_entry(DataExchangeEntry.acquisition(scan_index={'value': scan_index}))
+                if (scan_datetime != None):
+                    f.add_entry(DataExchangeEntry.acquisition(scan_datetime={'value': scan_datetime}))                    
                 if (image_theta != None):
                     f.add_entry(DataExchangeEntry.acquisition(image_theta={'value': image_theta, 'units': 'degrees'}))
+                if (image_datetime != None):
+                    f.add_entry(DataExchangeEntry.acquisition(image_datetime={'value':image_datetime}))
+                if (time_stamp != None):
+                    f.add_entry(DataExchangeEntry.acquisition(time_stamp={'value':time_stamp, 'units': '1e-7s', 'dataset_opts': {'dtype': 'd'}}))                    
+                if (image_number != None):
+                    f.add_entry(DataExchangeEntry.acquisition(image_number={'value': image_number}))
+                if (image_exposure_time != None):
+                    f.add_entry(DataExchangeEntry.acquisition(image_exposure_time={'value':image_exposure_time, 'units': '1e-7s', 'dataset_opts': {'dtype': 'd'}}))
+                if (image_is_complete != None):
+                    f.add_entry(DataExchangeEntry.acquisition(image_is_complete={'value': image_is_complete}))
+
                 f.close()
                 self.logger.info("DONE!!!!. Created Data Exchange File [%s]", hdf5_file_name)
 
