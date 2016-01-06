@@ -1,6 +1,6 @@
 package:
   name: xtomo
-  version: '0.1.100'
+  version: '0.1.102'
 
 #source:
 #  git_url: https://github.com/decarlof/data-exchange.git
@@ -31,4 +31,3 @@ about:
   home: http://dataexchange.readthedocs.org
   license: BSD
   summary: 'Readers for various file formats. Part of tomopy a set of python routines for data analysis of x-ray tomography experiments'
-
