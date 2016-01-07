@@ -373,7 +373,7 @@ xradia``: txrm and xrm used by all Xradia systems
                     tmpdata = f.hdf5_2d(x_start=sino_start,
                                      x_end=sino_end,
                                      x_step=sino_step,
-                                     array_name ='/entry/data/data')
+                                     array_name ='/entry1/data/data')
 
                 elif (data_type is 'edf2'):
                     tmpdata = f.edf2(x_start=sino_start,

@@ -283,9 +283,9 @@ class XTomoReader():
             hdfdata = f[array_name]
 
             num_x, num_y = hdfdata.shape
-            if x_end is None:
+            if x_end is 0:
                 x_end = num_x
-            if y_end is None:
+            if y_end is 0:
                 y_end = num_y
 
             # Construct array.
