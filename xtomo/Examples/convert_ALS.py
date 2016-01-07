@@ -17,7 +17,7 @@ Example on how to use the `xtomo_raw`_ module to read ALS raw tomographic data a
 .. _xtomo_raw: dataexchange.xtomo.xtomo_importer.html
 """
 
-# Data Exchange: https://github.com/decarlof/conda-recipes
+# Data Exchange: https://github.com/data-exchange/data-exchange
 import xtomo_importer as xtomo_imp 
 import xtomo_exporter as xtomo_exp
 
@@ -72,6 +72,7 @@ def main():
     white_step = 1
     projections_start = 0
     projections_end = int(Angles[0])
+    #projections_end = 18
 
     print dark_end, white_end, projections_end
 
@@ -87,6 +88,7 @@ def main():
                                                        dark_start = dark_start,
                                                        dark_end = dark_end,
                                                        projections_digits = 4,
+                                                       #data_type='tiff',
                                                        log='INFO'
                                                        )
 

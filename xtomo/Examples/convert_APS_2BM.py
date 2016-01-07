@@ -25,12 +25,27 @@ import re
 
 def main():
 
-    file_name = '/local/dataraid/databank/templates/sls_tomcat/sample_name.tif'
-    log_file = '/local/dataraid/databank/templates/sls_tomcat/sample_name.log'
-    hdf5_file_name = '/local/dataraid/databank/templates/dataExchange/tmp/SLS.h5'
+    tray = 'tray03'
+    sample = 'Sam18'
+    sample_name = 'Glypto_crem_5'
 
-    sample_name = 'Hornby_b'
-    
+
+    hdf5_file_name = '/local/carmen/lorentz/stu/' + tray + '/hdf5/' + sample + '.h5'
+    file_name = '/local/carmen/lorentz/stu/' + tray + '/' + sample + '/raw/' + sample_name + '_.h5'
+    log_file = '/local/carmen/lorentz/stu/tray03/exp.log'
+
+    source_name="Advanced Photon Source"
+    source_mode="top-up"
+    #source_datetime=None
+    beamline="2-BM"
+    #energy=None
+    #current=None
+    #actual_pixel_size=None
+    experimenter_name="Stuart R Stock"
+    experimenter_affiliation="Northwestern University Feinberg School of Medicine" 
+    experimenter_email="s-stock@northwestern.edu"
+    instrument_comment="Francesco De Carlo at decarlo@aps.anl.gov"  
+
     #Read SLS log file data
     file = open(log_file, 'r')
     for line in file:
@@ -50,25 +65,34 @@ def main():
                 angular_step = float(linelist[4])
     file.close()
 
-    dark_start = 1
-    dark_end = number_of_darks + 1
-    white_start = dark_end
-    white_end = white_start + number_of_flats
-    projections_start = white_end
-    projections_end = projections_start + number_of_projections
+    white_start = 1
+    white_end = 2
+    projections_start = 2
+    projections_end = projections_start + (int)((rotation_max -  rotation_min) / angular_step) + 1
+    dark_start = projections_end + 1 
+    dark_end = dark_start + number_of_darks
     projections_angle_end = 180 + angular_step
+    
+    print "DARK", dark_start, dark_end
+    print "WHITE", white_start, white_end
+    print projections_start, projections_end
+    print projections_angle_end
 
+    print file_name
+    print log_file
+    
     # Read raw data
     read = xtomo_imp.Import()
     data, white, dark, theta = read.xtomo_raw(file_name,
                                                        projections_start = projections_start,
                                                        projections_end = projections_end,
                                                        projections_angle_end = projections_angle_end,
-                                                       projections_digits=4,
+                                                       projections_digits=5,
                                                        white_start = white_start,
                                                        white_end = white_end,
                                                        dark_start = dark_start,
                                                        dark_end = dark_end,
+                                                       data_type = 'hdf5',
                                                        log='INFO'
                                                        )
     # Save data as dataExchange
@@ -78,9 +102,18 @@ def main():
                           data_dark = dark,
                           theta = theta,
                           hdf5_file_name = hdf5_file_name,
+                          source_name=source_name,
+                          source_mode=source_mode, 
+                          beamline = beamline,
+                          experimenter_name=experimenter_name, 
+                          experimenter_affiliation=experimenter_affiliation, 
+                          experimenter_email=experimenter_email, 
+                          instrument_comment=instrument_comment,  
                           sample_name = sample_name,
                           data_exchange_type = 'tomography_raw_projections'
                           )
+
 if __name__ == "__main__":
     main()
+
 

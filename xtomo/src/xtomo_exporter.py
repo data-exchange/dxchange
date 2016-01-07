@@ -17,13 +17,14 @@ Supported image fomats include HDF5 Data Exchange and TIFF.
 
 Examples
 
->>> import dataexchange
+>>> Data Exchange: https://github.com/data-exchange/data-exchange
+>>> 
+>>> import xtomo_exporter as xtomo_exp
 >>> 
 >>> sample_name = 'Sample Name'
 >>>     
->>> write = dataexchange.Export()
->>> 
->>> # Save data as dataExchange
+>>> #Save data as dataExchange
+>>> write = xtomo_exp.Export()
 >>> write.xtomo_exchange(data = data,
 >>>                       data_white = white,
 >>>                       data_dark = dark,
@@ -33,7 +34,7 @@ Examples
 >>>                       data_exchange_type = 'tomography_raw_projections' 
 >>>                       )
 >>> # Save data as TIFF
->>>  write.xtomo_tiff(data = d.data_recon, output_file = 'rec/rec_', axis=0)
+>>> write.xtomo_tiff(data = d.data_recon, output_file = 'rec/rec_', axis=0)
 
 """
 
@@ -43,7 +44,9 @@ import numpy as np
 import os
 import warnings
 
-from data_exchange import DataExchangeFile, DataExchangeEntry
+
+
+from dxfile.dxtomo import File, Entry
 
 from skimage import io as skimage_io 
 
@@ -103,9 +106,14 @@ class Export():
                         sample_position_z=None,
                         sample_image_shift_x=None,
                         sample_image_shift_y=None,
-                        image_exposure_time=None,
-                        image_time=None,
+                        scan_index=None,
+                        scan_datetime=None,
                         image_theta=None,
+                        image_datetime=None,
+                        time_stamp=None,
+                        image_number=None,
+                        image_exposure_time=None,
+                        image_is_complete=None,
                         hdf5_file_name=None,
                         axes='theta:y:x',
                         log='INFO'
@@ -231,93 +239,104 @@ class Export():
 
                 # Write the Data Exchange HDF5 file.
                 # Open DataExchange file
-                f = DataExchangeFile(hdf5_file_name, mode='w') 
+                f = File(hdf5_file_name, mode='w') 
 
                 self.logger.info("Creating Data Exchange File [%s]", hdf5_file_name)
 
                 # Create core HDF5 dataset in exchange group for projections_theta_range
                 # deep stack of x,y images /exchange/data
                 self.logger.info("Adding projections to Data Exchange File [%s]", hdf5_file_name)
-                f.add_entry( DataExchangeEntry.data(data={'value': data, 'units':'counts', 'description': 'transmission', 'axes': axes }))
-#                f.add_entry( DataExchangeEntry.data(data={'value': data, 'units':'counts', 'description': 'transmission', 'axes':'theta:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
+                f.add_entry( Entry.data(data={'value': data, 'units':'counts', 'description': 'transmission', 'axes': axes }))
+#                f.add_entry( Entry.data(data={'value': data, 'units':'counts', 'description': 'transmission', 'axes':'theta:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
                 if (theta != None):
-                    f.add_entry( DataExchangeEntry.data(theta={'value': theta, 'units':'degrees'}))
+                    f.add_entry( Entry.data(theta={'value': theta, 'units':'degrees'}))
                     self.logger.info("Adding theta to Data Exchange File [%s]", hdf5_file_name)
                 else:
                     self.logger.warning("theta is not defined")
                 if (data_dark != None):
                     self.logger.info("Adding dark fields to  Data Exchange File [%s]", hdf5_file_name)
-                    f.add_entry( DataExchangeEntry.data(data_dark={'value': data_dark, 'units':'counts', 'axes':'theta_dark:y:x' }))
-#                    f.add_entry( DataExchangeEntry.data(data_dark={'value': data_dark, 'units':'counts', 'axes':'theta_dark:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
+                    f.add_entry( Entry.data(data_dark={'value': data_dark, 'units':'counts', 'axes':'theta_dark:y:x' }))
+#                    f.add_entry( Entry.data(data_dark={'value': data_dark, 'units':'counts', 'axes':'theta_dark:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
                 else:
                     self.logger.warning("data dark is not defined")
                 if (data_white != None):
                     self.logger.info("Adding white fields to  Data Exchange File [%s]", hdf5_file_name)
-                    f.add_entry( DataExchangeEntry.data(data_white={'value': data_white, 'units':'counts', 'axes':'theta_white:y:x' }))
-#                    f.add_entry( DataExchangeEntry.data(data_white={'value': data_white, 'units':'counts', 'axes':'theta_white:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
+                    f.add_entry( Entry.data(data_white={'value': data_white, 'units':'counts', 'axes':'theta_white:y:x' }))
+#                    f.add_entry( Entry.data(data_white={'value': data_white, 'units':'counts', 'axes':'theta_white:y:x', 'dataset_opts':  {'compression': 'gzip', 'compression_opts': 4} }))
                 else:
                     self.logger.warning("data white is not defined")
                 if (data_exchange_type != None):
                     self.logger.info("Adding data type to  Data Exchange File [%s]", hdf5_file_name)
-                    f.add_entry(DataExchangeEntry.data(title={'value': data_exchange_type}))
+                    f.add_entry(Entry.data(title={'value': data_exchange_type}))
 
                 if (source_name != None):
-                    f.add_entry(DataExchangeEntry.source(name={'value': source_name}))
+                    f.add_entry(Entry.source(name={'value': source_name}))
                 if (source_mode != None):
-                    f.add_entry(DataExchangeEntry.source(mode={'value':source_mode}))
+                    f.add_entry(Entry.source(mode={'value':source_mode}))
                 if (source_datetime != None):
-                    f.add_entry(DataExchangeEntry.source(datetime={'value': source_datetime}))
+                    f.add_entry(Entry.source(datetime={'value': source_datetime}))
 
                 if (beamline != None):
-                    f.add_entry(DataExchangeEntry.source(beamline={'value': beamline}))
+                    f.add_entry(Entry.source(beamline={'value': beamline}))
                 if (energy != None):
-                    f.add_entry(DataExchangeEntry.monochromator(energy={'value': energy, 'units': 'keV', 'dataset_opts': {'dtype': 'd'}}))                    
+                    f.add_entry(Entry.monochromator(energy={'value': energy, 'units': 'keV', 'dataset_opts': {'dtype': 'd'}}))                    
                 if (current != None):
-                    f.add_entry(DataExchangeEntry.source(current={'value': current, 'units': 'mA', 'dataset_opts': {'dtype': 'd'}}))
+                    f.add_entry(Entry.source(current={'value': current, 'units': 'mA', 'dataset_opts': {'dtype': 'd'}}))
 
                 if (actual_pixel_size != None):
-                    f.add_entry(DataExchangeEntry.detector(actual_pixel_size_x={'value': actual_pixel_size, 'units': 'microns', 'dataset_opts': {'dtype': 'd'}}, 
+                    f.add_entry(Entry.detector(actual_pixel_size_x={'value': actual_pixel_size, 'units': 'microns', 'dataset_opts': {'dtype': 'd'}}, 
                                                            actual_pixel_size_y={'value': actual_pixel_size, 'units': 'microns', 'dataset_opts': {'dtype': 'd'}}))
 
                 if (experimenter_name != None):
-                    f.add_entry(DataExchangeEntry.experimenter(name={'value':experimenter_name}))
+                    f.add_entry(Entry.experimenter(name={'value':experimenter_name}))
                 if (experimenter_affiliation != None):
-                    f.add_entry(DataExchangeEntry.experimenter(affiliation={'value':experimenter_affiliation}))
+                    f.add_entry(Entry.experimenter(affiliation={'value':experimenter_affiliation}))
                 if (experimenter_email != None):
-                    f.add_entry(DataExchangeEntry.experimenter(email={'value':experimenter_email}))
+                    f.add_entry(Entry.experimenter(email={'value':experimenter_email}))
 
                 if (instrument_comment != None):
-                    f.add_entry(DataExchangeEntry.instrument(comment={'value': instrument_comment}))
+                    f.add_entry(Entry.instrument(comment={'value': instrument_comment}))
                 if (sample_name == None):
                     sample_name = end[0]
-                    f.add_entry(DataExchangeEntry.sample( name={'value':sample_name}, description={'value':'Sample name assigned by the HDF5 converter and based on the HDF5 file name'}))
+                    f.add_entry(Entry.sample( name={'value':sample_name}, description={'value':'Sample name assigned by the HDF5 converter and based on the HDF5 file name'}))
                 else:
-                    f.add_entry(DataExchangeEntry.sample( name={'value':sample_name}))
+                    f.add_entry(Entry.sample( name={'value':sample_name}))
                 if (sample_comment != None):
-                    f.add_entry(DataExchangeEntry.sample(comment={'value':sample_comment}))
+                    f.add_entry(Entry.sample(comment={'value':sample_comment}))
 
                 if (acquisition_mode != None):
-                    f.add_entry(DataExchangeEntry.acquisition(mode={'value':acquisition_mode}))
+                    f.add_entry(Entry.acquisition(mode={'value':acquisition_mode}))
                 if (acquisition_comment != None):
-                    f.add_entry(DataExchangeEntry.acquisition(comment={'value':acquisition_comment}))
+                    f.add_entry(Entry.acquisition(comment={'value':acquisition_comment}))
 
                 if (sample_position_x != None):
-                    f.add_entry(DataExchangeEntry.acquisition(sample_position_x={'value':sample_position_x, 'units': 'microns', 'dataset_opts': {'dtype': 'd'}}))
+                    f.add_entry(Entry.acquisition(sample_position_x={'value':sample_position_x, 'units': 'microns', 'dataset_opts': {'dtype': 'd'}}))
                 if (sample_position_y != None):
-                    f.add_entry(DataExchangeEntry.acquisition(sample_position_y={'value':sample_position_y, 'units': 'microns', 'dataset_opts': {'dtype': 'd'}}))
+                    f.add_entry(Entry.acquisition(sample_position_y={'value':sample_position_y, 'units': 'microns', 'dataset_opts': {'dtype': 'd'}}))
                 if (sample_position_z != None):
-                    f.add_entry(DataExchangeEntry.acquisition(sample_position_z={'value':sample_position_z, 'units': 'microns', 'dataset_opts': {'dtype': 'd'}}))
+                    f.add_entry(Entry.acquisition(sample_position_z={'value':sample_position_z, 'units': 'microns', 'dataset_opts': {'dtype': 'd'}}))
                 if (sample_image_shift_x != None):
-                    f.add_entry(DataExchangeEntry.acquisition(sample_image_shift_x={'value':sample_image_shift_x, 'units': 'microns', 'dataset_opts': {'dtype': 'd'}}))
+                    f.add_entry(Entry.acquisition(sample_image_shift_x={'value':sample_image_shift_x, 'units': 'microns', 'dataset_opts': {'dtype': 'd'}}))
                 if (sample_image_shift_y != None):
-                    f.add_entry(DataExchangeEntry.acquisition(sample_image_shift_y={'value':sample_image_shift_y, 'units': 'microns', 'dataset_opts': {'dtype': 'd'}}))
+                    f.add_entry(Entry.acquisition(sample_image_shift_y={'value':sample_image_shift_y, 'units': 'microns', 'dataset_opts': {'dtype': 'd'}}))
 
-                if (image_exposure_time != None):
-                    f.add_entry(DataExchangeEntry.acquisition(image_exposure_time={'value':image_exposure_time, 'units': 's', 'dataset_opts': {'dtype': 'd'}}))
-                if (image_time != None):
-                    f.add_entry(DataExchangeEntry.acquisition(image_time={'value':image_time}))
+                if (scan_index != None):
+                    f.add_entry(Entry.acquisition(scan_index={'value': scan_index}))
+                if (scan_datetime != None):
+                    f.add_entry(Entry.acquisition(scan_datetime={'value': scan_datetime}))                    
                 if (image_theta != None):
-                    f.add_entry(DataExchangeEntry.acquisition(image_theta={'value': image_theta, 'units': 'degrees'}))
+                    f.add_entry(Entry.acquisition(image_theta={'value': image_theta, 'units': 'degrees'}))
+                if (image_datetime != None):
+                    f.add_entry(Entry.acquisition(image_datetime={'value':image_datetime}))
+                if (time_stamp != None):
+                    f.add_entry(Entry.acquisition(time_stamp={'value':time_stamp, 'units': '1e-7s', 'dataset_opts': {'dtype': 'd'}}))                    
+                if (image_number != None):
+                    f.add_entry(Entry.acquisition(image_number={'value': image_number}))
+                if (image_exposure_time != None):
+                    f.add_entry(Entry.acquisition(image_exposure_time={'value':image_exposure_time, 'units': '1e-7s', 'dataset_opts': {'dtype': 'd'}}))
+                if (image_is_complete != None):
+                    f.add_entry(Entry.acquisition(image_is_complete={'value': image_is_complete}))
+
                 f.close()
                 self.logger.info("DONE!!!!. Created Data Exchange File [%s]", hdf5_file_name)
 
