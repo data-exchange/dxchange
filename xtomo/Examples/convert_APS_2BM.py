@@ -2,9 +2,9 @@
 """
 .. module:: convert_SLS.py
    :platform: Unix
-   :synopsis: Convert SLS TOMCAT TIFF files in data exchange.
+   :synopsis: Convert APS 2-BM hdf5 files in data exchange.
 
-Example on how to use the `xtomo_raw`_ module to read SLS TOMCAT TIFF raw tomographic data and save them as Data Exchange
+Example on how to use the `xtomo_raw`_ module to read APS 2-BM hdf5 raw tomographic data and save them as Data Exchange
 
 :Author:
   `Francesco De Carlo <mailto: decarlof@gmail.com>`_
@@ -12,7 +12,7 @@ Example on how to use the `xtomo_raw`_ module to read SLS TOMCAT TIFF raw tomogr
 :Organization:
   Argonne National Laboratory, Argonne, IL 60439 USA
 
-:Version: 2014.08.15
+:Version: 2016.01.10
 
 .. _xtomo_raw: dataexchange.xtomo.xtomo_importer.html
 """
@@ -25,28 +25,33 @@ import re
 
 def main():
 
+    top_dir = '/local/carmen/lorentz/stu/'
     tray = 'tray03'
-    sample = 'Sam18'
-    sample_name = 'Glypto_crem_5'
+    sample = 'Sam20'
+    sample_name = 'Plesio_hor_2'
+    log_file = top_dir + tray + '/exp.log'
 
+# create an exp.log file as:
+#   Number of projections        : 1500
+#   Number of darks              : 1 
+#   Number of flats              : 2 
+#   Rot Y min position  [deg]    : 0.000 
+#   Rot Y max position  [deg]    : 180.000 
+#   Angular step [deg]           : 0.12 
 
-    hdf5_file_name = '/local/carmen/lorentz/stu/' + tray + '/hdf5/' + sample + '.h5'
-    file_name = '/local/carmen/lorentz/stu/' + tray + '/' + sample + '/raw/' + sample_name + '_.h5'
-    log_file = '/local/carmen/lorentz/stu/tray03/exp.log'
+    hdf5_file_name = top_dir + tray + '/hdf5/' + sample + '.h5'
+    file_name = top_dir + tray + '/' + sample + '/raw/' + sample_name + '_.h5'
 
     source_name="Advanced Photon Source"
     source_mode="top-up"
-    #source_datetime=None
     beamline="2-BM"
-    #energy=None
-    #current=None
-    #actual_pixel_size=None
+
     experimenter_name="Stuart R Stock"
     experimenter_affiliation="Northwestern University Feinberg School of Medicine" 
     experimenter_email="s-stock@northwestern.edu"
     instrument_comment="Francesco De Carlo at decarlo@aps.anl.gov"  
 
-    #Read SLS log file data
+    #Read exp log file data
     file = open(log_file, 'r')
     for line in file:
         linelist=line.split()
