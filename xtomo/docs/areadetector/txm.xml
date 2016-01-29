@@ -1,0 +1,65 @@
+<xml>
+  <global name="detector_data_destination" ndattribute="SaveDest"></global>
+    <group name="exchange">
+      <dataset name="data" source="detector">
+        <attribute name="description" source="constant" value="ImageData" type="string"></attribute>
+        <attribute name="axes" source="constant" value="theta:y:x" type="string"></attribute>
+        <attribute name="units" source="constant" value="counts" type="string"></attribute>
+      </dataset>
+      <dataset name="data_white" source="detector">
+        <attribute name="description" source="constant" value="WhiteData" type="string"></attribute>
+        <attribute name="axes" source="constant" value="theta:y:x" type="string"></attribute>
+        <attribute name="units" source="constant" value="counts" type="string"></attribute>
+      </dataset>
+      <dataset name="data_dark" source="detector">
+        <attribute name="description" source="constant" value="DarkData" type="string"></attribute>
+        <attribute name="axes" source="constant" value="theta:y:x" type="string"></attribute>
+        <attribute name="units" source="constant" value="counts" type="string"></attribute>
+      </dataset>
+      <dataset name="theta" source="ndattribute" ndattribute="Theta" when="OnFrame"></dataset>
+    </group><!-- /exchange -->
+    <group name="measurement">
+      <group name="instrument">
+        <dataset name="name" source="constant" value="Transmission X-Ray Microscope" type="string" when="OnFileClose"></dataset>        
+        <group name="detector">
+          <dataset name="dimention_x" source="ndattribute" ndattribute="MaxSizeX" when="OnFileOpen"></dataset>
+          <dataset name="dimention_y" source="ndattribute" ndattribute="MaxSizeY" when="OnFileOpen"></dataset>
+          <dataset name="binning_x" source="ndattribute" ndattribute="BinX" when="OnFileOpen"></dataset>
+          <dataset name="binning_y" source="ndattribute" ndattribute="BinY" when="OnFileOpen"></dataset>
+          <dataset name="exposure_time" source="ndattribute" ndattribute="AcqTime" when="OnFileOpen"></dataset>
+          <dataset name="exposure_period" source="ndattribute" ndattribute="AcqPeriod" when="OnFrame"></dataset>
+          <dataset name="manufacturer" source="ndattribute" ndattribute="Manufacturer" when="OnFileOpen"></dataset>
+          <dataset name="model" source="ndattribute" ndattribute="Model" when="OnFileOpen"></dataset>
+          <dataset name="serial_number" source="ndattribute" ndattribute="Serial" when="OnFileOpen"></dataset>
+          <dataset name="gain" source="ndattribute" ndattribute="Gain" when="OnFileOpen"></dataset>
+          <dataset name="temperature" source="ndattribute" ndattribute="Temperature" when="OnFileOpen">
+            <attribute name="units" source="constant" value="Celsius" type="string"></attribute>
+          </dataset>
+          <group name="roi">
+            <dataset name="x1" source="ndattribute" ndattribute="MinX" when="OnFileOpen"></dataset>
+            <dataset name="x2" source="ndattribute" ndattribute="SizeX" when="OnFileOpen"></dataset>
+            <dataset name="y1" source="ndattribute" ndattribute="MinY" when="OnFileOpen"></dataset>
+            <dataset name="y2" source="ndattribute" ndattribute="SizeY" when="OnFileOpen"></dataset>
+          </group><!-- /roi -->
+        </group><!-- /detector -->
+        <group name="monochromator">
+          <dataset name="type" source="constant" value="Double Crystal" type="string" when="OnFileClose"></dataset>        
+          <dataset name="energy" source="ndattribute" ndattribute="Energy" when="OnFileClose">       
+            <attribute name="units" source="constant" value="keV" type="string"></attribute>
+          </dataset>
+        </group><!-- /monochromator -->
+        <group name="source">
+          <dataset name="beamline" source="constant" value="32-ID" type="string" when="OnFileClose"></dataset>        
+          <dataset name="name" source="constant" value="Advanced Photon Source" type="string" when="OnFileClose"></dataset>        
+          <dataset name="current" source="ndattribute" ndattribute="Current" when="OnFileClose">        
+            <attribute name="units" source="constant" value="mA" type="string"></attribute>
+          </dataset>
+        </group><!-- /source -->
+      </group><!-- /instrument -->
+    </group><!-- /measurement -->
+	<group name="defaults" ndattr_default="true">
+          <dataset name="model" source="ndattribute" ndattribute="CameraModel"></dataset>
+	</group>
+</xml>
+
+
