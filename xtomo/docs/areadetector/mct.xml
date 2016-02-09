@@ -21,7 +21,7 @@
     </group><!-- /exchange -->
     <group name="measurement">
       <group name="instrument">
-        <dataset name="name" source="constant" value="Transmission X-Ray Microscope" type="string" when="OnFileClose"></dataset>        
+        <dataset name="name" source="constant" value="micro Tomography" type="string" when="OnFileClose"></dataset>        
         <group name="detector">
           <dataset name="dimension_x" source="ndattribute" ndattribute="MaxSizeX" when="OnFileClose"></dataset>
           <dataset name="dimension_y" source="ndattribute" ndattribute="MaxSizeY" when="OnFileClose"></dataset>
@@ -45,13 +45,10 @@
           </group><!-- /roi -->
         </group><!-- /detector -->
         <group name="monochromator">
-          <dataset name="type" source="constant" value="Si Double Crystal" type="string" when="OnFileClose"></dataset>        
-          <dataset name="energy" source="ndattribute" ndattribute="Energy" when="OnFileClose">       
-            <attribute name="units" source="constant" value="keV" type="string"></attribute>
-          </dataset>
+          <dataset name="type" source="constant" value="Multilayer" type="string" when="OnFileClose"></dataset>        
         </group><!-- /monochromator -->
         <group name="source">
-          <dataset name="beamline" source="constant" value="32-ID" type="string" when="OnFileClose"></dataset>        
+          <dataset name="beamline" source="constant" value="2-BM" type="string" when="OnFileClose"></dataset>        
           <dataset name="name" source="constant" value="Advanced Photon Source" type="string" when="OnFileClose"></dataset>        
           <dataset name="current" source="ndattribute" ndattribute="Current" when="OnFileClose">        
             <attribute name="units" source="constant" value="mA" type="string"></attribute>
@@ -67,5 +64,3 @@
 	<group name="defaults" ndattr_default="true">
 	</group>
 </hdf_layout>
-
-

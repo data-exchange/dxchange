@@ -1,0 +1,33 @@
+<Attributes
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://epics.aps.anl.gov/areaDetector/attributes ../attributes.xsd"
+    >
+    <Attribute name="Manufacturer"        type="PARAM"    source="MANUFACTURER"                 datatype="STRING"     description="Camera manufacturer"/>
+    <Attribute name="Model"               type="PARAM"    source="MODEL"                        datatype="STRING"     description="Camera model"/>
+    <Attribute name="Serial"              type="PARAM"    source="PG_SERIAL_NUMBER"             datatype="INT"        description="Camera serial number"/>
+    <Attribute name="Firmware"            type="PARAM"    source="PG_FIRMWARE_VERSION"          datatype="STRING"     description="Camera firmware version"/>
+    <Attribute name="Software"            type="PARAM"    source="PG_SOFTWARE_VERSION"          datatype="STRING"     description="Camera software version"/>
+    <Attribute name="MaxSizeX"            type="PARAM"    source="MAX_SIZE_X"                   datatype="INT"        description="Detector X size"/>
+    <Attribute name="MaxSizeY"            type="PARAM"    source="MAX_SIZE_Y"                   datatype="INT"        description="Detector Y size"/>
+
+    <Attribute name="SaveDest"            type="EPICS_PV" source="2bmbPG1:cam1:FrameType"      dbrtype="DBR_STRING"  description="Data save destination"/>
+
+    <Attribute name="AcqTime"             type="PARAM"    source="ACQ_TIME"                     datatype="DOUBLE"     description="Acquire Time"/>
+    <Attribute name="AcqPeriod"           type="PARAM"    source="ACQ_PERIOD"                   datatype="DOUBLE"     description="Acquire Period"/>
+    <Attribute name="Temperature"         type="PARAM"    source="TEMPERATURE_ACTUAL"           datatype="DOUBLE"     description="Camera temperature"/>
+    <Attribute name="Gain"                type="PARAM"    source="GAIN"                         datatype="DOUBLE"     description="Gain"/>
+    <Attribute name="BinX"                type="PARAM"    source="BIN_X"                        datatype="INT"        description="Detector X bin"/>
+    <Attribute name="BinY"                type="PARAM"    source="BIN_Y"                        datatype="INT"        description="Detector Y bin"/>
+    <Attribute name="MinX"                type="PARAM"    source="MIN_X"                        datatype="INT"        description="ROI Min X"/>
+    <Attribute name="MinY"                type="PARAM"    source="MIN_Y"                        datatype="INT"        description="ROI Min Y"/>
+    <Attribute name="SizeX"               type="PARAM"    source="SIZE_X"                       datatype="INT"        description="ROI Size X"/>
+    <Attribute name="SizeY"               type="PARAM"    source="SIZE_Y"                       datatype="INT"        description="ROI Size Y"/>
+
+    <Attribute name="FrameRate"           type="PARAM"    source="PG_FRAME_RATE"                datatype="INT"        description="Camera frame rate"/>
+
+    <Attribute name="DateTime"            type="EPICS_PV" source="S:IOC:timeOfDayForm2SI"       dbrtype="DBR_STRING"/>
+    <Attribute name="Current"             type="EPICS_PV" source="S:SRcurrentAI"                dbrtype="DBR_DOUBLE"/>
+    <Attribute name="TopUpStatus"         type="EPICS_PV" source="S:TopUpStatus"                dbrtype="DBR_ENUM"/>
+
+    <Attribute name="Theta"               type="EPICS_PV" source="2bmb:m34.VAL"                 dbrtype="DBR_DOUBLE"/>
+</Attributes>
