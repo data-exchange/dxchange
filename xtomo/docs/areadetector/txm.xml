@@ -18,6 +18,7 @@
         <attribute name="units" source="constant" value="counts" type="string"></attribute>
       </dataset>
 <!--      <dataset name="theta" source="ndattribute" ndattribute="Theta" when="OnFrame"></dataset> -->
+<!--      <dataset name="theta" source="ndattribute" ndattribute="Theta" when="OnFileClose"></dataset>  -->
     </group><!-- /exchange -->
     <group name="measurement">
       <group name="instrument">
@@ -56,14 +57,33 @@
           <dataset name="current" source="ndattribute" ndattribute="Current" when="OnFileClose">        
             <attribute name="units" source="constant" value="mA" type="string"></attribute>
           </dataset>
+          <dataset name="energy" source="ndattribute" ndattribute="SourceEnergy" when="OnFileClose">        
+            <attribute name="units" source="constant" value="keV" type="string"></attribute>
+          </dataset>
+          <dataset name="gap" source="ndattribute" ndattribute="SourceGap" when="OnFileClose">        
+            <attribute name="units" source="constant" value="mm" type="string"></attribute>
+          </dataset>
           <dataset name="mode" source="ndattribute" ndattribute="TopUpStatus" when="OnFileClose"></dataset>
           <dataset name="datetime" source="ndattribute" ndattribute="DateTime" when="OnFileClose"></dataset>
         </group><!-- /source -->
         <group name="acquisition">
-          <dataset name="start_date" source="ndattribute" ndattribute="DateTime" when="OnFileOpen"></dataset>
+          <dataset name="start_date" source="ndattribute" ndattribute="DateTimeStart" when="OnFileOpen"></dataset>
+          <dataset name="end_date" source="ndattribute" ndattribute="DateTimeEnd" when="OnFileClose"></dataset>
         </group><!-- /acquisition -->
       </group><!-- /instrument -->
+        <group name="sample">
+          <group name="experimenter">
+            <dataset name="name" source="ndattribute" ndattribute="UserName" when="OnFileClose"></dataset>
+            <dataset name="affiliation" source="ndattribute" ndattribute="UserAffiliation" when="OnFileClose"></dataset>
+            <dataset name="email" source="ndattribute" ndattribute="UserEmail" when="OnFileClose"></dataset>
+            <dataset name="facility_user_id" source="ndattribute" ndattribute="UserBadge" when="OnFileClose"></dataset>
+          </group><!-- /experimenter -->
+          <group name="experiment">
+            <dataset name="proposal" source="ndattribute" ndattribute="ProposalNumber" when="OnFileClose"></dataset>
+            <dataset name="title" source="ndattribute" ndattribute="ProposalTitle" when="OnFileClose"></dataset>
+          </group><!-- /experiment -->
     </group><!-- /measurement -->
+    </group><!-- /sample -->
 	<group name="defaults" ndattr_default="true">
 	</group>
 </hdf_layout>

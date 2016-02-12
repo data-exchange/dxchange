@@ -27,12 +27,24 @@
 
     <Attribute name="FrameRate"           type="PARAM"    source="PG_FRAME_RATE"                datatype="INT"        description="Camera frame rate"/>
 
-    <Attribute name="DateTime"            type="EPICS_PV" source="S:IOC:timeOfDayForm2SI"       dbrtype="DBR_STRING"/>
+    <Attribute name="DateTimeStart"       type="EPICS_PV" source="S:IOC:timeOfDayForm2SI"       dbrtype="DBR_STRING"/>
+    <Attribute name="DateTimeEnd"         type="EPICS_PV" source="S:IOC:timeOfDayForm2SI"       dbrtype="DBR_STRING"/>
     <Attribute name="Current"             type="EPICS_PV" source="S:SRcurrentAI"                dbrtype="DBR_DOUBLE"/>
     <Attribute name="TopUpStatus"         type="EPICS_PV" source="S:TopUpStatus"                dbrtype="DBR_ENUM"/>
+    <Attribute name="SourceEnergy"        type="EPICS_PV" source="ID32ds:Energy.VAL"            dbrtype="DBR_DOUBLE"/>
+    <Attribute name="SourceGap"           type="EPICS_PV" source="ID32ds:Gap.VAL"               dbrtype="DBR_DOUBLE"/>
     <Attribute name="Energy"              type="EPICS_PV" source="32ida:BraggEAO.VAL"           dbrtype="DBR_DOUBLE"/>
 
-    <Attribute name="Theta"               type="EPICS_PV" source="32idcTXM:hydra:c0:m1.VAL"     dbrtype="DBR_DOUBLE"/>
+    <Attribute name="UserName"            type="EPICS_PV" source="32idc01:userStringCalc1.AA"   dbrtype="DBR_STRING"/>
+    <Attribute name="UserAffiliation"     type="EPICS_PV" source="32idc01:userStringCalc1.BB"   dbrtype="DBR_STRING"/>
+    <Attribute name="UserEmail"           type="EPICS_PV" source="32idc01:userStringCalc1.CC"   dbrtype="DBR_STRING"/>
+    <Attribute name="UserBadge"           type="EPICS_PV" source="32idc01:userStringCalc1.DD"   dbrtype="DBR_STRING"/>
+
+    <Attribute name="ProposalNumber"      type="EPICS_PV" source="32idc01:userStringCalc1.EE"   dbrtype="DBR_STRING"/>
+    <Attribute name="ProposalTitle"       type="EPICS_PV" source="32idc01:userStringCalc1.FF"   dbrtype="DBR_STRING"/>
+
+ <!--   <Attribute name="Theta"               type="EPICS_PV" source="32idcTXM:hydra:c0:m1.VAL"     dbrtype="DBR_DOUBLE"/> -->
+
 </Attributes>
     
     
