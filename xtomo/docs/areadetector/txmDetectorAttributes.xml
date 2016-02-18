@@ -27,8 +27,8 @@
 
     <Attribute name="FrameRate"           type="PARAM"    source="PG_FRAME_RATE"                datatype="INT"        description="Camera frame rate"/>
 
-    <Attribute name="DateTimeStart"       type="EPICS_PV" source="S:IOC:timeOfDayForm2SI"       dbrtype="DBR_STRING"/>
-    <Attribute name="DateTimeEnd"         type="EPICS_PV" source="S:IOC:timeOfDayForm2SI"       dbrtype="DBR_STRING"/>
+    <Attribute name="DateTimeStart"       type="EPICS_PV" source="S:IOC:timeOfDayISO8601"       dbrtype="DBR_STRING"/>
+    <Attribute name="DateTimeEnd"         type="EPICS_PV" source="S:IOC:timeOfDayISO8601"       dbrtype="DBR_STRING"/>
     <Attribute name="Current"             type="EPICS_PV" source="S:SRcurrentAI"                dbrtype="DBR_DOUBLE"/>
     <Attribute name="TopUpStatus"         type="EPICS_PV" source="S:TopUpStatus"                dbrtype="DBR_ENUM"/>
     <Attribute name="SourceEnergy"        type="EPICS_PV" source="ID32ds:Energy.VAL"            dbrtype="DBR_DOUBLE"/>
