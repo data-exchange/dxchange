@@ -39,10 +39,10 @@
             <attribute name="units" source="constant" value="Celsius" type="string"></attribute>
           </dataset>
           <group name="roi">
-            <dataset name="x1" source="ndattribute" ndattribute="MinX" when="OnFileClose"></dataset>
-            <dataset name="x2" source="ndattribute" ndattribute="SizeX" when="OnFileClose"></dataset>
-            <dataset name="y1" source="ndattribute" ndattribute="MinY" when="OnFileClose"></dataset>
-            <dataset name="y2" source="ndattribute" ndattribute="SizeY" when="OnFileClose"></dataset>
+            <dataset name="min_x" source="ndattribute" ndattribute="MinX" when="OnFileClose"></dataset>
+            <dataset name="size_x" source="ndattribute" ndattribute="SizeX" when="OnFileClose"></dataset>
+            <dataset name="min_y" source="ndattribute" ndattribute="MinY" when="OnFileClose"></dataset>
+            <dataset name="size_y" source="ndattribute" ndattribute="SizeY" when="OnFileClose"></dataset>
           </group><!-- /roi -->
         </group><!-- /detector -->
         <group name="monochromator">
