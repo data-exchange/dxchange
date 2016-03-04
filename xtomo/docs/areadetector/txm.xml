@@ -289,7 +289,6 @@
             <attribute name="units" source="constant" value="mm" type="string"></attribute>
           </dataset>
           <dataset name="mode" source="ndattribute" ndattribute="TopUpStatus" when="OnFileClose"></dataset>
-          <dataset name="datetime" source="ndattribute" ndattribute="DateTime" when="OnFileClose"></dataset>
         </group><!-- /source -->
         <group name="mirror">
           <dataset name="type" source="constant" value="Type of mirror" type="string" when="OnFileClose"></dataset>        
