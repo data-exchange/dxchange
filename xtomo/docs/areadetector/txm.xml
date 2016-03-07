@@ -304,21 +304,21 @@
           <dataset name="end_date" source="ndattribute" ndattribute="DateTimeEnd" when="OnFileClose"></dataset>
         </group><!-- /acquisition -->
       </group><!-- /instrument -->
-        <group name="sample">
-          <group name="experimenter">
+      <group name="sample">
+        <group name="experimenter">
             <dataset name="name" source="ndattribute" ndattribute="UserName" when="OnFileClose"></dataset>
             <dataset name="affiliation" source="ndattribute" ndattribute="UserAffiliation" when="OnFileClose"></dataset>
             <dataset name="email" source="ndattribute" ndattribute="UserEmail" when="OnFileClose"></dataset>
             <dataset name="facility_user_id" source="ndattribute" ndattribute="UserBadge" when="OnFileClose"></dataset>
-          </group><!-- /experimenter -->
-          <group name="experiment">
+        </group><!-- /experimenter -->
+        <group name="experiment">
             <dataset name="proposal" source="ndattribute" ndattribute="ProposalNumber" when="OnFileClose"></dataset>
             <dataset name="title" source="ndattribute" ndattribute="ProposalTitle" when="OnFileClose"></dataset>
-          </group><!-- /experiment -->
+        </group><!-- /experiment -->
+      </group><!-- /sample -->
     </group><!-- /measurement -->
-    </group><!-- /sample -->
 	<group name="defaults" ndattr_default="true">
-	</group>
+  </group>
 </hdf_layout>
 
 
