@@ -84,10 +84,10 @@
     <Attribute name="PinHoleYDial"        type="EPICS_PV" source="32idcTXM:xps:c1:m4.DVAL"      dbrtype="DBR_DOUBLE"/>
     <Attribute name="PinHoleZDial"        type="EPICS_PV" source="32idcTXM:xps:c1:m5.DVAL"      dbrtype="DBR_DOUBLE"/>
 
-    <Attribute name="SampleX"             type="EPICS_PV" source="32idcTXM:xps:c1:m8.VAL"       dbrtype="DBR_DOUBLE"/>
+    <Attribute name="SampleX"             type="EPICS_PV" source="32idcTXM:nf:c0:m1.VAL"        dbrtype="DBR_DOUBLE"/>
     <Attribute name="SampleY"             type="EPICS_PV" source="32idcTXM:mxv:c1:m1.VAL"       dbrtype="DBR_DOUBLE"/>
     <Attribute name="SampleRotary"        type="EPICS_PV" source="32idcTXM:hydra:c0:m1.VAL"     dbrtype="DBR_DOUBLE"/>
-    <Attribute name="SampleXDial"         type="EPICS_PV" source="32idcTXM:xps:c1:m8.DVAL"      dbrtype="DBR_DOUBLE"/>
+    <Attribute name="SampleXDial"         type="EPICS_PV" source="32idcTXM:nf:c0:m1.DVAL"       dbrtype="DBR_DOUBLE"/>
     <Attribute name="SampleYDial"         type="EPICS_PV" source="32idcTXM:mxv:c1:m1.DVAL"      dbrtype="DBR_DOUBLE"/>
     <Attribute name="SampleRotaryDial"    type="EPICS_PV" source="32idcTXM:hydra:c0:m1.DVAL"    dbrtype="DBR_DOUBLE"/>
     <Attribute name="SampleTopX"          type="EPICS_PV" source="32idcTXM:mcs:c1:m2.VAL"       dbrtype="DBR_DOUBLE"/>

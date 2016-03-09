@@ -317,7 +317,7 @@
         </group><!-- /experiment -->
       </group><!-- /sample -->
     </group><!-- /measurement -->
-	<group name="defaults" ndattr_default="true">
+    <group name="defaults" ndattr_default="true">
   </group>
 </hdf_layout>
 
