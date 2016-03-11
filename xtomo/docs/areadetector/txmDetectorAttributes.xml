@@ -37,13 +37,13 @@
     <Attribute name="MirrorX"             type="EPICS_PV" source="32idbMIR:m1.RBV"              dbrtype="DBR_DOUBLE"/>
     <Attribute name="MirrorY"             type="EPICS_PV" source="32idbMIR:m2.RBV"              dbrtype="DBR_DOUBLE"/>
 
-    <Attribute name="UserName"            type="EPICS_PV" source="32idc01:userStringCalc1.AA"   dbrtype="DBR_STRING"/>
-    <Attribute name="UserAffiliation"     type="EPICS_PV" source="32idc01:userStringCalc1.BB"   dbrtype="DBR_STRING"/>
-    <Attribute name="UserBadge"           type="EPICS_PV" source="32idc01:userStringCalc1.CC"   dbrtype="DBR_STRING"/>
-    <Attribute name="UserEmail"           type="EPICS_PV" source="32idc01:userStringCalc1.DD"   dbrtype="DBR_STRING"/>
+    <Attribute name="UserName"            type="EPICS_PV" source="32idcTXM:UserName"            dbrtype="DBR_STRING"/>
+    <Attribute name="UserAffiliation"     type="EPICS_PV" source="32idcTXM:UserAffiliation"     dbrtype="DBR_STRING"/>
+    <Attribute name="UserBadge"           type="EPICS_PV" source="32idcTXM:UserBadge"           dbrtype="DBR_STRING"/>
+    <Attribute name="UserEmail"           type="EPICS_PV" source="32idcTXM:UserEmail"           dbrtype="DBR_STRING"/>
 
-    <Attribute name="ProposalNumber"      type="EPICS_PV" source="32idc01:userStringCalc1.EE"   dbrtype="DBR_STRING"/>
-    <Attribute name="ProposalTitle"       type="EPICS_PV" source="32idc01:userStringCalc1.FF"   dbrtype="DBR_STRING"/>
+    <Attribute name="ProposalNumber"      type="EPICS_PV" source="32idcTXM:ProposalNumber"      dbrtype="DBR_STRING"/>
+    <Attribute name="ProposalTitle"       type="EPICS_PV" source="32idcTXM:ProposalTitle"       dbrtype="DBR_STRING"/>
 
     <Attribute name="BeamMonitorX"        type="EPICS_PV" source="32idcTXM:xps:c1:m2.VAL"       dbrtype="DBR_DOUBLE"/>
     <Attribute name="BeamMonitorY"        type="EPICS_PV" source="32idcTXM:nf:c0:m3.VAL"        dbrtype="DBR_DOUBLE"/>
