@@ -41,6 +41,7 @@
     <Attribute name="UserAffiliation"     type="EPICS_PV" source="32idcTXM:UserAffiliation"     dbrtype="DBR_STRING"/>
     <Attribute name="UserBadge"           type="EPICS_PV" source="32idcTXM:UserBadge"           dbrtype="DBR_STRING"/>
     <Attribute name="UserEmail"           type="EPICS_PV" source="32idcTXM:UserEmail"           dbrtype="DBR_STRING"/>
+    <Attribute name="SampleName"          type="EPICS_PV" source="32idcTXM:SampleName"          dbrtype="DBR_STRING"/>
 
     <Attribute name="ProposalNumber"      type="EPICS_PV" source="32idcTXM:ProposalNumber"      dbrtype="DBR_STRING"/>
     <Attribute name="ProposalTitle"       type="EPICS_PV" source="32idcTXM:ProposalTitle"       dbrtype="DBR_STRING"/>

@@ -305,6 +305,7 @@
         </group><!-- /acquisition -->
       </group><!-- /instrument -->
       <group name="sample">
+        <dataset name="name" source="ndattribute" ndattribute="SampleName" when="OnFileClose"></dataset>        
         <group name="experimenter">
             <dataset name="name" source="ndattribute" ndattribute="UserName" when="OnFileClose"></dataset>
             <dataset name="affiliation" source="ndattribute" ndattribute="UserAffiliation" when="OnFileClose"></dataset>
