@@ -1,0 +1,808 @@
+%*****************************************************************
+\section{Data Exchange for X-ray Tomography}
+\label{exchange:tomography}
+
+This section describes extensions and additions to the core Data Exchange format for X-ray Tomography. We begin with the extensions to the exchange and instrument groups, and then describe the tomography process groups.
+
+\subsection{Exchange Group for X-ray Tomography}
+
+In x-ray tomography, the 3D arrays representing the most basic version of the data include projections, dark, and white fields. It is \emph{mandatory} that there is at least one dataset named data in each exchange group. Most data analysis and plotting programs will primarily focus in this group.
+
+\begin{table}[h!]\sffamily \footnotesize
+\caption{Exchange Group Members for Tomography}
+\centering
+\rowcolors{1}{white}{tableBlue}
+\begin{tabular}{l l l}
+\toprule
+\bfseries Member     & \bfseries Type & \bfseries Example/Attributes \\
+\midrule
+\tt{title}  & string dataset & "raw absorption tomo" \\
+\emph{data}  & 3D dataset & axes: "theta:y:x"  \\
+\tt{x} & dimension scale 2 &  \\
+\tt{y} & dimension scale 1 &  \\
+\tt{theta} & dimension scale 0 & units: "deg" \\
+\tt{data\_dark} & 3D dataset & axes: "theta\_dark:y:x" \\
+\tt{theta\_dark} & dimension scale 0 & units: "deg" \\
+\tt{data\_white}  & 3D dataset & axes: "theta\_white:y:x" \\
+\tt{theta\_white} & dimension scale 0 & units: "deg" \\
+\tt{data\_shift\_x}  & relative x shift of data at each angular position & \\
+\tt{data\_shift\_y}  & relative y shift of data at each angular position & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{description}
+\item[\tt{title}] \hfill \\
+{This is the data title.}
+
+\item[\emph{data}] \hfill \\
+{A tomographic data set consists of a series of projections (data), dark field (data\_dark), and white field (data\_white) images. The dark and white fields must have the same projection image dimensions and can be collected at any time before, after or during the projection data collection. The angular position of the tomographic rotation axis, theta, can be used to keep track of when the dark and white images are collected.  These datasets are saved in 3D arrays using, by default, the natural HDF5 order of a multidimensional array (rotation axis, ccd y, ccd x), i.e. with the fastest changing dimension being the last dimension, and the slowest changing dimension being the first dimension. If using the default dimension order, the axes attribute "theta:y:x" can be omitted. The {\tt{axes}} attribute is mandatory if the 3D arrays use a different axes order. This could be the case when, for example, the arrays are optimized for sinogram read ({\tt{axes}} = "y:theta:x"). As no units are specified the data is assumed to be in ``counts'' with the axes (x, y) in pixels. }
+
+
+\item[\tt{data\_dark, data\_white}] \hfill \\
+{The dark field and white fields must have the same dimensions as the projection images and can be collected at any time before, during, or after the projection data collection.  To specify where dark and white images were taken, specify the axes attribute with "theta\_dark:y:x" and "theta\_white:y:x" and provide theta\_dark and theta\_white vector datasets that specify the rotation angles where they were collected.}
+
+\item[\tt{x, y}] \hfill \\
+{X and y are vectors storing the dimension scale for the second and third data array dimension. If x, y are not defined, the second and third dimensions of the data array are assumed to be in pixels.}
+
+\item[\tt{theta, theta\_dark, theta\_white}] \hfill \\
+{Theta is a vector dataset storing the projection angular positions.  If theta is not defined the projections are assumed to be collected at equally spaced angular interval between 0 and 180 degree.  The dark field and white fields can be collected at any time before, during, or after the projection data. Theta\_dark, and theta\_white store the position of the tomographic rotation axis when the corresponding dark and white images are collected. If theta\_dark and theta\_white are missing the corresponding data\_dark and data\_white are assumed to be collected all at the beginning or at the end of the projection data collection.}
+
+\item[ \tt{data\_shift\_x, data\_shift\_y}] \hfill \\
+{Data\_shift\_x and data\_shift\_y are the vectors storing at each projection angular positions the image relative shift in x and y.  These vectors are used in high resolution CT when at each angular position the sample x and y are moved to keep the sample in the field of view based on a pre-calibration of rotary stage runout. If the unit is not defined are assumed to be in pixels.}
+
+\end{description}
+
+%*****************************************************************
+\subsection{Instrument Group for Tomography}
+\label{tomo:instrument}
+The instrument group for X-ray tomography introduces an extended detector group definition adding definitions for {\tt{setup}} and {\tt{acquisition}}. The extended instrument group is as shown in Table \ref{table:tomo:instrument}.
+
+\begin{table}[h!]\sffamily \footnotesize
+\centering
+\caption{Instrument Group for Tomography}
+\rowcolors{1}{white}{tableBlue}
+\begin{tabular}{l l l}
+\toprule
+\bfseries Member     & \bfseries Type & \bfseries Example \\
+\midrule
+\tt{name} & string dataset & "XSD/2-BM" \\
+\hyperref[table:source]{source} &  group & same as core\\
+\hyperref[table:shutter]{shutter\_$N$}  &  group &  same as core\\
+\hyperref[table:attenuator]{attenuator\_$N$} & group & same as core\\
+\hyperref[table:monochromator]{monochromator} & group & same as core\\
+\hyperref[table:tomo:setup]{setup} & group & new \\
+\hyperref[table:tomo:acquisition]{acquisition} & group & new \\
+\hyperref[table:tomo:detector]{detector\_$N$} & group & extended from core\\
+\bottomrule
+\end{tabular}
+\label{table:tomo:instrument}
+\end{table}
+
+\subsubsection{Setup and Acquisition Parameters}
+\label{table:tomo:setup}
+\label{table:tomo:acquisition}
+Logging instrument setup parameters (static setup values) and storing acquisition configuration parameters (scan engine setup) is not defined by Data Exchange because is specific and different for each instrument. For these information Data Exchange defines a {\tt{setup}} and {\tt{acquisition}} group under the instrument group and leaves each facility free to store what is relevant for a specific instrument. In table  \ref{table:tomo:instrument:acquisition} and \ref{table:tomo:instrument:setup} we present the implementation adopted by the Swiss Light Source and Advanced Photon Source.
+
+
+\begin{table}[h!]\sffamily \footnotesize
+\centering
+\caption{Instrument Acquisition Group for Tomography}
+\rowcolors{1}{white}{tableBlue}
+\begin{tabular}{l l l}
+\toprule
+\bfseries Member     & \bfseries Type & \bfseries Example \\
+\midrule
+\tt{rotation\_start\_angle} & float & 0.0 \\
+\tt{rotation\_end\_angle} & float & 180.0 \\
+\tt{angular\_step} & float & 0.125 \\
+\tt{number\_of\_projections} & integer & 1441 \\
+\tt{number\_of\_flats} & integer & 100 \\
+\tt{number\_of\_darks} & integer & 32 \\
+\tt{start\_date}  & string dataset (ISO 8601) & "2012-07-31T21:15:22+0600" \\    
+\tt{end\_date}  & string dataset (ISO 8601) & "2012-07-31T23:10:20+0600" \\    
+\tt{sample\_in} & float & 0.0 \\
+\tt{sample\_out} & float & 4.0 \\
+\tt{type} & string & dpc\_tomography \\
+\bottomrule
+\end{tabular}
+\label{table:tomo:instrument:acquisition}
+\end{table}
+
+\begin{table}[h!]\sffamily \footnotesize
+\caption{Instrument Setup Group Members}
+\centering
+\rowcolors{1}{white}{tableBlue}
+\begin{tabular}{l l l}
+
+\toprule
+\bfseries Member     & \bfseries Type & \bfseries Example \\
+\midrule
+\tt{sample\_x} & float & -10.107 \\
+\tt{sample\_y} & float &  -17.900\\
+\tt{sample\_z} & float & -5.950 \\
+\tt{sample\_xx} & float & -1.559\\
+\tt{sample\_zz} & float & 1.307 \\
+\hyperref[tomo:interferometer]{interferometer} &  group & \\
+\bottomrule
+\end{tabular}
+\label{table:tomo:instrument:setup}
+\end{table}
+
+\subsubsection{Interferometer}
+\label{tomo:interferometer}
+
+This group stores the interferometer parameters.
+
+\begin{table}[h!]\sffamily \footnotesize
+\caption{Interferometer Group Members}
+\centering
+\rowcolors{1}{white}{tableBlue}
+\begin{tabular}{l l l}
+
+\toprule
+\bfseries Member     & \bfseries Type & \bfseries Example \\
+\midrule
+\tt{grid\_start} & float & 1.8 \\
+\tt{grid\_end} & float  & 3.51 \\ 
+\tt{number\_of\_grid\_periods} & int  & 1    \\
+\tt{number\_of\_grid\_steps} & int  & 6    \\
+\hyperref[tomo:geometry]{geometry} &  group & \\
+\bottomrule
+\end{tabular}
+\label{table:tomo:instrument:setup:interferometer}
+\end{table}
+
+
+
+\begin{description}
+\item[\tt{start\_angle}] \hfill \\
+{Interferometer start angle.}
+
+\item[\tt{grid\_start}] \hfill \\
+{Interferometer grid start angle.}
+
+\item[\tt{grid\_end}] \hfill \\
+{Interferometer grid end angle.}
+
+\item[\tt{grid\_position\_for\_scan}] \hfill \\
+{Interferometer grid position for scan.}   
+
+\item[\tt{number\_of\_grid\_steps}] \hfill \\
+{Number of grid steps.}
+\end{description}
+
+\subsubsection{Detector Group for Tomography}
+\label{table:tomo:detector}
+
+This class holds information about the detector used during the experiment. If  more than one detector are used they will be all listed as detector\_$N$. In full field imaging the detector consists of a CCD camera, microscope objective and a scintillator screen. Raw data recorded by a detector as well as its position and geometry should be stored in this class. 
+
+
+\begin{table}[h!]\sffamily \footnotesize
+\caption{Detector Group Members for Tomography}
+\centering
+\rowcolors{1}{white}{tableBlue}
+\begin{tabular}{l l l}
+\toprule
+\bfseries Member     & \bfseries Type & \bfseries Example \\
+\midrule
+\tt{manufacturer} & string dataset & "CooKe Corporation" \\   
+\tt{model} & string dataset &  "pco dimax" \\
+\tt{serial\_number} & string dataset &  "1234XW2" \\  
+\tt{bit\_depth} & integer & 12 \\     
+\tt{pixel\_size\_x} & float & 6.7e-6 \\
+\tt{pixel\_size\_y} & float & 6.7e-6 \\
+\tt{actual\_pixel\_size\_x} & float & 1.2e-6 \\
+\tt{actual\_pixel\_size\_y} & float & 1.2e-6 \\
+\tt{dimension\_x} & integer & 2048 \\
+\tt{dimension\_y} & integer & 2048 \\
+\tt{binning\_x} & integer & 1 \\
+\tt{binning\_y} & integer & 1 \\
+\tt{operating\_temperature} & float &  270 \\     
+\tt{exposure\_time} & float & 1.7e-3 \\   
+\tt{delay\_time} & float & 1.7e-3 \\   
+\tt{stabilization\_time} & float & 1.7e-3 \\   
+\tt{frame\_rate} & integer &  2 \\
+\tt{output\_data} & string dataset & "/exchange" \\
+\hyperref[table:roi]{\tt{roi}} & group & \\
+\hyperref[table:objective]{\tt{objective\_$N$}} & group & \\
+\hyperref[table:scintillator]{\tt{scintillator}} & group &\\
+\tt{counts\_per\_joule} & float & unitless \\ 
+\tt{basis\_vectors} & float array & length \\ 
+\tt{corner\_position} & 3 floats & length \\
+\hyperref[tomo:geometry]{\tt{geometry}} & group & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{description}
+\item[\tt{manufacturer}] \hfill \\
+{The detector manufacturer.}
+
+\item[\tt{model}] \hfill \\
+{The detector model.}
+
+\item[\tt{serial\_number}] \hfill \\
+{The detector serial number .}
+     
+\item[\tt{bit\_depth}] \hfill \\
+{The detector bit depth.}
+
+\item[\tt{pixel\_size\_x, pixel\_size\_y}] \hfill \\
+{Physical detector pixel size (m).}
+
+\item[\tt{dimension\_x, dimension\_y}] \hfill \\
+{The detector horiz./vertical dimension.}
+
+\item[\tt{actual\_pixel\_size\_x, actual\_pixel\_size\_y}] \hfill \\
+{Actual pixel size on the sample plane.}
+
+
+\item[\tt{binning\_x, binning\_y}] \hfill \\
+{If the data are collected binning the detector binning\_x and binning\_y store the binning factor.}
+
+\item[\tt{operating\_temperature}] \hfill \\
+{The detector operating temperature (K).}
+
+\item[\tt{exposure\_time}] \hfill \\
+{The detector exposure time (s).}
+
+\item[\tt{delay\_time}] \hfill \\
+{Delay time between projections when using a mechanical shutter to reduce radiation damage of the sample (s).}
+
+\item[\tt{stabilization\_time}] \hfill \\
+{Time required by the sample to stabilize (s).}
+
+\item[\tt{frame\_rate}] \hfill \\
+{The detector frame rate (fps). This parameter is set for fly scan}
+
+\item[\tt{roi}] \hfill \\
+{The detector selected Region Of Interest (ROI).}
+
+\item[\tt{objective\_$N$}] \hfill \\
+{List of the visible light objectives mounted between the detector and the scintillator screen.}
+
+\item[\tt{counts\_per\_joule}] \hfill \\
+{Number of counts recorded per each joule of energy received by the detector. The number of incident photons can then be calculated by:
+\begin{equation*}
+\text{number of photons} = \frac{\text{source energy} \times \text{data counts}}{\text{counts per joule}}
+\end{equation*}
+}
+
+\item[\tt{basis\_vectors}] \hfill \\
+{A matrix with the basis vectors of the detector data.}
+
+\item[\tt{corner\_position}] \hfill \\
+{The x, y and z coordinates of the corner of the first data element. }
+
+\item[\tt{geometry}] \hfill \\
+{Position and orientation of the center of mass of the detector. This should only be specified for non pixel detectors. For pixel detectors use basis\_vectors and corner\_position.}
+
+\end{description}
+
+\paragraph{ROI}
+\label{table:roi}
+
+Group describing the region of interest (ROI) of the image actually collected, if smaller than the full CCD.
+
+\begin{table}[h!]\sffamily \footnotesize
+\caption{ROI Group Members}
+\centering
+\rowcolors{1}{white}{tableBlue}
+\begin{tabular}{l l l}
+\toprule
+\bfseries Member     & \bfseries Type & \bfseries Example \\
+\midrule
+\tt{name} & string dataset & "center third" \\ 
+\tt{x1} & integer & 256  \\   
+\tt{y1} & integer &  256  \\
+\tt{x2} & integer & 1792  \\
+\tt{y2} & integer & 1792  \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{description}
+\item[\tt{x1}] \hfill \\
+{Left pixel position.}
+
+\item[\tt{y1}] \hfill \\
+{Top pixel position.}
+
+\item[\tt{x2}] \hfill \\
+{Right pixel position.}
+
+\item[\tt{y2}] \hfill \\
+{Bottom pixel position.}
+\end{description}
+
+\paragraph{Objective}
+\label{table:objective}
+
+Group describing the microscope objective lenses used.
+
+\begin{table}[h!]\sffamily \footnotesize
+\caption{Objective Group Members}
+\centering
+\rowcolors{1}{white}{tableBlue}
+\begin{tabular}{l l l}
+\toprule
+\bfseries Member     & \bfseries Type & \bfseries Example \\
+\midrule
+\tt{manufacturer} & string dataset & "Zeiss"  \\
+\tt{model} & string dataset & "Axioplan" \\
+\tt{magnification} & float dataset & 5 \\ 
+\tt{numerical\_aperture} & float dataset & 0.8 \\
+\hyperref[tomo:geometry]{geometry} &  group & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{description}
+\item[\tt{manufacturer}] \hfill \\
+{Lens manufacturer.}
+
+\item[\tt{model}] \hfill \\
+{Lens model.}
+
+\item[\tt{magnification}] \hfill \\
+{Lens specified magnification.}
+
+\item[\tt{numerical\_aperture}] \hfill \\
+{The numerical aperture (N.A.) is a measure of the light-gathering characteristics of the lens.}
+\end{description}
+
+\paragraph{Scintillator}
+\label{table:scintillator}
+
+Group describing the visible light scintillator coupled to the CCD camera objective lens.
+
+\begin{table}[h!]\sffamily \footnotesize
+\caption{Scintillator Group Members}
+\centering
+\rowcolors{1}{white}{tableBlue}
+\begin{tabular}{l l l}
+\toprule
+\bfseries Member     & \bfseries Type & \bfseries Example \\
+\midrule
+\tt{manufacturer} & string dataset & "Crytur" \\
+\tt{serial\_number} & string dataset &  "12" \\   
+\tt{name} & string dataset & "Yag polished" \\ 
+\tt{type} & string dataset & "Yag on Yag" \\  
+\tt{scintillating\_thickness} & float dataset &  5e-6 \\  
+\tt{substrate\_thickness} & float dataset &   1e-4\\  
+\hyperref[tomo:geometry]{geometry} &  group & \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{description}
+\item[\tt{manufacturer}] \hfill \\
+{Scintillator Manufacturer.}
+
+\item[\tt{serial\_number}] \hfill \\
+{Scintillator serial number.}
+
+\item[\tt{name}] \hfill \\
+{Scintillator name.}
+
+\item[\tt{scintillating\_thickness}] \hfill \\
+{Scintillator thickness.}
+
+\item[\tt{substrate\_thickness}] \hfill \\
+{Scintillator substrate thickness.}
+\end{description}
+
+\paragraph{Geometry}
+\label{tomo:geometry}
+
+This class holds the position and orientation of a component for tomography.
+
+\begin{table}[h!]\sffamily \footnotesize
+\centering
+\caption{Geometry Group Members}
+\rowcolors{1}{white}{tableBlue}
+\begin{tabular}{l l l}
+\toprule
+\bfseries Member     & \bfseries Type & \bfseries Example \\
+\midrule
+
+\hyperref[tomo:translation]{\emph{translation}} & group &  \\
+\hyperref[tomo:orientation]{\emph{orientation}} & group & \\
+
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{description}
+\item[\emph{translation}] \hfill \\
+{The position of the object with respect to the origin of your coordinate system.}
+
+\item[\emph{orientation}] \hfill \\
+{The rotation of the object with respect to your coordinate system.}
+\end{description}
+
+\subparagraph{Translation}
+\label{tomo:translation}
+
+This is the description for the general spatial location of a component for tomography.
+
+\begin{table}[h!]\sffamily \footnotesize
+\centering
+\caption{Translation Group Members}
+\label{tomo:translation}
+\rowcolors{1}{white}{tableBlue}
+\begin{tabular}{l l l}
+\toprule
+\bfseries Member     & \bfseries Type & \bfseries Example \\
+\midrule
+
+distances & 3 float array dataset & (0, 0.001, 0) \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{description}
+\item[\tt {distances}] \hfill \\
+{The x, y and z components of the translation of the origin of the object
+relative to the origin of the global coordinate system (the place where 
+the X-ray beam  meets the sample when the sample is first aligned in the beam).
+If  distances does not have the attribute units set then the units are in
+meters.}
+\end{description}
+
+\normalsize
+
+\subparagraph{Orientation}
+\label{tomo:orientation}
+
+This is the description for the orientation of a component for tomography.
+
+\begin{table}[h!]\sffamily \footnotesize
+\centering
+\caption{Orientation Group Members}
+\rowcolors{1}{white}{tableBlue}
+\begin{tabular}{l l l}
+\toprule
+\bfseries Member     & \bfseries Type & \bfseries Example \\
+\midrule
+
+value & 6 float array dataset & \\
+
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{description}
+\item[\tt {value}] \hfill \\
+{Dot products between the local and the global unit vectors. Unitless}
+\end{description}
+
+The orientation information is stored as direction cosines. The direction 
+cosines will be between the local coordinate directions and the global 
+coordinate directions. The unit vectors in both the local and global 
+coordinates are right-handed and orthonormal. 
+
+Calling the local unit vectors ($x',y',z'$) and the reference unit vectors 
+($x,y,z$) the six numbers will be [$x' \cdot x, x' \cdot y, x' \cdot z, y' 
+\cdot x, y'  \cdot y, y' \cdot z$] where "$\cdot$" is the scalar dot product 
+(cosine of the angle between the unit vectors). 
+
+Notice that this corresponds to the first two rows of the rotation matrix 
+that transforms from the global orientation to the local orientation. The 
+third row can be recovered by using the fact that the basis vectors are 
+orthonormal.
+
+%****************************************************************************
+\subsection{Tomography Process Descriptions}
+This section documents a set of process descriptions for tomography data movement and processing. These process description groups are used in a data processing pipeline - each group provides the metadata for one stage in the pipeline.
+
+\subsubsection{Sinogram Process Description}
+\label{table:sinogram}
+
+The sinogram process description group contains metadata required to generate sinograms from projection data. The input data is a projection ordered data cube, and the output is a sinogram ordered data cube. The output is stored in a new exchange group.
+
+\begin{table}[h!]\sffamily \footnotesize
+\caption{Sinogram Group Members}
+\centering
+\rowcolors{1}{white}{tableBlue}
+\begin{tabular}{l l l}
+
+\toprule
+\bfseries Member     & \bfseries Type & \bfseries Example \\
+\midrule
+\tt{name} & string dataset &  \\  
+\tt{version}  & string dataset  & 1.0 \\
+\tt{input\_data} &  string dataset & "/exchange\_1" \\
+\tt{output\_data} & string dataset & "/exchange\_2" \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{description}
+\item[\tt{name}] \hfill \\
+{Algorithm name.}
+
+\item[\tt{version}] \hfill \\
+{Algorithm version.}
+
+\item[\tt{input\_data}] \hfill \\
+{Reference to the exchange group containing the projection ordered input data.}
+
+\item[\tt{output\_data}] \hfill \\
+{Reference to the exchange group that will contain the sinogram ordered output data.}
+
+\end{description}
+
+\subsubsection{Ring Removal Process Description}
+
+The ring removal process description group contains information required to run a ring\_removal processing step.
+
+\begin{table}[h!]\sffamily \footnotesize
+\caption{Ring Removal Group Members}
+\centering
+\rowcolors{1}{white}{tableBlue}
+\begin{tabular}{l l l}
+\toprule
+\bfseries Member & \bfseries Type & \bfseries Example \\
+\midrule
+\tt{name} & string dataset &  \\  
+\tt{version}  & string dataset  & 1.0 \\
+\tt{input\_data} &  string dataset & "/exchange\_2" \\
+\tt{output\_data} & string dataset & "/exchange\_3" \\
+\tt{coefficient} & float dataset &  1.0 \\
+\bottomrule
+\end{tabular}
+\label{table:ringremoval}
+\end{table}
+
+\begin{description}
+\item[\tt{name}] \hfill \\
+{Algorithm name.}
+
+\item[\tt{version}] \hfill \\
+{Algorithm version.}
+
+\item[\tt{input\_data}] \hfill \\
+{Reference to the exchange group containing input data.}
+
+\item[\tt{output\_data}] \hfill \\
+{Path to the exchange group containing output data.}
+
+\item[\tt{coefficient}] \hfill \\
+{}
+\end{description}
+
+\subsubsection{Reconstruction Process Description}
+\label{table:reconstruction}
+
+The Reconstruction process description group contains metadata required to run a tomography reconstruction. The specific algorithm is described in a separate group.
+
+\begin{table}[h!]\sffamily \footnotesize
+\caption{Reconstruction Group Members.}
+\centering
+\rowcolors{1}{white}{tableBlue}
+\begin{tabular}{l l l}
+
+\toprule
+\bfseries Member     & \bfseries Type & \bfseries Example \\
+\midrule
+\tt{name} & string dataset &  \\  
+\tt{version}  & string dataset  & 1.0 \\
+\tt{input\_data} &  string dataset & "/exchange\_3" \\
+\tt{output\_data} & string dataset & "/exchange\_4" \\
+\tt{reconstruction\_slice\_start} & int dataset &  1000\\
+\tt{reconstruction\_slice\_end} & int dataset &  1030\\
+\tt{rotation\_center} & float dataset & 1048.50 \\
+\hyperref[table:algorithm]{\tt{algorithm}} & group &  \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{description}
+
+\item[\tt{name}] \hfill \\
+{Reconstruction tool name.}
+
+\item[\tt{version}] \hfill \\
+{Tool version.}
+
+\item[\tt{input\_data}] \hfill \\
+{Reference to the exchange group containing input data.}
+
+\item[\tt{output\_data}] \hfill \\
+{Reference to the exchange group containing output data.}
+
+\item[\tt{reconstruction\_slice\_start}] \hfill \\
+{First reconstruction slice.}
+
+\item[\tt{reconstruction\_slice\_end}] \hfill \\
+{Last reconstruction slice.}
+
+\item[\tt{rotation\_center}] \hfill \\
+{Center of rotation in pixels.}
+
+\item[\tt{algorithm}] \hfill \\
+{Algorithm group describing reconstruction algorithm parameters.}
+\end{description}
+
+
+\paragraph{Algorithm}
+\label{section:algorithm}
+
+The Algorithm group contains information required to run a tomography reconstruction algorithm.
+
+\begin{table}[h!]\sffamily \footnotesize
+\caption{Algorithm Group Members}
+\centering
+\rowcolors{1}{white}{tableBlue}
+\begin{tabular}{l l l}
+\toprule
+\bfseries Member & \bfseries Type & \bfseries Example \\
+\midrule
+\tt{name} & string dataset & "SART"  \\     
+\tt{version}  & string dataset  & "1.0" \\
+\tt{implementation} & string dataset & "GPU"  \\    
+\tt{number\_of\_nodes} & int dataset & 16 \\
+\tt{type} & string dataset & "Iterative" \\     
+\tt{iterative\_stop\_condition} & string dataset & "iteration\_max" \\  
+\tt{iterative\_iteration\_max}  & int dataset  & 200 \\
+\tt{iterative\_projection\_threshold} & float dataset &   \\  
+\tt{iterative\_difference\_threshold\_percent}  & float dataset &   \\    
+\tt{iterative\_difference\_threshold\_value}  & float dataset  &  \\
+\tt{iterative\_regularization\_type} & string dataset &  "total\_variation" \\  
+\tt{iterative\_regularization\_parameter} & float dataset &   \\  
+\tt{iterative\_step\_size}  & float dataset  & 0.3 \\
+\tt{iterative\_sampling\_step\_size} & float dataset & 0.2 \\
+\tt{analytic\_filter} & string dataset & "Parzen" \\
+\tt{analytic\_padding} & float dataset & 0.50 \\
+\tt{analytic\_processed\_periods} & float dataset & 1 \\
+\tt{analytic\_processed\_number\_of\_steps} & int dataset & 7 \\
+\bottomrule
+\end{tabular}
+\label{table:algorithm}
+\end{table}
+
+\begin{description}
+\item[\tt{name}] \hfill \\
+{Reconstruction method name: SART, EM, FBP, GridRec.}
+
+\item[\tt{version}] \hfill \\
+{Algorithm version.}
+
+\item[\tt{implementation}] \hfill \\
+{CPU or GPU.}
+
+\item[\tt{number\_of\_nodes}] \hfill \\
+{Number of nodes to use on cluster. This parameter is set when the reconstruction is parallelized and run on a cluster.}
+
+\item[\tt{type}] \hfill \\
+{Tomography reconstruction method: analytic or iterative.}
+
+\item[\tt{iterative\_stop\_condition}] \hfill \\
+{iteration\_max, projection\_threshold, difference\_threshold\_percent, difference\_threshold\_value.}
+
+\item[\tt{iterative\_iteration\_max}] \hfill \\
+{Maximum number of iterations.}
+
+\item[\tt{iterative\_projection\_threshold}] \hfill \\
+{The threshold of projection difference to stop the iterations as $p$ in $ |y - Ax_n| < p $.}
+
+\item[\tt{iterative\_difference\_threshold\_percent}] \hfill \\
+{The threshold of reconstruction difference to stop the iterations as $p$ in $ |x_{n+1}| / |x_n| < p $.}
+
+\item[\tt{iterative\_difference\_threshold\_value}] \hfill \\
+{The threshold of reconstruction difference to stop the iterations as $p$ in $ |x_{n+1}| - |x_n| < p $.}
+
+\item[\tt{iterative\_regularization\_type}] \hfill \\
+{total\_variation, none.}
+
+\item[\tt{iterative\_regularization\_parameter}] \hfill \\
+{lambda/alpha value in $ (y-A_x)^2 + \alpha *L_1(x) $.}
+
+\item[\tt{iterative\_step\_size}] \hfill \\
+{Step size between iterations in iterative methods as $\delta_t$ in $ x_{n+1} = x_n + \delta_t * f(x_n)$.}
+
+\item[\tt{iterative\_sampling\_step\_size}] \hfill \\
+{Step size used for forward projection calculation in iterative methods.}
+
+\item[\tt{analytic\_filter}] \hfill \\
+{Filter type.}
+
+\item[\tt{analytic\_padding}] \hfill \\
+{}
+
+\item[\tt{analytic\_processed\_periods}] \hfill \\
+{number of processed periods of the collected phase stepping curve (differential phase contrast - grating).}
+
+\item[\tt{analytic\_processed\_number\_of\_steps}] \hfill \\
+{total number of processed phase steps (differential phase contrast - grating).}
+\end{description}
+
+
+\subsubsection{Gridftp Process Description}
+\label{table:gridftp}
+
+The gridftp process description group contains metadata required to transfer data between two gridftp endpoints. This assumes a third party transfer.
+
+\begin{table}[h!]\sffamily \footnotesize
+\caption{Gridftp Group Members}
+\centering
+\rowcolors{1}{white}{tableBlue}
+\begin{tabular}{l l l}
+
+\toprule
+\bfseries Member     & \bfseries Type & \bfseries Example \\
+\midrule
+\tt{name} & string dataset &  \\  
+\tt{version}  & string dataset  & 1.0 \\
+\tt{source\_URL} &  string dataset & "gsiftp://host1/path" \\
+\tt{dest\_URL} & string dataset & "gsiftp://host2/path" \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{description}
+
+\item[\tt{name}] \hfill \\
+{GridFTP tool name.}
+
+\item[\tt{version}] \hfill \\
+{Tool version.}
+
+\item[\tt{source\_URL}] \hfill \\
+{A gsiftp URL for the source of the transfer.}
+
+\item[\tt{dest\_URL}] \hfill \\
+{A gsiftp URL for the destination of the transfer.}
+\end{description}
+
+\subsubsection{Export Process Description}
+\label{table:export}
+
+The export process description group contains metadata required to extract and convert data from a Data Exchange (HDF5) file into another format.
+
+\begin{table}[h!]\sffamily \footnotesize
+\caption{Export Group Members}
+\centering
+\rowcolors{1}{white}{tableBlue}
+\begin{tabular}{l l l}
+
+\toprule
+\bfseries Member     & \bfseries Type & \bfseries Example \\
+\midrule
+\tt{name} & string dataset &  \\  
+\tt{version}  & string dataset  & "1.0" \\
+\tt{input\_data} &  string dataset & "/exchange\_4" \\
+\tt{output\_URL} & string dataset & "file://host/path" \\
+\tt{output\_data\_format} & string dataset & "TIFF" \\
+\tt{output\_data\_scaling\_max} & float dataset & 0.005 \\
+\tt{output\_data\_scaling\_min} & float dataset & -0.00088 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{description}
+\item[\tt{name}] \hfill \\
+{Export tool name.}
+
+\item[\tt{version}] \hfill \\
+{Tool version.}
+
+\item[\tt{input\_data}] \hfill \\
+{Reference to the exchange group containing the input data.}
+
+\item[\tt{output\_URL}] \hfill \\
+{A file path and name, either plain or in URL format: file://host/path/file.tif }
+
+\item[\tt{output\_data\_format}] \hfill \\
+{}
+
+\item[\tt{output\_data\_scaling\_max}] \hfill \\
+{}
+
+\item[\tt{output\_data\_scaling\_min}] \hfill \\
+{}
+\end{description}
+
+%****************************************************************************

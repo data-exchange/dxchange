@@ -1,0 +1,187 @@
+% BEGIN HEADER **************************************************************
+\documentclass[usletter,11pt]{article}
+\hyphenpenalty=5000
+
+\usepackage[margin=1.40in]{geometry}
+\usepackage{graphicx}
+\usepackage{longtable}
+\usepackage[table]{xcolor}
+\usepackage{booktabs}
+\usepackage{colortbl}
+\usepackage{newcent}
+\usepackage{sectsty}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\usepackage{calc}
+\usepackage{listings}
+\usepackage{array}
+\usepackage{tikz}
+\usepackage{amsmath}
+\renewcommand{\headrule}{{\color{brightOrange}%
+  \hrule width\headwidth height\headrulewidth \vskip-\headrulewidth}}
+\renewcommand{\footrule}{{\color{brightOrange}%
+  \hrule width\headwidth height\headrulewidth \vskip-\headrulewidth}}
+
+\newcommand{\referee}[1]{
+\begin{center}
+\begin{tikzpicture}
+\node[fill=paleOrange, rounded corners=0.3cm]{
+ \parbox{\textwidth}{
+  \vspace{0.15cm}
+#1
+  \vspace{0.15cm}
+ }
+};
+\end{tikzpicture}
+\end{center}
+}
+
+\newcommand{\member}[2]
+{ \noindent
+{ \color{softBlue}  #1 - } #2
+\vspace{0.2cm}
+}
+
+\fancyheadoffset[LE,RO]{\marginparwidth}
+\fancyfootoffset[LE,RO]{\marginparwidth}
+\fancyhead{} % clear all header fields
+\fancyhead[LE,RO]{\color{softBlue}  \sffamily The Data Exchange File Format}
+
+\fancyfoot{} % clear all header fields
+\fancyfoot[L]{\vspace{0.1cm}\includegraphics[width=0.35\textwidth]{figures/dx_logo_header.pdf}}
+\fancyfoot[R]{\vspace{1.0cm}\color{softBlue}\thepage}
+
+\usepackage{setspace}
+
+\definecolor{tableBlue}{RGB}{231,244,249}
+\definecolor{linkBlue}{RGB}{32,75,165}
+\definecolor{brightOrange}{RGB}{210,131,37}
+\definecolor{ironGrey}{RGB}{64,73,78}
+\definecolor{steelGrey}{RGB}{70,91,102}
+\definecolor{cloudyGrey}{RGB}{104,132,150}
+\definecolor{lightGrey}{RGB}{184,198,206}
+\definecolor{softBlue}{RGB}{29,97,134}
+\definecolor{paleOrange2}{RGB}{233,185,128}
+\definecolor{paleOrange}{RGB}{248,219,167}
+\definecolor{typeGreen}{RGB}{19,101,106}
+
+\usepackage{caption}
+\DeclareCaptionFont{white}{\color{white}}
+\DeclareCaptionFont{softBlue}{\color{softBlue}}
+\DeclareCaptionFormat{listing}{\colorbox{softBlue}{\parbox{\textwidth}{\hspace{15pt}#1#2#3}}}
+\captionsetup[lstlisting]{format=listing,labelfont=white,textfont=white,
+  singlelinecheck=false, margin=0pt, font={sf,footnotesize}}
+\captionsetup[figure]{labelfont={softBlue,bf},
+ singlelinecheck=false, margin=0pt, font={small}}
+\captionsetup[table]{labelfont={softBlue,bf},
+ singlelinecheck=false, margin=0pt, font={footnotesize},justification=centering}
+
+
+
+\newcommand{\HRule}{{\color{brightOrange} \rule{\linewidth}{0.5mm}}}
+
+\allsectionsfont{\color{softBlue} \usefont{OT1}{pag}{b}{n}\selectfont}
+
+\usepackage[linkcolor=softBlue,colorlinks=true,urlcolor=softBlue]{hyperref}
+
+\setcounter{secnumdepth}{6}
+\setcounter{tocdepth}{6}
+
+% END HEADER ****************************************************************
+
+% BEGIN MAIN DOCUMENT *******************************************************
+\begin{document}
+\pagestyle{empty}
+
+% BEGIN TITLE PAGE **********************************************************
+\begin{center}
+\vspace*{2.5cm}
+
+\HRule \\[0.6cm]
+\begin{spacing}{2.0}
+
+{\color{softBlue} \Huge \sffamily The Scientific Data Exchange}\\[0.15cm]
+{\color{softBlue} \Huge \sffamily Introductory Guide}\\[0.15cm]
+\end{spacing}
+\HRule \\[1.0cm]
+{\Large \color{softBlue} \sffamily \url{http://www.aps.anl.gov/DataExchange}}\\[1.0cm]
+{\Large \color{softBlue} \sffamily Version 0.9.5}\\[1.0cm]
+{\Large \color{softBlue} \sffamily \today}
+
+\end{center}
+\newpage
+% END TITLE PAGE ************************************************************
+
+%****************************************************************************
+\include{sections/VersionHistory}
+%****************************************************************************
+\newpage
+
+\pagestyle{fancy}
+\pagenumbering{Roman}
+
+% TOC ***********************************************************************
+\tableofcontents
+% ***************************************************************************
+
+\newpage
+
+\pagenumbering{arabic}
+\setcounter{page}{1}
+
+%****************************************************************************
+\section{Introduction}
+
+This document is a guide to the basic design principles and core guidelines
+for the Data Exchange file format. Briefly, Data Exchange is a set of
+guidelines for storing scientific data and metadata in a Hierarchical Data
+Format 5 (HDF5) file (\url{http://www.hdfgroup.org/HDF5}). The design
+guidelines for Data Exchange provide a starting point to which one
+may add custom data and metadata to solve particular problems. 
+
+HDF5 has many important characteristics for scientific data storage.
+It offers platform-independent binary data storage with optional compression, 
+hierarchical data ordering, and support for MPI-based parallel computing.
+Data are stored with alphanumeric tags, so that one can examine a 
+HDF5 file's contents with no knowledge of how the file writing program 
+was coded. Tools for this examination include the 
+HDF5-supplied command-line utility 
+\href{http://www.hdfgroup.org/HDF5/doc/RM/Tools.html#Tools-Dump}{\texttt{h5dump}} 
+to examine the contents of any HDF5 file, or the freely-available Java program 
+\href{http://www.hdfgroup.org/hdf-java-html/hdfview/}{\texttt{HDFView}} to interactively examine the file.
+
+Why not just use the \href{http://www.nexusformat.org/}{NeXus} format? While we employ some of the naming conventions of NeXus, the format has not been as widely adopted in the synchrotron radiation community as it has in the neutron beam research community.  NeXus is normally based on use of an Application Programming Interface (API) for all file access; this API has not in the past had well-debugged versions available for all platforms and languages.  NeXus has not supported recent HDF5 extensions such as dimension scales, and it has not had definitions for tracking the provenance of subsequent analysis steps.  "Straight" HDF5 calls can make use of the HDF5 group's support of a wide variety of computer platforms, and built-in support in MATLAB, IDL, and Python; it also has support for MPI-based parallel access to files.  As a result, we have sought to follow many naming conventions from NeXus, but to aim for a more streamlined file structure with necessary definitions added.
+
+This reference guide describes the basic design principles of Dat Exchange, examples of their
+application, a core reference for guidelines common to most uses, and coding
+examples.
+
+%****************************************************************************
+\include{sections/CoreDesign}
+%****************************************************************************
+
+\newpage
+
+%****************************************************************************
+\include{sections/ByExample}
+%****************************************************************************
+
+\newpage
+
+%****************************************************************************
+\include{sections/CoreReference}
+%****************************************************************************
+
+%\newpage
+
+%****************************************************************************
+%\include{sections/CodeExamples}
+%****************************************************************************
+
+\newpage
+
+%****************************************************************************
+\include{sections/Appendix}
+%****************************************************************************
+
+\end{document}

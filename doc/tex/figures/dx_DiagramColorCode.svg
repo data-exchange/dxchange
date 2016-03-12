@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Generator: Adobe Illustrator 15.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1"
+	 id="svg2" sodipodi:docname="diagram_labels.svg" inkscape:version="0.48.0 r9654" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:svg="http://www.w3.org/2000/svg"
+	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="335.127px"
+	 height="165.132px" viewBox="-153.65 -129.793 335.127 165.132" enable-background="new -153.65 -129.793 335.127 165.132"
+	 xml:space="preserve">
+<sodipodi:namedview  id="base" inkscape:zoom="5.6" pagecolor="#ffffff" bordercolor="#666666" inkscape:cx="238.45928" inkscape:cy="888.80508" borderopacity="1.0" inkscape:pageopacity="0.0" inkscape:pageshadow="2" inkscape:document-units="px" inkscape:current-layer="layer1" showgrid="true" inkscape:window-width="1680" inkscape:window-height="1002" inkscape:window-x="-1" inkscape:window-y="0" inkscape:window-maximized="0">
+	<inkscape:grid  type="xygrid" id="grid3803"></inkscape:grid>
+</sodipodi:namedview>
+<g id="layer2" inkscape:groupmode="layer" inkscape:label="Layer">
+</g>
+<text transform="matrix(1 0 0 1 10.2881 -71.9666)" font-family="'CenturyGothic'" font-size="16.8032">HDF5 dataset</text>
+<path d="M-153.65-129.793"/>
+<path id="path5848" fill="#CE5C00" stroke="#CE5C00" stroke-width="1.4003" d="M-107.335-71.001l-2.801,2.801l9.802-2.801
+	l-9.802-2.801L-107.335-71.001z"/>
+<path id="path5498" inkscape:connector-curvature="0" sodipodi:nodetypes="cccc" fill="#CE5C00" stroke="#CE5C00" stroke-width="1.4003" d="
+	M-52.724,27.019"/>
+<text transform="matrix(1 0 0 1 -61.6064 4.9749)" fill="#FFFFFF" font-family="'ArialMT'" font-size="16.8032">entry_1</text>
+<path id="path3797" inkscape:connector-curvature="0" sodipodi:nodetypes="ccc" fill="none" stroke="#434343" stroke-width="1.4003" d="
+	M-108.423-98.969v20.969h6.689"/>
+<path id="rect3777" fill="#9F723C" stroke="#E9B980" stroke-width="1.4003" stroke-linecap="round" stroke-linejoin="round" d="
+	M-147.38-126.939h77.914c1.513,0,2.739,1.225,2.739,2.738v22.457c0,1.512-1.227,2.738-2.739,2.738h-77.914
+	c-1.512,0-2.739-1.227-2.739-2.738v-22.458C-150.119-125.714-148.892-126.939-147.38-126.939z"/>
+<text transform="matrix(1 0 0 1 -112.4038 -107.5847)" fill="#FFFFFF" font-family="'CenturyGothic'" font-size="16.8817">/ </text>
+<path id="path3807" inkscape:connector-curvature="0" sodipodi:nodetypes="ccc" fill="none" stroke="#434343" stroke-width="1.4003" d="
+	M-60.026-0.388v21.003h7.001"/>
+<path id="rect3789" fill="#1D6186" stroke="#70A6C3" stroke-width="1.4003" stroke-linecap="round" stroke-linejoin="round" d="
+	M-99.222-28.394h78.39c1.553,0,2.813,1.259,2.813,2.812v22.38c0,1.553-1.258,2.813-2.813,2.813h-78.39
+	c-1.553,0-2.813-1.261-2.813-2.813v-22.38C-102.035-27.135-100.774-28.394-99.222-28.394z"/>
+<text transform="matrix(0.9678 0 0 1 -88.0361 -8.1921)" fill="#FFFFFF" font-family="'CenturyGothic'" font-size="17.1599">group</text>
+<path id="rect3818" fill="#D18329" stroke="#E9B980" stroke-width="1.4435" stroke-linecap="round" stroke-linejoin="round" d="
+	M-49.848,6.613h88.53c1.754,0,3.177,1.259,3.177,2.812v22.379c0,1.554-1.422,2.813-3.177,2.813h-88.53
+	c-1.753,0-3.177-1.26-3.177-2.813V9.425C-53.025,7.871-51.603,6.613-49.848,6.613z"/>
+<text transform="matrix(0.9678 0 0 1 -47.1221 27.0471)" fill="#FFFFFF" font-family="'CenturyGothic'" font-size="17.1599">reference</text>
+<text transform="matrix(1 0 0 1 -52.7241 -106.825)" font-family="'CenturyGothic'" font-size="16.8032">The root of the HDF5 file</text>
+<text transform="matrix(1 0 0 1 -4.0166 -10.1062)" font-family="'CenturyGothic'" font-size="16.8032">HDF5 group</text>
+<rect id="rect4325" x="-94.732" y="-64" fill="#231F20" stroke="#688496" stroke-width="1.4003" stroke-linecap="round" stroke-linejoin="round" width="84.016" height="28.005"/>
+<path id="rect6715" fill="#D28325" stroke="#E9B980" stroke-width="1.5124" stroke-linecap="round" stroke-linejoin="round" d="
+	M-98.92-92.005h92.392c1.554,0,2.813,1.259,2.813,2.813v22.379c0,1.554-1.259,2.812-2.813,2.812H-98.92
+	c-1.554,0-2.813-1.259-2.813-2.812v-22.379C-101.733-90.745-100.475-92.005-98.92-92.005z"/>
+<text transform="matrix(0.9678 0 0 1 -88.0361 -71.8025)" fill="#FFFFFF" font-family="'CenturyGothic'" font-size="17.1599">dataset</text>
+<path id="path6723" inkscape:connector-curvature="0" sodipodi:nodetypes="ccc" fill="none" stroke="#434343" stroke-width="1.7152" d="
+	M-108.423-98.969v83.981h6.689"/>
+<text transform="matrix(1 0 0 1 49.6611 27.0471)" font-family="'CenturyGothic'" font-size="16.8032">string HDF5 path</text>
+<text transform="matrix(0.9678 0 0 1 -87.1113 -43.6794)" fill="#FFFFFF" font-family="'CenturyGothic'" font-size="17.1599">attribute</text>
+<text transform="matrix(1 0 0 1 3.2861 -43.8474)" font-family="'CenturyGothic'" font-size="16.8032">HDF5 attribute</text>
+<g>
+	<g>
+		<line fill="none" stroke="#CE5C00" stroke-width="1.4003" x1="-110.135" y1="-71.001" x2="-114.336" y2="-71.001"/>
+		
+			<line fill="none" stroke="#CE5C00" stroke-width="1.4003" stroke-dasharray="4.6457,4.6457" x1="-118.982" y1="-71.001" x2="-125.95" y2="-71.001"/>
+		<line fill="none" stroke="#CE5C00" stroke-width="1.4003" x1="-128.273" y1="-71.001" x2="-132.474" y2="-71.001"/>
+	</g>
+</g>
+<g>
+	<g>
+		<line fill="none" stroke="#CE5C00" stroke-width="1.4003" x1="-132.474" y1="-71.001" x2="-132.474" y2="-66.801"/>
+		
+			<line fill="none" stroke="#CE5C00" stroke-width="1.4003" stroke-dasharray="8.1497,8.1497" x1="-132.474" y1="-58.649" x2="-132.474" y2="18.773"/>
+		<line fill="none" stroke="#CE5C00" stroke-width="1.4003" x1="-132.474" y1="22.846" x2="-132.474" y2="27.047"/>
+	</g>
+</g>
+<g>
+	<g>
+		<line fill="none" stroke="#CE5C00" stroke-width="1.4003" x1="-132.474" y1="27.047" x2="-128.273" y2="27.046"/>
+		
+			<line fill="none" stroke="#CE5C00" stroke-width="1.4003" stroke-dasharray="7.9276,7.9276" x1="-120.346" y1="27.043" x2="-60.889" y2="27.022"/>
+		<line fill="none" stroke="#CE5C00" stroke-width="1.4003" x1="-56.925" y1="27.021" x2="-52.724" y2="27.019"/>
+	</g>
+</g>
+</svg>
