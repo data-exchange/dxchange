@@ -42,13 +42,15 @@ ehthumbs.db
 Thumbs.db
 .spyderworkspace
 *.*~
+*~
 
 # Python pyproducts #
 #####################
 *.pyc
 build
 dist
-docs/build
+docs/_build
+doc/_build
 *egg-info
 *.egg
 .settings
@@ -110,7 +112,8 @@ docs/trunk/*
 
 # Francesco's #
 ################
-tmp*/
+tmp/
+tmp2/
 validate*
 workingOn/
 rec_*
