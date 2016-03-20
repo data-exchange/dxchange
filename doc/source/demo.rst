@@ -1,0 +1,2 @@
+Examples========This section contains code example on how to use DXchange to import tomographic data from
+different synchrotron facility and process it with TomoPy... toctree::   demo/doc.demo.anka   demo/doc.demo.elettra   demo/doc.demo.esrf   demo/doc.demo.aps_1id   demo/doc.demo.aps_13bm   demo/doc.demo.aps_32id   demo/doc.demo.petraIII_p05   demo/doc.demo.tomcat.. automodule:: dxchange   :members:   :undoc-members:   :show-inheritance: 
