@@ -5,9 +5,10 @@ Welcome
 =======
 
 This is the Data Exchange web site, `DXchange <https://github.com/data-exchange/DXchange>`_ for short. 
-The DXchange web site provides:
+The DXchange web site provides Python:
 
-    - Python readers for tomographic data files collected at different synchrotron facilities.
+    - readers for tomographic data files collected at different synchrotron facilities.
+    - writers for `tomoPy <http://tomopy.readthedocs.org/>`_ :cite:`Gursoy:14a`.
 
 This guide is maintained on 
 `GitHub <https://github.com/data-exchange/DXchange/tree/master/doc>`_.
