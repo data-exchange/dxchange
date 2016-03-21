@@ -21,6 +21,7 @@ test:
   imports:
     - dxchange
     - dxchange.reader
+    - dxchange.writer
     - dxchange.exchange
 
 about:
