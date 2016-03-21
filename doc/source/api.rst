@@ -7,7 +7,8 @@ API reference
 
 .. toctree::
 
-   api/dxchange
+   api/dxchange.exchange
+   api/dxchange.reader
 
 .. automodule:: dxchange
    :members:
