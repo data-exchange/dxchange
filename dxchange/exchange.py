@@ -57,8 +57,8 @@ import numpy as np
 import os.path
 import re
 import h5py
-import tomopy.io.reader as tio
 import logging
+import dxchange.reader as tio
 
 logger = logging.getLogger(__name__)
 

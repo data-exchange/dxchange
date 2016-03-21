@@ -323,7 +323,13 @@ class Mock(object):
         return Mock()
             
 
-MOCK_MODULES = ['h5py', 'dxchange']
+MOCK_MODULES = ['h5py',
+                'numpy,
+                'six,
+                'os,
+                'h5py,
+                'logging,
+                're]
 
 for mod_name in MOCK_MODULES:
     sys.modules[mod_name] = Mock()

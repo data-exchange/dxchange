@@ -53,7 +53,6 @@ Module for data I/O.
 from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
 
-import tomopy.io.writer as writer
 import numpy as np
 import six
 import os
@@ -94,7 +93,7 @@ def _check_read(fname):
     if not isinstance(fname, six.string_types):
         logger.error('File name must be a string')
     else:
-        if writer.get_extension(fname) not in known_extensions:
+        if _get_extension(fname) not in known_extensions:
             logger.error('Unknown file extension')
     return os.path.abspath(fname)
 
@@ -327,6 +326,21 @@ def read_spe(fname, slc=None):
     _log_imported_data(fname, arr)
     return arr
 
+def _get_body(fname, digit=None):
+    """
+    Get file name after extension removed.
+    """
+    body = os.path.splitext(fname)[0]
+    if digit is not None:
+        body = ''.join(body[:-digit])
+    return body
+
+
+def _get_extension(fname):
+    """
+    Get file extension.
+    """
+    return '.' + fname.split(".")[-1]
 
 def _slice_array(arr, slc):
     """
@@ -378,8 +392,8 @@ def _list_file_stack(fname, ind, digit):
         Number of digits in indexing stacked files.
     """
 
-    body = writer.get_body(fname, digit)
-    ext = writer.get_extension(fname)
+    body = _get_body(fname, digit)
+    ext = _get_extension(fname)
     list_fname = []
     for m in ind:
         list_fname.append(str(body + '{0:0={1}d}'.format(m, digit) + ext))
@@ -480,8 +494,8 @@ def read_hdf5_stack(h5group, dname, ind, digit=4, slc=None, out_ind=None):
     if out_ind is not None:
         list_fname_ = []
         for name in list_fname:
-            fname = (writer.get_body(name).split('/')[-1] + '_' + digit*'0' +
-                     writer.get_extension(name))
+            fname = (_get_body(name).split('/')[-1] + '_' + digit*'0' +
+                     _get_extension(name))
             list_fname_.extend(_list_file_stack(fname, out_ind, digit))
         list_fname = list_fname_
 
