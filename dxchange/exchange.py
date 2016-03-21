@@ -109,7 +109,7 @@ def read_als_832(fname, ind_tomo=None, normalized=False):
         3D tomographic data.
 
     ndarray
-        3d flat field data.
+        3D flat field data.
 
     ndarray
         3D dark field data.
@@ -348,7 +348,7 @@ def read_anka_topotomo(
         3D tomographic data.
 
     ndarray
-        3d flat field data.
+        3D flat field data.
 
     ndarray
         3D dark field data.
@@ -390,7 +390,7 @@ def read_aps_1id(fname, ind_tomo=None, proj=None, sino=None):
         3D tomographic data.
 
     ndarray
-        3d flat field data.
+        3D flat field data.
 
     ndarray
         3D dark field data.
@@ -450,7 +450,7 @@ def read_aps_2bm(fname, proj=None, sino=None):
         3D tomographic data.
 
     ndarray
-        3d flat field data.
+        3D flat field data.
 
     ndarray
         3D dark field data.
@@ -577,7 +577,7 @@ def read_aps_32id(fname, exchange_rank=0, proj=None, sino=None):
         3D tomographic data.
 
     ndarray
-        3d flat field data.
+        3D flat field data.
 
     ndarray
         3D dark field data.
@@ -620,7 +620,7 @@ def read_aus_microct(fname, ind_tomo, ind_flat, ind_dark):
         3D tomographic data.
 
     ndarray
-        3d flat field data.
+        3D flat field data.
 
     ndarray
         3D dark field data.
@@ -656,7 +656,7 @@ def read_esrf_id19(fname, proj=None, sino=None):
         3D tomographic data.
 
     ndarray
-        3d flat field data.
+        3D flat field data.
 
     ndarray
         3D dark field data.
@@ -690,7 +690,7 @@ def read_diamond_l12(fname, ind_tomo):
         3D tomographic data.
 
     ndarray
-        3d flat field data.
+        3D flat field data.
     """
     fname = os.path.abspath(fname)
     tomo_name = os.path.join(fname, 'im_001000.tif')
@@ -732,7 +732,7 @@ def read_elettra_syrmep(
         3D tomographic data.
 
     ndarray
-        3d flat field data.
+        3D flat field data.
 
     ndarray
         3D dark field data.
@@ -771,7 +771,7 @@ def read_lnls_imx(folder, proj=None, sino=None):
         3D tomographic data.
 
     ndarray
-        3d flat field data.
+        3D flat field data.
 
     ndarray
         3D dark field data.
@@ -817,7 +817,7 @@ def read_petraIII_p05(
         3D tomographic data.
 
     ndarray
-        3d flat field data.
+        3D flat field data.
 
     ndarray
         3D dark field data.
@@ -862,7 +862,7 @@ def read_sls_tomcat(fname, ind_tomo=None, proj=None, sino=None):
         3D tomographic data.
 
     ndarray
-        3d flat field data.
+        3D flat field data.
 
     ndarray
         3D dark field data.
