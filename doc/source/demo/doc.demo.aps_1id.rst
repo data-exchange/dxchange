@@ -1,11 +1,9 @@
 APS 1-ID 
 ========
 
-This section contains TomoPy scripts to reconstruct the APS 1-ID tomography data sets. 
+This section contains a script to read the APS 1-ID tomography dataset and reconstruct it with tomoPy. 
 
-.. rubric:: **TomoPy Examples:**
+Download file: :download:`rec_aps_1id.py<../../../doc/demo/rec_aps_1id.py>`
 
-.. toctree::
-
-   doc.demo.rec_aps_1id
+.. literalinclude:: ../../../doc/demo/rec_aps_1id.py    :tab-width: 4    :linenos:    :language: guess
 

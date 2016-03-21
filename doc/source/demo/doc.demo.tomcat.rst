@@ -1,11 +1,8 @@
 SLS Tomcat 
 ==========
 
-This section contains TomoPy scripts to reconstruct the Swiss Light Source tomcat tomography data sets. 
+This section contains a script to read the Swiss Light Source tomcat tomography dataset and reconstruct it with tomoPy. 
 
-.. rubric:: **TomoPy Examples:**
+Download file: :download:`rec_tomcat.py<../../../doc/demo/rec_tomcat.py>`
 
-.. toctree::
-
-   doc.demo.rec_tomcat
-
+.. literalinclude:: ../../../doc/demo/rec_tomcat.py    :tab-width: 4    :linenos:    :language: guess

@@ -1,11 +1,8 @@
 Elettra Syrmep 
 ==============
 
-This section contains TomoPy scripts to reconstruct the Elettra syrmep tomography data sets.
+This section contains a script to read the Elettra syrmep tomography dataset and reconstruct it with tomoPy.
 
-.. rubric:: **TomoPy Examples:**
+Download file: :download:`rec_elettra.py<../../../doc/demo/rec_elettra.py>`
 
-.. toctree::
-
-   doc.demo.rec_elettra
-
+.. literalinclude:: ../../../doc/demo/rec_elettra.py    :tab-width: 4    :linenos:    :language: guess

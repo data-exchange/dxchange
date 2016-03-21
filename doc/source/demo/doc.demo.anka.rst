@@ -1,11 +1,9 @@
 Anka TopoTomo 
 ==============
 
-This section contains TomoPy scripts to reconstruct the Anka TopoTomo tomography data sets.
+This section contains a script to read the Anka TopoTomo tomography dataset and reconstruct it with tomoPy.
 
-.. rubric:: **TomoPy Examples:**
+Download file: :download:`rec_anka.py<../../../doc/demo/rec_anka.py>`
 
-.. toctree::
-
-   doc.demo.rec_anka
+.. literalinclude:: ../../../doc/demo/rec_anka.py    :tab-width: 4    :linenos:    :language: guess
 

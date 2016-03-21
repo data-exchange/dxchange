@@ -1,7 +1,7 @@
 API reference
 =============
 
- `DXchange <https://github.com/data-exchange/dxchange>`_ subclasses the DXfile module for interacting with tomoPy.
+ `DXchange <https://github.com/data-exchange/dxchange>`_ readers for tomographic data files collected at different synchrotron facilities..
 
 .. rubric:: **DXchange Modules:**
 

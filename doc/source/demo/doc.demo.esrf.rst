@@ -1,11 +1,9 @@
 ESRF ID-19 
 ==========
 
-This section contains TomoPy scripts to reconstruct the ESRF ID-19 tomography data sets.
+This section contains a script to read the ESRF ID-19 tomography dataset and reconstruct it with tomoPy.
 
-.. rubric:: **TomoPy Examples:**
+Download file: :download:`rec_esrf.py<../../../doc/demo/rec_esrf.py>`
 
-.. toctree::
-
-   doc.demo.rec_esrf
+.. literalinclude:: ../../../doc/demo/rec_esrf.py    :tab-width: 4    :linenos:    :language: guess
 

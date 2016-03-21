@@ -1,11 +1,9 @@
 APS 13-BM 
 =========
 
-This section contains TomoPy scripts to reconstruct the APS 13-BM tomography data sets. 
+This section contains a script to read the APS 13-BM tomography dataset and reconstruct it with tomoPy. 
 
-.. rubric:: **TomoPy Examples:**
+Download file: :download:`rec_aps_13bm.py<../../../doc/demo/rec_aps_13bm.py>`
 
-.. toctree::
-
-   doc.demo.rec_aps_13bm
+.. literalinclude:: ../../../doc/demo/rec_aps_13bm.py    :tab-width: 4    :linenos:    :language: guess
 
