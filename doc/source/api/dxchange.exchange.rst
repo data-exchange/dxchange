@@ -1,5 +1,5 @@
-:mod:`exchange`
-===============
+:mod:`dxchange.exchange`
+========================
 
 .. automodule:: dxchange.exchange
    :members:
