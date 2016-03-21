@@ -60,6 +60,7 @@ import h5py
 import logging
 import re
 from dxchange.dtype import empty_shared_array
+import dxchange.writer as writer
 
 logger = logging.getLogger(__name__)
 
