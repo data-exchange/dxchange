@@ -9,6 +9,8 @@ API reference
 
    api/dxchange.exchange
    api/dxchange.reader
+   api/dxchange.writer
+   api/dxchange.phantom
 
 .. automodule:: dxchange
    :members:
