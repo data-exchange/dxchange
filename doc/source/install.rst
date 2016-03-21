@@ -31,8 +31,8 @@ installed, then open a terminal or a command prompt window and run::
     conda install -c https://conda.anaconda.org/decarlof dxchange
 
 
-Updating the installation (coming soon)
-=======================================
+Updating the installation
+=========================
 
 Data Management is an active project, so we suggest you update your installation 
 frequently. To update the installation run in your terminal::
