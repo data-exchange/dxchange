@@ -1,6 +1,6 @@
 package:
   name: dxchange
-  version: '0.0.1'
+  version: '0.0.2'
 
 source:
   git_url: https://github.com/data-exchange/data-exchange.git
@@ -15,12 +15,13 @@ requirements:
  
   run:
     - python
-    - h5py
-
+    - numpy    - h5py    - six    - netcdf4    - spefile    - edffile    - tifffile    - dxfile
 test:
   # Python imports
   imports:
     - dxchange
+    - dxchange.reader
+    - dxchange.exchange
 
 about:
   home: http://dxchange.readthedocs.org
