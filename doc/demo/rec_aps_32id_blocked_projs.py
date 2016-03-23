@@ -9,8 +9,8 @@ environment cell blocking some of the sample views.
 
 from __future__ import print_function
 import tomopy
+import dxchange
 import numpy as np
-from dxchange import exchange as dx
 
 if __name__ == '__main__':
 
@@ -33,7 +33,7 @@ if __name__ == '__main__':
         sino_end = start + num_sino * (m + 1)
 
         # Read APS 32-ID raw data.
-        proj, flat, dark = dx.read_aps_32id(fname, sino=(sino_start, sino_end))
+        proj, flat, dark = dxchange.read_aps_32id(fname, sino=(sino_start, sino_end))
 
         # Set data collection angles as equally spaced between 0-180 degrees.
         theta = tomopy.angles(proj.shape[0])
@@ -49,5 +49,5 @@ if __name__ == '__main__':
         rec = tomopy.recon(proj, theta, center=1024, algorithm='gridrec', emission=False)
 
         # Write data as stack of TIFs.
-        tomopy.write_tiff_stack(rec, fname='recon_dir/recon', start=sino_start)
+        dxchange.write_tiff_stack(rec, fname='recon_dir/recon', start=sino_start)
 
