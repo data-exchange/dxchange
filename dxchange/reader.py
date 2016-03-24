@@ -47,38 +47,16 @@
 # #########################################################################
 
 """
-Module for data I/O.
+Module for importing data files.
 """
 
 from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
 
-import numpy as np
-import six
-import os
-import h5py
-import logging
-import re
-from dxchange.dtype import empty_shared_array
-import dxchange.writer as writer
 
-logger = logging.getLogger(__name__)
-
-
-def _check_import(modname):
-    try:
-        return __import__(modname)
-    except ImportError:
-        logger.warn(modname + ' module not found')
-        return None
-
-spefile = _check_import('spefile')
-netCDF4 = _check_import('netCDF4')
-EdfFile = _check_import('EdfFile')
-
-__author__ = "Doga Gursoy"
-__credits__ = "Francesco De Carlo"
-__copyright__ = "Copyright (c) 2015, UChicago Argonne, LLC."
+__author__ = "Doga Gursoy, Francesco De Carlo"
+__copyright__ = "Copyright (c) 2015-2016, UChicago Argonne, LLC."
+__version__ = "0.1.0"
 __docformat__ = 'restructuredtext en'
 __all__ = ['read_edf',
            'read_hdf5',
@@ -91,14 +69,41 @@ __all__ = ['read_edf',
            'read_hdf5_stack']
 
 
-#FIXME: raise exception would make more sense, also not sure an extension check
-# is very useful, unless we are automatically mapping an extension to a function.
+import numpy as np
+import six
+import os
+import h5py
+import logging
+import re
+from dxchange.dtype import empty_shared_array
+import dxchange.writer as dxwriter
+
+logger = logging.getLogger(__name__)
+
+
+def _check_import(modname):
+    try:
+        return __import__(modname)
+    except ImportError:
+        logger.warn(modname + ' module not found')
+        return None
+
+# Optional dependencies.
+spefile = _check_import('spefile')
+netCDF4 = _check_import('netCDF4')
+EdfFile = _check_import('EdfFile')
+astropy = _check_import('astropy')
+
+
+# FIXME: raise exception would make more sense, also not sure an extension check
+# is very useful, unless we are automatically mapping an extension to a
+# function.
 def _check_read(fname):
     known_extensions = ['.edf', '.tiff', '.tif', '.h5', '.hdf', '.npy']
     if not isinstance(fname, six.string_types):
         logger.error('File name must be a string')
     else:
-        if writer.get_extension(fname) not in known_extensions:
+        if dxwriter.get_extension(fname) not in known_extensions:
             logger.error('Unknown file extension')
     return os.path.abspath(fname)
 
@@ -213,7 +218,7 @@ def read_edf(fname, slc=None):
     return arr
 
 
-def read_hdf5(fname, dataset, slc=None, dtype=None, shared=False):
+def read_hdf5(fname, dataset, slc=None, dtype=None, shared=True):
     """
     Read data from hdf5 file from a specific group.
 
@@ -230,7 +235,7 @@ def read_hdf5(fname, dataset, slc=None, dtype=None, shared=False):
     dtype : numpy datatype (optional)
         Convert data to this datatype on read if specified.
     shared : bool (optional)
-        If True, read data into shared memory location.  Defaults to False.
+        If True, read data into shared memory location.  Defaults to True.
 
     Returns
     -------
@@ -244,13 +249,14 @@ def read_hdf5(fname, dataset, slc=None, dtype=None, shared=False):
                 data = f[dataset]
             except KeyError:
                 # NOTE: I think it would be better to raise an exception here.
-                logger.error('Unrecognized hdf5 dataset: "%s"'%(str(dataset)))
+                logger.error('Unrecognized hdf5 dataset: "%s"' %
+                             (str(dataset)))
                 return None
             shape = _shape_after_slice(data.shape, slc)
             if dtype is None:
                 dtype = data.dtype
             if shared:
-                arr = writer.empty_shared_array(shape, dtype)
+                arr = dxwriter.empty_shared_array(shape, dtype)
             else:
                 arr = np.empty(shape, dtype)
             data.read_direct(arr, _fix_slice(slc))
@@ -351,7 +357,7 @@ def _fix_slice(slc):
     slc = None is treated as no slc
     slc is container and each element is converted into a slice object
     None is treated as slice(None)
-    
+
     Parameters
     ----------
     slc : None or sequence of tuples
@@ -360,19 +366,21 @@ def _fix_slice(slc):
         defines slicing parameters for each axis of the data matrix.  
     """
     if slc is None:
-        return None # need arr shape to create slice
+        return None  # need arr shape to create slice
     fixed_slc = list()
     for s in slc:
         if not isinstance(s, slice):
             # create slice object
             if s is None or isinstance(s, int):
-                # slice(None) is equivalent to np.s_[:]                
-                # numpy will return an int when only an int is passed to np.s_[]
+                # slice(None) is equivalent to np.s_[:]
+                # numpy will return an int when only an int is passed to
+                # np.s_[]
                 s = slice(s)
             else:
                 s = slice(*s)
         fixed_slc.append(s)
     return tuple(fixed_slc)
+
 
 def read_fits(fname, fixdtype=True):
     """
@@ -393,14 +401,14 @@ def read_fits(fname, fixdtype=True):
     # but at 1.1.1, it seems unnecessary
     def _getDataType(path):
         bitpix = _readBITPIX(path)
-        if bitpix > 0: 
+        if bitpix > 0:
             dtype = 'uint%s' % bitpix
         elif bitpix <= -32:
             dtype = 'float%s' % -bitpix
         else:
             dtype = 'int%s' % -bitpix
         return dtype
-        
+
     def _readBITPIX(path):
         # astropy fits reader has a problem
         # have to read BITPIX from the fits file directly
@@ -425,6 +433,7 @@ def read_fits(fname, fixdtype=True):
             arr = np.array(arr, dtype=dtype)
     _log_imported_data(fname, arr)
     return arr
+
 
 def _slice_array(arr, slc):
     """
@@ -456,7 +465,7 @@ def _shape_after_slice(shape, slc):
     """
     Return the calculated shape of an array after it has been sliced.  
     Only handles basic slicing (not advanced slicing).
-    
+
     Parameters
     ----------
     shape : tuple of ints
@@ -464,7 +473,7 @@ def _shape_after_slice(shape, slc):
     slc : tuple of slices
         Object representing a slice on the array.  Should be one slice per
         dimension in shape.
-    
+
     """
     if slc is None:
         return shape
@@ -493,8 +502,8 @@ def _list_file_stack(fname, ind, digit):
         Number of digits in indexing stacked files.
     """
 
-    body = writer.get_body(fname, digit)
-    ext = writer.get_extension(fname)
+    body = dxwriter.get_body(fname, digit)
+    ext = dxwriter.get_extension(fname)
     list_fname = []
     for m in ind:
         list_fname.append(str(body + '{0:0={1}d}'.format(m, digit) + ext))
@@ -535,9 +544,9 @@ def _count_proj(group, dname, nproj, digit=4, inter_bright=None):
     count = len(list(filter(regex.match, list(group.keys()))))
 
     if inter_bright > 0:
-        count = count/(nproj/inter_bright + 2)
+        count = count / (nproj / inter_bright + 2)
     elif inter_bright == 0:
-        count = count/2
+        count = count / 2
 
     return int(count)
 
@@ -551,12 +560,12 @@ def _map_loc(ind, loc):
 
     loc = np.array(loc)
     low, upp = ind[0], ind[-1]
-    buff = (loc[-1] - loc[0])/len(loc)
+    buff = (loc[-1] - loc[0]) / len(loc)
     min_loc = low - buff
     max_loc = upp + buff
     loc = np.intersect1d(loc[loc > min_loc], loc[loc < max_loc])
     new_upp = len(ind)
-    loc = (new_upp*(loc - low))//(upp - low)
+    loc = (new_upp * (loc - low)) // (upp - low)
     if loc[0] < 0:
         loc[0] = 0
 
@@ -595,8 +604,8 @@ def read_hdf5_stack(h5group, dname, ind, digit=4, slc=None, out_ind=None):
     if out_ind is not None:
         list_fname_ = []
         for name in list_fname:
-            fname = (writer.get_body(name).split('/')[-1] + '_' + digit*'0' +
-                     writer.get_extension(name))
+            fname = (dxwriter.get_body(name).split('/')[-1] + '_' + digit * '0' +
+                     dxwriter.get_extension(name))
             list_fname_.extend(_list_file_stack(fname, out_ind, digit))
         list_fname = list_fname_
 

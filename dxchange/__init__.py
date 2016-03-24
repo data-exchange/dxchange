@@ -48,13 +48,13 @@
 
 from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
-    
-from dxchange.exchange import *
-from dxchange.reader import *
-from dxchange.writer import *
 
 import logging
 logging.basicConfig()
+
+from dxchange.exchange import *
+from dxchange.reader import *
+from dxchange.writer import *
 
 try:
     import pkg_resources

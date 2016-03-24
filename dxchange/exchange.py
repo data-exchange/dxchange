@@ -53,20 +53,11 @@ Module for describing beamline/experiment specific data recipes.
 from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
 
-import numpy as np
-import os.path
-import re
-import h5py
-import logging
-import dxchange.reader as tio
 
-logger = logging.getLogger(__name__)
-
-
-__author__ = "Doga Gursoy, Luis Barroso-Luque"
-__credits__ = "Francesco De Carlo"
-__copyright__ = "Copyright (c) 2015, UChicago Argonne, LLC."
-__docformat__ = 'restructuredtext en'
+__authors__ = "Doga Gursoy, Luis Barroso-Luque, Francesco De Carlo"
+__copyright__ = "Copyright (c) 2015-2016, UChicago Argonne, LLC."
+__version__ = "0.1.0"
+__docformat__ = "restructuredtext en"
 __all__ = ['read_als_832',
            'read_als_832h5',
            'read_anka_topotomo',
@@ -83,6 +74,16 @@ __all__ = ['read_als_832',
            'read_lnls_imx',
            'read_petraIII_p05',
            'read_sls_tomcat']
+
+
+import numpy as np
+import os.path
+import re
+import h5py
+import logging
+import dxchange.reader as dxreader
+
+logger = logging.getLogger(__name__)
 
 
 def read_als_832(fname, ind_tomo=None, normalized=False):
@@ -156,7 +157,7 @@ def read_als_832(fname, ind_tomo=None, normalized=False):
         ind_dark = list(range(0, ndark))
 
     # Read image data from tiff stack.
-    tomo = tio.read_tiff_stack(tomo_name, ind=ind_tomo, digit=4)
+    tomo = dxreader.read_tiff_stack(tomo_name, ind=ind_tomo, digit=4)
 
     if not normalized:
 
@@ -171,7 +172,7 @@ def read_als_832(fname, ind_tomo=None, normalized=False):
 
         if inter_bright == 0:
             a = [0, nproj - 1]
-            list_flat = tio._list_file_stack(flat_name, ind_flat, digit=4)
+            list_flat = dxreader._list_file_stack(flat_name, ind_flat, digit=4)
             for x in ind_flat:
                 body = os.path.splitext(list_flat[x])[0] + "_"
                 ext = os.path.splitext(list_flat[x])[1]
@@ -183,15 +184,15 @@ def read_als_832(fname, ind_tomo=None, normalized=False):
                         list_flat.append(y)
             list_flat = sorted(list_flat)
             for m, image in enumerate(list_flat):
-                _arr = tio.read_tiff(image)
+                _arr = dxreader.read_tiff(image)
                 if m == 0:
                     dx = len(ind_flat * 2)
                     dy, dz = _arr.shape
                     flat = np.zeros((dx, dy, dz))
                 flat[m] = _arr
-            flat = tio._slice_array(flat, None)
+            flat = dxreader._slice_array(flat, None)
         else:
-            flat = tio.read_tiff_stack(flat_name, ind=ind_flat, digit=4)
+            flat = dxreader.read_tiff_stack(flat_name, ind=ind_flat, digit=4)
 
         # Adheres to 8.3.2 flat/dark naming conventions:
         # ----Darks----
@@ -200,7 +201,7 @@ def read_als_832(fname, ind_tomo=None, normalized=False):
         # its scan, so xxxx is in incrementals of one, and yyyy is either
         # 0000 or the last projection.
 
-        list_dark = tio._list_file_stack(dark_name, ind_dark, digit=4)
+        list_dark = dxreader._list_file_stack(dark_name, ind_dark, digit=4)
         for x in ind_dark:
             body = os.path.splitext(list_dark[x])[0] + '_'
             ext = os.path.splitext(list_dark[x])[1]
@@ -208,13 +209,13 @@ def read_als_832(fname, ind_tomo=None, normalized=False):
             list_dark[x] = body
         list_dark = sorted(list_dark)
         for m, image in enumerate(list_dark):
-            _arr = tio.read_tiff(image)
+            _arr = dxreader.read_tiff(image)
             if m == 0:
                 dx = len(ind_dark)
                 dy, dz = _arr.shape
                 dark = np.zeros((dx, dy, dz))
             dark[m] = _arr
-        dark = tio._slice_array(dark, None)
+        dark = dxreader._slice_array(dark, None)
     else:
         flat = np.ones(1)
         dark = np.zeros(1)
@@ -263,7 +264,7 @@ def read_als_832h5(fname, ind_tomo=None, ind_flat=None, ind_dark=None,
     """
 
     f = h5py.File(fname, 'r')
-    dgroup = tio._find_dataset_group(f)
+    dgroup = dxreader._find_dataset_group(f)
     dname = dgroup.name.split('/')[-1]
 
     tomo_name = dname + '_0000_0000.tif'
@@ -279,38 +280,39 @@ def read_als_832h5(fname, ind_tomo=None, ind_flat=None, ind_dark=None,
     if 'num_bright_field' in keys:
         nflat = int(dgroup.attrs['num_bright_field'])
     else:
-        nflat = tio._count_proj(dgroup, flat_name, nproj,
+        nflat = dxreader._count_proj(dgroup, flat_name, nproj,
                                 inter_bright=inter_bright)
     if 'num_dark_fields' in keys:
         ndark = int(dgroup.attrs['num_dark_fields'])
     else:
-        ndark = tio._count_proj(dgroup, dark_name, nproj)
+        ndark = dxreader._count_proj(dgroup, dark_name, nproj)
 
     # Create arrays of indices to read projections, flats and darks
     if ind_tomo is None:
         ind_tomo = list(range(0, nproj))
     ind_dark = list(range(0, ndark))
-    group_dark = [nproj-1]
+    group_dark = [nproj - 1]
     ind_flat = list(range(0, nflat))
 
     if inter_bright > 0:
         group_flat = list(range(0, nproj, inter_bright))
-        if group_flat[-1] != nproj-1:
-            group_flat.append(nproj-1)
+        if group_flat[-1] != nproj - 1:
+            group_flat.append(nproj - 1)
     elif inter_bright == 0:
-        group_flat = [0, nproj-1]
+        group_flat = [0, nproj - 1]
     else:
         group_flat = None
 
-    tomo = tio.read_hdf5_stack(dgroup, tomo_name, ind_tomo, slc=(proj, sino))
+    tomo = dxreader.read_hdf5_stack(
+        dgroup, tomo_name, ind_tomo, slc=(proj, sino))
 
-    flat = tio.read_hdf5_stack(dgroup, flat_name, ind_flat, slc=(None, sino),
-                               out_ind=group_flat)
+    flat = dxreader.read_hdf5_stack(dgroup, flat_name, ind_flat, slc=(None, sino),
+                                    out_ind=group_flat)
 
-    dark = tio.read_hdf5_stack(dgroup, dark_name, ind_dark, slc=(None, sino),
-                               out_ind=group_dark)
+    dark = dxreader.read_hdf5_stack(dgroup, dark_name, ind_dark, slc=(None, sino),
+                                    out_ind=group_dark)
 
-    group_flat = tio._map_loc(ind_tomo, group_flat)
+    group_flat = dxreader._map_loc(ind_tomo, group_flat)
 
     f.close()
 
@@ -357,11 +359,11 @@ def read_anka_topotomo(
     tomo_name = os.path.join(fname, 'radios', 'image_00000.tif')
     flat_name = os.path.join(fname, 'flats', 'image_00000.tif')
     dark_name = os.path.join(fname, 'darks', 'image_00000.tif')
-    tomo = tio.read_tiff_stack(
+    tomo = dxreader.read_tiff_stack(
         tomo_name, ind=ind_tomo, digit=5, slc=(sino, proj))
-    flat = tio.read_tiff_stack(
+    flat = dxreader.read_tiff_stack(
         flat_name, ind=ind_flat, digit=5, slc=(sino, None))
-    dark = tio.read_tiff_stack(
+    dark = dxreader.read_tiff_stack(
         dark_name, ind=ind_dark, digit=5, slc=(sino, None))
     return tomo, flat, dark
 
@@ -423,9 +425,12 @@ def read_aps_1id(fname, ind_tomo=None, proj=None, sino=None):
         ind_tomo = list(range(prj_start, prj_start + nprj))
     ind_flat = list(range(flat_start, flat_start + nflat))
     ind_dark = list(range(dark_start, dark_start + ndark))
-    tomo = tio.read_tiff_stack(_fname, ind=ind_tomo, digit=6, slc=(sino, proj))
-    flat = tio.read_tiff_stack(_fname, ind=ind_flat, digit=6, slc=(sino, None))
-    dark = tio.read_tiff_stack(_fname, ind=ind_dark, digit=6, slc=(sino, None))
+    tomo = dxreader.read_tiff_stack(
+        _fname, ind=ind_tomo, digit=6, slc=(sino, proj))
+    flat = dxreader.read_tiff_stack(
+        _fname, ind=ind_flat, digit=6, slc=(sino, None))
+    dark = dxreader.read_tiff_stack(
+        _fname, ind=ind_dark, digit=6, slc=(sino, None))
     return tomo, flat, dark
 
 
@@ -483,8 +488,8 @@ def read_aps_7bm(fname, proj=None, sino=None):
     """
     tomo_grp = '/'.join(['exchange', 'data'])
     theta_grp = '/'.join(['exchange', 'theta'])
-    tomo = tio.read_hdf5(fname, tomo_grp, slc=(proj, sino))
-    theta = tio.read_hdf5(fname, theta_grp, slc=(proj, ))
+    tomo = dxreader.read_hdf5(fname, tomo_grp, slc=(proj, sino))
+    theta = dxreader.read_hdf5(fname, theta_grp, slc=(proj, ))
     return tomo, theta
 
 
@@ -512,9 +517,9 @@ def read_aps_13bm(fname, format, proj=None, sino=None):
         3D tomographic data.
     """
     if format is 'spe':
-        tomo = tio.read_spe(fname, slc=(None, sino))
+        tomo = dxreader.read_spe(fname, slc=(None, sino))
     elif format is 'netcdf4':
-        tomo = tio.read_netcdf4(fname, 'array_data', slc=(proj, sino))
+        tomo = dxreader.read_netcdf4(fname, 'array_data', slc=(proj, sino))
     return tomo
 
 
@@ -542,7 +547,7 @@ def read_aps_13id(
     ndarray
         3D tomographic data.
     """
-    tomo = tio.read_hdf5(fname, group, slc=(None, proj, sino))
+    tomo = dxreader.read_hdf5(fname, group, slc=(None, proj, sino))
     tomo = np.swapaxes(tomo, 0, 1)
     tomo = np.swapaxes(tomo, 1, 2).copy()
     return tomo
@@ -590,9 +595,9 @@ def read_aps_32id(fname, exchange_rank=0, proj=None, sino=None):
     tomo_grp = '/'.join([exchange_base, 'data'])
     flat_grp = '/'.join([exchange_base, 'data_white'])
     dark_grp = '/'.join([exchange_base, 'data_dark'])
-    tomo = tio.read_hdf5(fname, tomo_grp, slc=(proj, sino))
-    flat = tio.read_hdf5(fname, flat_grp, slc=(None, sino))
-    dark = tio.read_hdf5(fname, dark_grp, slc=(None, sino))
+    tomo = dxreader.read_hdf5(fname, tomo_grp, slc=(proj, sino))
+    flat = dxreader.read_hdf5(fname, flat_grp, slc=(None, sino))
+    dark = dxreader.read_hdf5(fname, dark_grp, slc=(None, sino))
     return tomo, flat, dark
 
 
@@ -629,9 +634,9 @@ def read_aus_microct(fname, ind_tomo, ind_flat, ind_dark):
     tomo_name = os.path.join(fname, 'SAMPLE_T_0000.tif')
     flat_name = os.path.join(fname, 'BG__BEFORE_00.tif')
     dark_name = os.path.join(fname, 'DF__BEFORE_00.tif')
-    tomo = tio.read_tiff_stack(tomo_name, ind=ind_tomo, digit=4)
-    flat = tio.read_tiff_stack(flat_name, ind=ind_flat, digit=2)
-    dark = tio.read_tiff_stack(dark_name, ind=ind_dark, digit=2)
+    tomo = dxreader.read_tiff_stack(tomo_name, ind=ind_tomo, digit=4)
+    flat = dxreader.read_tiff_stack(flat_name, ind=ind_flat, digit=2)
+    dark = dxreader.read_tiff_stack(dark_name, ind=ind_dark, digit=2)
     return tomo, flat, dark
 
 
@@ -666,9 +671,9 @@ def read_esrf_id19(fname, proj=None, sino=None):
     tomo_name = os.path.join(fname, 'tomo.edf')
     flat_name = os.path.join(fname, 'flat.edf')
     dark_name = os.path.join(fname, 'dark.edf')
-    tomo = tio.read_edf(tomo_name, slc=(proj, sino))
-    flat = tio.read_edf(flat_name, slc=(None, sino))
-    dark = tio.read_edf(dark_name, slc=(None, sino))
+    tomo = dxreader.read_edf(tomo_name, slc=(proj, sino))
+    flat = dxreader.read_edf(flat_name, slc=(None, sino))
+    dark = dxreader.read_edf(dark_name, slc=(None, sino))
     return tomo, flat, dark
 
 
@@ -696,8 +701,8 @@ def read_diamond_l12(fname, ind_tomo):
     tomo_name = os.path.join(fname, 'im_001000.tif')
     flat_name = os.path.join(fname, 'flat_000000.tif')
     ind_flat = list(range(0, 1))
-    tomo = tio.read_tiff_stack(tomo_name, ind=ind_tomo, digit=6)
-    flat = tio.read_tiff_stack(flat_name, ind=ind_flat, digit=6)
+    tomo = dxreader.read_tiff_stack(tomo_name, ind=ind_tomo, digit=6)
+    flat = dxreader.read_tiff_stack(flat_name, ind=ind_flat, digit=6)
     return tomo, flat
 
 
@@ -741,11 +746,11 @@ def read_elettra_syrmep(
     tomo_name = os.path.join(fname, 'tomo_0001.tif')
     flat_name = os.path.join(fname, 'flat_1.tif')
     dark_name = os.path.join(fname, 'dark_1.tif')
-    tomo = tio.read_tiff_stack(
+    tomo = dxreader.read_tiff_stack(
         tomo_name, ind=ind_tomo, digit=4, slc=(sino, proj))
-    flat = tio.read_tiff_stack(
+    flat = dxreader.read_tiff_stack(
         flat_name, ind=ind_flat, digit=1, slc=(sino, None))
-    dark = tio.read_tiff_stack(
+    dark = dxreader.read_tiff_stack(
         dark_name, ind=ind_dark, digit=1, slc=(sino, None))
     return tomo, flat, dark
 
@@ -780,9 +785,9 @@ def read_lnls_imx(folder, proj=None, sino=None):
     tomo_name = os.path.join(folder, 'tomo.h5')
     flat_name = os.path.join(folder, 'tomo_flat_before.h5')
     dark_name = os.path.join(folder, 'tomo_dark_before.h5')
-    tomo = tio.read_hdf5(tomo_name, 'images', slc=(proj, sino))
-    flat = tio.read_hdf5(flat_name, 'flats', slc=(None, sino))
-    dark = tio.read_hdf5(dark_name, 'darks', slc=(None, sino))
+    tomo = dxreader.read_hdf5(tomo_name, 'images', slc=(proj, sino))
+    flat = dxreader.read_hdf5(flat_name, 'flats', slc=(None, sino))
+    dark = dxreader.read_hdf5(dark_name, 'darks', slc=(None, sino))
     return tomo, flat, dark
 
 
@@ -829,11 +834,11 @@ def read_petraIII_p05(
         fname, 'scan_0001', 'ccd', 'pco01', 'ccd_0000.tif')
     dark_name = os.path.join(
         fname, 'scan_0000', 'ccd', 'pco01', 'ccd_0000.tif')
-    tomo = tio.read_tiff_stack(
+    tomo = dxreader.read_tiff_stack(
         tomo_name, ind=ind_tomo, digit=4, slc=(sino, proj))
-    flat = tio.read_tiff_stack(
+    flat = dxreader.read_tiff_stack(
         flat_name, ind=ind_flat, digit=4, slc=(sino, None))
-    dark = tio.read_tiff_stack(
+    dark = dxreader.read_tiff_stack(
         dark_name, ind=ind_dark, digit=4, slc=(sino, None))
     return tomo, flat, dark
 
@@ -896,8 +901,11 @@ def read_sls_tomcat(fname, ind_tomo=None, proj=None, sino=None):
         ind_tomo = list(range(proj_start, proj_end))
     ind_flat = list(range(flat_start, flat_end))
     ind_dark = list(range(dark_start, dark_end))
-    tomo = tio.read_tiff_stack(_fname, ind=ind_tomo, digit=4, slc=(sino, proj))
-    flat = tio.read_tiff_stack(_fname, ind=ind_flat, digit=4, slc=(sino, None))
-    dark = tio.read_tiff_stack(_fname, ind=ind_dark, digit=4, slc=(sino, None))
+    tomo = dxreader.read_tiff_stack(
+        _fname, ind=ind_tomo, digit=4, slc=(sino, proj))
+    flat = dxreader.read_tiff_stack(
+        _fname, ind=ind_flat, digit=4, slc=(sino, None))
+    dark = dxreader.read_tiff_stack(
+        _fname, ind=ind_dark, digit=4, slc=(sino, None))
 
     return tomo, flat, dark

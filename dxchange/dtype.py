@@ -53,16 +53,10 @@ Module for internal utility functions.
 from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
 
-import ctypes
-import numpy as np
-import multiprocessing as mp
-import logging
-
-logger = logging.getLogger(__name__)
-
 
 __author__ = "Doga Gursoy"
-__copyright__ = "Copyright (c) 2015, UChicago Argonne, LLC."
+__copyright__ = "Copyright (c) 2015-2016, UChicago Argonne, LLC."
+__version__ = "0.1.0"
 __docformat__ = 'restructuredtext en'
 __all__ = ['as_ndarray',
            'as_dtype',
@@ -75,7 +69,19 @@ __all__ = ['as_ndarray',
            'as_c_int_p',
            'as_c_float',
            'as_c_char_p',
-           'as_c_void_p']
+           'as_c_void_p',
+           'as_sharedmem',
+           'is_sharedmem',
+           'is_contiguous',
+           'empty_shared_array']
+
+
+import ctypes
+import numpy as np
+import multiprocessing as mp
+import logging
+
+logger = logging.getLogger(__name__)
 
 
 def as_ndarray(arr, dtype=None):
@@ -171,6 +177,7 @@ def is_sharedmem(arr):
 def is_contiguous(arr):
     return arr.flags.c_contiguous
 
+
 def empty_shared_array(shape, dtype=np.float32):
     # create a shared ndarray with the provided shape and type
     # get ctype from np dtype
@@ -183,5 +190,5 @@ def empty_shared_array(shape, dtype=np.float32):
     shared_obj = mp.RawArray(ctype, size)
     # create numpy array from shared object
     arr = np.frombuffer(shared_obj, dtype)
-    arr = arr.reshape(shape)    
+    arr = arr.reshape(shape)
     return arr

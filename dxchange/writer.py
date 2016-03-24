@@ -47,11 +47,23 @@
 # #########################################################################
 
 """
-Module for data I/O.
+Module for data exporting data files.
 """
 
 from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
+
+
+__author__ = "Doga Gursoy, Francesco De Carlo"
+__copyright__ = "Copyright (c) 2015-2016, UChicago Argonne, LLC."
+__version__ = "0.1.0"
+__docformat__ = 'restructuredtext en'
+__all__ = ['write_dxf',
+           'write_hdf5',
+           'write_npy',
+           'write_tiff',
+           'write_tiff_stack']
+
 
 import dxchange.dtype as dt
 import numpy as np
@@ -71,17 +83,6 @@ def _check_import(modname):
         return None
 
 dxfile = _check_import('dxfile')
-
-
-__author__ = "Doga Gursoy"
-__credits__ = "Francesco De Carlo"
-__copyright__ = "Copyright (c) 2015, UChicago Argonne, LLC."
-__docformat__ = 'restructuredtext en'
-__all__ = ['write_dxf',
-           'write_hdf5',
-           'write_npy',
-           'write_tiff',
-           'write_tiff_stack']
 
 
 def get_body(fname, digit=None):
