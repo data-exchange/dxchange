@@ -1,31 +1,39 @@
-.. title:: DXchange
+========
+DXchange
+========
 
-=======
-Welcome
-=======
+Scientific Data Exchange (dxchange) describes a simple data model that is 
+designed to interface, or **exchange** data from different instruments to 
+data analysis tools :cite:`DeCarlo:14a`.
 
-This is the Data Exchange web site, `DXchange <https://github.com/data-exchange/DXchange>`_ for short. 
-The DXchange web site provides Python:
+Features
+--------
 
-    - readers for tomographic data files collected at different synchrotron facilities including the Data Exchange file format (`DXfile <http://dxfile.readthedocs.org/>`_) :cite:`DeCarlo:14a`.
-    - writers for `tomoPy <http://tomopy.readthedocs.org/>`_ :cite:`Gursoy:14a`.
+* Scientific Data Exchange file format.
+* Readers for tomographic data files collected at different facilities.
+* Writers for different file formats.
 
-This guide is maintained on 
-`GitHub <https://github.com/data-exchange/DXchange/tree/master/doc>`_.
+Highlights
+----------
+* Based on Hierarchical Data Format 5 (HDF5).
+* Focuses on technique rather than instrument descriptions.
+* Provenance tracking for understanding analysis steps and results.
+* Ease of readability.
+    
+Contribute
+----------
+
+* Documentation: https://github.com/data-exchange/dxchange/tree/master/doc
+* Issue Tracker: https://github.com/data-exchange/dxchange/issues
+* Source Code: https://github.com/data-exchange/dxchange
+
+Content
+-------
 
 .. toctree::
    :maxdepth: 1
-   
-   source/about
+
    source/install
    source/api
    source/demo
    source/credits
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
