@@ -6,12 +6,12 @@ DXchange
    :target: https://readthedocs.org/projects/dxchange/?badge=latest
    :alt: Read the Docs
 
-.. image:: https://anaconda.org/decarlof/dxchange/badges/version.svg
-   :target: https://anaconda.org/decarlof/dxchange
+.. image:: https://anaconda.org/dgursoy/dxchange/badges/version.svg
+   :target: https://anaconda.org/dgursoy/dxchange
    :alt: Anaconda version
    
-.. image:: https://anaconda.org/decarlof/dxchange/badges/downloads.svg   
-   :target: https://anaconda.org/decarlof/dxchange
+.. image:: https://anaconda.org/dgursoy/dxchange/badges/downloads.svg   
+   :target: https://anaconda.org/dgursoy/dxchange
    :alt: Anaconda downloads
    
 Features
