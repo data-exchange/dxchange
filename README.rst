@@ -1,5 +1,6 @@
+========
 DXchange
-########
+========
 
 .. image:: https://readthedocs.org/projects/dxchange/badge/?version=latest
    :target: https://readthedocs.org/projects/dxchange/?badge=latest
@@ -13,8 +14,15 @@ DXchange
    :target: https://anaconda.org/decarlof/dxchange
    :alt: Anaconda downloads
    
-DXchange provides:
-    
-   - Python readers for tomographic data files collected at different facilities.
+Features
+--------
 
-Project Home Page: http://dxchange.readthedocs.org/
+* Python readers for tomographic data files collected at different facilities.
+
+    
+Contribute
+----------
+
+* Documentation: http://dxchange.rtfd.org/
+* Issue Tracker: github.com/data-exchange/dxchange/issues
+* Source Code: github.com/data-exchange/dxchange
