@@ -4,7 +4,7 @@ DXchange
 
 Scientific Data Exchange (dxchange) describes a simple data model that is 
 designed to interface, or **exchange** data from different instruments to 
-data analysis tools :cite:`DeCarlo:14a`.
+data analysis tools `[ref] <http://dxchange.readthedocs.org/en/latest/source/credits.html#decarlo-14a>`_.
 
 Documentation
 -------------
