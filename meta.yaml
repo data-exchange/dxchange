@@ -18,6 +18,7 @@ requirements:
     - numpy    
     - h5py    
     - six    
+    - netcdf4
     - spefile    
     - edffile    
     - tifffile    

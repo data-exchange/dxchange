@@ -324,7 +324,8 @@ class Mock(object):
 
 MOCK_MODULES = ['h5py',
                 'numpy', 
-                'spefile', 
+                'spefile',
+                'netCDF4', 
                 'EdfFile',
                 'astropy']
 
