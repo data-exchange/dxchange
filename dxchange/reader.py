@@ -75,8 +75,9 @@ import os
 import h5py
 import logging
 import re
+import math
+import dxchange.writer as writer
 from dxchange.dtype import empty_shared_array
-import dxchange.writer as dxwriter
 
 logger = logging.getLogger(__name__)
 
@@ -103,7 +104,7 @@ def _check_read(fname):
     if not isinstance(fname, six.string_types):
         logger.error('File name must be a string')
     else:
-        if dxwriter.get_extension(fname) not in known_extensions:
+        if writer.get_extension(fname) not in known_extensions:
             logger.error('Unknown file extension')
     return os.path.abspath(fname)
 
@@ -256,7 +257,7 @@ def read_hdf5(fname, dataset, slc=None, dtype=None, shared=True):
             if dtype is None:
                 dtype = data.dtype
             if shared:
-                arr = dxwriter.empty_shared_array(shape, dtype)
+                arr = empty_shared_array(shape, dtype)
             else:
                 arr = np.empty(shape, dtype)
             data.read_direct(arr, _fix_slice(slc))
@@ -502,8 +503,8 @@ def _list_file_stack(fname, ind, digit):
         Number of digits in indexing stacked files.
     """
 
-    body = dxwriter.get_body(fname, digit)
-    ext = dxwriter.get_extension(fname)
+    body = writer.get_body(fname, digit)
+    ext = writer.get_extension(fname)
     list_fname = []
     for m in ind:
         list_fname.append(str(body + '{0:0={1}d}'.format(m, digit) + ext))
@@ -604,8 +605,8 @@ def read_hdf5_stack(h5group, dname, ind, digit=4, slc=None, out_ind=None):
     if out_ind is not None:
         list_fname_ = []
         for name in list_fname:
-            fname = (dxwriter.get_body(name).split('/')[-1] + '_' + digit * '0' +
-                     dxwriter.get_extension(name))
+            fname = (writer.get_body(name).split('/')[-1] + '_' + digit * '0' +
+                     writer.get_extension(name))
             list_fname_.extend(_list_file_stack(fname, out_ind, digit))
         list_fname = list_fname_
 
