@@ -258,6 +258,7 @@ def _log_imported_data(fname, arr):
 
 
 def _init_arr_from_stack(fname, nfile, slc):    """    Initialize numpy array from files in a folder.    """    _arr = read_tiff(fname, slc)    size = (nfile, _arr.shape[0], _arr.shape[1])    logger.debug('Data initialized with size: %s', size)    return np.zeros(size, dtype=_arr.dtype)
+
 def _init_ole_arr_from_stack(fname, nfile, slc):
     """
     Initialize numpy array from files in a folder.
