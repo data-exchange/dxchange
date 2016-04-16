@@ -18,6 +18,7 @@
       read_aps_7bm
       read_aps_13bm
       read_aps_13id
+      read_aps_26id
       read_aps_32id
       read_aus_microct
       read_diamond_l12

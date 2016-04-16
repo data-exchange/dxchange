@@ -19,3 +19,6 @@
       read_tiff
       read_tiff_stack
       read_hdf5_stack
+      read_xrm
+      read_xrm_stack
+      

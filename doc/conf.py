@@ -327,7 +327,8 @@ MOCK_MODULES = ['h5py',
                 'spefile',
                 'netCDF4', 
                 'EdfFile',
-                'astropy']
+                'astropy',
+                'olefile']
 
 for mod_name in MOCK_MODULES:
     sys.modules[mod_name] = Mock()

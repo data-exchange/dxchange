@@ -66,6 +66,7 @@ __all__ = ['read_als_832',
            'read_aps_7bm',
            'read_aps_13bm',
            'read_aps_13id',
+           'read_aps_26id',
            'read_aps_32id',
            'read_aus_microct',
            'read_diamond_l12',
@@ -551,6 +552,48 @@ def read_aps_13id(
     tomo = np.swapaxes(tomo, 0, 1)
     tomo = np.swapaxes(tomo, 1, 2).copy()
     return tomo
+
+
+def read_aps_26id(fname, ind_tomo, ind_flat, proj=None, sino=None):
+    """
+    Read APS 26-ID tomography data from a stack of xrm files.
+    Note: file are renamed as 
+    radios/image_00000.xrm and flats/image_00000.xrm
+    
+    Parameters
+    ----------
+    fname : str
+        Path to data folder name without indices and extension.
+
+    ind_tomo : list of int, optional
+        Indices of the projection files to read.
+
+    ind_flat : list of int, optional
+        Indices of the flat field files to read.
+
+    proj : {sequence, int}, optional
+        Specify projections to read. (start, end, step)
+
+    sino : {sequence, int}, optional
+        Specify sinograms to read. (start, end, step)
+
+    Returns
+    -------
+    ndarray
+        3D tomographic data.
+
+    ndarray
+        3D flat field data.
+    """
+    fname = os.path.abspath(fname)
+    tomo_name = os.path.join(fname, 'radios', 'image_00000.xrm')
+    flat_name = os.path.join(fname, 'flats', 'image_00000.xrm')
+
+    tomo = dxreader.read_xrm_stack(
+        tomo_name, ind=ind_tomo, digit=5, slc=(sino, proj))
+    flat = dxreader.read_xrm_stack(
+        flat_name, ind=ind_flat, digit=5, slc=(sino, None))
+    return tomo, flat
 
 
 def read_aps_32id(fname, exchange_rank=0, proj=None, sino=None):
