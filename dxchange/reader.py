@@ -604,7 +604,7 @@ def _list_file_stack(fname, ind, digit):
 def _find_dataset_group(fname):
     """
     Finds the group name containing the stack of projections datasets within
-    hdf5 file with a stack of images
+    an ALS BL8.3.2 hdf5 file  containing a stack of images
 
     Parameters
     ----------
