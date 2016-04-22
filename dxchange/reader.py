@@ -600,8 +600,7 @@ def _list_file_stack(fname, ind, digit):
         list_fname.append(str(body + '{0:0={1}d}'.format(m, digit) + ext))
     return list_fname
 
-
-def _find_dataset_group(fname):
+def find_dataset_group(fname):
     """
     Finds the group name containing the stack of projections datasets within
     an ALS BL8.3.2 hdf5 file  containing a stack of images
@@ -615,9 +614,17 @@ def _find_dataset_group(fname):
     -------
     h5py.Group
     """
-    # Only one root key means only one dataset in BL8.3.2 current format
-    h5object = h5py.File(fname, 'r')    
+    h5object = h5py.File(fname, 'r')
+    return _find_dataset_group(h5object)
+
+
+def _find_dataset_group(h5object):
+    """
+    Finds the group name containing the stack of projections datasets within
+    an ALS BL8.3.2 hdf5 file  containing a stack of images
+    """
     
+    # Only one root key means only one dataset in BL8.3.2 current format    
     keys = list(h5object.keys())
     if len(keys) == 1:
         if isinstance(h5object[keys[0]], h5py.Group):
