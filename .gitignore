@@ -109,6 +109,7 @@ coverage.xml
 *.sublime-project
 *.sublime-workspace
 docs/trunk/*
+.spyder*
 
 # Francesco's #
 ################

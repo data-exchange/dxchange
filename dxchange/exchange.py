@@ -263,7 +263,7 @@ def read_als_832h5(fname, ind_tomo=None, ind_flat=None, ind_dark=None,
         Indices of flat field data within tomography projection list
     """
 
-    dgroup = dxreader._find_dataset_group(fname)
+    dgroup = dxreader.find_dataset_group(fname)
     dname = dgroup.name.split('/')[-1]
 
     tomo_name = dname + '_0000_0000.tif'
