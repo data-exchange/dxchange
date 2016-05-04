@@ -45,8 +45,10 @@ if __name__ == '__main__':
         # Flat-field correction of raw data.
         proj = tomopy.normalize(proj, flat, dark)
 
+        tomopy.minus_log(proj)
+
         # Reconstruct object using Gridrec algorithm.
-        rec = tomopy.recon(proj, theta, center=1024, algorithm='gridrec', emission=False)
+        rec = tomopy.recon(proj, theta, center=rot_center, algorithm='gridrec')
 
         # Write data as stack of TIFs.
         dxchange.write_tiff_stack(rec, fname='recon_dir/recon', start=sino_start)
