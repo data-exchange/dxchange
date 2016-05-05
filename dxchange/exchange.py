@@ -107,9 +107,6 @@ def read_als_832(fname, ind_tomo=None, normalized=False, sino=None):
         proj : {sequence, int}, optional
         Specify projections to read. (start, end, step)
 
-    proj : {sequence, int}, optional
-        Specify projections to read. (start, end, step)
-
     sino : {sequence, int}, optional
         Specify sinograms to read. (start, end, step)
 
