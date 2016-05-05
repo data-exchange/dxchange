@@ -79,6 +79,7 @@ import logging
 import re
 import math
 import struct
+from contextlib import contextmanager
 import dxchange.writer as writer
 from dxchange.dtype import empty_shared_array
 
@@ -600,6 +601,7 @@ def _list_file_stack(fname, ind, digit):
         list_fname.append(str(body + '{0:0={1}d}'.format(m, digit) + ext))
     return list_fname
 
+@contextmanager
 def find_dataset_group(fname):
     """
     Finds the group name containing the stack of projections datasets within
@@ -615,7 +617,7 @@ def find_dataset_group(fname):
     h5py.Group
     """
     h5object = h5py.File(fname, 'r')
-    return _find_dataset_group(h5object)
+    yield _find_dataset_group(h5object)
 
 
 def _find_dataset_group(h5object):
