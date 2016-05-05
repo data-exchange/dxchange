@@ -86,7 +86,8 @@ import dxchange.reader as dxreader
 logger = logging.getLogger(__name__)
 
 
-def read_als_832(fname, ind_tomo=None, normalized=False):
+def read_als_832(fname, ind_tomo=None, normalized=False, proj=None,
+                 sino=None):
     """
     Read ALS 8.3.2 standard data format.
 
@@ -103,6 +104,15 @@ def read_als_832(fname, ind_tomo=None, normalized=False):
         only be used for cases where tomo is already normalized.
         8.3.2 has a plugin that normalization is preferred to be
         done with prior to tomopy reconstruction.
+
+        proj : {sequence, int}, optional
+        Specify projections to read. (start, end, step)
+
+    proj : {sequence, int}, optional
+        Specify projections to read. (start, end, step)
+
+    sino : {sequence, int}, optional
+        Specify sinograms to read. (start, end, step)
 
     Returns
     -------
@@ -157,7 +167,8 @@ def read_als_832(fname, ind_tomo=None, normalized=False):
         ind_dark = list(range(0, ndark))
 
     # Read image data from tiff stack.
-    tomo = dxreader.read_tiff_stack(tomo_name, ind=ind_tomo, digit=4)
+    tomo = dxreader.read_tiff_stack(tomo_name, ind=ind_tomo, digit=4,
+                                    slc=(proj, sino))
 
     if not normalized:
 
@@ -192,7 +203,8 @@ def read_als_832(fname, ind_tomo=None, normalized=False):
                 flat[m] = _arr
             flat = dxreader._slice_array(flat, None)
         else:
-            flat = dxreader.read_tiff_stack(flat_name, ind=ind_flat, digit=4)
+            flat = dxreader.read_tiff_stack(flat_name, ind=ind_flat, digit=4,
+                                            slc=(sino, None))
 
         # Adheres to 8.3.2 flat/dark naming conventions:
         # ----Darks----
@@ -201,7 +213,8 @@ def read_als_832(fname, ind_tomo=None, normalized=False):
         # its scan, so xxxx is in incrementals of one, and yyyy is either
         # 0000 or the last projection.
 
-        list_dark = dxreader._list_file_stack(dark_name, ind_dark, digit=4)
+        list_dark = dxreader._list_file_stack(dark_name, ind_dark, digit=4,
+                                              slc=(sino, None))
         for x in ind_dark:
             body = os.path.splitext(list_dark[x])[0] + '_'
             ext = os.path.splitext(list_dark[x])[1]
@@ -325,7 +338,7 @@ def read_als_832h5(fname, ind_tomo=None, ind_flat=None, ind_dark=None,
 def read_anka_topotomo(
         fname, ind_tomo, ind_flat, ind_dark, proj=None, sino=None):
     """
-    Read ANKA TOMO-TOMO standard data format.
+    Read ANKA TOPO-TOMO standard data format.
 
     Parameters
     ----------
