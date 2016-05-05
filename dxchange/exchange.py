@@ -223,7 +223,7 @@ def read_als_832(fname, ind_tomo=None, normalized=False):
 
 
 def read_als_832h5(fname, ind_tomo=None, ind_flat=None, ind_dark=None,
-                   proj=None, sino=None):
+                   proj=None, sino=None, mult_flats=False):
     """
     Read ALS 8.3.2 hdf5 file with stacked datasets.
 
@@ -247,6 +247,9 @@ def read_als_832h5(fname, ind_tomo=None, ind_flat=None, ind_dark=None,
 
     sino : {sequence, int}, optional
         Specify sinograms to read. (start, end, step)
+
+    mult_flats: bool, optional
+        Will return a list of locations where flat fields where taken in dataset.
 
     Returns
     -------
@@ -280,7 +283,7 @@ def read_als_832h5(fname, ind_tomo=None, ind_flat=None, ind_dark=None,
         nflat = int(dgroup.attrs['num_bright_field'])
     else:
         nflat = dxreader._count_proj(dgroup, flat_name, nproj,
-                                inter_bright=inter_bright)
+                                     inter_bright=inter_bright)
     if 'num_dark_fields' in keys:
         ndark = int(dgroup.attrs['num_dark_fields'])
     else:
@@ -313,7 +316,10 @@ def read_als_832h5(fname, ind_tomo=None, ind_flat=None, ind_dark=None,
 
     group_flat = dxreader._map_loc(ind_tomo, group_flat)
 
-    return tomo, flat, dark, group_flat
+    if mult_flats:
+        return tomo, flat, dark, group_flat
+    else:
+        return tomo, flat, dark
 
 
 def read_anka_topotomo(
