@@ -86,8 +86,7 @@ import dxchange.reader as dxreader
 logger = logging.getLogger(__name__)
 
 
-def read_als_832(fname, ind_tomo=None, normalized=False, proj=None,
-                 sino=None):
+def read_als_832(fname, ind_tomo=None, normalized=False, sino=None):
     """
     Read ALS 8.3.2 standard data format.
 
@@ -130,8 +129,6 @@ def read_als_832(fname, ind_tomo=None, normalized=False, proj=None,
     fname = os.path.abspath(fname)
 
     if not normalized:
-        fname = fname.split(
-            'output')[0] + fname.split('/')[len(fname.split('/')) - 1]
         tomo_name = fname + '_0000_0000.tif'
         flat_name = fname + 'bak_0000.tif'
         dark_name = fname + 'drk_0000.tif'
@@ -168,7 +165,7 @@ def read_als_832(fname, ind_tomo=None, normalized=False, proj=None,
 
     # Read image data from tiff stack.
     tomo = dxreader.read_tiff_stack(tomo_name, ind=ind_tomo, digit=4,
-                                    slc=(proj, sino))
+                                    slc=(sino, None))
 
     if not normalized:
 
@@ -201,7 +198,7 @@ def read_als_832(fname, ind_tomo=None, normalized=False, proj=None,
                     dy, dz = _arr.shape
                     flat = np.zeros((dx, dy, dz))
                 flat[m] = _arr
-            flat = dxreader._slice_array(flat, None)
+            flat = dxreader._slice_array(flat, (None, sino))
         else:
             flat = dxreader.read_tiff_stack(flat_name, ind=ind_flat, digit=4,
                                             slc=(sino, None))
@@ -213,8 +210,7 @@ def read_als_832(fname, ind_tomo=None, normalized=False, proj=None,
         # its scan, so xxxx is in incrementals of one, and yyyy is either
         # 0000 or the last projection.
 
-        list_dark = dxreader._list_file_stack(dark_name, ind_dark, digit=4,
-                                              slc=(sino, None))
+        list_dark = dxreader._list_file_stack(dark_name, ind_dark, digit=4)
         for x in ind_dark:
             body = os.path.splitext(list_dark[x])[0] + '_'
             ext = os.path.splitext(list_dark[x])[1]
@@ -228,7 +224,7 @@ def read_als_832(fname, ind_tomo=None, normalized=False, proj=None,
                 dy, dz = _arr.shape
                 dark = np.zeros((dx, dy, dz))
             dark[m] = _arr
-        dark = dxreader._slice_array(dark, None)
+        dark = dxreader._slice_array(dark, (None, sino))
     else:
         flat = np.ones(1)
         dark = np.zeros(1)
