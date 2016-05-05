@@ -616,8 +616,8 @@ def find_dataset_group(fname):
     -------
     h5py.Group
     """
-    h5object = h5py.File(fname, 'r')
-    yield _find_dataset_group(h5object)
+    with h5py.File(fname, 'r') as h5object:
+        yield _find_dataset_group(h5object)
 
 
 def _find_dataset_group(h5object):
