@@ -640,7 +640,7 @@ def read_aps_32id(fname, exchange_rank=0, proj=None, sino=None):
     return tomo, flat, dark
 
 
-def read_aus_microct(fname, ind_tomo, ind_flat, ind_dark):
+def read_aus_microct(fname, ind_tomo, ind_flat, ind_dark, proj=None, sino=None):
     """
     Read Australian Synchrotron micro-CT standard data format.
 
@@ -673,9 +673,10 @@ def read_aus_microct(fname, ind_tomo, ind_flat, ind_dark):
     tomo_name = os.path.join(fname, 'SAMPLE_T_0000.tif')
     flat_name = os.path.join(fname, 'BG__BEFORE_00.tif')
     dark_name = os.path.join(fname, 'DF__BEFORE_00.tif')
-    tomo = dxreader.read_tiff_stack(tomo_name, ind=ind_tomo, digit=4)
-    flat = dxreader.read_tiff_stack(flat_name, ind=ind_flat, digit=2)
-    dark = dxreader.read_tiff_stack(dark_name, ind=ind_dark, digit=2)
+
+    tomo = dxreader.read_tiff_stack(tomo_name, ind=ind_tomo, digit=4, slc=(sino, proj))
+    flat = dxreader.read_tiff_stack(flat_name, ind=ind_flat, digit=2, slc=(sino, None))
+    dark = dxreader.read_tiff_stack(dark_name, ind=ind_dark, digit=2, slc=(sino, None))
     return tomo, flat, dark
 
 
