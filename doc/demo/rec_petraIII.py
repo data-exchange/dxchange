@@ -12,14 +12,14 @@ import dxchange
 if __name__ == '__main__':
 
     # Set path to the micro-CT data to reconstruct.
-    fname = 'data_dir/'
+    fname = '/data_dir/sample_name00_0000/'
 
     proj_start = 0
-    proj_end = 1800
+    proj_end = 1441
     flat_start = 0
-    flat_end = 100
+    flat_end = 20
     dark_start = 0
-    dark_end = 100
+    dark_end = 20
 
     ind_tomo = range(proj_start, proj_end)
     ind_flat = range(flat_start, flat_end)
@@ -39,7 +39,7 @@ if __name__ == '__main__':
     proj = tomopy.normalize(proj, flat, dark)
 
     # Find rotation center.
-    rot_center = tomopy.find_center(proj, theta, emission=False, init=1024, ind=0, tol=0.5)
+    rot_center = tomopy.find_center(proj, theta, init=1024, ind=0, tol=0.5)
     print("Center of rotation: ", rot_center)
 
     tomopy.minus_log(proj)
@@ -51,4 +51,4 @@ if __name__ == '__main__':
     rec = tomopy.circ_mask(rec, axis=0, ratio=0.95)
 
     # Write data as stack of TIFs.
-    dxchange.write_tiff_stack(rec, fname='recon_dir/recon')
+    dxchange.write_tiff_stack(rec, fname='recon_dir/petra_')
