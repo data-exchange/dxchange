@@ -658,6 +658,12 @@ def read_aus_microct(fname, ind_tomo, ind_flat, ind_dark, proj=None, sino=None):
     ind_dark : list of int
         Indices of the dark field files to read.
 
+    proj : {sequence, int}, optional
+        Specify projections to read. (start, end, step)
+
+    sino : {sequence, int}, optional
+        Specify sinograms to read. (start, end, step)
+
     Returns
     -------
     ndarray
