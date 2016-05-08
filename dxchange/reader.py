@@ -96,8 +96,7 @@ def _check_import(modname):
 spefile = _check_import('spefile')
 netCDF4 = _check_import('netCDF4')
 EdfFile = _check_import('EdfFile')
-# commented out astropy till https://github.com/data-exchange/dxchange/issues/26 is solved
-#astropy = _check_import('astropy')
+astropy = _check_import('astropy')
 olefile = _check_import('olefile')
 
 
