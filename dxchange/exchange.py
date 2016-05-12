@@ -86,7 +86,7 @@ import dxchange.reader as dxreader
 logger = logging.getLogger(__name__)
 
 
-def read_als_832(fname, ind_tomo=None, normalized=False):
+def read_als_832(fname, ind_tomo=None, normalized=False, sino=None):
     """
     Read ALS 8.3.2 standard data format.
 
@@ -104,6 +104,9 @@ def read_als_832(fname, ind_tomo=None, normalized=False):
         8.3.2 has a plugin that normalization is preferred to be
         done with prior to tomopy reconstruction.
 
+    sino : {sequence, int}, optional
+        Specify sinograms to read. (start, end, step)
+
     Returns
     -------
     ndarray
@@ -120,8 +123,6 @@ def read_als_832(fname, ind_tomo=None, normalized=False):
     fname = os.path.abspath(fname)
 
     if not normalized:
-        fname = fname.split(
-            'output')[0] + fname.split('/')[len(fname.split('/')) - 1]
         tomo_name = fname + '_0000_0000.tif'
         flat_name = fname + 'bak_0000.tif'
         dark_name = fname + 'drk_0000.tif'
@@ -157,7 +158,8 @@ def read_als_832(fname, ind_tomo=None, normalized=False):
         ind_dark = list(range(0, ndark))
 
     # Read image data from tiff stack.
-    tomo = dxreader.read_tiff_stack(tomo_name, ind=ind_tomo, digit=4)
+    tomo = dxreader.read_tiff_stack(tomo_name, ind=ind_tomo, digit=4,
+                                    slc=(sino, None))
 
     if not normalized:
 
@@ -190,9 +192,10 @@ def read_als_832(fname, ind_tomo=None, normalized=False):
                     dy, dz = _arr.shape
                     flat = np.zeros((dx, dy, dz))
                 flat[m] = _arr
-            flat = dxreader._slice_array(flat, None)
+            flat = dxreader._slice_array(flat, (None, sino))
         else:
-            flat = dxreader.read_tiff_stack(flat_name, ind=ind_flat, digit=4)
+            flat = dxreader.read_tiff_stack(flat_name, ind=ind_flat, digit=4,
+                                            slc=(sino, None))
 
         # Adheres to 8.3.2 flat/dark naming conventions:
         # ----Darks----
@@ -215,7 +218,7 @@ def read_als_832(fname, ind_tomo=None, normalized=False):
                 dy, dz = _arr.shape
                 dark = np.zeros((dx, dy, dz))
             dark[m] = _arr
-        dark = dxreader._slice_array(dark, None)
+        dark = dxreader._slice_array(dark, (None, sino))
     else:
         flat = np.ones(1)
         dark = np.zeros(1)
@@ -263,63 +266,61 @@ def read_als_832h5(fname, ind_tomo=None, ind_flat=None, ind_dark=None,
         Indices of flat field data within tomography projection list
     """
 
-    dgroup = dxreader.find_dataset_group(fname)
-    dname = dgroup.name.split('/')[-1]
+    with dxreader.find_dataset_group(fname) as dgroup:
+        dname = dgroup.name.split('/')[-1]
 
-    tomo_name = dname + '_0000_0000.tif'
-    flat_name = dname + 'bak_0000.tif'
-    dark_name = dname + 'drk_0000.tif'
+        tomo_name = dname + '_0000_0000.tif'
+        flat_name = dname + 'bak_0000.tif'
+        dark_name = dname + 'drk_0000.tif'
 
-    # Read metadata from dataset group attributes
-    keys = list(dgroup.attrs.keys())
-    if 'nangles' in keys:
-        nproj = int(dgroup.attrs['nangles'])
-    if 'i0cycle' in keys:
-        inter_bright = int(dgroup.attrs['i0cycle'])
-    if 'num_bright_field' in keys:
-        nflat = int(dgroup.attrs['num_bright_field'])
-    else:
-        nflat = dxreader._count_proj(dgroup, flat_name, nproj,
-                                inter_bright=inter_bright)
-    if 'num_dark_fields' in keys:
-        ndark = int(dgroup.attrs['num_dark_fields'])
-    else:
-        ndark = dxreader._count_proj(dgroup, dark_name, nproj)
+        # Read metadata from dataset group attributes
+        keys = list(dgroup.attrs.keys())
+        if 'nangles' in keys:
+            nproj = int(dgroup.attrs['nangles'])
+        if 'i0cycle' in keys:
+            inter_bright = int(dgroup.attrs['i0cycle'])
+        if 'num_bright_field' in keys:
+            nflat = int(dgroup.attrs['num_bright_field'])
+        else:
+            nflat = dxreader._count_proj(dgroup, flat_name, nproj,
+                                         inter_bright=inter_bright)
+        if 'num_dark_fields' in keys:
+            ndark = int(dgroup.attrs['num_dark_fields'])
+        else:
+            ndark = dxreader._count_proj(dgroup, dark_name, nproj)
 
-    # Create arrays of indices to read projections, flats and darks
-    if ind_tomo is None:
-        ind_tomo = list(range(0, nproj))
-    ind_dark = list(range(0, ndark))
-    group_dark = [nproj - 1]
-    ind_flat = list(range(0, nflat))
+        # Create arrays of indices to read projections, flats and darks
+        if ind_tomo is None:
+            ind_tomo = list(range(0, nproj))
+        ind_dark = list(range(0, ndark))
+        group_dark = [nproj - 1]
+        ind_flat = list(range(0, nflat))
 
-    if inter_bright > 0:
-        group_flat = list(range(0, nproj, inter_bright))
-        if group_flat[-1] != nproj - 1:
-            group_flat.append(nproj - 1)
-    elif inter_bright == 0:
-        group_flat = [0, nproj - 1]
-    else:
-        group_flat = None
+        if inter_bright > 0:
+            group_flat = list(range(0, nproj, inter_bright))
+            if group_flat[-1] != nproj - 1:
+                group_flat.append(nproj - 1)
+        elif inter_bright == 0:
+            group_flat = [0, nproj - 1]
+        else:
+            group_flat = None
 
-    tomo = dxreader.read_hdf5_stack(
-        dgroup, tomo_name, ind_tomo, slc=(proj, sino))
+        tomo = dxreader.read_hdf5_stack(
+            dgroup, tomo_name, ind_tomo, slc=(proj, sino))
 
-    flat = dxreader.read_hdf5_stack(dgroup, flat_name, ind_flat, slc=(None, sino),
-                                    out_ind=group_flat)
+        flat = dxreader.read_hdf5_stack(dgroup, flat_name, ind_flat, slc=(None, sino),
+                                        out_ind=group_flat)
 
-    dark = dxreader.read_hdf5_stack(dgroup, dark_name, ind_dark, slc=(None, sino),
-                                    out_ind=group_dark)
+        dark = dxreader.read_hdf5_stack(dgroup, dark_name, ind_dark, slc=(None, sino),
+                                        out_ind=group_dark)
 
-    group_flat = dxreader._map_loc(ind_tomo, group_flat)
-
-    return tomo, flat, dark, group_flat
+    return tomo, flat, dark
 
 
 def read_anka_topotomo(
         fname, ind_tomo, ind_flat, ind_dark, proj=None, sino=None):
     """
-    Read ANKA TOMO-TOMO standard data format.
+    Read ANKA TOPO-TOMO standard data format.
 
     Parameters
     ----------
