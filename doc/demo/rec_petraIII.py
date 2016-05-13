@@ -42,7 +42,7 @@ if __name__ == '__main__':
     rot_center = tomopy.find_center(proj, theta, init=1024, ind=0, tol=0.5)
     print("Center of rotation: ", rot_center)
 
-    tomopy.minus_log(proj)
+    proj = tomopy.minus_log(proj)
 
     # Reconstruct object using Gridrec algorithm.
     rec = tomopy.recon(proj, theta, center=rot_center, algorithm='gridrec')

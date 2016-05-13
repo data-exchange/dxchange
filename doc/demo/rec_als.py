@@ -31,7 +31,7 @@ if __name__ == '__main__':
     rot_center = tomopy.find_center(proj, theta, emission=False, init=1024, ind=0, tol=0.5)
     print("Center of rotation:", rot_center)
 
-    tomopy.minus_log(proj)
+    proj = tomopy.minus_log(proj)
 
     # Reconstruct object using Gridrec algorithm.
     rec = tomopy.recon(proj, theta, center=rot_center, algorithm='gridrec')
@@ -40,4 +40,4 @@ if __name__ == '__main__':
     rec = tomopy.circ_mask(rec, axis=0, ratio=0.95)
 
     # Write data as stack of TIFs.
-    dxchange.write_tiff_stack(rec, fname='recon_dir/als_')
+    dxchange.write_tiff_stack(rec, fname='recon_dir/als')

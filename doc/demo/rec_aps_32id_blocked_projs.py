@@ -45,7 +45,7 @@ if __name__ == '__main__':
         # Flat-field correction of raw data.
         proj = tomopy.normalize(proj, flat, dark)
 
-        tomopy.minus_log(proj)
+        proj = tomopy.minus_log(proj)
 
         # Reconstruct object using Gridrec algorithm.
         rec = tomopy.recon(proj, theta, center=rot_center, algorithm='gridrec')
