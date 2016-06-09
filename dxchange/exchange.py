@@ -635,10 +635,17 @@ def read_aps_32id(fname, exchange_rank=0, proj=None, sino=None):
     tomo_grp = '/'.join([exchange_base, 'data'])
     flat_grp = '/'.join([exchange_base, 'data_white'])
     dark_grp = '/'.join([exchange_base, 'data_dark'])
+    theta_grp = '/'.join([exchange_base, 'theta'])
     tomo = dxreader.read_hdf5(fname, tomo_grp, slc=(proj, sino))
     flat = dxreader.read_hdf5(fname, flat_grp, slc=(None, sino))
     dark = dxreader.read_hdf5(fname, dark_grp, slc=(None, sino))
-    return tomo, flat, dark
+    theta = dxreader.read_hdf5(fname, theta_grp, slc=None)
+
+    if theta == None:
+        pass
+    else:
+        theta = theta * np.pi / 180.
+    return tomo, flat, dark, theta
 
 
 def read_aus_microct(fname, ind_tomo, ind_flat, ind_dark, proj=None, sino=None):
