@@ -353,7 +353,7 @@ def read_hdf5(fname, dataset, slc=None, dtype=None, shared=True):
                 arr = np.empty(shape, dtype)
             data.read_direct(arr, _fix_slice(slc))
     except KeyError:
-        arr = None
+        return None
     _log_imported_data(fname, arr)
     return arr
 
