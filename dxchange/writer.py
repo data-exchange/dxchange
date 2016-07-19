@@ -71,6 +71,7 @@ import os
 import six
 import h5py
 import logging
+import re
 
 logger = logging.getLogger(__name__)
 
@@ -85,13 +86,11 @@ def _check_import(modname):
 dxfile = _check_import('dxfile')
 
 
-def get_body(fname, digit=None):
+def get_body(fname):
     """
     Get file name after extension removed.
     """
     body = os.path.splitext(fname)[0]
-    if digit is not None:
-        body = ''.join(body[:-digit])
     return body
 
 
@@ -101,7 +100,14 @@ def get_extension(fname):
     """
     return '.' + fname.split(".")[-1]
 
-
+def remove_trailing_digits(text):
+    number_of_digits = len(re.search('\d+$', text).group()) #get the number of digits at the end of the filename
+    print(text)
+    print(number_of_digits)
+    text = ''.join(text[:-number_of_digits])
+    return (text, number_of_digits)
+    
+    
 def _init_dirs(fname):
     """
     Initialize directories for saving output files.

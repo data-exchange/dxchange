@@ -580,7 +580,7 @@ def _shape_after_slice(shape, slc):
     return tuple(new_shape)
 
 
-def _list_file_stack(fname, ind, digit):
+def _list_file_stack(fname, ind):
     """
     Return a stack of file names in a folder as a list.
 
@@ -594,11 +594,14 @@ def _list_file_stack(fname, ind, digit):
         Number of digits in indexing stacked files.
     """
 
-    body = writer.get_body(fname, digit)
+    body = writer.get_body(fname)
+    body, digits = writer.remove_trailing_digits(body)
+    
     ext = writer.get_extension(fname)
     list_fname = []
     for m in ind:
-        list_fname.append(str(body + '{0:0={1}d}'.format(m, digit) + ext))
+        counter_string = str(m).zfill(digits)
+        list_fname.append(body + counter_string + ext)
     return list_fname
 
 @contextmanager
