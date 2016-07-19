@@ -64,6 +64,7 @@ __all__ = ['read_als_832',
            'read_aps_1id',
            'read_aps_2bm',
            'read_aps_7bm',
+           'read_aps_8bm',
            'read_aps_13bm',
            'read_aps_13id',
            'read_aps_26id',
@@ -98,7 +99,7 @@ def read_als_832(fname, ind_tomo=None, normalized=False, sino=None):
     ind_tomo : list of int, optional
         Indices of the projection files to read.
 
-    normalized : boolean
+    normalized : boolean, optional
         If False, darks and flats will not be read. This should
         only be used for cases where tomo is already normalized.
         8.3.2 has a plugin that normalization is preferred to be
@@ -327,10 +328,10 @@ def read_anka_topotomo(
     fname : str
         Path to data folder name without indices and extension.
 
-    ind_tomo : list of int, optional
+    ind_tomo : list of int
         Indices of the projection files to read.
 
-    ind_flat : list of int, optional
+    ind_flat : list of int
         Indices of the flat field files to read.
 
     ind_dark : list of int, optional
@@ -490,6 +491,47 @@ def read_aps_7bm(fname, proj=None, sino=None):
     theta = dxreader.read_hdf5(fname, theta_grp, slc=(proj, ))
     return tomo, theta
 
+def read_aps_8bm(image_directory, tomo_indices, flat_indices, file_pattern='image_00000.xrm', file_digits=5, proj=None, sino=None):
+    """
+    Read APS 8-BM tomography data from a stack of xrm files.
+    
+    Parameters
+    ----------
+    image_directory : str
+        Path to data folder name without indices and extension.
+
+    tomo_indices : list of int
+        Indices of the projection files to read.
+
+    flat_indices : list of int
+        Indices of the flat field files to read.
+    
+    file_digits: int
+        Number of digits in the filename counter.
+        
+    proj : {sequence, int}, optional
+        Specify projections to read. (start, end, step)
+
+    sino : {sequence, int}, optional
+        Specify sinograms to read. (start, end, step)
+
+    Returns
+    -------
+    ndarray
+        3D tomographic data.
+
+    ndarray
+        3D flat field data.
+    """
+    image_directory = os.path.abspath(image_directory)
+    tomo_name = os.path.join(image_directory, 'radios', file_pattern)
+    flat_name = os.path.join(image_directory, 'flats', file_pattern)
+
+    tomo = dxreader.read_xrm_stack(
+        tomo_name, ind=tomo_indices, digit=file_digits, slc=(sino, proj))
+    flat = dxreader.read_xrm_stack(
+        flat_name, ind=flat_indices, digit=file_digits, slc=(sino, None))
+    return tomo, flat
 
 def read_aps_13bm(fname, format, proj=None, sino=None):
     """
@@ -562,10 +604,10 @@ def read_aps_26id(fname, ind_tomo, ind_flat, proj=None, sino=None):
     fname : str
         Path to data folder name without indices and extension.
 
-    ind_tomo : list of int, optional
+    ind_tomo : list of int
         Indices of the projection files to read.
 
-    ind_flat : list of int, optional
+    ind_flat : list of int
         Indices of the flat field files to read.
 
     proj : {sequence, int}, optional
