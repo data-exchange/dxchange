@@ -102,8 +102,6 @@ def get_extension(fname):
 
 def remove_trailing_digits(text):
     number_of_digits = len(re.search('\d+$', text).group()) #get the number of digits at the end of the filename
-    print(text)
-    print(number_of_digits)
     text = ''.join(text[:-number_of_digits])
     return (text, number_of_digits)
     

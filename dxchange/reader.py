@@ -221,7 +221,7 @@ def read_xrm(fname, slc=None):
     _log_imported_data(fname, arr)
     return arr
 
-def read_xrm_stack(fname, ind, digit, slc=None):
+def read_xrm_stack(fname, ind, slc=None):
     """
     Read data from stack of xrm files in a folder.
 
@@ -231,8 +231,6 @@ def read_xrm_stack(fname, ind, digit, slc=None):
         One of the file names in the tiff stack.
     ind : list of int
         Indices of the files to read.
-    digit : int
-        Number of digits used in indexing stacked files.
     slc : sequence of tuples, optional
         Range of values for slicing data in each axis.
         ((start_1, end_1, step_1), ... , (start_N, end_N, step_N))
@@ -244,18 +242,17 @@ def read_xrm_stack(fname, ind, digit, slc=None):
         Output 3D image.
     """
     fname = _check_read(fname)
-    list_fname = _list_file_stack(fname, ind, digit)
+    list_fname = _list_file_stack(fname, ind)
 
     arr = _init_ole_arr_from_stack(list_fname[0], len(ind), slc)
     for m, fname in enumerate(list_fname):
         arr[m] = read_xrm(fname, slc)
     _log_imported_data(fname, arr)
     return arr
-
-
+    
 def _log_imported_data(fname, arr):
     logger.debug('Data shape & type: %s %s', arr.shape, arr.dtype)
-    logger.info('Data succesfully imported: %s', fname)
+    logger.info('Data successfully imported: %s', fname)
 
 
 def _init_arr_from_stack(fname, nfile, slc):

@@ -491,7 +491,7 @@ def read_aps_7bm(fname, proj=None, sino=None):
     theta = dxreader.read_hdf5(fname, theta_grp, slc=(proj, ))
     return tomo, theta
 
-def read_aps_8bm(image_directory, tomo_indices, flat_indices, file_pattern='image_00000.xrm', file_digits=5, proj=None, sino=None):
+def read_aps_8bm(image_directory, tomo_indices, flat_indices, image_file_pattern='image_00000.xrm', flat_file_pattern='ref_00000.xrm', proj=None, sino=None):
     """
     Read APS 8-BM tomography data from a stack of xrm files.
     
@@ -524,13 +524,14 @@ def read_aps_8bm(image_directory, tomo_indices, flat_indices, file_pattern='imag
         3D flat field data.
     """
     image_directory = os.path.abspath(image_directory)
-    tomo_name = os.path.join(image_directory, 'radios', file_pattern)
-    flat_name = os.path.join(image_directory, 'flats', file_pattern)
+    tomo_name = os.path.join(image_directory, 'radios', image_file_pattern)
+    flat_name = os.path.join(image_directory, 'flats', flat_file_pattern)
 
     tomo = dxreader.read_xrm_stack(
-        tomo_name, ind=tomo_indices, digit=file_digits, slc=(sino, proj))
+        tomo_name, ind=tomo_indices, slc=(sino, proj))
+    
     flat = dxreader.read_xrm_stack(
-        flat_name, ind=flat_indices, digit=file_digits, slc=(sino, None))
+        flat_name, ind=flat_indices, slc=(sino, None))
     return tomo, flat
 
 def read_aps_13bm(fname, format, proj=None, sino=None):
