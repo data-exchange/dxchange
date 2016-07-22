@@ -509,6 +509,12 @@ def read_aps_8bm(image_directory, tomo_indices, flat_indices, image_file_pattern
     file_digits: int
         Number of digits in the filename counter.
         
+    image_file_pattern: string
+        Specify how the projection files are named.
+    
+    flat_file_pattern: string
+        Specify how the flat reference files are named.
+    
     proj : {sequence, int}, optional
         Specify projections to read. (start, end, step)
 
