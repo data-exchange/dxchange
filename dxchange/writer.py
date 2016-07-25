@@ -164,9 +164,46 @@ def _init_write(arr, fname, ext, dtype, overwrite):
     return fname, arr
 
 
+def _write_hdf5_dataset(h5object, data, dname, appendaxis, maxshape):
+    """
+    Create a dataset and write data to a specific hdf5 object
+    (file or group).
+
+    Parameters
+    ----------
+    h5object: h5py object
+        hdf5 object to write the dataset to.
+    data : ndarray
+        Array data to be saved.
+    dname : str
+        dataset name
+    appendaxis : int
+        Axis of dataset to which data will be appended.
+        If given will create a resizable dataset.
+    maxshape: tuple
+        maxshape of resizable dataset.
+        Only used if dataset has not been created.
+    """
+    if appendaxis is not None:
+        if dname not in h5object:
+            h5object.create_dataset(dname, data=data,
+                                    maxshape=maxshape)
+        else:
+            size = h5object[dname].shape
+            newsize = list(size)
+            newsize[appendaxis] += data.shape[appendaxis]
+            h5object[dname].resize(newsize)
+
+            slices = 3*[slice(None, None, None), ]
+            slices[appendaxis] = slice(size[appendaxis], None, None)
+            h5object[dname][tuple(slices)] = data
+    else:
+        h5object.create_dataset(dname, data=data)
+
+
 def write_hdf5(
-        data, fname='tmp/data.h5', gname='exchange',
-        dtype=None, overwrite=False):
+        data, fname='tmp/data.h5', gname='exchange', dname='data',
+        dtype=None, overwrite=False, appendaxis=None, maxsize=None):
     """
     Write data to hdf5 file in a specific group.
 
@@ -179,17 +216,36 @@ def write_hdf5(
         will be appended if it does not already have one.
     gname : str, optional
         Path to the group inside hdf5 file where data will be written.
+    dname : str, optional
+        Name for dataset where data will be written.
     dtype : data-type, optional
         By default, the data-type is inferred from the input data.
     overwrite: bool, optional
         if True, overwrites the existing file if the file exists.
+    appendaxis: int, optional
+        Axis where data is to be appended to.
+        Must be given when creating a resizable dataset.
+    maxsizee: int, optional
+        Maximum size that the dataset can be resized to along the
+        given axis.
     """
+    mode = 'w' if overwrite else 'a'
+
+    if appendaxis is not None:
+        overwrite = True  # True if appending to file so fname is not changed
+        maxshape = list(data.shape)
+        maxshape[appendaxis] = maxsize
+
+
     fname, data = _init_write(data, fname, '.h5', dtype, overwrite)
-    f = h5py.File(fname, 'w')
-    ds = f.create_dataset('implements', data=gname)
-    exchangeGrp = f.create_group(gname)
-    ds = exchangeGrp.create_dataset('data', data=data)
-    f.close()
+
+    with h5py.File(fname, mode=mode) as f:
+        if 'implements' not in f:
+            f.create_dataset('implements', data=gname)
+        if gname not in f:
+            f.create_group(gname)
+        _write_hdf5_dataset(f[gname], data, dname,
+                            appendaxis, maxshape)
 
 
 def write_dxf(
