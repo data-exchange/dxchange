@@ -314,7 +314,7 @@ def read_als_832h5(fname, ind_tomo=None, ind_flat=None, ind_dark=None,
         dark = dxreader.read_hdf5_stack(dgroup, dark_name, ind_dark, slc=(None, sino),
                                         out_ind=group_dark)
 
-    return tomo, flat, dark
+    return tomo, flat, dark, group_flat
 
 
 def read_anka_topotomo(
