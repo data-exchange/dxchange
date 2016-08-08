@@ -106,7 +106,8 @@ olefile = _check_import('olefile')
 # is very useful, unless we are automatically mapping an extension to a
 # function.
 def _check_read(fname):
-    known_extensions = ['.edf', '.tiff', '.tif', '.h5', '.hdf', '.npy', '.xrm', '.txrm']
+    known_extensions = ['.edf', '.tiff', '.tif', '.h5', '.hdf', '.npy', '.xrm',
+                        '.txrm']
     if not isinstance(fname, six.string_types):
         logger.error('File name must be a string')
     else:
@@ -201,11 +202,12 @@ def read_xrm(fname, slc=None):
     except IOError:
         print('No such file or directory: %s', fname)
         return False
-
+    
     n_cols = _read_label(ole, 'ImageInfo/ImageWidth', '<I')
     n_rows = _read_label(ole, 'ImageInfo/ImageHeight', '<I')
     d_type = _read_label(ole, 'ImageInfo/DataType', '<1I')
-
+    theta = _read_ole_data(ole, 'ImageInfo/Angles', "<1f")[0]
+    
     # 10 float; 5 uint16 (unsigned 16-bit (2-byte) integers)
     if d_type == 10:
         struct_fmt = "<{}f".format(n_cols*n_rows)
@@ -219,7 +221,7 @@ def read_xrm(fname, slc=None):
     arr = np.swapaxes(arr,0,1)
     arr = _slice_array(arr, slc)
     _log_imported_data(fname, arr)
-    return arr
+    return arr, theta
 
 def read_xrm_stack(fname, ind, slc=None):
     """
@@ -244,12 +246,15 @@ def read_xrm_stack(fname, ind, slc=None):
     fname = _check_read(fname)
     list_fname = _list_file_stack(fname, ind)
 
-    arr = _init_ole_arr_from_stack(list_fname[0], len(ind), slc)
-    for m, fname in enumerate(list_fname):
-        arr[m] = read_xrm(fname, slc)
-    _log_imported_data(fname, arr)
-    return arr
+    number_of_images = len(ind)
+    arr = _init_ole_arr_from_stack(list_fname[0], number_of_images, slc)
+    thetas = np.zeros(number_of_images)
 
+    for m, fname in enumerate(list_fname):
+        arr[m], thetas[m] = read_xrm(fname, slc)
+    _log_imported_data(fname, arr)
+    return arr, thetas
+    
 def read_txrm(file_name, slice_range=None):
     """
     Read data from a txrm file, a compilation of xrm files.
@@ -276,13 +281,15 @@ def read_txrm(file_name, slice_range=None):
         print('No such file or directory: %s', file_name)
         return False
     
+    
     number_of_columns = _read_label(ole, 'ImageInfo/ImageWidth', '<I')
     number_of_rows = _read_label(ole, 'ImageInfo/ImageHeight', '<I')
     data_type = _read_label(ole, 'ImageInfo/DataType', '<1I')
-
     number_of_images = _read_ole_data(ole, "ImageInfo/NoOfImages", "<I")[0]
-    
-    image_info_array = np.empty((number_of_columns, number_of_rows, number_of_images), dtype=np.float32)
+    thetas = _read_ole_data(ole, 'ImageInfo/Angles', "<{0}f".format(number_of_images))
+        
+    image_info_array = np.empty((number_of_columns, number_of_rows, number_of_images),
+                                dtype=np.float32)
     for i in range(1, number_of_images+1):
         img_string = "ImageData{}/Image{}".format(int(np.ceil(i/100.0)), int(i))
         stream = ole.openstream(img_string)
@@ -296,7 +303,9 @@ def read_txrm(file_name, slice_range=None):
             print("Wrong data type")
             return False
         
-        image_info_array[:,:,i-1] = np.reshape(struct.unpack(struct_fmt, data), (number_of_columns, number_of_rows), order='F')
+        image_info_array[:,:,i-1] = np.reshape(struct.unpack(struct_fmt, data),
+                                               (number_of_columns, number_of_rows), 
+                                               order='F')
     
     image_info_array = np.swapaxes(image_info_array,1,2)
     
@@ -304,12 +313,11 @@ def read_txrm(file_name, slice_range=None):
     _log_imported_data(file_name, image_info_array)
     
     ole.close()
-    return image_info_array
+    return image_info_array, thetas
     
 def _log_imported_data(fname, arr):
     logger.debug('Data shape & type: %s %s', arr.shape, arr.dtype)
     logger.info('Data successfully imported: %s', fname)
-
 
 def _init_arr_from_stack(fname, nfile, slc):
     """
@@ -324,11 +332,10 @@ def _init_ole_arr_from_stack(fname, nfile, slc):
     """
     Initialize numpy array from files in a folder.
     """
-    _arr = read_xrm(fname, slc)
+    _arr, theta = read_xrm(fname, slc)
     size = (nfile, _arr.shape[0], _arr.shape[1])
     logger.debug('Data initialized with size: %s', size)
     return np.zeros(size, dtype=_arr.dtype)
-
 
 def read_edf(fname, slc=None):
     """

@@ -491,7 +491,9 @@ def read_aps_7bm(fname, proj=None, sino=None):
     theta = dxreader.read_hdf5(fname, theta_grp, slc=(proj, ))
     return tomo, theta
 
-def read_aps_8bm(image_directory, tomo_indices, flat_indices, image_file_pattern='image_00000.xrm', flat_file_pattern='ref_00000.xrm', proj=None, sino=None):
+def read_aps_8bm(image_directory, tomo_indices, flat_indices, 
+                 image_file_pattern='image_00000.xrm', 
+                 flat_file_pattern='ref_00000.xrm', proj=None, sino=None):
     """
     Read APS 8-BM tomography data from a stack of xrm files.
     
@@ -533,12 +535,12 @@ def read_aps_8bm(image_directory, tomo_indices, flat_indices, image_file_pattern
     tomo_name = os.path.join(image_directory, 'radios', image_file_pattern)
     flat_name = os.path.join(image_directory, 'flats', flat_file_pattern)
 
-    tomo = dxreader.read_xrm_stack(
+    tomo, thetas = dxreader.read_xrm_stack(
         tomo_name, ind=tomo_indices, slc=(sino, proj))
     
-    flat = dxreader.read_xrm_stack(
+    flat, _ = dxreader.read_xrm_stack(
         flat_name, ind=flat_indices, slc=(sino, None))
-    return tomo, flat
+    return tomo, flat, thetas
 
 def read_aps_13bm(fname, format, proj=None, sino=None):
     """
@@ -635,11 +637,11 @@ def read_aps_26id(fname, ind_tomo, ind_flat, proj=None, sino=None):
     tomo_name = os.path.join(fname, 'radios', 'image_00000.xrm')
     flat_name = os.path.join(fname, 'flats', 'image_00000.xrm')
 
-    tomo = dxreader.read_xrm_stack(
+    tomo, thetas = dxreader.read_xrm_stack(
         tomo_name, ind=ind_tomo, digit=5, slc=(sino, proj))
-    flat = dxreader.read_xrm_stack(
+    flat, _ = dxreader.read_xrm_stack(
         flat_name, ind=ind_flat, digit=5, slc=(sino, None))
-    return tomo, flat
+    return tomo, flat, thetas
 
 
 def read_aps_32id(fname, exchange_rank=0, proj=None, sino=None):
