@@ -675,7 +675,7 @@ def _map_loc(ind, loc):
     min_loc = low - buff
     max_loc = upp + buff
     loc = np.intersect1d(loc[loc > min_loc], loc[loc < max_loc])
-    new_upp = len(ind)
+    new_upp = len(ind) - 1
     loc = (new_upp * (loc - low)) // (upp - low)
     if loc[0] < 0:
         loc[0] = 0
