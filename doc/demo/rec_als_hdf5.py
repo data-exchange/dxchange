@@ -19,16 +19,16 @@ if __name__ == '__main__':
     end = 16
 
     # Read the ALS raw data.
-    proj, flat, dark = dxchange.read_als_832h5(fname, sino=(start, end))
+    proj, flat, dark, grp_flat = dxchange.read_als_832h5(fname, sino=(start, end))
 
     # Set data collection angles as equally spaced between 0-180 degrees.
     theta = tomopy.angles(proj.shape[0], 0, 180)
 
     # Flat-field correction of raw data.
-    proj = tomopy.normalize(proj, flat, dark)
+    proj = tomopy.normalize_nf(proj, flat, dark, grp_flat)
 
     # Find rotation center.
-    rot_center = tomopy.find_center(proj, theta, emission=False, init=1024, ind=0, tol=0.5)
+    rot_center = tomopy.find_center(proj, theta, init=1024, ind=0, tol=0.5)
     print("Center of rotation:", rot_center)
 
     proj = tomopy.minus_log(proj)
