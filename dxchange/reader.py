@@ -675,7 +675,7 @@ def _map_loc(ind, loc):
     min_loc = low - buff
     max_loc = upp + buff
     loc = np.intersect1d(loc[loc > min_loc], loc[loc < max_loc])
-    new_upp = len(ind)
+    new_upp = len(ind) - 1
     loc = (new_upp * (loc - low)) // (upp - low)
     if loc[0] < 0:
         loc[0] = 0
@@ -744,7 +744,7 @@ def read_hdf5_stack(h5group, dname, ind, digit=4, slc=None, out_ind=None):
             fname = (writer.get_body(name).split('/')[-1] + '_' + digit * '0' +
                      writer.get_extension(name))
             list_fname_.extend(_list_file_stack(fname, out_ind, digit))
-        list_fname = list_fname_
+        list_fname = sorted(list_fname_, key=lambda x: str(x).split('_')[-1])
 
     for m, image in enumerate(list_fname):
         _arr = h5group[image]
