@@ -641,7 +641,7 @@ def read_aps_32id(fname, exchange_rank=0, proj=None, sino=None):
     dark = dxreader.read_hdf5(fname, dark_grp, slc=(None, sino))
     theta = dxreader.read_hdf5(fname, theta_grp, slc=None)
 
-    if theta == None:
+    if (theta is None):
         pass
     else:
         theta = theta * np.pi / 180.
