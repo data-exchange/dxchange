@@ -101,9 +101,15 @@ def get_extension(fname):
     return '.' + fname.split(".")[-1]
 
 def remove_trailing_digits(text):
-    number_of_digits = len(re.search('\d+$', text).group()) #get the number of digits at the end of the filename
-    text = ''.join(text[:-number_of_digits])
-    return (text, number_of_digits)
+    digit_string = re.search('\d+$', text)
+    if digit_string is not None:
+        number_of_digits = len(digit_string.group()) #get the number of digits at the end of the filename
+        text = ''.join(text[:-number_of_digits])
+        return (text, number_of_digits)
+    else:
+        return (text, 0)
+        
+    
     
     
 def _init_dirs(fname):

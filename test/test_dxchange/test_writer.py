@@ -52,6 +52,11 @@ from __future__ import (absolute_import, division, print_function,
 from numpy.testing.utils import assert_equal
 import dxchange.writer as writer
 
+
+def test_remove_trailing_digits_handles_not_having_digits():
+    text, digits = writer.remove_trailing_digits("someText")
+    assert_equal(text, "someText")
+    
 def test_remove_trailing_digits_removes_zeroes():
     text, digits = writer.remove_trailing_digits("someText0000")
     assert_equal(text, "someText")
