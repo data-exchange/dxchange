@@ -51,6 +51,9 @@ from __future__ import (absolute_import, division, print_function,
 
 from numpy.testing.utils import assert_equal
 from dxchange import reader 
+import numpy
+import os
+
 
 def test_list_file_stack_one_digit():
     file_stack = reader._list_file_stack("path/image_0.xrm", [1,2])
@@ -63,6 +66,10 @@ def test_list_file_stack_five_digits():
 def test_list_file_stack_ten_digits():
     file_stack = reader._list_file_stack("path/image_0000000000.xrm", [1,2])
     assert_equal(file_stack, ["path/image_0000000001.xrm", "path/image_0000000002.xrm"])
+    
+def test_list_file_stack_underscore_split_digits():
+    file_stack = reader._list_file_stack("path/image_00000_00000.xrm", [1,2])
+    numpy.testing.utils.assert_equal(file_stack, ["path/image_00000_00001.xrm", "path/image_00000_00002.xrm"])
     
 if __name__ == '__main__':
     import nose
