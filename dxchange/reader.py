@@ -206,8 +206,11 @@ def read_xrm(fname, slc=None):
     n_cols = _read_label(ole, 'ImageInfo/ImageWidth', '<I')
     n_rows = _read_label(ole, 'ImageInfo/ImageHeight', '<I')
     d_type = _read_label(ole, 'ImageInfo/DataType', '<1I')
-    theta = _read_ole_data(ole, 'ImageInfo/Angles', "<1f")[0]
-    
+    theta = _read_ole_data(ole, 'ImageInfo/Angles', '<1f')[0]
+    x_position = _read_ole_data(ole, 'ImageInfo/XPosition', '<1f')
+    y_position = _read_ole_data(ole, 'ImageInfo/YPosition', '<1f')
+    metadata = {'theta':theta, 'x_position':x_position, 'y_position':y_position}
+
     # 10 float; 5 uint16 (unsigned 16-bit (2-byte) integers)
     if d_type == 10:
         struct_fmt = "<{}f".format(n_cols*n_rows)
