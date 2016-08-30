@@ -40,7 +40,7 @@ if __name__ == '__main__':
     proj = tomopy.normalize(proj, flat, dark)
 
     # Find rotation center.
-    rot_center = tomopy.find_center(proj, theta, emission=False, init=1024,
+    rot_center = tomopy.find_center(proj, theta, init=1024,
                                     ind=0, tol=0.5)
     print("Center of rotation: ", rot_center)
 
