@@ -83,6 +83,7 @@ import struct
 from contextlib import contextmanager
 import dxchange.writer as writer
 from dxchange.dtype import empty_shared_array
+import warnings
 
 logger = logging.getLogger(__name__)
 
@@ -145,7 +146,7 @@ def read_tiff(fname, slc=None):
     return arr
 
 
-def read_tiff_stack(fname, ind, digit, slc=None):
+def read_tiff_stack(fname, ind, digit=None, slc=None):
     """
     Read data from stack of tiff files in a folder.
 
@@ -156,7 +157,7 @@ def read_tiff_stack(fname, ind, digit, slc=None):
     ind : list of int
         Indices of the files to read.
     digit : int
-        Number of digits used in indexing stacked files.
+        (Deprecated) Number of digits used in indexing stacked files.
     slc : sequence of tuples, optional
         Range of values for slicing data in each axis.
         ((start_1, end_1, step_1), ... , (start_N, end_N, step_N))
@@ -633,7 +634,7 @@ def _shape_after_slice(shape, slc):
     return tuple(new_shape)
 
 
-def _list_file_stack(fname, ind):
+def _list_file_stack(fname, ind, digit=None):
     """
     Return a stack of file names in a folder as a list.
 
@@ -644,9 +645,15 @@ def _list_file_stack(fname, ind):
     ind : list of int
         Indices of the files to read.
     digit : int
-        Number of digits in indexing stacked files.
+        Deprecated input for the number of digits in all indexes 
+        of the stacked files.
     """
 
+    if (digit is not None):
+        warnings.warn(("The 'digit' argument is deprecated and no longer used."  
+                      "  It may be removed completely in a later version."),
+                      FutureWarning)
+                      
     body = writer.get_body(fname)
     body, digits = writer.remove_trailing_digits(body)
     
@@ -779,7 +786,7 @@ def read_hdf5_stack(h5group, dname, ind, digit=4, slc=None, out_ind=None):
         Indices of the datasets to be read
 
     digit : int
-        Number of digits indexing the stacked datasets
+        (Deprecated) Number of digits indexing the stacked datasets
 
     slc : {sequence, int}
         Range of values for slicing data.

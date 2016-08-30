@@ -653,7 +653,7 @@ def read_aps_32id(fname, exchange_rank=0, proj=None, sino=None):
 
     exchange_rank : int, optional
         exchange_rank is added to "exchange" to point tomopy to the data
-        to recontruct. if rank is not set then the data are raw from the
+        to reconstruct. if rank is not set then the data are raw from the
         detector and are located under exchange = "exchange/...", to process
         data that are the result of some intemedite processing step then
         exchange_rank = 1, 2, ... will direct tomopy to process
