@@ -411,7 +411,7 @@ def read_hdf5(fname, dataset, slc=None, dtype=None, shared=True):
                 arr = empty_shared_array(shape, dtype)
             else:
                 arr = np.empty(shape, dtype)
-            data.read_direct(arr, _fix_slice(slc))
+            data.read_direct(arr, _make_slice_object_a_tuple(slc))
     except KeyError:
         return None
     _log_imported_data(fname, arr)
@@ -503,12 +503,11 @@ def read_spe(fname, slc=None):
     return arr
 
 
-def _fix_slice(slc):
+def _make_slice_object_a_tuple(slc):
     """
     Fix up a slc object to be tuple of slices.
-    slc = None is treated as no slc
+    slc = None returns None
     slc is container and each element is converted into a slice object
-    None is treated as slice(None)
 
     Parameters
     ----------
@@ -608,7 +607,7 @@ def _slice_array(arr, slc):
     if slc is None:
         logger.debug('No slicing applied to image')
         return arr[:]
-    axis_slice = _fix_slice(slc)
+    axis_slice = _make_slice_object_a_tuple(slc)
     logger.debug('Data sliced according to: %s', axis_slice)
     return arr[axis_slice]
 
@@ -630,7 +629,7 @@ def _shape_after_slice(shape, slc):
     if slc is None:
         return shape
     new_shape = list(shape)
-    slc = _fix_slice(slc)
+    slc = _make_slice_object_a_tuple(slc)
     for m, s in enumerate(slc):
         # indicies will perform wrapping and such for the shape
         start, stop, step = s.indices(shape[m])
