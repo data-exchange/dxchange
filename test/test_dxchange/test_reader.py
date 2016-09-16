@@ -49,28 +49,44 @@
 from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
 
-from numpy.testing.utils import assert_equal
-from dxchange import reader 
-import numpy
+import unittest
+from dxchange import reader
+import numpy as np
 import os
 
 
-def test_list_file_stack_one_digit():
-    file_stack = reader._list_file_stack("path/image_0.xrm", [1,2])
-    assert_equal(file_stack, ["path/image_1.xrm", "path/image_2.xrm"])
 
-def test_list_file_stack_five_digits():
-    file_stack = reader._list_file_stack("someFile/someOtherFile/imageOfSorts_00000.xrm", [1,2])
-    assert_equal(file_stack, ["someFile/someOtherFile/imageOfSorts_00001.xrm", "someFile/someOtherFile/imageOfSorts_00002.xrm"])
 
-def test_list_file_stack_ten_digits():
-    file_stack = reader._list_file_stack("path/image_0000000000.xrm", [1,2])
-    assert_equal(file_stack, ["path/image_0000000001.xrm", "path/image_0000000002.xrm"])
-    
-def test_list_file_stack_underscore_split_digits():
-    file_stack = reader._list_file_stack("path/image_00000_00000.xrm", [1,2])
-    numpy.testing.utils.assert_equal(file_stack, ["path/image_00000_00001.xrm", "path/image_00000_00002.xrm"])
-    
-if __name__ == '__main__':
-    import nose
-    nose.runmodule(exit=False)
+class list_file_stack_test_case(unittest.TestCase):
+    def test_list_file_stack_one_digit(self):
+        file_stack = reader._list_file_stack("path/image_0.xrm", [1, 2])
+        np.testing.utils.assert_equal(
+            file_stack, ["path/image_1.xrm", "path/image_2.xrm"])
+
+    def test_list_file_stack_five_digits(self):
+        file_stack = reader._list_file_stack(
+            "path/image_00000.xrm", [1, 2])
+        np.testing.utils.assert_equal(
+            file_stack,
+            ["path/image_00001.xrm", "path/image_00002.xrm"])
+
+    def test_list_file_stack_ten_digits(self):
+        file_stack = reader._list_file_stack(
+            "path/image_0000000000.xrm", [1, 2])
+        np.testing.utils.assert_equal(
+            file_stack,
+            ["path/image_0000000001.xrm", "path/image_0000000002.xrm"])
+
+    def test_list_file_stack_underscore_split_digits(self):
+        file_stack = reader._list_file_stack(
+            "path/image_00000_00000.xrm", [1, 2])
+        np.testing.utils.assert_equal(
+            file_stack,
+            ["path/image_00000_00001.xrm", "path/image_00000_00002.xrm"])
+
+    def test_list_file_stack_long_path(self):
+        file_stack = reader._list_file_stack(
+            "someFile/otherFile/image_0.xrm", [1, 2])
+        np.testing.utils.assert_equal(
+            file_stack,
+            ["someFile/otherFile/image_1.xrm", "someFile/otherFile/image_2.xrm"])
