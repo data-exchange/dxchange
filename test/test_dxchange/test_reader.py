@@ -49,84 +49,113 @@
 from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
 
-import numpy
+import unittest
 from dxchange import reader
+import numpy as np
 import os
-
 
 THIS_DIR = os.path.dirname(os.path.dirname(__file__))
 
-def test_read_xrm_reads_an_xrm_file():
-    image_data, theta = reader.read_xrm(os.path.join(THIS_DIR, "test_data/test_chip00.xrm"), [1,2])
-    numpy.testing.utils.assert_(image_data is not False)
-    numpy.testing.utils.assert_(theta is not False)
-    
-    
-def test_read_txrm_reads_a_txrm_file():
-    image_data, thetas = reader.read_txrm(os.path.join(THIS_DIR, "test_data/txrm_test_chip_tomo.txrm"), [1,2])
-    numpy.testing.utils.assert_(image_data is not False)
-    numpy.testing.utils.assert_(thetas is not False)
-    
-def test_read_xrm_stack_reads_multiple_xrms():
-    image_data, thetas = reader.read_xrm_stack(os.path.join(THIS_DIR, "test_data/test_chip00.xrm"), [0,1])
-    numpy.testing.utils.assert_(image_data is not False)
-    numpy.testing.utils.assert_(thetas is not False)
-    
-#def test_read_hdf5():
-#    file_data = reader.read_hdf5("test/test_data/reader.h5", [1,2])
-#    numpy.testing.utils.assert_(file_data is not False)
 
-def test_read_xrm_gets_theta():
-    array_data, theta = reader.read_xrm(os.path.join(THIS_DIR, "test_data/test_chip00.xrm"), [1,2])
-    numpy.testing.utils.assert_equal(theta, -0.06000000238418579)
-    
-#def test_read_xrm_handles_ref_image():
-#    array_data, theta = reader.read_xrm("test/test_data/test_flat.xrm", [1,2])
-# Need a good flat ref test image  
-  
-def test_read_xrm_stack_gets_theta_set():
-    image_data, thetas = reader.read_txrm(os.path.join(THIS_DIR, "test_data/txrm_test_chip_tomo.txrm"), [1,2])
-    numpy.testing.utils.assert_equal(thetas, (-45.018001556396484, 
-                                              -30.01412582397461, 
-                                              -15.01412582397461, 
-                                              -0.014125000685453415, 
-                                              14.985876083374023, 
-                                              29.985876083374023, 
-                                              44.985877990722656)
-)
+class read_files_test_case(unittest.TestCase):
+    def test_read_xrm_reads_an_xrm_file(self):
+        image_data, theta = reader.read_xrm(
+            os.path.join(THIS_DIR, "test_data/test_chip00.xrm"), [1, 2])
+        np.testing.utils.assert_(image_data is not False)
+        np.testing.utils.assert_(theta is not False)
 
-    
-def test_read_txrm_gets_theta_set():
-    array_data, thetas = reader.read_txrm(os.path.join(THIS_DIR, "test_data/txrm_test_chip_tomo.txrm"), [1,2])
-    numpy.testing.utils.assert_equal(thetas, (-45.018001556396484, 
-                                              -30.01412582397461,
-                                              -15.01412582397461, 
-                                              -0.014125000685453415, 
-                                              14.985876083374023, 
-                                              29.985876083374023, 
-                                              44.985877990722656))
+    def test_read_txrm_reads_a_txrm_file(self):
+        image_data, thetas = reader.read_txrm(
+            os.path.join(
+                THIS_DIR, "test_data/txrm_test_chip_tomo.txrm"), [1, 2])
+        np.testing.utils.assert_(image_data is not False)
+        np.testing.utils.assert_(thetas is not False)
 
-def test_slice_array_does_not_slice_when_not_given_a_slice_range():
-    test_array = [1,2,3]
-    test_array = reader._slice_array(test_array, None)
-    numpy.testing.utils.assert_equal(test_array, [1,2,3])
-    
-def test_slice_array_slices_when_given_a_slice_range():
-    test_array = reader._slice_array(numpy.array([[1,2,3,],[1,2,3]]),[1,2])
-    numpy.testing.utils.assert_equal(test_array, numpy.array([[1,2]]))
-    
-def test_list_file_stack_one_digit():
-    file_stack = reader._list_file_stack("path/image_0.xrm", [1,2])
-    numpy.testing.utils.assert_equal(file_stack, ["path/image_1.xrm", "path/image_2.xrm"])
+    def test_read_xrm_stack_reads_multiple_xrms(self):
+        image_data, thetas = reader.read_xrm_stack(
+            os.path.join(THIS_DIR, "test_data/test_chip00.xrm"), [0, 1])
+        np.testing.utils.assert_(image_data is not False)
+        np.testing.utils.assert_(thetas is not False)
 
-def test_list_file_stack_five_digits():
-    file_stack = reader._list_file_stack("someFile/someOtherFile/imageOfSorts_00000.xrm", [1,2])
-    numpy.testing.utils.assert_equal(file_stack, ["someFile/someOtherFile/imageOfSorts_00001.xrm", "someFile/someOtherFile/imageOfSorts_00002.xrm"])
+    # def test_read_hdf5():
+    #     file_data = reader.read_hdf5("test/test_data/reader.h5", [1,2])
+    #     np.testing.utils.assert_(file_data is not False)
 
-def test_list_file_stack_ten_digits():
-    file_stack = reader._list_file_stack("path/image_0000000000.xrm", [1,2])
-    numpy.testing.utils.assert_equal(file_stack, ["path/image_0000000001.xrm", "path/image_0000000002.xrm"])
-    
-if __name__ == '__main__':
-    import nose
-    nose.runmodule(exit=False)
+    def test_read_xrm_gets_theta(self):
+        array_data, theta = reader.read_xrm(
+            os.path.join(THIS_DIR, "test_data/test_chip00.xrm"), [1, 2])
+        np.testing.utils.assert_equal(theta, -0.06000000238418579)
+
+    # def test_read_xrm_handles_ref_image():
+    #     array_data, theta = reader.read_xrm(
+    #         "test/test_data/test_flat.xrm", [1, 2])
+    # Need a good flat ref test image
+
+    def test_read_xrm_stack_gets_theta_set(self):
+        image_data, thetas = reader.read_txrm(
+            os.path.join(
+                THIS_DIR, "test_data/txrm_test_chip_tomo.txrm"), [1, 2])
+        np.testing.utils.assert_equal(thetas, (-45.018001556396484,
+                                               -30.01412582397461,
+                                               -15.01412582397461,
+                                               -0.014125000685453415,
+                                               14.985876083374023,
+                                               29.985876083374023,
+                                               44.985877990722656))
+
+    def test_read_txrm_gets_theta_set(self):
+        array_data, thetas = reader.read_txrm(
+            os.path.join(
+                THIS_DIR, "test_data/txrm_test_chip_tomo.txrm"), [1, 2])
+        np.testing.utils.assert_equal(thetas, (-45.018001556396484,
+                                               -30.01412582397461,
+                                               -15.01412582397461,
+                                               -0.014125000685453415,
+                                               14.985876083374023,
+                                               29.985876083374023,
+                                               44.985877990722656))
+
+    def test_slice_array_does_not_slice_when_not_given_a_slice_range(self):
+        test_array = [1, 2, 3]
+        test_array = reader._slice_array(test_array, None)
+        np.testing.utils.assert_equal(test_array, [1, 2, 3])
+
+    def test_slice_array_slices_when_given_a_slice_range(self):
+        test_array = reader._slice_array(
+            np.array([[1, 2, 3, ], [1, 2, 3]]), [1, 2])
+        np.testing.utils.assert_equal(test_array, np.array([[1, 2]]))
+
+
+class list_file_stack_test_case(unittest.TestCase):
+    def test_list_file_stack_one_digit(self):
+        file_stack = reader._list_file_stack("path/image_0.xrm", [1, 2])
+        np.testing.utils.assert_equal(
+            file_stack, ["path/image_1.xrm", "path/image_2.xrm"])
+
+    def test_list_file_stack_five_digits(self):
+        file_stack = reader._list_file_stack(
+            "path/image_00000.xrm", [1, 2])
+        np.testing.utils.assert_equal(
+            file_stack,
+            ["path/image_00001.xrm", "path/image_00002.xrm"])
+
+    def test_list_file_stack_ten_digits(self):
+        file_stack = reader._list_file_stack(
+            "path/image_0000000000.xrm", [1, 2])
+        np.testing.utils.assert_equal(
+            file_stack,
+            ["path/image_0000000001.xrm", "path/image_0000000002.xrm"])
+
+    def test_list_file_stack_underscore_split_digits(self):
+        file_stack = reader._list_file_stack(
+            "path/image_00000_00000.xrm", [1, 2])
+        np.testing.utils.assert_equal(
+            file_stack,
+            ["path/image_00000_00001.xrm", "path/image_00000_00002.xrm"])
+
+    def test_list_file_stack_long_path(self):
+        file_stack = reader._list_file_stack(
+            "someFile/otherFile/image_0.xrm", [1, 2])
+        np.testing.utils.assert_equal(
+            file_stack,
+            ["someFile/otherFile/image_1.xrm", "someFile/otherFile/image_2.xrm"])
