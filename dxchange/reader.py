@@ -53,6 +53,18 @@ Module for importing data files.
 from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
 
+import numpy as np
+import six
+import os
+import h5py
+import logging
+import re
+import math
+import struct
+from contextlib import contextmanager
+import dxchange.writer as writer
+from dxchange.dtype import empty_shared_array
+import warnings
 
 __author__ = "Doga Gursoy, Francesco De Carlo"
 __copyright__ = "Copyright (c) 2015-2016, UChicago Argonne, LLC."
@@ -70,20 +82,6 @@ __all__ = ['read_edf',
            'read_xrm_stack',
            'read_txrm',
            'read_hdf5_stack']
-
-
-import numpy as np
-import six
-import os
-import h5py
-import logging
-import re
-import math
-import struct
-from contextlib import contextmanager
-import dxchange.writer as writer
-from dxchange.dtype import empty_shared_array
-import warnings
 
 logger = logging.getLogger(__name__)
 
@@ -107,7 +105,8 @@ olefile = _check_import('olefile')
 # is very useful, unless we are automatically mapping an extension to a
 # function.
 def _check_read(fname):
-    known_extensions = ['.edf', '.tiff', '.tif', '.h5', '.hdf', '.npy', '.xrm', '.txrm']
+    known_extensions = ['.edf', '.tiff', '.tif', '.h5', '.hdf', '.npy', '.xrm',
+                        '.txrm', '.txm']
     if not isinstance(fname, six.string_types):
         logger.error('File name must be a string')
     else:
@@ -177,6 +176,7 @@ def read_tiff_stack(fname, ind, digit=None, slc=None):
     _log_imported_data(fname, arr)
     return arr
 
+
 def read_xrm(fname, slc=None):
     """
     Read data from xrm file.
@@ -203,24 +203,34 @@ def read_xrm(fname, slc=None):
         print('No such file or directory: %s', fname)
         return False
 
-    n_cols = _read_label(ole, 'ImageInfo/ImageWidth', '<I')
-    n_rows = _read_label(ole, 'ImageInfo/ImageHeight', '<I')
-    d_type = _read_label(ole, 'ImageInfo/DataType', '<1I')
+    metadata = read_ole_metadata(ole)
 
     # 10 float; 5 uint16 (unsigned 16-bit (2-byte) integers)
-    if d_type == 10:
-        struct_fmt = "<{}f".format(n_cols*n_rows)
-    elif d_type == 5:                   
-        struct_fmt = "<{}h".format(n_cols*n_rows)
-    
+    if metadata["data_type"] == 10:
+        struct_fmt = "<{}f".format(
+            metadata["image_width"] * metadata["image_height"])
+    elif metadata["data_type"] == 5:
+        struct_fmt = "<{}h".format(
+            metadata["image_width"] * metadata["image_height"])
+
     img = _read_ole_data(ole, "ImageData1/Image1", struct_fmt)
 
-    arr = np.zeros((n_cols, n_rows))    
-    arr[:,:] = np.reshape(img, (n_cols, n_rows), order='F')
-    arr = np.swapaxes(arr,0,1)
+    arr = np.empty(
+        (metadata["image_width"], metadata["image_height"]), dtype=np.float32)
+    arr[:, :] = np.reshape(
+        img,
+        (
+            metadata["image_width"],
+            metadata["image_height"]
+        ),
+        order='F'
+    )
+    arr = np.swapaxes(arr, 0, 1)
     arr = _slice_array(arr, slc)
     _log_imported_data(fname, arr)
-    return arr
+    ole.close()
+    return arr, metadata
+
 
 def read_xrm_stack(fname, ind, slc=None):
     """
@@ -245,16 +255,29 @@ def read_xrm_stack(fname, ind, slc=None):
     fname = _check_read(fname)
     list_fname = _list_file_stack(fname, ind)
 
-    arr = _init_ole_arr_from_stack(list_fname[0], len(ind), slc)
+    number_of_images = len(ind)
+    arr, metadata = _init_ole_arr_from_stack(
+        list_fname[0], number_of_images, slc)
+    del metadata["thetas"][0]
+    del metadata["x_positions"][0]
+    del metadata["y_positions"][0]
+
     for m, fname in enumerate(list_fname):
-        arr[m] = read_xrm(fname, slc)
+        arr[m], angle_metadata = read_xrm(fname, slc)
+        metadata["thetas"].append(angle_metadata["thetas"][0])
+        metadata["x_positions"].append(angle_metadata["x_positions"][0])
+        metadata["y_positions"].append(angle_metadata["y_positions"][0])
+
     _log_imported_data(fname, arr)
-    return arr
+    return arr, metadata
+
 
 def read_txrm(file_name, slice_range=None):
     """
-    Read data from a txrm file, a compilation of xrm files.
-  
+    Read data from a .txrm file, a compilation of .xrm files.
+    Will also read .txm files, the reconstruction files output
+    by Zeiss software.
+
     Parameters
     ----------
     file_name : str
@@ -263,7 +286,7 @@ def read_txrm(file_name, slice_range=None):
         Range of values for slicing data in each axis.
         ((start_1, end_1, step_1), ... , (start_N, end_N, step_N))
         defines slicing parameters for each axis of the data matrix.
-  
+
     Returns
     -------
     ndarray
@@ -276,59 +299,109 @@ def read_txrm(file_name, slice_range=None):
     except IOError:
         print('No such file or directory: %s', file_name)
         return False
-    
-    number_of_columns = _read_label(ole, 'ImageInfo/ImageWidth', '<I')
-    number_of_rows = _read_label(ole, 'ImageInfo/ImageHeight', '<I')
-    data_type = _read_label(ole, 'ImageInfo/DataType', '<1I')
 
-    number_of_images = _read_ole_data(ole, "ImageInfo/NoOfImages", "<I")[0]
-    
-    image_info_array = np.empty((number_of_columns, number_of_rows, number_of_images), dtype=np.float32)
-    for i in range(1, number_of_images+1):
-        img_string = "ImageData{}/Image{}".format(int(np.ceil(i/100.0)), int(i))
+    metadata = read_ole_metadata(ole)
+
+    array_of_images = np.empty(
+        (
+            metadata["image_width"],
+            metadata["image_height"],
+            metadata["number_of_images"],
+        ),
+        dtype=np.float32
+    )
+
+    for i in range(1, metadata["number_of_images"] + 1):
+        img_string = "ImageData{}/Image{}".format(
+            int(np.ceil(i / 100.0)), int(i))
         stream = ole.openstream(img_string)
         data = stream.read()
         # 10 float; 5 uint16 (unsigned 16-bit (2-byte) integers)
-        if data_type == 10:
-            struct_fmt = "<{}f".format(number_of_columns*number_of_rows)
-        elif data_type == 5:
-            struct_fmt = "<{}h".format(number_of_columns*number_of_rows)
-        else:                            
+        if metadata["data_type"] == 10:
+            struct_fmt = "<{}f".format(
+                metadata["image_width"] * metadata["image_height"])
+        elif metadata["data_type"] == 5:
+            struct_fmt = "<{}h".format(
+                metadata["image_width"] * metadata["image_height"])
+        else:
             print("Wrong data type")
             return False
-        
-        image_info_array[:,:,i-1] = np.reshape(struct.unpack(struct_fmt, data), (number_of_columns, number_of_rows), order='F')
-    
-    image_info_array = np.swapaxes(image_info_array,1,2)
-    
-    image_info_array = _slice_array(image_info_array, slice_range)
-    _log_imported_data(file_name, image_info_array)
-    
+
+        array_of_images[:, :, i - 1] = np.reshape(
+            struct.unpack(struct_fmt, data),
+            (metadata["image_width"], metadata["image_height"],),
+            order='F'
+        )
+
+    array_of_images = np.swapaxes(array_of_images, 1, 2)
+
+    array_of_images = _slice_array(array_of_images, slice_range)
+    _log_imported_data(file_name, array_of_images)
+
     ole.close()
-    return image_info_array
-    
+    return array_of_images, metadata
+
+
+def read_txm(file_name, slice_range=None):
+    return read_txrm(file_name, slice_range)
+
+
+def read_ole_metadata(ole):
+    """
+    Read metadata from an xradia OLE file (.xrm, .txrm, .txm).
+
+    Parameters
+    ----------
+    ole : OleFileIO instance
+        An ole file to read from.
+
+    Returns
+    -------
+    tuple
+        A tuple of image metadata.
+    """
+
+    number_of_images = _read_ole_data(ole, "ImageInfo/NoOfImages", "<I")[0]
+
+    metadata = {
+        'facility': _read_ole_data(ole, 'SampleInfo/Facility', '<50s'),
+        'image_width': _read_label(ole, 'ImageInfo/ImageWidth', '<I'),
+        'image_height': _read_label(ole, 'ImageInfo/ImageHeight', '<I'),
+        'data_type': _read_label(ole, 'ImageInfo/DataType', '<1I'),
+        'number_of_images': number_of_images,
+        'thetas': list(_read_ole_data(
+            ole, 'ImageInfo/Angles', "<{0}f".format(number_of_images))),
+        'x_positions': list(_read_ole_data(
+            ole, 'ImageInfo/XPosition', "<{0}f".format(number_of_images))),
+        'y_positions': list(_read_ole_data(
+            ole, 'ImageInfo/YPosition', "<{0}f".format(number_of_images)))
+    }
+    return metadata
+
+
 def _log_imported_data(fname, arr):
     logger.debug('Data shape & type: %s %s', arr.shape, arr.dtype)
     logger.info('Data successfully imported: %s', fname)
 
 
-def _init_arr_from_stack(fname, nfile, slc):
+def _init_arr_from_stack(fname, number_of_files, slc):
     """
     Initialize numpy array from files in a folder.
     """
     _arr = read_tiff(fname, slc)
-    size = (nfile, _arr.shape[0], _arr.shape[1])
+    size = (number_of_files, _arr.shape[0], _arr.shape[1])
     logger.debug('Data initialized with size: %s', size)
-    return np.zeros(size, dtype=_arr.dtype)
+    return np.empty(size, dtype=_arr.dtype)
 
-def _init_ole_arr_from_stack(fname, nfile, slc):
+
+def _init_ole_arr_from_stack(fname, number_of_files, slc):
     """
     Initialize numpy array from files in a folder.
     """
-    _arr = read_xrm(fname, slc)
-    size = (nfile, _arr.shape[0], _arr.shape[1])
+    _arr, metadata = read_xrm(fname, slc)
+    size = (number_of_files, _arr.shape[0], _arr.shape[1])
     logger.debug('Data initialized with size: %s', size)
-    return np.zeros(size, dtype=_arr.dtype)
+    return np.empty(size, dtype=_arr.dtype), metadata
 
 
 def read_edf(fname, slc=None):
@@ -405,7 +478,7 @@ def read_hdf5(fname, dataset, slc=None, dtype=None, shared=True):
                 arr = empty_shared_array(shape, dtype)
             else:
                 arr = np.empty(shape, dtype)
-            data.read_direct(arr, _fix_slice(slc))
+            data.read_direct(arr, _make_slice_object_a_tuple(slc))
     except KeyError:
         return None
     _log_imported_data(fname, arr)
@@ -497,19 +570,18 @@ def read_spe(fname, slc=None):
     return arr
 
 
-def _fix_slice(slc):
+def _make_slice_object_a_tuple(slc):
     """
     Fix up a slc object to be tuple of slices.
-    slc = None is treated as no slc
+    slc = None returns None
     slc is container and each element is converted into a slice object
-    None is treated as slice(None)
 
     Parameters
     ----------
     slc : None or sequence of tuples
         Range of values for slicing data in each axis.
         ((start_1, end_1, step_1), ... , (start_N, end_N, step_N))
-        defines slicing parameters for each axis of the data matrix.  
+        defines slicing parameters for each axis of the data matrix.
     """
     if slc is None:
         return None  # need arr shape to create slice
@@ -602,14 +674,14 @@ def _slice_array(arr, slc):
     if slc is None:
         logger.debug('No slicing applied to image')
         return arr[:]
-    axis_slice = _fix_slice(slc)
+    axis_slice = _make_slice_object_a_tuple(slc)
     logger.debug('Data sliced according to: %s', axis_slice)
     return arr[axis_slice]
 
 
 def _shape_after_slice(shape, slc):
     """
-    Return the calculated shape of an array after it has been sliced.  
+    Return the calculated shape of an array after it has been sliced.
     Only handles basic slicing (not advanced slicing).
 
     Parameters
@@ -624,7 +696,7 @@ def _shape_after_slice(shape, slc):
     if slc is None:
         return shape
     new_shape = list(shape)
-    slc = _fix_slice(slc)
+    slc = _make_slice_object_a_tuple(slc)
     for m, s in enumerate(slc):
         # indicies will perform wrapping and such for the shape
         start, stop, step = s.indices(shape[m])
@@ -645,24 +717,25 @@ def _list_file_stack(fname, ind, digit=None):
     ind : list of int
         Indices of the files to read.
     digit : int
-        Deprecated input for the number of digits in all indexes 
+        Deprecated input for the number of digits in all indexes
         of the stacked files.
     """
 
     if (digit is not None):
-        warnings.warn(("The 'digit' argument is deprecated and no longer used."  
+        warnings.warn(("The 'digit' argument is deprecated and no longer used."
                       "  It may be removed completely in a later version."),
                       FutureWarning)
-                      
+
     body = writer.get_body(fname)
     body, digits = writer.remove_trailing_digits(body)
-    
+
     ext = writer.get_extension(fname)
     list_fname = []
     for m in ind:
         counter_string = str(m).zfill(digits)
         list_fname.append(body + counter_string + ext)
     return list_fname
+
 
 @contextmanager
 def find_dataset_group(fname):
@@ -674,7 +747,7 @@ def find_dataset_group(fname):
     ----------
     fname : str
         String defining the path of file or file name.
-    
+
     Returns
     -------
     h5py.Group
@@ -688,8 +761,8 @@ def _find_dataset_group(h5object):
     Finds the group name containing the stack of projections datasets within
     an ALS BL8.3.2 hdf5 file  containing a stack of images
     """
-    
-    # Only one root key means only one dataset in BL8.3.2 current format    
+
+    # Only one root key means only one dataset in BL8.3.2 current format
     keys = list(h5object.keys())
     if len(keys) == 1:
         if isinstance(h5object[keys[0]], h5py.Group):
@@ -750,28 +823,29 @@ def _read_label(ole, label, struct_fmt):
     """
     Reads the integer value associated with label in an ole file
     """
-    
-    if ole.exists(label):   
+
+    if ole.exists(label):
         stream = ole.openstream(label)
         data = stream.read()
         nev = struct.unpack(struct_fmt, data)
         value = np.int(nev[0])
-    
+
     return value
+
 
 def _read_ole_data(ole, label, struct_fmt):
     """
     Reads the array associated with label in an ole file
     """
 
-    if ole.exists(label):   
+    if ole.exists(label):
         stream = ole.openstream(label)
         data = stream.read()
         arr = struct.unpack(struct_fmt, data)
-    
+
     return arr
-    
-    
+
+
 def read_hdf5_stack(h5group, dname, ind, digit=4, slc=None, out_ind=None):
     """
     Read data from stacked datasets in a hdf5 file
