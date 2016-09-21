@@ -491,8 +491,9 @@ def read_aps_7bm(fname, proj=None, sino=None):
     theta = dxreader.read_hdf5(fname, theta_grp, slc=(proj, ))
     return tomo, theta
 
-def read_aps_8bm(image_directory, tomo_indices, flat_indices, 
-                 image_file_pattern='image_00000.xrm', 
+
+def read_aps_8bm(image_directory, tomo_indices, flat_indices,
+                 image_file_pattern='image_00000.xrm',
                  flat_file_pattern='ref_00000.xrm', proj=None, sino=None):
     """
     Read APS 8-BM tomography data from a stack of xrm files.
@@ -602,7 +603,9 @@ def read_aps_13id(
     return tomo
 
 
-def read_aps_26id(fname, ind_tomo, ind_flat, proj=None, sino=None):
+def read_aps_26id(image_directory, tomo_indices, flat_indices,
+                  image_file_pattern='image_00000.xrm',
+                  flat_file_pattern='ref_00000.xrm', proj=None, sino=None):
     """
     Read APS 26-ID tomography data from a stack of xrm files.
     Note: file are renamed as 
@@ -642,6 +645,8 @@ def read_aps_26id(fname, ind_tomo, ind_flat, proj=None, sino=None):
     flat, _ = dxreader.read_xrm_stack(
         flat_name, ind=ind_flat, digit=5, slc=(sino, None))
     return tomo, flat, thetas
+    return read_aps_8bm(image_directory, tomo_indices, flat_indices,
+                        image_file_pattern, flat_file_pattern, proj, sino)
 
 
 def read_aps_32id(fname, exchange_rank=0, proj=None, sino=None):
@@ -692,7 +697,7 @@ def read_aps_32id(fname, exchange_rank=0, proj=None, sino=None):
     dark = dxreader.read_hdf5(fname, dark_grp, slc=(None, sino))
     theta = dxreader.read_hdf5(fname, theta_grp, slc=None)
 
-    if theta == None:
+    if theta is None:
         pass
     else:
         theta = theta * np.pi / 180.
