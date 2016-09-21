@@ -315,7 +315,7 @@ def read_als_832h5(fname, ind_tomo=None, ind_flat=None, ind_dark=None,
         dark = dxreader.read_hdf5_stack(dgroup, dark_name, ind_dark, slc=(None, sino),
                                         out_ind=group_dark)
 
-    return tomo, flat, dark
+    return tomo, flat, dark, dxreader._map_loc(ind_tomo, group_flat)
 
 
 def read_anka_topotomo(
@@ -690,7 +690,7 @@ def read_aps_32id(fname, exchange_rank=0, proj=None, sino=None):
     dark = dxreader.read_hdf5(fname, dark_grp, slc=(None, sino))
     theta = dxreader.read_hdf5(fname, theta_grp, slc=None)
 
-    if theta is None:
+    if (theta is None):
         pass
     else:
         theta = theta * np.pi / 180.

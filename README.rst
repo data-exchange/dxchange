@@ -8,7 +8,7 @@ data analysis tools `[ref] <http://dxchange.readthedocs.org/en/latest/source/cre
 
 Documentation
 -------------
-* https://dxchange.rtfd.org
+* http://dxchange.readthedocs.io
 
 Features
 --------
