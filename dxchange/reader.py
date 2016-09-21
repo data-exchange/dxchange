@@ -772,7 +772,7 @@ def _read_ole_data(ole, label, struct_fmt):
     return arr
     
     
-def read_hdf5_stack(h5group, dname, ind, digit=4, slc=None, out_ind=None):
+def read_hdf5_stack(h5group, dname, ind, digit=4, slc=None, out_ind=None, error_if_missing=True):
     """
     Read data from stacked datasets in a hdf5 file
 
@@ -797,6 +797,9 @@ def read_hdf5_stack(h5group, dname, ind, digit=4, slc=None, out_ind=None):
         Outer level indices for files with two levels of indexing.
         i.e. [name_000_000.tif, name_000_001.tif, ..., name_000_lmn.tif,
         name_001_lmn.tif, ..., ..., name_fgh_lmn.tif]
+    error_if_missing : bool, optional
+        Whether to raise an error if a certain image is missing. If False,
+        it will keep going and return only the images that are actually available.
     """
 
     list_fname = _list_file_stack(dname, ind, digit)
@@ -807,15 +810,23 @@ def read_hdf5_stack(h5group, dname, ind, digit=4, slc=None, out_ind=None):
             fname = (writer.get_body(name).split('/')[-1] + '_' + digit * '0' +
                      writer.get_extension(name))
             list_fname_.extend(_list_file_stack(fname, out_ind, digit))
-        list_fname = sorted(list_fname_, key=lambda x: str(x).split('_')[-1])
+        list_fname = list_fname_
 
-    for m, image in enumerate(list_fname):
-        _arr = h5group[image]
-        _arr = _slice_array(_arr, slc)
-        if m == 0:
-            dx, dy, dz = _arr.shape
-            dx = len(list_fname)
-            arr = np.empty((dx, dy, dz), dtype=_arr.dtype)
-        arr[m] = _arr
-
-    return arr
+    arr = None
+    m = 0
+    for image in list_fname:
+        try:
+            _arr = h5group[image]
+            _arr = _slice_array(_arr, slc)
+            if arr is None:
+                dx, dy, dz = _arr.shape
+                dx = len(list_fname)
+                arr = np.empty((dx, dy, dz), dtype=_arr.dtype)
+            arr[m] = _arr
+            m += 1
+        except KeyError:
+            if error_if_missing:
+                raise
+            else:
+                logger.warning('Warning: no array with name {}'.format(image))
+    return arr[:m]
