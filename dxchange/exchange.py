@@ -310,10 +310,10 @@ def read_als_832h5(fname, ind_tomo=None, ind_flat=None, ind_dark=None,
             dgroup, tomo_name, ind_tomo, slc=(proj, sino))
 
         flat = dxreader.read_hdf5_stack(dgroup, flat_name, ind_flat, slc=(None, sino),
-                                        out_ind=group_flat)
+                                        out_ind=group_flat, error_if_missing=False)
 
         dark = dxreader.read_hdf5_stack(dgroup, dark_name, ind_dark, slc=(None, sino),
-                                        out_ind=group_dark)
+                                        out_ind=group_dark, error_if_missing=False)
 
     return tomo, flat, dark, dxreader._map_loc(ind_tomo, group_flat)
 
