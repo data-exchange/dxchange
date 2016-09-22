@@ -302,15 +302,18 @@ def read_txrm(file_name, slice_range=None):
 
     metadata = read_ole_metadata(ole)
 
+    # slice_range should be slicing these.
+    # Use Mike's slice shape helper function, _shape_after_slice.
     array_of_images = np.empty(
         (
-            metadata["image_width"],
-            metadata["image_height"],
             metadata["number_of_images"],
+            metadata["image_height"],
+            metadata["image_width"],
         ),
         dtype=np.float32
     )
 
+    # slice_range should be used to determine the range here
     for i in range(1, metadata["number_of_images"] + 1):
         img_string = "ImageData{}/Image{}".format(
             int(np.ceil(i / 100.0)), int(i))
@@ -318,22 +321,19 @@ def read_txrm(file_name, slice_range=None):
         data = stream.read()
         # 10 float; 5 uint16 (unsigned 16-bit (2-byte) integers)
         if metadata["data_type"] == 10:
-            struct_fmt = "<{}f".format(
-                metadata["image_width"] * metadata["image_height"])
+            dt = np.dtype(np.float32)
         elif metadata["data_type"] == 5:
-            struct_fmt = "<{}h".format(
-                metadata["image_width"] * metadata["image_height"])
+            dt = np.dtype(np.uint16)
         else:
             print("Wrong data type")
             return False
 
-        array_of_images[:, :, i - 1] = np.reshape(
-            struct.unpack(struct_fmt, data),
-            (metadata["image_width"], metadata["image_height"],),
-            order='F'
+        dt = dt.newbyteorder('<')
+        array_of_images[i - 1] = np.reshape(
+            np.fromstring(data, dt),
+            (metadata["image_height"], metadata["image_width"], )
         )
-
-    array_of_images = np.swapaxes(array_of_images, 1, 2)
+        # Slice after reshaping
 
     array_of_images = _slice_array(array_of_images, slice_range)
     _log_imported_data(file_name, array_of_images)

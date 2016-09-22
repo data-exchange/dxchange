@@ -53,6 +53,13 @@ Module for data exporting data files.
 from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
 
+import dxchange.dtype as dt
+import numpy as np
+import os
+import six
+import h5py
+import logging
+import re
 
 __author__ = "Doga Gursoy, Francesco De Carlo"
 __copyright__ = "Copyright (c) 2015-2016, UChicago Argonne, LLC."
@@ -63,15 +70,6 @@ __all__ = ['write_dxf',
            'write_npy',
            'write_tiff',
            'write_tiff_stack']
-
-
-import dxchange.dtype as dt
-import numpy as np
-import os
-import six
-import h5py
-import logging
-import re
 
 logger = logging.getLogger(__name__)
 
@@ -100,18 +98,17 @@ def get_extension(fname):
     """
     return '.' + fname.split(".")[-1]
 
+
 def remove_trailing_digits(text):
     digit_string = re.search('\d+$', text)
     if digit_string is not None:
-        number_of_digits = len(digit_string.group()) #get the number of digits at the end of the filename
+        number_of_digits = len(digit_string.group())
         text = ''.join(text[:-number_of_digits])
         return (text, number_of_digits)
     else:
         return (text, 0)
-        
-    
-    
-    
+
+
 def _init_dirs(fname):
     """
     Initialize directories for saving output files.
@@ -204,7 +201,7 @@ def _write_hdf5_dataset(h5object, data, dname, appendaxis, maxshape):
             newsize[appendaxis] += data.shape[appendaxis]
             h5object[dname].resize(newsize)
 
-            slices = 3*[slice(None, None, None), ]
+            slices = 3 * [slice(None, None, None), ]
             slices[appendaxis] = slice(size[appendaxis], None, None)
             h5object[dname][tuple(slices)] = data
     else:
@@ -245,7 +242,6 @@ def write_hdf5(
         overwrite = True  # True if appending to file so fname is not changed
         maxshape = list(data.shape)
         maxshape[appendaxis] = maxsize
-
 
     fname, data = _init_write(data, fname, '.h5', dtype, overwrite)
 
