@@ -275,7 +275,82 @@ def read_xrm_stack(fname, ind, slc=None):
 def read_txrm(file_name, slice_range=None):
     """
     Read data from a .txrm file, a compilation of .xrm files.
-    Will also read .txm files, the reconstruction files output
+
+    Parameters
+    ----------
+    file_name : str
+        String defining the path of file or file name.
+    slice_range : sequence of tuples, optional
+        Range of values for slicing data in each axis.
+        ((start_1, end_1, step_1), ... , (start_N, end_N, step_N))
+        defines slicing parameters for each axis of the data matrix.
+
+    Returns
+    -------
+    ndarray
+        Array of 2D images.
+
+    dictionary
+        Dictionary of metadata.
+    """
+    file_name = _check_read(file_name)
+    try:
+        import olefile
+        ole = olefile.OleFileIO(file_name)
+    except IOError:
+        print('No such file or directory: %s', file_name)
+        return False
+
+    metadata = read_ole_metadata(ole)
+
+    array_of_images = np.empty(
+        _shape_after_slice(
+            (
+                metadata["number_of_images"],
+                metadata["image_height"],
+                metadata["image_width"],
+            ),
+            slice_range
+        ),
+        dtype=np.float32
+    )
+
+    if slice_range is None:
+        slice_range = (slice(None), slice(None), slice(None))
+    else:
+        slice_range = _make_slice_object_a_tuple(slice_range)
+
+    for i in range(*slice_range[0].indices(metadata["number_of_images"])):
+        img_string = "ImageData{}/Image{}".format(
+            int(np.ceil((i + 1) / 100.0)), int(i + 1))
+        stream = ole.openstream(img_string)
+        data = stream.read()
+        # 10 float; 5 uint16 (unsigned 16-bit (2-byte) integers)
+        if metadata["data_type"] == 10:
+            dt = np.dtype(np.float32)
+        elif metadata["data_type"] == 5:
+            dt = np.dtype(np.uint16)
+        else:
+            print("Wrong data type")
+            return False
+
+        dt = dt.newbyteorder('<')
+        array_of_images[i - 1] = np.reshape(
+        array_of_images[i] = np.reshape(
+            np.fromstring(data, dt),
+            (metadata["image_height"], metadata["image_width"], )
+        )[slice_range[1:]]
+
+    # array_of_images = _slice_array(array_of_images, slice_range)
+    _log_imported_data(file_name, array_of_images)
+
+    ole.close()
+    return array_of_images, metadata
+
+
+def read_txm(file_name, slice_range=None):
+    """
+    Read data from a .txm file, the reconstruction file output
     by Zeiss software.
 
     Parameters
@@ -290,59 +365,12 @@ def read_txrm(file_name, slice_range=None):
     Returns
     -------
     ndarray
-        Output 2D image.
+        Array of 2D images.
+
+    dictionary
+        Dictionary of metadata.
     """
-    file_name = _check_read(file_name)
-    try:
-        import olefile
-        ole = olefile.OleFileIO(file_name)
-    except IOError:
-        print('No such file or directory: %s', file_name)
-        return False
 
-    metadata = read_ole_metadata(ole)
-
-    # slice_range should be slicing these.
-    # Use Mike's slice shape helper function, _shape_after_slice.
-    array_of_images = np.empty(
-        (
-            metadata["number_of_images"],
-            metadata["image_height"],
-            metadata["image_width"],
-        ),
-        dtype=np.float32
-    )
-
-    # slice_range should be used to determine the range here
-    for i in range(1, metadata["number_of_images"] + 1):
-        img_string = "ImageData{}/Image{}".format(
-            int(np.ceil(i / 100.0)), int(i))
-        stream = ole.openstream(img_string)
-        data = stream.read()
-        # 10 float; 5 uint16 (unsigned 16-bit (2-byte) integers)
-        if metadata["data_type"] == 10:
-            dt = np.dtype(np.float32)
-        elif metadata["data_type"] == 5:
-            dt = np.dtype(np.uint16)
-        else:
-            print("Wrong data type")
-            return False
-
-        dt = dt.newbyteorder('<')
-        array_of_images[i - 1] = np.reshape(
-            np.fromstring(data, dt),
-            (metadata["image_height"], metadata["image_width"], )
-        )
-        # Slice after reshaping
-
-    array_of_images = _slice_array(array_of_images, slice_range)
-    _log_imported_data(file_name, array_of_images)
-
-    ole.close()
-    return array_of_images, metadata
-
-
-def read_txm(file_name, slice_range=None):
     return read_txrm(file_name, slice_range)
 
 

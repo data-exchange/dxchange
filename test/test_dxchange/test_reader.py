@@ -68,17 +68,29 @@ class read_files_test_case(unittest.TestCase):
     def test_read_txrm_reads_a_txrm_file(self):
         image_data, metadata = reader.read_txrm(
             os.path.join(
-                TEST_DIR, "test_data/txrm_test_chip_tomo.txrm"), [1, 2])
+                TEST_DIR, "test_data/txrm_test_chip_tomo.txrm"))
         np.testing.utils.assert_(image_data is not False)
         np.testing.utils.assert_(metadata is not False)
 
     def test_read_txrm_gets_metadata(self):
         image_data, metadata = reader.read_txrm(
             os.path.join(
-                TEST_DIR, "test_data/txrm_test_chip_tomo.txrm"), [1, 2])
+                TEST_DIR, "test_data/txrm_test_chip_tomo.txrm"))
         np.testing.utils.assert_(metadata["thetas"] is not False)
         np.testing.utils.assert_(metadata["x_positions"] is not False)
         np.testing.utils.assert_(metadata["y_positions"] is not False)
+
+    def test_read_txrm_uses_slice_data(self):
+        image_data, metadata = reader.read_txrm(
+            os.path.join(
+                TEST_DIR, "test_data/txrm_test_chip_tomo.txrm"), (5, 128, 54))
+        self.assertEqual(image_data.shape, (5, 128, 54))
+
+    def test_read_txrm_works_on_a_list_of_slice_data(self):
+        image_data, metadata = reader.read_txrm(
+            os.path.join(
+                TEST_DIR, "test_data/txrm_test_chip_tomo.txrm"), [1, 2])
+        self.assertEqual(image_data.shape, (1, 2, 256))
 
     def test_read_xrm_stack_reads_multiple_xrms(self):
         image_data, metadata = reader.read_xrm_stack(
@@ -194,14 +206,40 @@ class read_files_test_case(unittest.TestCase):
             ]
         )
 
-    # def test_read_txrm_returns_np_array_of_correct_shape(self):
-    #     array_data, metadata = reader.read_txrm(
-    #         os.path.join(
-    #             TEST_DIR, "test_data/txrm_test_chip_tomo.txrm"), [1, 2])
-    #     self.assertEqual(
-    #         array_data.shape,
-    #         (1,1,1,)
-    #     )
+    def test_read_txrm_returns_properly_sliced_np_array_x_slice(self):
+        array_data, metadata = reader.read_txrm(
+            os.path.join(
+                TEST_DIR, "test_data/txrm_test_chip_tomo.txrm"), ((0, 5), ))
+        self.assertEqual(
+            array_data.shape,
+            (5, 256, 256, )
+        )
+
+    def test_read_txrm_returns_properly_sliced_np_array_y_x_slice(self):
+        array_data, metadata = reader.read_txrm(
+            os.path.join(
+                TEST_DIR,
+                "test_data/txrm_test_chip_tomo.txrm"
+            ),
+            ((0, 5), (0, 128), )
+        )
+        self.assertEqual(
+            array_data.shape,
+            (5, 128, 256, )
+        )
+
+    def test_read_txrm_returns_properly_sliced_np_array_z_y_x_slice(self):
+        array_data, metadata = reader.read_txrm(
+            os.path.join(
+                TEST_DIR,
+                "test_data/txrm_test_chip_tomo.txrm"
+            ),
+            ((0, 5), (0, 128), (59, 177), )
+        )
+        self.assertEqual(
+            array_data.shape,
+            (5, 128, 118, )
+        )
 
     def test_slice_array_does_not_slice_when_not_given_a_slice_range(self):
         test_array = [1, 2, 3]
@@ -212,6 +250,12 @@ class read_files_test_case(unittest.TestCase):
         test_array = reader._slice_array(
             np.array([[1, 2, 3], [1, 2, 3]]), [1, 2])
         np.testing.utils.assert_equal(test_array, np.array([[1, 2]]))
+
+
+class shape_after_slice_test_case(unittest.TestCase):
+    def test_it_should_return_shape_of_array_if_passed_none(self):
+        shape = reader._shape_after_slice((2, 2), None)
+        self.assertEqual((2, 2), shape)
 
 
 class list_file_stack_test_case(unittest.TestCase):
