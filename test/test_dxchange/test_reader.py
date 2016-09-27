@@ -122,6 +122,32 @@ class read_files_test_case(unittest.TestCase):
     #         "test/test_data/test_flat.xrm", [1, 2])
     # Need a good flat ref test image
 
+    def test_read_xrm_returns_properly_sliced_np_array_x_slice(self):
+        image_data, metadata = reader.read_xrm(
+            os.path.join(
+                TEST_DIR,
+                "test_data/test_chip00.xrm",
+            ),
+            ((0, 256), ),
+        )
+        self.assertEqual(
+            image_data.shape,
+            (256, 512, ),
+        )
+
+    def test_read_xrm_returns_properly_sliced_np_array_y_x_slice(self):
+        image_data, metadata = reader.read_xrm(
+            os.path.join(
+                TEST_DIR,
+                "test_data/test_chip00.xrm",
+            ),
+            ((0, 256), (384, 512), ),
+        )
+        self.assertEqual(
+            image_data.shape,
+            (256, 128, ),
+        )
+
     def test_read_xrm_stack_gets_theta_set(self):
         image_data, metadata = reader.read_xrm_stack(
             os.path.join(TEST_DIR, "test_data/test_chip00.xrm"), [0, 1])
@@ -209,7 +235,11 @@ class read_files_test_case(unittest.TestCase):
     def test_read_txrm_returns_properly_sliced_np_array_x_slice(self):
         array_data, metadata = reader.read_txrm(
             os.path.join(
-                TEST_DIR, "test_data/txrm_test_chip_tomo.txrm"), ((0, 5), ))
+                TEST_DIR,
+                "test_data/txrm_test_chip_tomo.txrm"
+            ),
+            ((0, 5), ),
+        )
         self.assertEqual(
             array_data.shape,
             (5, 256, 256, )
@@ -221,7 +251,7 @@ class read_files_test_case(unittest.TestCase):
                 TEST_DIR,
                 "test_data/txrm_test_chip_tomo.txrm"
             ),
-            ((0, 5), (0, 128), )
+            ((0, 5), (0, 128), ),
         )
         self.assertEqual(
             array_data.shape,
@@ -234,7 +264,7 @@ class read_files_test_case(unittest.TestCase):
                 TEST_DIR,
                 "test_data/txrm_test_chip_tomo.txrm"
             ),
-            ((0, 5), (0, 128), (59, 177), )
+            ((0, 5), (0, 128), (59, 177), ),
         )
         self.assertEqual(
             array_data.shape,

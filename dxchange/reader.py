@@ -177,7 +177,7 @@ def read_tiff_stack(fname, ind, digit=None, slc=None):
     return arr
 
 
-def read_xrm(fname, slc=None):
+def read_xrm(fname, slice_range=None):
     """
     Read data from xrm file.
 
@@ -185,7 +185,7 @@ def read_xrm(fname, slc=None):
     ----------
     fname : str
         String defining the path of file or file name.
-    slc : sequence of tuples, optional
+    slice_range : sequence of tuples, optional
         Range of values for slicing data in each axis.
         ((start_1, end_1, step_1), ... , (start_N, end_N, step_N))
         defines slicing parameters for each axis of the data matrix.
@@ -205,29 +205,44 @@ def read_xrm(fname, slc=None):
 
     metadata = read_ole_metadata(ole)
 
-    # 10 float; 5 uint16 (unsigned 16-bit (2-byte) integers)
-    if metadata["data_type"] == 10:
-        struct_fmt = "<{}f".format(
-            metadata["image_width"] * metadata["image_height"])
-    elif metadata["data_type"] == 5:
-        struct_fmt = "<{}h".format(
-            metadata["image_width"] * metadata["image_height"])
-
-    img = _read_ole_data(ole, "ImageData1/Image1", struct_fmt)
-
     arr = np.empty(
-        (metadata["image_width"], metadata["image_height"]), dtype=np.float32)
-    arr[:, :] = np.reshape(
-        img,
+        _shape_after_slice(
+            (metadata["image_width"], metadata["image_height"]),
+            slice_range,
+        ),
+        dtype=np.float32
+    )
+
+    if slice_range is None:
+        slice_range = (slice(None), slice(None))
+    else:
+        slice_range = _make_slice_object_a_tuple(slice_range)
+
+    # if metadata["data_type"] == 10:
+    #     struct_fmt = "<{}f".format(
+    #         metadata["image_width"] * metadata["image_height"])
+    # elif metadata["data_type"] == 5:
+    #     struct_fmt = "<{}h".format(
+    #         metadata["image_width"] * metadata["image_height"])
+
+    # img = _read_ole_data(ole, "ImageData1/Image1", struct_fmt)
+
+    stream = ole.openstream("ImageData1/Image1")
+    data = stream.read()
+
+    data_type = _get_ole_data_type(metadata)
+    data_type = data_type.newbyteorder('<')
+
+    arr = np.reshape(
+        np.fromstring(data, data_type),
         (
             metadata["image_width"],
             metadata["image_height"]
-        ),
-        order='F'
-    )
-    arr = np.swapaxes(arr, 0, 1)
-    arr = _slice_array(arr, slc)
+        )
+    )[slice_range]
+
     _log_imported_data(fname, arr)
+
     ole.close()
     return arr, metadata
 
@@ -325,23 +340,15 @@ def read_txrm(file_name, slice_range=None):
             int(np.ceil((i + 1) / 100.0)), int(i + 1))
         stream = ole.openstream(img_string)
         data = stream.read()
-        # 10 float; 5 uint16 (unsigned 16-bit (2-byte) integers)
-        if metadata["data_type"] == 10:
-            dt = np.dtype(np.float32)
-        elif metadata["data_type"] == 5:
-            dt = np.dtype(np.uint16)
-        else:
-            print("Wrong data type")
-            return False
 
-        dt = dt.newbyteorder('<')
-        array_of_images[i - 1] = np.reshape(
+        data_type = _get_ole_data_type(metadata)
+
+        data_type = data_type.newbyteorder('<')
         array_of_images[i] = np.reshape(
-            np.fromstring(data, dt),
+            np.fromstring(data, data_type),
             (metadata["image_height"], metadata["image_width"], )
         )[slice_range[1:]]
 
-    # array_of_images = _slice_array(array_of_images, slice_range)
     _log_imported_data(file_name, array_of_images)
 
     ole.close()
@@ -431,6 +438,16 @@ def _init_ole_arr_from_stack(fname, number_of_files, slc):
     logger.debug('Data initialized with size: %s', size)
     return np.empty(size, dtype=_arr.dtype), metadata
 
+
+def _get_ole_data_type(metadata):
+    # 10 float; 5 uint16 (unsigned 16-bit (2-byte) integers)
+    if metadata["data_type"] == 10:
+        return np.dtype(np.float32)
+    elif metadata["data_type"] == 5:
+        return np.dtype(np.uint16)
+    else:
+        print("Wrong data type")
+        return False
 
 def read_edf(fname, slc=None):
     """
