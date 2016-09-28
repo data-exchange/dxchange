@@ -94,6 +94,7 @@ pip-log.txt
 ################################
 .tox/
 .coverage
+.cache
 nosetests.xml
 coverage.xml
 

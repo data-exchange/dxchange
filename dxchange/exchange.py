@@ -491,10 +491,13 @@ def read_aps_7bm(fname, proj=None, sino=None):
     theta = dxreader.read_hdf5(fname, theta_grp, slc=(proj, ))
     return tomo, theta
 
-def read_aps_8bm(image_directory, tomo_indices, flat_indices, image_file_pattern='image_00000.xrm', flat_file_pattern='ref_00000.xrm', proj=None, sino=None):
+
+def read_aps_8bm(image_directory, tomo_indices, flat_indices,
+                 image_file_pattern='image_00000.xrm',
+                 flat_file_pattern='ref_00000.xrm', proj=None, sino=None):
     """
     Read APS 8-BM tomography data from a stack of xrm files.
-    
+
     Parameters
     ----------
     image_directory : str
@@ -505,16 +508,13 @@ def read_aps_8bm(image_directory, tomo_indices, flat_indices, image_file_pattern
 
     flat_indices : list of int
         Indices of the flat field files to read.
-    
-    file_digits: int
-        Number of digits in the filename counter.
-        
+
     image_file_pattern: string
         Specify how the projection files are named.
-    
+
     flat_file_pattern: string
         Specify how the flat reference files are named.
-    
+
     proj : {sequence, int}, optional
         Specify projections to read. (start, end, step)
 
@@ -528,17 +528,21 @@ def read_aps_8bm(image_directory, tomo_indices, flat_indices, image_file_pattern
 
     ndarray
         3D flat field data.
+
+    dictionary
+        Image set metadata.
     """
     image_directory = os.path.abspath(image_directory)
     tomo_name = os.path.join(image_directory, 'radios', image_file_pattern)
     flat_name = os.path.join(image_directory, 'flats', flat_file_pattern)
 
-    tomo = dxreader.read_xrm_stack(
+    tomo, metadata = dxreader.read_xrm_stack(
         tomo_name, ind=tomo_indices, slc=(sino, proj))
-    
-    flat = dxreader.read_xrm_stack(
+
+    flat, _ = dxreader.read_xrm_stack(
         flat_name, ind=flat_indices, slc=(sino, None))
-    return tomo, flat
+    return tomo, flat, metadata
+
 
 def read_aps_13bm(fname, format, proj=None, sino=None):
     """
@@ -600,12 +604,12 @@ def read_aps_13id(
     return tomo
 
 
-def read_aps_26id(fname, ind_tomo, ind_flat, proj=None, sino=None):
+def read_aps_26id(image_directory, tomo_indices, flat_indices,
+                  image_file_pattern='image_00000.xrm',
+                  flat_file_pattern='ref_00000.xrm', proj=None, sino=None):
     """
     Read APS 26-ID tomography data from a stack of xrm files.
-    Note: file are renamed as 
-    radios/image_00000.xrm and flats/image_00000.xrm
-    
+
     Parameters
     ----------
     fname : str
@@ -630,16 +634,12 @@ def read_aps_26id(fname, ind_tomo, ind_flat, proj=None, sino=None):
 
     ndarray
         3D flat field data.
-    """
-    fname = os.path.abspath(fname)
-    tomo_name = os.path.join(fname, 'radios', 'image_00000.xrm')
-    flat_name = os.path.join(fname, 'flats', 'image_00000.xrm')
 
-    tomo = dxreader.read_xrm_stack(
-        tomo_name, ind=ind_tomo, digit=5, slc=(sino, proj))
-    flat = dxreader.read_xrm_stack(
-        flat_name, ind=ind_flat, digit=5, slc=(sino, None))
-    return tomo, flat
+    dictionary
+        Image set metadata.
+    """
+    return read_aps_8bm(image_directory, tomo_indices, flat_indices,
+                        image_file_pattern, flat_file_pattern, proj, sino)
 
 
 def read_aps_32id(fname, exchange_rank=0, proj=None, sino=None):
