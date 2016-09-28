@@ -45,31 +45,12 @@
 # ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE         #
 # POSSIBILITY OF SUCH DAMAGE.                                             #
 # #########################################################################
+
 from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
 
-import unittest
 from numpy.testing.utils import assert_equal
-import dxchange.writer as writer
+import dxchange
 
-
-class remove_trailing_digits_test_case(unittest.TestCase):
-    def test_remove_trailing_digits_handles_not_having_digits(self):
-        text, digits = writer.remove_trailing_digits("someText")
-        assert_equal(text, "someText")
-
-    def test_remove_trailing_digits_removes_zeroes(self):
-        text, digits = writer.remove_trailing_digits("someText0000")
-        assert_equal(text, "someText")
-
-    def test_remove_trailing_digits_removes_correct_number_of_zeroes(self):
-        text, digits = writer.remove_trailing_digits("someText0000")
-        assert_equal(digits, 4)
-
-    def test_remove_trailing_digits_removes_digits(self):
-        text, digits = writer.remove_trailing_digits("someText1234567890")
-        assert_equal(text, "someText")
-
-    def test_remove_trailing_digits_does_not_remove_digits_in_the_middle(self):
-        text, digits = writer.remove_trailing_digits("8s7o6m5e4T3e2x1t00.0000")
-        assert_equal(text, "8s7o6m5e4T3e2x1t00.")
+#def test_read_aps_8bm():
+#    proj, flat = dxchange.read_aps_8bm('data_dir/', range(0, 200), range(0, 100), file_pattern="image_00000.xrm", sino=(0, 16))
