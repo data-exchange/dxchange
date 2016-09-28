@@ -27,7 +27,7 @@ if __name__ == '__main__':
     start = 0
     end = 16
 
-    # APS 26-ID has an x-radia system collecting raw data as xrm.
+    # Read the APS 26-ID raw data.
     proj, flat, metadata = dxchange.read_aps_26id(fname, ind_tomo, ind_flat,
                                                  sino=(start, end))
 
