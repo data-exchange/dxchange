@@ -53,6 +53,11 @@ Module for describing beamline/experiment specific data recipes.
 from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
 
+import numpy as np
+import os.path
+import re
+import logging
+import dxchange.reader as dxreader
 
 __authors__ = "Doga Gursoy, Luis Barroso-Luque, Francesco De Carlo"
 __copyright__ = "Copyright (c) 2015-2016, UChicago Argonne, LLC."
@@ -76,13 +81,6 @@ __all__ = ['read_als_832',
            'read_lnls_imx',
            'read_petraIII_p05',
            'read_sls_tomcat']
-
-
-import numpy as np
-import os.path
-import re
-import logging
-import dxchange.reader as dxreader
 
 logger = logging.getLogger(__name__)
 
@@ -309,11 +307,11 @@ def read_als_832h5(fname, ind_tomo=None, ind_flat=None, ind_dark=None,
         tomo = dxreader.read_hdf5_stack(
             dgroup, tomo_name, ind_tomo, slc=(proj, sino))
 
-        flat = dxreader.read_hdf5_stack(dgroup, flat_name, ind_flat, slc=(None, sino),
-                                        out_ind=group_flat)
+        flat = dxreader.read_hdf5_stack(
+            dgroup, flat_name, ind_flat, slc=(None, sino), out_ind=group_flat)
 
-        dark = dxreader.read_hdf5_stack(dgroup, dark_name, ind_dark, slc=(None, sino),
-                                        out_ind=group_dark)
+        dark = dxreader.read_hdf5_stack(
+            dgroup, dark_name, ind_dark, slc=(None, sino), out_ind=group_dark)
 
     return tomo, flat, dark, dxreader._map_loc(ind_tomo, group_flat)
 

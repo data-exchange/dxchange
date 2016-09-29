@@ -766,7 +766,7 @@ def _list_file_stack(fname, ind, digit=None):
         of the stacked files.
     """
 
-    if (digit is not None):
+    if digit is not None:
         warnings.warn(("The 'digit' argument is deprecated and no longer used."
                       "  It may be removed completely in a later version."),
                       FutureWarning)
