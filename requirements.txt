@@ -1,5 +1,6 @@
 python
 numpy    
+scipy
 h5py    
 six    
 netcdf4

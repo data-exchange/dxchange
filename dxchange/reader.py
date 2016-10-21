@@ -65,6 +65,9 @@ from contextlib import contextmanager
 import dxchange.writer as writer
 from dxchange.dtype import empty_shared_array
 import warnings
+import functools
+import tifffile
+import scipy.misc as sm
 
 __author__ = "Doga Gursoy, Francesco De Carlo"
 __copyright__ = "Copyright (c) 2015-2016, UChicago Argonne, LLC."
@@ -81,7 +84,8 @@ __all__ = ['read_edf',
            'read_xrm',
            'read_xrm_stack',
            'read_txrm',
-           'read_hdf5_stack']
+           'read_hdf5_stack',
+           'read_file_list']
 
 logger = logging.getLogger(__name__)
 
@@ -99,7 +103,6 @@ netCDF4 = _check_import('netCDF4')
 EdfFile = _check_import('EdfFile')
 astropy = _check_import('astropy')
 olefile = _check_import('olefile')
-
 
 # FIXME: raise exception would make more sense, also not sure an extension check
 # is very useful, unless we are automatically mapping an extension to a
@@ -135,7 +138,6 @@ def read_tiff(fname, slc=None):
     """
     fname = _check_read(fname)
     try:
-        import tifffile
         arr = tifffile.imread(fname, memmap=True)
     except IOError:
         logger.error('No such file or directory: %s', fname)
@@ -937,4 +939,34 @@ def read_hdf5_stack(h5group, dname, ind, digit=4, slc=None, out_ind=None):
             arr = np.empty((dx, dy, dz), dtype=_arr.dtype)
         arr[m] = _arr
 
+    return arr
+
+def read_file_list(file_list):
+    """
+    Read data from stack of image files in a folder.
+
+    Parameters
+    ----------
+
+    file_list : list of str
+        List of file names to read, in order
+    """
+    
+    f = file_list[0]
+    try:
+        readfunc = tifffile.imread
+        im = readfunc(f)
+    except ValueError:
+        readfunc = functools.partial(sm.imread, flatten=True)
+        im = readfunc(f)
+    
+    if len(im.shape) != 2:
+        raise ValueError('Only 2D images are supported in read_file_list')
+
+    arr = np.zeros((len(file_list), im.shape[0], im.shape[1]), dtype=im.dtype)
+
+    arr[0] = im
+    for i, fn in enumerate(file_list[1:]):
+        arr[i+1] = readfunc(fn)
+    
     return arr
