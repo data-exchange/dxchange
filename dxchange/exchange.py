@@ -665,6 +665,9 @@ def read_aps_32id(fname, exchange_rank=0, proj=None, sino=None, dtype=None):
     sino : {sequence, int}, optional
         Specify sinograms to read. (start, end, step)
 
+    dtype : numpy datatype, optional
+        Convert data to this datatype on read if specified.    
+
     Returns
     -------
     ndarray
@@ -688,7 +691,7 @@ def read_aps_32id(fname, exchange_rank=0, proj=None, sino=None, dtype=None):
     tomo = dxreader.read_hdf5(fname, tomo_grp, slc=(proj, sino), dtype=dtype)
     flat = dxreader.read_hdf5(fname, flat_grp, slc=(None, sino), dtype=dtype)
     dark = dxreader.read_hdf5(fname, dark_grp, slc=(None, sino), dtype=dtype)
-    theta = dxreader.read_hdf5(fname, theta_grp, slc=None, dtype=dtype)
+    theta = dxreader.read_hdf5(fname, theta_grp, slc=None)
 
     if (theta is None):
         pass
