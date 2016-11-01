@@ -642,7 +642,7 @@ def read_aps_26id(image_directory, tomo_indices, flat_indices,
                         image_file_pattern, flat_file_pattern, proj, sino)
 
 
-def read_aps_32id(fname, exchange_rank=0, proj=None, sino=None):
+def read_aps_32id(fname, exchange_rank=0, proj=None, sino=None, dtype=None):
     """
     Read APS 32-ID standard data format.
 
@@ -685,10 +685,10 @@ def read_aps_32id(fname, exchange_rank=0, proj=None, sino=None):
     flat_grp = '/'.join([exchange_base, 'data_white'])
     dark_grp = '/'.join([exchange_base, 'data_dark'])
     theta_grp = '/'.join([exchange_base, 'theta'])
-    tomo = dxreader.read_hdf5(fname, tomo_grp, slc=(proj, sino))
-    flat = dxreader.read_hdf5(fname, flat_grp, slc=(None, sino))
-    dark = dxreader.read_hdf5(fname, dark_grp, slc=(None, sino))
-    theta = dxreader.read_hdf5(fname, theta_grp, slc=None)
+    tomo = dxreader.read_hdf5(fname, tomo_grp, slc=(proj, sino), dtype=dtype)
+    flat = dxreader.read_hdf5(fname, flat_grp, slc=(None, sino), dtype=dtype)
+    dark = dxreader.read_hdf5(fname, dark_grp, slc=(None, sino), dtype=dtype)
+    theta = dxreader.read_hdf5(fname, theta_grp, slc=None, dtype=dtype)
 
     if (theta is None):
         pass
