@@ -15,7 +15,8 @@ requirements:
  
   run:
     - python
-    - numpy    
+    - numpy
+    - scipy    
     - h5py    
     - six    
     - netcdf4
