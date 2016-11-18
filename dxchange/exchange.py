@@ -675,6 +675,9 @@ def read_aps_32id(fname, exchange_rank=0, proj=None, sino=None):
 
     ndarray
         3D dark field data.
+
+    ndarray
+        1D theta in radian.
     """
     if exchange_rank > 0:
         exchange_base = 'exchange{:d}'.format(int(exchange_rank))
