@@ -19,10 +19,13 @@ if __name__ == '__main__':
     end = 16
 
     # Read APS 32-ID raw data.
-    proj, flat, dark = dxchange.read_aps_32id(fname, sino=(start, end))
+    proj, flat, dark, theta = dxchange.read_aps_32id(fname, sino=(start, end))
 
-    # Set data collection angles as equally spaced between 0-180 degrees.
-    theta = tomopy.angles(proj.shape[0])
+    # If data collection angles is not defined in the hdf file then set it as equally spaced between 0-180 degrees.
+    if (theta is None):
+        theta = tomopy.angles(proj.shape[0])
+    else:
+        pass
 
     # Flat-field correction of raw data.
     proj = tomopy.normalize(proj, flat, dark)

@@ -33,10 +33,13 @@ if __name__ == '__main__':
         sino_end = start + num_sino * (m + 1)
 
         # Read APS 32-ID raw data.
-        proj, flat, dark = dxchange.read_aps_32id(fname, sino=(sino_start, sino_end))
+        proj, flat, dark, theta = dxchange.read_aps_32id(fname, sino=(sino_start, sino_end))
 
-        # Set data collection angles as equally spaced between 0-180 degrees.
-        theta = tomopy.angles(proj.shape[0])
+        # If data collection angles is not defined in the hdf file then set it as equally spaced between 0-180 degrees.
+        if (theta is None):
+            theta = tomopy.angles(proj.shape[0])
+        else:
+            pass
 
         # Remove the missing angles from data.
         proj = np.concatenate((proj[0:miss_projs[0], :, :], proj[miss_projs[1] + 1:-1, :, :]), axis=0)
