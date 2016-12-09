@@ -220,15 +220,6 @@ def read_xrm(fname, slice_range=None):
     else:
         slice_range = _make_slice_object_a_tuple(slice_range)
 
-    # if metadata["data_type"] == 10:
-    #     struct_fmt = "<{}f".format(
-    #         metadata["image_width"] * metadata["image_height"])
-    # elif metadata["data_type"] == 5:
-    #     struct_fmt = "<{}h".format(
-    #         metadata["image_width"] * metadata["image_height"])
-
-    # img = _read_ole_data(ole, "ImageData1/Image1", struct_fmt)
-
     stream = ole.openstream("ImageData1/Image1")
     data = stream.read()
 
@@ -248,7 +239,7 @@ def read_xrm(fname, slice_range=None):
     ole.close()
     return arr, metadata
 
-
+#  Should slc just take over what ind is doing here?
 def read_xrm_stack(fname, ind, slc=None):
     """
     Read data from stack of xrm files in a folder.
@@ -768,7 +759,7 @@ def _list_file_stack(fname, ind, digit=None):
         of the stacked files.
     """
 
-    if (digit is not None):
+    if digit is not None:
         warnings.warn(("The 'digit' argument is deprecated and no longer used."
                       "  It may be removed completely in a later version."),
                       FutureWarning)

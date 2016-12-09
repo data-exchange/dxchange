@@ -53,6 +53,11 @@ Module for describing beamline/experiment specific data recipes.
 from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
 
+import numpy as np
+import os.path
+import re
+import logging
+import dxchange.reader as dxreader
 
 __authors__ = "Doga Gursoy, Luis Barroso-Luque, Francesco De Carlo"
 __copyright__ = "Copyright (c) 2015-2016, UChicago Argonne, LLC."
@@ -76,13 +81,6 @@ __all__ = ['read_als_832',
            'read_lnls_imx',
            'read_petraIII_p05',
            'read_sls_tomcat']
-
-
-import numpy as np
-import os.path
-import re
-import logging
-import dxchange.reader as dxreader
 
 logger = logging.getLogger(__name__)
 
@@ -309,11 +307,11 @@ def read_als_832h5(fname, ind_tomo=None, ind_flat=None, ind_dark=None,
         tomo = dxreader.read_hdf5_stack(
             dgroup, tomo_name, ind_tomo, slc=(proj, sino))
 
-        flat = dxreader.read_hdf5_stack(dgroup, flat_name, ind_flat, slc=(None, sino),
-                                        out_ind=group_flat)
+        flat = dxreader.read_hdf5_stack(
+            dgroup, flat_name, ind_flat, slc=(None, sino), out_ind=group_flat)
 
-        dark = dxreader.read_hdf5_stack(dgroup, dark_name, ind_dark, slc=(None, sino),
-                                        out_ind=group_dark)
+        dark = dxreader.read_hdf5_stack(
+            dgroup, dark_name, ind_dark, slc=(None, sino), out_ind=group_dark)
 
     return tomo, flat, dark, dxreader._map_loc(ind_tomo, group_flat)
 
@@ -743,9 +741,12 @@ def read_aus_microct(fname, ind_tomo, ind_flat, ind_dark, proj=None, sino=None):
     flat_name = os.path.join(fname, 'BG__BEFORE_00.tif')
     dark_name = os.path.join(fname, 'DF__BEFORE_00.tif')
 
-    tomo = dxreader.read_tiff_stack(tomo_name, ind=ind_tomo, digit=4, slc=(sino, proj))
-    flat = dxreader.read_tiff_stack(flat_name, ind=ind_flat, digit=2, slc=(sino, None))
-    dark = dxreader.read_tiff_stack(dark_name, ind=ind_dark, digit=2, slc=(sino, None))
+    tomo = dxreader.read_tiff_stack(
+        tomo_name, ind=ind_tomo, digit=4, slc=(sino, proj))
+    flat = dxreader.read_tiff_stack(
+        flat_name, ind=ind_flat, digit=2, slc=(sino, None))
+    dark = dxreader.read_tiff_stack(
+        dark_name, ind=ind_dark, digit=2, slc=(sino, None))
     return tomo, flat, dark
 
 
