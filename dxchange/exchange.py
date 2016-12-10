@@ -565,9 +565,9 @@ def read_aps_13bm(fname, format, proj=None, sino=None):
     ndarray
         3D tomographic data.
     """
-    if format is 'spe':
+    if format == 'spe':
         tomo = dxreader.read_spe(fname, slc=(None, sino))
-    elif format is 'netcdf4':
+    elif format == 'netcdf4':
         tomo = dxreader.read_netcdf4(fname, 'array_data', slc=(proj, sino))
     return tomo
 

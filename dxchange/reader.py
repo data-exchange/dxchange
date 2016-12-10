@@ -108,7 +108,7 @@ olefile = _check_import('olefile')
 # is very useful, unless we are automatically mapping an extension to a
 # function.
 def _check_read(fname):
-    known_extensions = ['.edf', '.tiff', '.tif', '.h5', '.hdf', '.npy', '.xrm',
+    known_extensions = ['.edf', '.tiff', '.tif', '.h5', '.hdf', '.npy', '.nc', '.xrm',
                         '.txrm', '.txm']
     if not isinstance(fname, six.string_types):
         logger.error('File name must be a string')
