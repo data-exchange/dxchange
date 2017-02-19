@@ -565,9 +565,9 @@ def read_aps_13bm(fname, format, proj=None, sino=None):
     ndarray
         3D tomographic data.
     """
-    if format is 'spe':
+    if format == 'spe':
         tomo = dxreader.read_spe(fname, slc=(None, sino))
-    elif format is 'netcdf4':
+    elif format == 'netcdf4':
         tomo = dxreader.read_netcdf4(fname, 'array_data', slc=(proj, sino))
     return tomo
 
@@ -676,6 +676,9 @@ def read_aps_32id(fname, exchange_rank=0, proj=None, sino=None, dtype=None):
 
     ndarray
         3D dark field data.
+
+    ndarray
+        1D theta in radian.
     """
     if exchange_rank > 0:
         exchange_base = 'exchange{:d}'.format(int(exchange_rank))
