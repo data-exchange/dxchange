@@ -366,11 +366,11 @@ def read_anka_topotomo(
     if proj is not None:
         ind_tomo = ind_tomo[slice(*proj)]
     tomo = dxreader.read_tiff_stack(
-        tomo_name, ind=ind_tomo, digit=5, slc=(sino, None))
+        tomo_name, ind=ind_tomo, slc=(sino, None))
     flat = dxreader.read_tiff_stack(
-        flat_name, ind=ind_flat, digit=5, slc=(sino, None))
+        flat_name, ind=ind_flat, slc=(sino, None))
     dark = dxreader.read_tiff_stack(
-        dark_name, ind=ind_dark, digit=5, slc=(sino, None))
+        dark_name, ind=ind_dark, slc=(sino, None))
     return tomo, flat, dark
 
 
@@ -434,11 +434,11 @@ def read_aps_1id(fname, ind_tomo=None, proj=None, sino=None):
     ind_flat = list(range(flat_start, flat_start + nflat))
     ind_dark = list(range(dark_start, dark_start + ndark))
     tomo = dxreader.read_tiff_stack(
-        _fname, ind=ind_tomo, digit=6, slc=(sino, None))
+        _fname, ind=ind_tomo, slc=(sino, None))
     flat = dxreader.read_tiff_stack(
-        _fname, ind=ind_flat, digit=6, slc=(sino, None))
+        _fname, ind=ind_flat, slc=(sino, None))
     dark = dxreader.read_tiff_stack(
-        _fname, ind=ind_dark, digit=6, slc=(sino, None))
+        _fname, ind=ind_dark, slc=(sino, None))
     return tomo, flat, dark
 
 
@@ -756,11 +756,11 @@ def read_aus_microct(fname, ind_tomo, ind_flat, ind_dark, proj=None, sino=None):
     if proj is not None:
         ind_tomo = ind_tomo[slice(*proj)]
     tomo = dxreader.read_tiff_stack(
-        tomo_name, ind=ind_tomo, digit=4, slc=(sino, None))
+        tomo_name, ind=ind_tomo, slc=(sino, None))
     flat = dxreader.read_tiff_stack(
-        flat_name, ind=ind_flat, digit=2, slc=(sino, None))
+        flat_name, ind=ind_flat, slc=(sino, None))
     dark = dxreader.read_tiff_stack(
-        dark_name, ind=ind_dark, digit=2, slc=(sino, None))
+        dark_name, ind=ind_dark, slc=(sino, None))
     return tomo, flat, dark
 
 
@@ -830,8 +830,8 @@ def read_diamond_l12(fname, ind_tomo, proj=None):
     ind_flat = list(range(0, 1))
     if proj is not None:
         ind_tomo = ind_tomo[slice(*proj)]
-    tomo = dxreader.read_tiff_stack(tomo_name, ind=ind_tomo, digit=6)
-    flat = dxreader.read_tiff_stack(flat_name, ind=ind_flat, digit=6)
+    tomo = dxreader.read_tiff_stack(tomo_name, ind=ind_tomo)
+    flat = dxreader.read_tiff_stack(flat_name, ind=ind_flat)
     return tomo, flat
 
 
@@ -878,11 +878,11 @@ def read_elettra_syrmep(
     if proj is not None:
         ind_tomo = ind_tomo[slice(*proj)]
     tomo = dxreader.read_tiff_stack(
-        tomo_name, ind=ind_tomo, digit=4, slc=(sino, None))
+        tomo_name, ind=ind_tomo, slc=(sino, None))
     flat = dxreader.read_tiff_stack(
-        flat_name, ind=ind_flat, digit=1, slc=(sino, None))
+        flat_name, ind=ind_flat, slc=(sino, None))
     dark = dxreader.read_tiff_stack(
-        dark_name, ind=ind_dark, digit=1, slc=(sino, None))
+        dark_name, ind=ind_dark, slc=(sino, None))
     return tomo, flat, dark
 
 
@@ -968,11 +968,11 @@ def read_petraIII_p05(
     if proj is not None:
         ind_tomo = ind_tomo[slice(*proj)]
     tomo = dxreader.read_tiff_stack(
-        tomo_name, ind=ind_tomo, digit=4, slc=(sino, None))
+        tomo_name, ind=ind_tomo, slc=(sino, None))
     flat = dxreader.read_tiff_stack(
-        flat_name, ind=ind_flat, digit=4, slc=(sino, None))
+        flat_name, ind=ind_flat, slc=(sino, None))
     dark = dxreader.read_tiff_stack(
-        dark_name, ind=ind_dark, digit=4, slc=(sino, None))
+        dark_name, ind=ind_dark, slc=(sino, None))
     return tomo, flat, dark
 
 
@@ -1037,10 +1037,10 @@ def read_sls_tomcat(fname, ind_tomo=None, proj=None, sino=None):
     ind_flat = list(range(flat_start, flat_end))
     ind_dark = list(range(dark_start, dark_end))
     tomo = dxreader.read_tiff_stack(
-        _fname, ind=ind_tomo, digit=4, slc=(sino, None))
+        _fname, ind=ind_tomo, slc=(sino, None))
     flat = dxreader.read_tiff_stack(
-        _fname, ind=ind_flat, digit=4, slc=(sino, None))
+        _fname, ind=ind_flat, slc=(sino, None))
     dark = dxreader.read_tiff_stack(
-        _fname, ind=ind_dark, digit=4, slc=(sino, None))
+        _fname, ind=ind_dark, slc=(sino, None))
 
     return tomo, flat, dark
