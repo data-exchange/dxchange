@@ -85,7 +85,7 @@ __all__ = ['read_als_832',
 logger = logging.getLogger(__name__)
 
 
-def read_als_832(fname, ind_tomo=None, normalized=False, sino=None):
+def read_als_832(fname, ind_tomo=None, normalized=False, proj=None, sino=None):
     """
     Read ALS 8.3.2 standard data format.
 
@@ -102,6 +102,9 @@ def read_als_832(fname, ind_tomo=None, normalized=False, sino=None):
         only be used for cases where tomo is already normalized.
         8.3.2 has a plugin that normalization is preferred to be
         done with prior to tomopy reconstruction.
+
+    proj : {sequence, int}, optional
+        Specify projections to read. (start, end, step)
 
     sino : {sequence, int}, optional
         Specify sinograms to read. (start, end, step)
@@ -149,6 +152,8 @@ def read_als_832(fname, ind_tomo=None, normalized=False, sino=None):
     contents.close()
     if ind_tomo is None:
         ind_tomo = list(range(0, nproj))
+    if proj is not None:
+        ind_tomo = ind_tomo[slice(*proj)]
     if not normalized:
         ind_flat = list(range(0, nflat))
         if inter_bright > 0:
@@ -291,6 +296,8 @@ def read_als_832h5(fname, ind_tomo=None, ind_flat=None, ind_dark=None,
         # Create arrays of indices to read projections, flats and darks
         if ind_tomo is None:
             ind_tomo = list(range(0, nproj))
+        if proj is not None:
+            ind_tomo = ind_tomo[slice(*proj)]
         ind_dark = list(range(0, ndark))
         group_dark = [nproj - 1]
         ind_flat = list(range(0, nflat))
@@ -305,7 +312,7 @@ def read_als_832h5(fname, ind_tomo=None, ind_flat=None, ind_dark=None,
             group_flat = None
 
         tomo = dxreader.read_hdf5_stack(
-            dgroup, tomo_name, ind_tomo, slc=(proj, sino))
+            dgroup, tomo_name, ind_tomo, slc=(None, sino))
 
         flat = dxreader.read_hdf5_stack(
             dgroup, flat_name, ind_flat, slc=(None, sino), out_ind=group_flat)
@@ -356,8 +363,10 @@ def read_anka_topotomo(
     tomo_name = os.path.join(fname, 'radios', 'image_00000.tif')
     flat_name = os.path.join(fname, 'flats', 'image_00000.tif')
     dark_name = os.path.join(fname, 'darks', 'image_00000.tif')
+    if proj is not None:
+        ind_tomo = ind_tomo[slice(*proj)]
     tomo = dxreader.read_tiff_stack(
-        tomo_name, ind=ind_tomo, digit=5, slc=(sino, proj))
+        tomo_name, ind=ind_tomo, digit=5, slc=(sino, None))
     flat = dxreader.read_tiff_stack(
         flat_name, ind=ind_flat, digit=5, slc=(sino, None))
     dark = dxreader.read_tiff_stack(
@@ -420,10 +429,12 @@ def read_aps_1id(fname, ind_tomo=None, proj=None, sino=None):
 
     if ind_tomo is None:
         ind_tomo = list(range(prj_start, prj_start + nprj))
+    if proj is not None:
+        ind_tomo = ind_tomo[slice(*proj)]
     ind_flat = list(range(flat_start, flat_start + nflat))
     ind_dark = list(range(dark_start, dark_start + ndark))
     tomo = dxreader.read_tiff_stack(
-        _fname, ind=ind_tomo, digit=6, slc=(sino, proj))
+        _fname, ind=ind_tomo, digit=6, slc=(sino, None))
     flat = dxreader.read_tiff_stack(
         _fname, ind=ind_flat, digit=6, slc=(sino, None))
     dark = dxreader.read_tiff_stack(
@@ -490,7 +501,7 @@ def read_aps_7bm(fname, proj=None, sino=None):
     return tomo, theta
 
 
-def read_aps_8bm(image_directory, tomo_indices, flat_indices,
+def read_aps_8bm(image_directory, ind_tomo, ind_flat,
                  image_file_pattern='image_00000.xrm',
                  flat_file_pattern='ref_00000.xrm', proj=None, sino=None):
     """
@@ -501,10 +512,10 @@ def read_aps_8bm(image_directory, tomo_indices, flat_indices,
     image_directory : str
         Path to data folder name without indices and extension.
 
-    tomo_indices : list of int
+    ind_tomo : list of int
         Indices of the projection files to read.
 
-    flat_indices : list of int
+    ind_flat : list of int
         Indices of the flat field files to read.
 
     image_file_pattern: string
@@ -533,12 +544,13 @@ def read_aps_8bm(image_directory, tomo_indices, flat_indices,
     image_directory = os.path.abspath(image_directory)
     tomo_name = os.path.join(image_directory, 'radios', image_file_pattern)
     flat_name = os.path.join(image_directory, 'flats', flat_file_pattern)
-
+    if proj is not None:
+        ind_tomo = ind_tomo[slice(*proj)]
     tomo, metadata = dxreader.read_xrm_stack(
-        tomo_name, ind=tomo_indices, slc=(sino, proj))
+        tomo_name, ind=ind_tomo, slc=(sino, None))
 
     flat, _ = dxreader.read_xrm_stack(
-        flat_name, ind=flat_indices, slc=(sino, None))
+        flat_name, ind=ind_flat, slc=(sino, None))
     return tomo, flat, metadata
 
 
@@ -602,7 +614,7 @@ def read_aps_13id(
     return tomo
 
 
-def read_aps_26id(image_directory, tomo_indices, flat_indices,
+def read_aps_26id(image_directory, ind_tomo, ind_flat,
                   image_file_pattern='image_00000.xrm',
                   flat_file_pattern='ref_00000.xrm', proj=None, sino=None):
     """
@@ -636,7 +648,7 @@ def read_aps_26id(image_directory, tomo_indices, flat_indices,
     dictionary
         Image set metadata.
     """
-    return read_aps_8bm(image_directory, tomo_indices, flat_indices,
+    return read_aps_8bm(image_directory, ind_tomo, ind_flat,
                         image_file_pattern, flat_file_pattern, proj, sino)
 
 
@@ -741,8 +753,10 @@ def read_aus_microct(fname, ind_tomo, ind_flat, ind_dark, proj=None, sino=None):
     flat_name = os.path.join(fname, 'BG__BEFORE_00.tif')
     dark_name = os.path.join(fname, 'DF__BEFORE_00.tif')
 
+    if proj is not None:
+        ind_tomo = ind_tomo[slice(*proj)]
     tomo = dxreader.read_tiff_stack(
-        tomo_name, ind=ind_tomo, digit=4, slc=(sino, proj))
+        tomo_name, ind=ind_tomo, digit=4, slc=(sino, None))
     flat = dxreader.read_tiff_stack(
         flat_name, ind=ind_flat, digit=2, slc=(sino, None))
     dark = dxreader.read_tiff_stack(
@@ -787,7 +801,7 @@ def read_esrf_id19(fname, proj=None, sino=None):
     return tomo, flat, dark
 
 
-def read_diamond_l12(fname, ind_tomo):
+def read_diamond_l12(fname, ind_tomo, proj=None):
     """
     Read Diamond Light Source L12 (JEEP) standard data format.
 
@@ -798,6 +812,9 @@ def read_diamond_l12(fname, ind_tomo):
 
     ind_tomo : list of int
         Indices of the projection files to read.
+
+    proj : {sequence, int}, optional
+        Specify projections to read. (start, end, step)
 
     Returns
     -------
@@ -811,6 +828,8 @@ def read_diamond_l12(fname, ind_tomo):
     tomo_name = os.path.join(fname, 'im_001000.tif')
     flat_name = os.path.join(fname, 'flat_000000.tif')
     ind_flat = list(range(0, 1))
+    if proj is not None:
+        ind_tomo = ind_tomo[slice(*proj)]
     tomo = dxreader.read_tiff_stack(tomo_name, ind=ind_tomo, digit=6)
     flat = dxreader.read_tiff_stack(flat_name, ind=ind_flat, digit=6)
     return tomo, flat
@@ -856,8 +875,10 @@ def read_elettra_syrmep(
     tomo_name = os.path.join(fname, 'tomo_0001.tif')
     flat_name = os.path.join(fname, 'flat_1.tif')
     dark_name = os.path.join(fname, 'dark_1.tif')
+    if proj is not None:
+        ind_tomo = ind_tomo[slice(*proj)]
     tomo = dxreader.read_tiff_stack(
-        tomo_name, ind=ind_tomo, digit=4, slc=(sino, proj))
+        tomo_name, ind=ind_tomo, digit=4, slc=(sino, None))
     flat = dxreader.read_tiff_stack(
         flat_name, ind=ind_flat, digit=1, slc=(sino, None))
     dark = dxreader.read_tiff_stack(
@@ -944,8 +965,10 @@ def read_petraIII_p05(
         fname, 'scan_0001', 'ccd', 'pco01', 'ccd_0000.tif')
     dark_name = os.path.join(
         fname, 'scan_0000', 'ccd', 'pco01', 'ccd_0000.tif')
+    if proj is not None:
+        ind_tomo = ind_tomo[slice(*proj)]
     tomo = dxreader.read_tiff_stack(
-        tomo_name, ind=ind_tomo, digit=4, slc=(sino, proj))
+        tomo_name, ind=ind_tomo, digit=4, slc=(sino, None))
     flat = dxreader.read_tiff_stack(
         flat_name, ind=ind_flat, digit=4, slc=(sino, None))
     dark = dxreader.read_tiff_stack(
@@ -1009,10 +1032,12 @@ def read_sls_tomcat(fname, ind_tomo=None, proj=None, sino=None):
 
     if ind_tomo is None:
         ind_tomo = list(range(proj_start, proj_end))
+    if proj is not None:
+        ind_tomo = ind_tomo[slice(*proj)]
     ind_flat = list(range(flat_start, flat_end))
     ind_dark = list(range(dark_start, dark_end))
     tomo = dxreader.read_tiff_stack(
-        _fname, ind=ind_tomo, digit=4, slc=(sino, proj))
+        _fname, ind=ind_tomo, digit=4, slc=(sino, None))
     flat = dxreader.read_tiff_stack(
         _fname, ind=ind_flat, digit=4, slc=(sino, None))
     dark = dxreader.read_tiff_stack(
