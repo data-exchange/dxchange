@@ -406,7 +406,7 @@ def read_aps_1id(fname, ind_tomo=None, proj=None, sino=None):
     # File definitions.
     fname = os.path.abspath(fname)
     _fname = fname + '000001.tif'
-    log_file = os.path.dirname(fname) + os.path.sep + 'TomoStillScan.dat'
+    log_file = fname + 'TomoStillScan.dat'
 
     # Read APS 1-ID log file data
     contents = open(log_file, 'r')
@@ -707,7 +707,8 @@ def read_aps_32id(fname, exchange_rank=0, proj=None, sino=None, dtype=None):
     theta = dxreader.read_hdf5(fname, theta_grp, slc=None)
 
     if (theta is None):
-        theta = np.linspace(0. , np.pi, tomo.shape[0])
+        theta_size = dxreader.read_dx_dims(fname, 'data')[0]
+        theta = np.linspace(0. , np.pi, theta_size)
     else:
         theta = theta * np.pi / 180.
     return tomo, flat, dark, theta
