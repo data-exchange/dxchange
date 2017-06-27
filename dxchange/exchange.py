@@ -406,7 +406,7 @@ def read_aps_1id(fname, ind_tomo=None, proj=None, sino=None):
     # File definitions.
     fname = os.path.abspath(fname)
     _fname = fname + '000001.tif'
-    log_file = os.path.dirname(fname) + os.path.sep + 'TomoStillScan.dat'
+    log_file = fname + 'TomoStillScan.dat'
 
     # Read APS 1-ID log file data
     contents = open(log_file, 'r')
