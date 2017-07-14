@@ -708,6 +708,7 @@ def read_aps_32id(fname, exchange_rank=0, proj=None, sino=None, dtype=None):
 
     if (theta is None):
         theta_size = dxreader.read_dx_dims(fname, 'data')[0]
+        logger.warn('Generating "%s" [0-180] deg angles for missing "exchange/theta" dataset' % (str(theta_size)))
         theta = np.linspace(0. , np.pi, theta_size)
     else:
         theta = theta * np.pi / 180.
