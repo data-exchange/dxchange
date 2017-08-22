@@ -903,6 +903,7 @@ def _read_ole_data(ole, label, struct_fmt):
     Reads the array associated with label in an ole file
     """
 
+    arr = None
     if ole.exists(label):
         stream = ole.openstream(label)
         data = stream.read()
