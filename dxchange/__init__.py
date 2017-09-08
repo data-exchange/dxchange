@@ -50,7 +50,7 @@ from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
 
 import logging
-logging.basicConfig()
+logging.getLogger(__name__).addHandler(logging.NullHandler())
 
 from dxchange.exchange import *
 from dxchange.reader import *
