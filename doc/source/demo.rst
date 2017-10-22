@@ -5,7 +5,7 @@ Code example on how to use DXchange to import tomographic data
 from different synchrotron facilities and process it with 
 TomoPy :cite:`Gursoy:14b`
 
-... toctree::   
+.. toctree::   
 
    demo/doc.demo.anka
    demo/doc.demo.australian
