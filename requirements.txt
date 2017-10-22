@@ -8,3 +8,4 @@ spefile
 edffile    
 tifffile    
 dxfile
+fnmatch

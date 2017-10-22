@@ -56,6 +56,7 @@ from __future__ import (absolute_import, division, print_function,
 import numpy as np
 import os.path
 import re
+import fnmatch
 import logging
 import dxchange.reader as dxreader
 
@@ -68,6 +69,7 @@ __all__ = ['read_als_832',
            'read_anka_topotomo',
            'read_aps_1id',
            'read_aps_2bm',
+           'read_aps_5bm',
            'read_aps_7bm',
            'read_aps_8bm',
            'read_aps_13bm',
@@ -469,6 +471,56 @@ def read_aps_2bm(fname, proj=None, sino=None):
         3D dark field data.
     """
     return read_aps_32id(fname, proj=proj, sino=sino)
+
+
+def read_aps_5bm(fname, sino=None):
+    """
+    Read APS 5-BM standard data format.
+
+    Parameters
+    ----------
+    fname : str
+        Path to data folder.
+
+    sino : {sequence, int}, optional
+        Specify sinograms to read. (start, end, step)
+
+    Returns
+    -------
+    ndarray
+        3D tomographic data.
+
+    ndarray
+        3D flat field data.
+
+    ndarray
+        3D dark field data.
+    """
+    fname = os.path.abspath(fname)
+    tomo_name = os.path.join(fname, 'sdat0000.xmt')
+    flat_name = os.path.join(fname, 'snor0000.xmt')
+    dark_name = os.path.join(fname, 'sdarkfile.xmt')
+
+
+    ntomo = len(fnmatch.filter(os.listdir(fname), 'sdat*'))
+    ind_tomo = range(0, ntomo)
+    nflat = len(fnmatch.filter(os.listdir(fname), 'snor*'))
+    ind_flat = range(0, nflat)
+
+    tomo = dxreader.read_tiff_stack(tomo_name, ind=ind_tomo, slc=(sino, None))
+    flat = dxreader.read_tiff_stack(flat_name, ind=ind_flat, slc=(sino, None))
+    dark = dxreader.read_tiff(dark_name, slc=(sino, None))
+
+    # array bite swapping
+    for index in ind_tomo:
+        tomo[index] = tomo[index].byteswap()
+
+    for index in ind_flat:
+         flat[index] = flat[index].byteswap()
+
+    dark = dark.byteswap()
+
+    return tomo, flat, dark
 
 
 def read_aps_7bm(fname, proj=None, sino=None):
