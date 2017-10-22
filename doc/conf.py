@@ -333,7 +333,8 @@ MOCK_MODULES = ['h5py',
                 'astropy',
                 'olefile',
                 'scipy',
-                'scipy.misc']
+                'scipy.misc',
+                'fnmatch']
 
 for mod_name in MOCK_MODULES:
     sys.modules[mod_name] = Mock()

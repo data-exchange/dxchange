@@ -15,6 +15,7 @@
       read_anka_topotomo
       read_aps_1id
       read_aps_2bm
+      read_aps_5bm
       read_aps_7bm
       read_aps_13bm
       read_aps_13id
