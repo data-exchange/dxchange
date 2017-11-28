@@ -397,13 +397,21 @@ def read_ole_metadata(ole):
         'image_height': _read_label(ole, 'ImageInfo/ImageHeight', '<I'),
         'data_type': _read_label(ole, 'ImageInfo/DataType', '<1I'),
         'number_of_images': number_of_images,
-        'thetas': list(_read_ole_data(
-            ole, 'ImageInfo/Angles', "<{0}f".format(number_of_images))),
-        'x_positions': list(_read_ole_data(
+        # NOTE: converting theta to radians from degrees
+        'thetas': np.array(_read_ole_data(
+            ole, 'ImageInfo/Angles', "<{0}f".format(number_of_images))) * np.pi / 180.,
+        'x_positions': np.array(_read_ole_data(
             ole, 'ImageInfo/XPosition', "<{0}f".format(number_of_images))),
-        'y_positions': list(_read_ole_data(
+        'y_positions': np.array(_read_ole_data(
             ole, 'ImageInfo/YPosition', "<{0}f".format(number_of_images)))
     }
+    if ole.exists('alignment/x-shifts'):
+        metadata['x-shifts'] = np.array(_read_ole_data(
+            ole, 'alignment/x-shifts', "<{0}f".format(number_of_images)))
+    if ole.exists('alignment/y-shifts'):
+        metadata['y-shifts'] = np.array(_read_ole_data(
+            ole, 'alignment/y-shifts', "<{0}f".format(number_of_images)))
+    
     return metadata
 
 
@@ -903,6 +911,7 @@ def _read_ole_data(ole, label, struct_fmt):
     Reads the array associated with label in an ole file
     """
 
+    arr = None
     if ole.exists(label):
         stream = ole.openstream(label)
         data = stream.read()
