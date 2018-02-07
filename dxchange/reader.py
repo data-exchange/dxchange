@@ -199,21 +199,12 @@ def read_xrm(fname, slice_range=None):
     """
     fname = _check_read(fname)
     try:
-        import olefile
         ole = olefile.OleFileIO(fname)
     except IOError:
         print('No such file or directory: %s', fname)
         return False
 
     metadata = read_ole_metadata(ole)
-
-    arr = np.empty(
-        _shape_after_slice(
-            (metadata["image_width"], metadata["image_height"]),
-            slice_range,
-        ),
-        dtype=np.float32
-    )
 
     if slice_range is None:
         slice_range = (slice(None), slice(None))
@@ -303,7 +294,6 @@ def read_txrm(file_name, slice_range=None):
     """
     file_name = _check_read(file_name)
     try:
-        import olefile
         ole = olefile.OleFileIO(file_name)
     except IOError:
         print('No such file or directory: %s', file_name)
@@ -331,16 +321,11 @@ def read_txrm(file_name, slice_range=None):
     for i in range(*slice_range[0].indices(metadata["number_of_images"])):
         img_string = "ImageData{}/Image{}".format(
             int(np.ceil((i + 1) / 100.0)), int(i + 1))
-        stream = ole.openstream(img_string)
-        data = stream.read()
+        array_of_images[i] = _read_ole_image(ole, img_string, metadata)[slice_range[1:]]
 
-        data_type = _get_ole_data_type(metadata)
-
-        data_type = data_type.newbyteorder('<')
-        array_of_images[i] = np.reshape(
-            np.fromstring(data, data_type),
-            (metadata["image_height"], metadata["image_width"], )
-        )[slice_range[1:]]
+    reference = metadata['reference']
+    if reference is not None:
+        metadata['reference'] = reference[slice_range[1:]]
 
     _log_imported_data(file_name, array_of_images)
 
@@ -389,21 +374,43 @@ def read_ole_metadata(ole):
         A tuple of image metadata.
     """
 
-    number_of_images = _read_ole_data(ole, "ImageInfo/NoOfImages", "<I")[0]
+    number_of_images = _read_ole_value(ole, "ImageInfo/NoOfImages", "<I")
 
     metadata = {
-        'facility': _read_ole_data(ole, 'SampleInfo/Facility', '<50s'),
-        'image_width': _read_label(ole, 'ImageInfo/ImageWidth', '<I'),
-        'image_height': _read_label(ole, 'ImageInfo/ImageHeight', '<I'),
-        'data_type': _read_label(ole, 'ImageInfo/DataType', '<1I'),
+        'facility': _read_ole_value(ole, 'SampleInfo/Facility', '<50s'),
+        'image_width': _read_ole_value(ole, 'ImageInfo/ImageWidth', '<I'),
+        'image_height': _read_ole_value(ole, 'ImageInfo/ImageHeight', '<I'),
+        'data_type': _read_ole_value(ole, 'ImageInfo/DataType', '<1I'),
         'number_of_images': number_of_images,
-        'thetas': list(_read_ole_data(
-            ole, 'ImageInfo/Angles', "<{0}f".format(number_of_images))),
-        'x_positions': list(_read_ole_data(
-            ole, 'ImageInfo/XPosition', "<{0}f".format(number_of_images))),
-        'y_positions': list(_read_ole_data(
-            ole, 'ImageInfo/YPosition', "<{0}f".format(number_of_images)))
+        'pixel_size': _read_ole_value(ole, 'ImageInfo/pixelsize', '<f'),
+        'reference_filename': _read_ole_value(ole, 'ImageInfo/referencefile', '<260s'),
+        'reference_data_type': _read_ole_value(ole, 'referencedata/DataType', '<1I'),   
+        # NOTE: converting theta to radians from degrees
+        'thetas': _read_ole_arr(
+            ole, 'ImageInfo/Angles', "<{0}f".format(number_of_images)) * np.pi / 180.,
+        'x_positions': _read_ole_arr(
+            ole, 'ImageInfo/XPosition', "<{0}f".format(number_of_images)),
+        'y_positions': _read_ole_arr(
+            ole, 'ImageInfo/YPosition', "<{0}f".format(number_of_images)),
+        'x-shifts': _read_ole_arr(
+            ole, 'alignment/x-shifts', "<{0}f".format(number_of_images)),
+        'y-shifts': _read_ole_arr(
+            ole, 'alignment/y-shifts', "<{0}f".format(number_of_images))
     }
+    # special case to remove trailing null characters
+    reference_filename = _read_ole_value(ole, 'ImageInfo/referencefile', '<260s')
+    if reference_filename is not None:
+        for i in range(len(reference_filename)):
+            if reference_filename[i] == '\x00':
+                #null terminate
+                reference_filename = reference_filename[:i]
+                break
+    metadata['reference_filename'] = reference_filename
+    if ole.exists('referencedata/image'):
+        reference = _read_ole_image(ole, 'referencedata/image', metadata, metadata['reference_data_type'])
+    else:
+        reference = None
+    metadata['reference'] = reference
     return metadata
 
 
@@ -432,15 +439,17 @@ def _init_ole_arr_from_stack(fname, number_of_files, slc):
     return np.empty(size, dtype=_arr.dtype), metadata
 
 
-def _get_ole_data_type(metadata):
+def _get_ole_data_type(metadata, datatype=None):
     # 10 float; 5 uint16 (unsigned 16-bit (2-byte) integers)
-    if metadata["data_type"] == 10:
+    if datatype is None:
+        datatype = metadata["data_type"]
+    if datatype == 10:
         return np.dtype(np.float32)
-    elif metadata["data_type"] == 5:
+    elif datatype == 5:
         return np.dtype(np.uint16)
     else:
-        print("Wrong data type")
-        return False
+        raise Exception("Unsupport XRM datatype: %s" % str(datatype))
+
 
 def read_edf(fname, slc=None):
     """
@@ -465,7 +474,7 @@ def read_edf(fname, slc=None):
         f = EdfFile.EdfFile(fname, access='r')
         d = f.GetStaticHeader(0)
         arr = np.empty((f.NumImages, int(d['Dim_2']), int(d['Dim_1'])))
-        for (i, ar) in enumerate(arr):
+        for i in range(arr.shape[0]):
             arr[i::] = f.GetData(i)
         arr = _slice_array(arr, slc)
     except KeyError:
@@ -884,31 +893,48 @@ def _map_loc(ind, loc):
     return np.ndarray.tolist(loc)
 
 
-def _read_label(ole, label, struct_fmt):
+def _read_ole_struct(ole, label, struct_fmt):
     """
-    Reads the integer value associated with label in an ole file
+    Reads the struct associated with label in an ole file
     """
-
+    value = None
     if ole.exists(label):
         stream = ole.openstream(label)
         data = stream.read()
-        nev = struct.unpack(struct_fmt, data)
-        value = np.int(nev[0])
-
+        value = struct.unpack(struct_fmt, data)
     return value
 
 
-def _read_ole_data(ole, label, struct_fmt):
+def _read_ole_value(ole, label, struct_fmt):
     """
-    Reads the array associated with label in an ole file
+    Reads the value associated with label in an ole file
     """
+    value = _read_ole_struct(ole, label, struct_fmt)
+    if value is not None:
+        value = value[0]
+    return value
 
-    if ole.exists(label):
-        stream = ole.openstream(label)
-        data = stream.read()
-        arr = struct.unpack(struct_fmt, data)
 
+def _read_ole_arr(ole, label, struct_fmt):
+    """
+    Reads the numpy array associated with label in an ole file
+    """
+    arr = _read_ole_struct(ole, label, struct_fmt)
+    if arr is not None:
+        arr = np.array(arr)
     return arr
+
+
+def _read_ole_image(ole, label, metadata, datatype=None):
+    stream = ole.openstream(label)
+    data = stream.read()
+    data_type = _get_ole_data_type(metadata, datatype)
+    data_type = data_type.newbyteorder('<')
+    image = np.reshape(
+        np.fromstring(data, data_type),
+        (metadata["image_height"], metadata["image_width"], )
+    )
+    return image
 
 
 def read_hdf5_stack(h5group, dname, ind, digit=4, slc=None, out_ind=None):
