@@ -838,7 +838,7 @@ def _find_dataset_group(h5object):
 
     # Only one root key means only one dataset in BL8.3.2 current format
     keys = list(h5object.keys())
-    if len(keys) == 1:
+    if len(keys):
         if isinstance(h5object[keys[0]], h5py.Group):
             group_keys = list(h5object[keys[0]].keys())
             if isinstance(h5object[keys[0]][group_keys[0]], h5py.Dataset):
