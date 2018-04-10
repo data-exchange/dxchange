@@ -242,7 +242,8 @@ def write_hdf5(
         overwrite = True  # True if appending to file so fname is not changed
         maxshape = list(data.shape)
         maxshape[appendaxis] = maxsize
-
+    else:
+        maxshape = maxsize
     fname, data = _init_write(data, fname, '.h5', dtype, overwrite)
 
     with h5py.File(fname, mode=mode) as f:
