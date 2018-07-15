@@ -1,9 +1,9 @@
+========
 Examples
 ========
 
-Code example on how to use DXchange to import tomographic data 
-from different synchrotron facilities and process it with 
-TomoPy :cite:`Gursoy:14b`
+Below are examples for reading tomographic data sets from different 
+facilities and process them with TomoPy :cite:`Gursoy:14b`.
 
 .. toctree::   
 
@@ -26,3 +26,6 @@ TomoPy :cite:`Gursoy:14b`
    :members:
    :undoc-members:
    :show-inheritance:
+
+For a repository of experimental and simulated data sets please check 
+`TomoBank <http://tomobank.readthedocs.io/>`_ :cite:`DeCarlo:17`.
