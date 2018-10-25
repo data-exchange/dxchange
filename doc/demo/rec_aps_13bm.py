@@ -5,6 +5,7 @@
 TomoPy example script to reconstruct the APS 13-BM tomography 
 data as original netcdf files. To use, change fname to just 
 the file name (e.g. 'sample[2].nc' would be 'sample'.
+Reconstructed dataset will be saved as float32 netcdf3.
 """
 import glob
 import numpy as np
@@ -54,7 +55,7 @@ if __name__ == '__main__':
     rot_center = tp.find_center_vo(proj)
     print('Center of rotation: ', rot_center)
     
-    tp.minus_log(proj, out = data)
+    tp.minus_log(proj, out = proj)
     
     # Reconstruct object using Gridrec algorith.
     rec = tp.recon(proj, theta, center = rot_center, sinogram_order = False, algorithm = 'gridrec', filter_name = 'hann')
@@ -65,7 +66,7 @@ if __name__ == '__main__':
     NX = ncfile.createDimension('NX', rec.shape[2])
     NY = ncfile.createDimension('NY', rec.shape[1])
     NZ = ncfile.createDimension('NZ', rec.shape[0])
-    volume = ncfile.createVariable('VOLUME', 'i2', ('NZ','NY','NX'))
+    volume = ncfile.createVariable('VOLUME', 'f4', ('NZ','NY','NX'))
     volume[:] = rec
     ncfile.close()
 
