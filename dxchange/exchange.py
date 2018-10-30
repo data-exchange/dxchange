@@ -535,18 +535,18 @@ def read_aps_1id(fname, ind_tomo=None, proj=None, sino=None, layer=0):
 
     # -- queery image data meta for given layer
     # still/projection images
-    prj_start = _layerdf[_layerdf['type'] == 'still', 'nSeq'].values[0]
-    nprj      = _layerdf[_layerdf['type'] == 'still', 'nSeq'].shape[0]
+    prj_start = _layerdf.loc[_layerdf['type'] == 'still', 'nSeq'].values[0]
+    nprj      = _layerdf.loc[_layerdf['type'] == 'still', 'nSeq'].shape[0]
     # dark field images
-    dark_start = _layerdf[_layerdf['type'] == 'post_dark', 'nSeq'].values[0]
-    ndark      = _layerdf[_layerdf['type'] == 'post_dark', 'nSeq'].shape[0]
+    dark_start = _layerdf.loc[_layerdf['type'] == 'post_dark', 'nSeq'].values[0]
+    ndark      = _layerdf.loc[_layerdf['type'] == 'post_dark', 'nSeq'].shape[0]
     # white/flat field images (only use pre_white)
     # NOTE: The beam condition might change overtime, therefore flat field 
     #       images are taken both before and after the experiment.
     #       The implementation here assumes the beam is stable throughout the
     #       experiment
-    flat_start = _layerdf[_layerdf['type'] == 'pre_white', 'nSeq'].values[0]
-    nflat      = _layerdf[_layerdf['type'] == 'pre_white', 'nSeq'].shape[0]
+    flat_start = _layerdf.loc[_layerdf['type'] == 'pre_white', 'nSeq'].values[0]
+    nflat      = _layerdf.loc[_layerdf['type'] == 'pre_white', 'nSeq'].shape[0]
 
     if ind_tomo is None:
         ind_tomo = list(range(prj_start, prj_start + nprj))
