@@ -487,7 +487,7 @@ def parse_aps_1id_metafile(metafn):
     return pd.concat(dfs, ignore_index=True)
 
 
-def read_aps_1id(fname, ind_tomo=None, proj=None, sino=None):
+def read_aps_1id(fname, ind_tomo=None, proj=None, sino=None, layer=0):
     """
     Read APS 1-ID standard data format.
 
@@ -505,6 +505,9 @@ def read_aps_1id(fname, ind_tomo=None, proj=None, sino=None):
     sino : {sequence, int}, optional
         Specify sinograms to read. (start, end, step)
 
+    layer: int, optional
+        Specify the layer to reconstruct 
+
     Returns
     -------
     ndarray
@@ -521,24 +524,29 @@ def read_aps_1id(fname, ind_tomo=None, proj=None, sino=None):
     _fname = fname + '000001.tif'
     log_file = fname + 'TomoStillScan.dat'
 
-    # Read APS 1-ID log file data
-    contents = open(log_file, 'r')
-    for line in contents:
-        ls = line.split()
-        if len(ls) > 1:
-            if ls[0] == "Tomography" and ls[1] == "scan":
-                prj_start = int(ls[6])
-            elif ls[0] == "Number" and ls[2] == "scan":
-                nprj = int(ls[4])
-            elif ls[0] == "Dark" and ls[1] == "field":
-                dark_start = int(ls[6])
-            elif ls[0] == "Number" and ls[2] == "dark":
-                ndark = int(ls[5])
-            elif ls[0] == "White" and ls[1] == "field":
-                flat_start = int(ls[6])
-            elif ls[0] == "Number" and ls[2] == "white":
-                nflat = int(ls[5])
-    contents.close()
+    # parse the log/metadata file
+    _metadf = parse_aps_1id_metafile(log_file)
+
+    # meta data for layer to reconstruct
+    try:
+        _layerdf = _metadf[_metadf['layerID'] == layer]
+    except:
+        print(f"Valid layers for reconstruction are: {_metadf['layerID'].unique()]}")
+        
+    # -- queery image data meta for given layer
+    # still/projection images
+    prj_start = _layerdf[_layerdf['type'] == 'still', 'nSeq'].values[0]
+    nprj      = _layerdf[_layerdf['type'] == 'still', 'nSeq'].shape[0]
+    # dark field images
+    dark_start = _layerdf[_layerdf['type'] == 'post_dark', 'nSeq'].values[0]
+    ndark      = _layerdf[_layerdf['type'] == 'post_dark', 'nSeq'].shape[0]
+    # white/flat field images (only use pre_white)
+    # NOTE: The beam condition might change overtime, therefore flat field 
+    #       images are taken both before and after the experiment.
+    #       The implementation here assumes the beam is stable throughout the
+    #       experiment
+    flat_start = _layerdf[_layerdf['type'] == 'pre_white', 'nSeq'].values[0]
+    nflat      = _layerdf[_layerdf['type'] == 'pre_white', 'nSeq'].shape[0]
 
     if ind_tomo is None:
         ind_tomo = list(range(prj_start, prj_start + nprj))
