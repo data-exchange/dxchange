@@ -50,15 +50,21 @@
 Module for describing beamline/experiment specific data recipes.
 """
 
-from __future__ import (absolute_import, division, print_function,
-                        unicode_literals)
+from __future__ import (absolute_import, 
+                        division, 
+                        print_function,
+                        unicode_literals,
+                        )
 
 import numpy as np
 import os.path
 import re
 import fnmatch
 import logging
+import pandas as pd
 import dxchange.reader as dxreader
+from itertools import cycle
+from io import StringIO
 
 __authors__ = "Doga Gursoy, Luis Barroso-Luque, Francesco De Carlo"
 __copyright__ = "Copyright (c) 2015-2016, UChicago Argonne, LLC."
@@ -67,6 +73,7 @@ __docformat__ = "restructuredtext en"
 __all__ = ['read_als_832',
            'read_als_832h5',
            'read_anka_topotomo',
+           'parse_aps_1id_metafile',
            'read_aps_1id',
            'read_aps_2bm',
            'read_aps_5bm',
@@ -374,6 +381,110 @@ def read_anka_topotomo(
     dark = dxreader.read_tiff_stack(
         dark_name, ind=ind_dark, slc=(sino, None))
     return tomo, flat, dark
+
+
+def parse_aps_1id_metafile(metafn):
+    """
+    Parse log file generated at APS 1-ID
+
+    Parameters
+    ----------
+    metafn : str
+        Path to metafile of the experiment
+
+    Returns
+    -------
+    dataframe
+        Metadata stored as Pandas DataFrame.
+    """
+    # use pandas to organize metadata
+    with open(metafn) as f:
+        rawlines = f.readlines()
+
+    # locate each layer
+    # - each layer much have a head start with "Beginning of tomography"
+    # - failed layer does not contain "End of the full scan"
+    scan_head_ln = [i for i, line in enumerate(rawlines) 
+                      if "Beginning of tomography" in line] + [len(rawlines)]
+    layers_lns = list(zip(scan_head_ln[0:-1], scan_head_ln[1:]))
+    layers_isValid = [ ( "End of the full scan" in "".join(rawlines[lns[0]:lns[1]]) ) 
+                       for i, lns in enumerate(layers_lns)]
+    
+    # parse each layer into DataFrames
+    dfs = []
+    for layerID, lns in enumerate(layers_lns):
+        # skip over the incomplete layer
+        if not layers_isValid[layerID]: continue
+
+        # prep for current layer
+        layer_rawlines = rawlines[lns[0]:lns[1]]
+        cycled_imgtypes = cycle(['pre_white', 
+                                 'still', 
+                                 'post_white', 
+                                 'post_dark',
+                                 ])
+
+        # iterate through each line
+        for i in range(len(layer_rawlines)):
+            ln = layer_rawlines[i]
+
+            # the format of the metadata file requires hard coding...
+            if "num    nSeq" not in ln:
+                # layer meta?
+                # -- metastr seems important, so I keep the whole string for 
+                #    each individual img for now
+                #    However, this is definitely not a good practice in the 
+                #    long run.
+                if ":" in ln:
+                    entry_key = ln.split(":")[0]
+                    entry = ":".join(ln.split(":")[1:]).strip()
+                    if entry_key.lower() == 'Path'.lower():
+                        path = entry
+                    elif entry_key.lower() == 'Image prefix'.lower():
+                        prefix = entry
+                    elif entry_key.lower() == "Energy (keV)".lower():
+                        energy = float(entry)
+                    elif entry_key.lower() == "New omega position".lower():
+                        image_type = next(cycled_imgtypes)
+                    elif entry_key.lower() == "tomo_metastr".lower():
+                        tomo_metastr = entry
+                    else:
+                        continue
+            else:
+                # this is the start of an image meta info block
+                block_start = i
+                while(True):
+                    i = i+1
+                    if layer_rawlines[i] == "\n":
+                        block_end = i
+                        break
+                # construct a dataframe from the block 
+                # -- the date time column contains single white space, which 
+                #    makes it impossible to directly use white space as the 
+                #    delimenator.  Here we replace all 2+ white space with 
+                #    tab so that later Pandas can easily identify each column
+                image_block = [re.sub("  +", "\t", line.strip()) 
+                               for line in layer_rawlines[block_start:block_end]]
+
+                # construct the dataframe
+                df = pd.read_csv(StringIO("\n".join(image_block)), sep='\t')
+                # -- having layerID makes it easier to see what went wrong 
+                #    during the experiment by directly locating the corrupted 
+                #    layer
+                df['layerID']     = layerID  
+                df['path']        = path
+                df['energy(kev)'] = energy
+                df['prefix']      = prefix
+                df['type']        = image_type
+                df['metastr']     = tomo_metastr
+                # now convert the time to datetime object
+                df['Date'] = pd.to_datetime(df['Date'], 
+                                            infer_datetime_format=True,
+                                           )
+
+                dfs.append(df)
+                
+    return pd.concat(dfs, ignore_index=True)
 
 
 def read_aps_1id(fname, ind_tomo=None, proj=None, sino=None):
