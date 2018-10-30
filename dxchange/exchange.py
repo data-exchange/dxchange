@@ -59,6 +59,8 @@ import re
 import fnmatch
 import logging
 import dxchange.reader as dxreader
+import tomopy as tp
+import glob
 
 __authors__ = "Doga Gursoy, Luis Barroso-Luque, Francesco De Carlo"
 __copyright__ = "Copyright (c) 2015-2016, UChicago Argonne, LLC."
@@ -608,7 +610,8 @@ def read_aps_8bm(image_directory, ind_tomo, ind_flat,
 
 def read_aps_13bm(fname, format, proj=None, sino=None):
     """
-    Read APS 13-BM standard data format.
+    Read APS 13-BM standard data format. Searches directory for all necessary
+    files, and then combines the separate flat fields.
 
     Parameters
     ----------
@@ -632,8 +635,28 @@ def read_aps_13bm(fname, format, proj=None, sino=None):
     if format == 'spe':
         tomo = dxreader.read_spe(fname, slc=(None, sino))
     elif format == 'netcdf4':
-        tomo = dxreader.read_netcdf4(fname, 'array_data', slc=(proj, sino))
-    return tomo
+        files = glob.glob(fname[0:-5] + '*[1-3].nc')
+        tomo = dxreader.read_netcdf4(files[1], 'array_data', slc=(proj, sino))
+
+        flat1 = dxreader.read_netcdf4(files[0], 'array_data', slc=(proj, sino))
+        flat2 = dxreader.read_netcdf4(files[2], 'array_data', slc=(proj, sino))
+        flat = np.concatenate((flat1, flat2), axis = 0)
+        del flat1, flat2
+
+        setup = glob.glob(fname[0:-5] + '*.setup')
+        setup = open(setup[0], 'r')
+        setup_data = setup.readlines()
+        result = {}
+        for line in setup_data:
+            words = line[:-1].split(':',1)
+            result[words[0].lower()] = words[1]
+
+        dark = float(result['dark_current'])
+        dark = flat*0+dark
+
+        theta = tp.angles(proj.shape[0])
+
+    return tomo, flat, dark, theta
 
 
 def read_aps_13id(
@@ -728,7 +751,7 @@ def read_aps_32id(fname, exchange_rank=0, proj=None, sino=None, dtype=None):
         Specify sinograms to read. (start, end, step)
 
     dtype : numpy datatype, optional
-        Convert data to this datatype on read if specified.    
+        Convert data to this datatype on read if specified.
 
     Returns
     -------
