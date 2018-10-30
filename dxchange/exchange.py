@@ -654,7 +654,7 @@ def read_aps_13bm(fname, format, proj=None, sino=None):
         dark = float(result['dark_current'])
         dark = flat*0+dark
 
-        theta = tp.angles(proj.shape[0])
+        theta = tp.angles(tomo.shape[0])
 
     return tomo, flat, dark, theta
 

@@ -20,7 +20,7 @@ if __name__ == '__main__':
 
     ## Import Data.
     proj, flat, dark, theta = dx.exchange.read_aps_13bm(fname, format = 'netcdf4')
-     
+
     ## Flat-field correction of raw data.
     proj = tp.normalize(proj, flat = flat, dark = dark)
 
