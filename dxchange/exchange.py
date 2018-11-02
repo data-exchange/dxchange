@@ -59,7 +59,6 @@ import re
 import fnmatch
 import logging
 import dxchange.reader as dxreader
-import tomopy as tp
 import glob
 
 __authors__ = "Doga Gursoy, Luis Barroso-Luque, Francesco De Carlo"
@@ -654,7 +653,7 @@ def read_aps_13bm(fname, format, proj=None, sino=None):
         dark = float(result['dark_current'])
         dark = flat*0+dark
 
-        theta = tp.angles(tomo.shape[0])
+        theta = np.linspace(0.0, np.pi, tomo.shape[0])
 
     return tomo, flat, dark, theta
 
