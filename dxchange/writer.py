@@ -69,7 +69,9 @@ __all__ = ['write_dxf',
            'write_hdf5',
            'write_npy',
            'write_tiff',
-           'write_tiff_stack']
+           'write_tiff_stack',
+           'write_vtr',
+           ]
 
 logger = logging.getLogger(__name__)
 
@@ -355,3 +357,104 @@ def write_tiff_stack(
         if not overwrite:
             _fname = _suggest_new_fname(_fname, digit=1)
         write_tiff(_data[m - start], _fname, overwrite=overwrite)
+
+
+def write_vtr(data, fname='tmp/data.vtr', down_sampling=(5, 5, 5)):
+    """
+    Write the reconstructed data (img stackes) to vtr file (retangular grid)
+
+    Parameters
+    ----------
+    data          :  np.3darray
+        reconstructed 3D image stacks with axis=0 as the omega
+    fname         :  str
+        file name of the output vtr file
+    down_sampling :  tuple 
+        down sampling steps along three axes
+
+    Returns
+    -------
+    None
+    """
+    # vtk is only used here, therefore doing an in module import
+    import vtk
+    from vtk.util import numpy_support
+    
+    # convert to unit8 can significantly reduce the output vtr file
+    # size, or just do a severe down-sampling
+    data = _normalize_imgstacks(data[::down_sampling[0], 
+                                     ::down_sampling[1], 
+                                     ::down_sampling[2],]) * 255
+    
+    # --init rectangular grid
+    rGrid = vtk.vtkRectilinearGrid()
+    coordArray = [vtk.vtkDoubleArray(),
+                  vtk.vtkDoubleArray(),
+                  vtk.vtkDoubleArray(),
+                 ]
+    coords = np.array([np.arange(data.shape[i]) for i in range(3)])
+    coords = [0.5 * np.array([3.0 * coords[i][0] - coords[i][0 + int(len(coords[i]) > 1)]] + \
+                             [coords[i][j-1] + coords[i][j] for j in range(1,len(coords[i]))] + \
+                             [3.0 * coords[i][-1] - coords[i][-1 - int(len(coords[i]) > 1)]]
+                            ) 
+              for i in range(3)
+             ]
+    grid = np.array(list(map(len,coords)),'i')
+    rGrid.SetDimensions(*grid)
+    for i,points in enumerate(coords):
+        for point in points:
+            coordArray[i].InsertNextValue(point)
+
+    rGrid.SetXCoordinates(coordArray[0])
+    rGrid.SetYCoordinates(coordArray[1])
+    rGrid.SetZCoordinates(coordArray[2])
+    
+    # vtk requires x to be the fast axis
+    # NOTE:
+    #    Proper coordinate transformation is required to connect the 
+    #    tomography data with other down-stream analysis (such as FF-HEDM
+    #    and NF-HEDM).
+    imgstacks = np.swapaxes(data, 0, 2)
+    
+    VTKarray = numpy_support.numpy_to_vtk(num_array=imgstacks.flatten().astype(np.uint8),
+                                          deep=True,
+                                          array_type=vtk.VTK_UNSIGNED_CHAR,
+                                         )
+    VTKarray.SetName('img')
+    rGrid.GetCellData().AddArray(VTKarray)
+    
+    rGrid.Modified()
+    if vtk.VTK_MAJOR_VERSION <= 5: 
+        rGrid.Update()
+
+    # output to file
+    writer = vtk.vtkXMLRectilinearGridWriter()
+    writer.SetFileName(fname)
+    writer.SetDataModeToBinary()
+    writer.SetCompressorTypeToZLib()
+    if vtk.VTK_MAJOR_VERSION <= 5: 
+        writer.SetInput(rGrid)
+    else:                          
+        writer.SetInputData(rGrid)
+    writer.Write()
+
+
+def _normalize_imgstacks(img):
+    """
+    Normalize image stacks on a per layer base
+
+    Parameters
+    ----------
+    img  :  np.3darray
+        img stacks to be normalized
+    
+    Returns
+    -------
+    np.3darray
+        normalized image stacks
+    """
+    return img/np.amax(img.reshape(img.shape[0], 
+                                   img.shape[1]*img.shape[2],
+                                  ), 
+                       axis=1,
+                      ).reshape(img.shape[0],1,1)
