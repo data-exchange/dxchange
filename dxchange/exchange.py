@@ -61,7 +61,9 @@ import os.path
 import re
 import fnmatch
 import logging
-import dxchange.reader as dxreader
+import dxchange.reader   as dxreader
+import matplotlib.pyplot as plt
+from itertools import cycle
 
 __authors__ = "Doga Gursoy, Luis Barroso-Luque, Francesco De Carlo"
 __copyright__ = "Copyright (c) 2015-2016, UChicago Argonne, LLC."
@@ -453,6 +455,87 @@ def read_aps_1id(fname, ind_tomo=None, proj=None, sino=None, layer=0):
     dark = dxreader.read_tiff_stack(
         _fname, ind=ind_dark, slc=(sino, None))
     return tomo, flat, dark
+
+
+def report_aps_1id(df_scanmeta, metafn):
+    """
+    Generate report of beam conditions based on given DataFrame of the 
+    metadata
+
+    Parameters
+    ----------
+    df_scanmeta  :  pd.DataFrame
+        DataFrame of the parsed metadata
+            dxreader.read_aps_1id_metafile(log_file)
+    metafn       :  str
+        Metadata file name
+
+    Returns
+    -------
+    pd.DataFrame
+        Updated Dataframe with added beam conditions
+    """
+    fign = metafn.split("/")[-1].split(".")[0]  # just the file name base
+
+    # add calculation of four beam quality
+    # -- Temporal Beam Stability
+    df_scanmeta['TBS'] = df_scanmeta['IC-E3']/df_scanmeta['IC-E3'].values[0]
+    # -- Vertical Beam Stability
+    df_scanmeta['VBS'] = df_scanmeta['IC-E1']/df_scanmeta['IC-E2']
+    # -- Beam Loss at Slit
+    df_scanmeta['BLS'] = (df_scanmeta['IC-E1'] + df_scanmeta['IC-E2'])/df_scanmeta['IC-E3']
+    # -- Beam Loss during Travel 
+    df_scanmeta['BLT'] = df_scanmeta['IC-E5']/df_scanmeta['IC-E3']
+    # -- corresponding color code
+    pltlbs  = ['TBS',  'VBS',     'BLS', 'BLT' ]
+    pltclrs = ['red', 'blue', 'magenta', 'cyan']
+
+    # start plot
+    fig = plt.figure(figsize=(8,3))
+    ax  = fig.add_subplot(111)
+    lnclrs = cycle(['gray', 'lime', 'gray', 'black'])
+    # -- plot one segment at a time
+    for lb, clr in zip(pltlbs, pltclrs):
+        addlabel=True
+        for layerID in df_scanmeta['layerID'].unique():
+            tmpdf = df_scanmeta[df_scanmeta['layerID'] == layerID]
+            for imgtype in tmpdf['type'].unique():
+                # plot the main curve
+                currentSlice = tmpdf[tmpdf['type'] == imgtype]
+
+                ax.plot(currentSlice['Date'], currentSlice[lb], 
+                        linewidth=0.2, 
+                        color=clr,
+                        label=lb if addlabel else '_nolegend_',
+                        alpha=0.5,
+                        )
+                addlabel = False
+                # add the vertical guard
+                tmpx = currentSlice['Date'].values
+                tmpclr = next(lnclrs)
+                for x in [tmpx[0], tmpx[-1]]:
+                    ax.plot([x, x], [1e-4, 1e2], 
+                            color=tmpclr,
+                            linewidth=0.05,
+                            linestyle='dashed',
+                            alpha=0.1,
+                           )
+    # -- set canvas property
+    ax.set_yscale('log')
+    plt.legend(loc=0)
+    plt.ylim([0.9, 2.0])  # 10% as cut range
+    plt.xticks(rotation=45)
+    # -- save the figure (both pdf and png)
+    plt.savefig(f'report/{fign}_beamcondition.pdf', 
+                transparent=True, 
+                bbox_inches='tight', 
+                pad_inches=0.1,
+               )
+    # -- clear/close figure
+    plt.close()
+    
+    return df_scanmeta
+
 
 
 def read_aps_2bm(fname, proj=None, sino=None):
