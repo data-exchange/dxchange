@@ -460,7 +460,7 @@ def read_aps_1id(fname, ind_tomo=None, proj=None, sino=None, layer=0):
     return tomo, flat, dark
 
 
-def report_aps_1id(df_scanmeta, metafn):
+def report_aps_1id(df_scanmeta, reportfn):
     """
     Generate report of beam conditions based on given DataFrame of the 
     metadata
@@ -470,16 +470,15 @@ def report_aps_1id(df_scanmeta, metafn):
     df_scanmeta  :  pd.DataFrame
         DataFrame of the parsed metadata
             dxreader.read_aps_1id_metafile(log_file)
-    metafn       :  str
-        Metadata file name
+    reportfn     :  str
+        Output report file name (include path)
 
     Returns
     -------
     pd.DataFrame
         Updated Dataframe with added beam conditions
     """
-    fign = metafn.split("/")[-1].split(".")[0]  # just the file name base
-
+    
     # add calculation of four beam quality
     # -- Temporal Beam Stability
     df_scanmeta['TBS'] = df_scanmeta['IC-E3']/df_scanmeta['IC-E3'].values[0]
@@ -529,7 +528,7 @@ def report_aps_1id(df_scanmeta, metafn):
     plt.ylim([0.9, 2.0])  # 10% as cut range
     plt.xticks(rotation=45)
     # -- save the figure (both pdf and png)
-    plt.savefig(f'report/{fign}_beamcondition.pdf', 
+    plt.savefig(reportfn, 
                 transparent=True, 
                 bbox_inches='tight', 
                 pad_inches=0.1,
