@@ -424,7 +424,7 @@ def read_aps_1id(fname, ind_tomo=None, proj=None, sino=None, layer=0):
     try:
         _layerdf = _metadf[_metadf['layerID'] == layer]
     except:
-        print(f"Valid layers for reconstruction are: {_metadf['layerID'].unique()}")
+        print("Valid layers for reconstruction are: {}".format(_metadf['layerID'].unique()))
 
     # -- queery image data meta for given layer
     # still/projection images
