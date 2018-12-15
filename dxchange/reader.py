@@ -264,12 +264,14 @@ def read_xrm_stack(fname, ind, slc=None):
     del metadata["thetas"][0]
     del metadata["x_positions"][0]
     del metadata["y_positions"][0]
+    del metadata["z_positions"][0]
 
     for m, fname in enumerate(list_fname):
         arr[m], angle_metadata = read_xrm(fname, slc)
         metadata["thetas"].append(angle_metadata["thetas"][0])
         metadata["x_positions"].append(angle_metadata["x_positions"][0])
         metadata["y_positions"].append(angle_metadata["y_positions"][0])
+        metadata["z_positions"].append(angle_metadata["z_positions"][0])
 
     _log_imported_data(fname, arr)
     return arr, metadata
@@ -500,6 +502,8 @@ def read_ole_metadata(ole):
             ole, 'ImageInfo/XPosition', "<{0}f".format(number_of_images)),
         'y_positions': _read_ole_arr(
             ole, 'ImageInfo/YPosition', "<{0}f".format(number_of_images)),
+        'z_positions': _read_ole_arr(
+            ole, 'ImageInfo/ZPosition', "<{0}f".format(number_of_images)),
         'x-shifts': _read_ole_arr(
             ole, 'alignment/x-shifts', "<{0}f".format(number_of_images)),
         'y-shifts': _read_ole_arr(
