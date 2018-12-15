@@ -310,6 +310,16 @@ def read_aps_1id_metafile(metafn):
         # skip over the incomplete layer
         if not layers_isValid[layerID]: continue
 
+        # init meta line as None
+        # NOTE:
+        #    These meta string might or might not present in the meta file,
+        #    depending on runtime settings
+        path = None
+        prefix = None
+        energy = None
+        image_type = None
+        tomo_metastr = None
+
         # prep for current layer
         layer_rawlines = rawlines[lns[0]:lns[1]]
         cycled_imgtypes = cycle(['pre_white', 
