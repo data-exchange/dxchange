@@ -8,3 +8,4 @@ edffile
 tifffile    
 dxfile
 fnmatch
+pandas
