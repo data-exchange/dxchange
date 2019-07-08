@@ -3,11 +3,13 @@ DXchange
 ========
 
 `DXchange <https://github.com/data-exchange/DXchange>`_ provides an interface with
-`tomoPy <http://tomopy.readthedocs.org/>`_ :cite:`Gursoy:14b` and raw tomographic
+`TomoPy <http://tomopy.readthedocs.org/>`_ :cite:`Gursoy:14b` and raw tomographic
 data collected at different synchrotron facilities including the Data Exchange
 file format (`DXfile <http://dxfile.readthedocs.org/>`_) :cite:`DeCarlo:14a`,
 currently in use at the Advanced Photon Source beamline 2-BM and 32-ID,
 at the Swiss Light Source Tomcat beamline and at the Elettra SYRMEP beamline :cite:`Elettra:01`.
+
+.. warning:: DXchange will drop support for Python 2 before 1 January 2020. For more information, visit https://python3statement.org/.
 
 Features
 --------
