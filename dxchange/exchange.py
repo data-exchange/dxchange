@@ -85,6 +85,7 @@ __all__ = ['read_als_832',
            'read_elettra_syrmep',
            'read_esrf_id19',
            'read_lnls_imx',
+           'read_nsls2_fxi18_h5',
            'read_petraIII_p05',
            'read_sls_tomcat']
 
@@ -796,7 +797,7 @@ def read_aps_32id(fname, exchange_rank=0, proj=None, sino=None, dtype=None):
         logger.warn('Generating "%s" [0-180] deg angles for missing "exchange/theta" dataset' % (str(theta_size)))
         theta = np.linspace(0. , np.pi, theta_size)
     else:
-        theta = theta * np.pi / 180.
+        theta = np.deg2rad(theta)
     return tomo, flat, dark, theta
 
 
@@ -1007,6 +1008,44 @@ def read_lnls_imx(folder, proj=None, sino=None):
     flat = dxreader.read_hdf5(flat_name, 'flats', slc=(None, sino))
     dark = dxreader.read_hdf5(dark_name, 'darks', slc=(None, sino))
     return tomo, flat, dark
+
+
+def read_nsls2_fxi18_h5(fname, proj=None, sino=None):
+    """
+    Read LNLS IMX standard data format.
+
+    Parameters
+    ----------
+    fname : str
+        Path to h5 file.
+
+    proj : {sequence, int}, optional
+        Specify projections to read. (start, end, step)
+
+    sino : {sequence, int}, optional
+        Specify sinograms to read. (start, end, step)
+
+    Returns
+    -------
+    ndarray
+        3D tomographic data.
+
+    ndarray
+        3D flat field data.
+
+    ndarray
+        3D dark field data.
+
+    ndarray
+        1D theta in radian.
+
+    """
+    tomo = dxreader.read_hdf5(fname, 'img_tomo', slc=(proj, sino))
+    flats = dxreader.read_hdf5(fname, 'img_bkg', slc=(None, sino))
+    darks = dxreader.read_hdf5(fname, 'img_dark', slc=(None, sino))
+    theta = dxreader.read_hdf5(fname, 'angle', slc=(proj,))
+    theta = np.deg2rad(theta)
+    return tomo, flats, darks, theta
 
 
 def read_petraIII_p05(
