@@ -430,7 +430,7 @@ def read_txrm(file_name, slice_range=None):
             ),
             slice_range
         ),
-        dtype=np.float32
+        dtype=_get_ole_data_type(metadata)
     )
 
     if slice_range is None:
@@ -438,9 +438,9 @@ def read_txrm(file_name, slice_range=None):
     else:
         slice_range = _make_slice_object_a_tuple(slice_range)
 
-    for i in range(*slice_range[0].indices(metadata["number_of_images"])):
+    for i, idx in enumerate(range(*slice_range[0].indices(metadata["number_of_images"]))):
         img_string = "ImageData{}/Image{}".format(
-            int(np.ceil((i + 1) / 100.0)), int(i + 1))
+            int(np.ceil((idx + 1) / 100.0)), int(idx + 1))
         array_of_images[i] = _read_ole_image(ole, img_string, metadata)[slice_range[1:]]
 
     reference = metadata['reference']
