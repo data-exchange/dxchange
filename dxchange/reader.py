@@ -264,12 +264,14 @@ def read_xrm_stack(fname, ind, slc=None):
     del metadata["thetas"][0]
     del metadata["x_positions"][0]
     del metadata["y_positions"][0]
+    del metadata["z_positions"][0]
 
     for m, fname in enumerate(list_fname):
         arr[m], angle_metadata = read_xrm(fname, slc)
         metadata["thetas"].append(angle_metadata["thetas"][0])
         metadata["x_positions"].append(angle_metadata["x_positions"][0])
         metadata["y_positions"].append(angle_metadata["y_positions"][0])
+        metadata["z_positions"].append(angle_metadata["z_positions"][0])
 
     _log_imported_data(fname, arr)
     return arr, metadata
@@ -307,6 +309,16 @@ def read_aps_1id_metafile(metafn):
     for layerID, lns in enumerate(layers_lns):
         # skip over the incomplete layer
         if not layers_isValid[layerID]: continue
+
+        # init meta line as None
+        # NOTE:
+        #    These meta string might or might not present in the meta file,
+        #    depending on runtime settings
+        path = None
+        prefix = None
+        energy = None
+        image_type = None
+        tomo_metastr = None
 
         # prep for current layer
         layer_rawlines = rawlines[lns[0]:lns[1]]
@@ -418,7 +430,7 @@ def read_txrm(file_name, slice_range=None):
             ),
             slice_range
         ),
-        dtype=np.float32
+        dtype=_get_ole_data_type(metadata)
     )
 
     if slice_range is None:
@@ -426,9 +438,9 @@ def read_txrm(file_name, slice_range=None):
     else:
         slice_range = _make_slice_object_a_tuple(slice_range)
 
-    for i in range(*slice_range[0].indices(metadata["number_of_images"])):
+    for i, idx in enumerate(range(*slice_range[0].indices(metadata["number_of_images"]))):
         img_string = "ImageData{}/Image{}".format(
-            int(np.ceil((i + 1) / 100.0)), int(i + 1))
+            int(np.ceil((idx + 1) / 100.0)), int(idx + 1))
         array_of_images[i] = _read_ole_image(ole, img_string, metadata)[slice_range[1:]]
 
     reference = metadata['reference']
@@ -500,6 +512,8 @@ def read_ole_metadata(ole):
             ole, 'ImageInfo/XPosition', "<{0}f".format(number_of_images)),
         'y_positions': _read_ole_arr(
             ole, 'ImageInfo/YPosition', "<{0}f".format(number_of_images)),
+        'z_positions': _read_ole_arr(
+            ole, 'ImageInfo/ZPosition', "<{0}f".format(number_of_images)),
         'x-shifts': _read_ole_arr(
             ole, 'alignment/x-shifts', "<{0}f".format(number_of_images)),
         'y-shifts': _read_ole_arr(

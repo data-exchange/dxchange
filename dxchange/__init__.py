@@ -49,15 +49,25 @@
 from __future__ import (absolute_import, division, print_function,
                         unicode_literals)
 
+import sys
+import warnings
 import logging
-logging.getLogger(__name__).addHandler(logging.NullHandler())
 
 from dxchange.exchange import *
 from dxchange.reader import *
 from dxchange.writer import *
+
+logging.getLogger(__name__).addHandler(logging.NullHandler())
 
 try:
     import pkg_resources
     __version__ = pkg_resources.working_set.require("dxchange")[0].version
 except:
     pass
+
+if sys.version_info < (3,):
+    warnings.warn(
+        'DXchange will drop support for Python 2 before 1 January 2020.'
+        ' For more information, visit https://python3statement.org/.',
+        UserWarning,
+    )
