@@ -76,7 +76,8 @@ __author__ = "Doga Gursoy, Francesco De Carlo"
 __copyright__ = "Copyright (c) 2015-2016, UChicago Argonne, LLC."
 __version__ = "0.1.0"
 __docformat__ = 'restructuredtext en'
-__all__ = ['read_edf',
+__all__ = ['read_dx_meta',
+           'read_edf',
            'read_hdf5',
            'read_netcdf4',
            'read_npy',
@@ -635,6 +636,17 @@ def read_dx_dims(fname, dataset):
 
 
 def read_dx_meta(file_name) :
+    """
+    Read Data Exchange meta data.
+    Parameters
+    ----------
+    fname : str
+        String defining file name.
+    Returns
+    -------
+    dictionary
+        DX file meta data.
+    """
     meta = {}
     
     fp = h5py.File(file_name, 'r') 
@@ -657,17 +669,16 @@ def read_hdf5_item_structure(meta, fp, file_name, offset='    ') :
                 value = value.decode(encoding="utf-8")
             meta.update( {name : value} )
     elif isinstance(fp, h5py.Group):
-        log.info('Group: %s' % fp.name)
- 
+        logger.debug('Group: %s' % fp.name)
+
     else :
-        log.info('WARNING: UNKNOWN ITEM IN HDF5 FILE', fp.name)
+        logger.error('WARNING: UNKNOWN ITEM IN HDF5 FILE', fp.name)
         sys.exit( "EXECUTION IS TERMINATED" )
  
     if isinstance(fp, h5py.File) or isinstance(fp, h5py.Group) :
-        # for key,val in dict(fp).iteritems() :
         for key,val in dict(fp).items() :
             subg = val
-            #log.info(offset, key )#,"   ", subfp.name #, val, subfp.len(), type(subg),
+            logger.debug(offset, key )
             read_hdf5_item_structure(meta, subg, file_name, offset + '    ')
 
 
