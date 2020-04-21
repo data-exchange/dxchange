@@ -633,6 +633,44 @@ def read_dx_dims(fname, dataset):
 
     return shape
 
+
+def read_dx_meta(file_name) :
+    meta = {}
+    
+    fp = h5py.File(file_name, 'r') 
+    read_hdf5_item_structure(meta, fp, file_name)
+    fp.close()
+
+    return meta
+
+
+def read_hdf5_item_structure(meta, fp, file_name, offset='    ') :
+    """log.infos the input file/group/dataset(fp) name and begin iterations on its content"""
+
+    if isinstance(fp, h5py.Dataset):
+        if ('/measurement/' in fp.name) or  ('/process/' in fp.name):
+            s = fp.name.split('/')
+            name = s[-1].replace('-', '_')
+            
+            value = dxreader.read_hdf5(file_name,  fp.name)[0]
+            if not ((value.dtype == 'float64') or (value.dtype == 'int32') or (value.dtype == 'float32') or (value.dtype == 'uint32') or (value.dtype == 'int16')):
+                value = value.decode(encoding="utf-8")
+            meta.update( {name : value} )
+    elif isinstance(fp, h5py.Group):
+        log.info('Group: %s' % fp.name)
+ 
+    else :
+        log.info('WARNING: UNKNOWN ITEM IN HDF5 FILE', fp.name)
+        sys.exit( "EXECUTION IS TERMINATED" )
+ 
+    if isinstance(fp, h5py.File) or isinstance(fp, h5py.Group) :
+        # for key,val in dict(fp).iteritems() :
+        for key,val in dict(fp).items() :
+            subg = val
+            #log.info(offset, key )#,"   ", subfp.name #, val, subfp.len(), type(subg),
+            read_hdf5_item_structure(meta, subg, file_name, offset + '    ')
+
+
 def read_hdf5(fname, dataset, slc=None, dtype=None, shared=False):
     """
     Read data from hdf5 file from a specific group.
