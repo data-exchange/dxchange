@@ -638,10 +638,12 @@ def read_dx_dims(fname, dataset):
 def read_dx_meta(file_name) :
     """
     Read Data Exchange meta data.
+
     Parameters
     ----------
     fname : str
         String defining file name.
+
     Returns
     -------
     dictionary
@@ -657,7 +659,10 @@ def read_dx_meta(file_name) :
 
 
 def read_hdf5_item_structure(meta, fp, file_name, offset='    ', label1='/measurement/', label2='/process/'):
-    """log.infos the input file/group/dataset(fp) name and begin iterations on its content"""
+    """
+    Access the input file/group/dataset(fp) name and begin iterations on its content
+
+    """
 
     if isinstance(fp, h5py.Dataset):
         if (label1 in fp.name) or  (label2 in fp.name):
