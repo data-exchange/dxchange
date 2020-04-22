@@ -656,11 +656,11 @@ def read_dx_meta(file_name) :
     return meta
 
 
-def read_hdf5_item_structure(meta, fp, file_name, offset='    ') :
+def read_hdf5_item_structure(meta, fp, file_name, offset='    ', label1='/measurement/', label2='/process/'):
     """log.infos the input file/group/dataset(fp) name and begin iterations on its content"""
 
     if isinstance(fp, h5py.Dataset):
-        if ('/measurement/' in fp.name) or  ('/process/' in fp.name):
+        if (label1 in fp.name) or  (label2 in fp.name):
             s = fp.name.split('/')
             name = s[-1].replace('-', '_')
             
