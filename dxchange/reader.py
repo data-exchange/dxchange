@@ -670,7 +670,7 @@ def read_hdf5_item_structure(meta, fp, file_name, offset='    ', label1='/measur
             name = s[-1].replace('-', '_')
             
             value = dxreader.read_hdf5(file_name,  fp.name)[0]
-            if not ((value.dtype == 'float64') or (value.dtype == 'int32') or (value.dtype == 'float32') or (value.dtype == 'uint32') or (value.dtype == 'int16')):
+            if  (value.dtype.kind == 'S'):
                 value = value.decode(encoding="utf-8")
             meta.update( {name : value} )
     elif isinstance(fp, h5py.Group):
