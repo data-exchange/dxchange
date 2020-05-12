@@ -710,7 +710,17 @@ def read_netcdf4(fname, group, slc=None):
         logger.error('Unrecognized netcdf4 group')
         return None
     arr = _slice_array(arr, slc)
+    # See if there is a global attribute called dataType.
+    # It is added by the areaDetector netCDF plugin, and can be used to distinguish between signed
+    # and unsigned data types.  netCDF3 only supports signed, but the data may really be unsigned.
+    try:
+        data_type = f.dataType
+    except:
+        data_type = None
     f.close()
+    if (arr.dtype == np.int16) and (data_type == 3):
+        arr = arr.astype(np.uint16, copy=False)
+
     _log_imported_data(fname, arr)
     return arr
 
