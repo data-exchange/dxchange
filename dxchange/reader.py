@@ -76,7 +76,8 @@ __author__ = "Doga Gursoy, Francesco De Carlo"
 __copyright__ = "Copyright (c) 2015-2016, UChicago Argonne, LLC."
 __version__ = "0.1.0"
 __docformat__ = 'restructuredtext en'
-__all__ = ['read_edf',
+__all__ = ['read_dx_meta',
+           'read_edf',
            'read_hdf5',
            'read_netcdf4',
            'read_npy',
@@ -632,6 +633,59 @@ def read_dx_dims(fname, dataset):
         shape = data.shape
 
     return shape
+
+
+def read_dx_meta(file_name) :
+    """
+    Read Data Exchange meta data.
+
+    Parameters
+    ----------
+    fname : str
+        String defining file name.
+
+    Returns
+    -------
+    dictionary
+        DX file meta data.
+    """
+    meta = {}
+    
+    fp = h5py.File(file_name, 'r') 
+    read_hdf5_item_structure(meta, fp, file_name)
+    fp.close()
+
+    return meta
+
+
+def read_hdf5_item_structure(meta, fp, file_name, offset='    ', label1='/measurement/', label2='/process/'):
+    """
+    Access the input file/group/dataset(fp) name and begin iterations on its content
+
+    """
+
+    if isinstance(fp, h5py.Dataset):
+        if (label1 in fp.name) or  (label2 in fp.name):
+            s = fp.name.split('/')
+            name = s[-1].replace('-', '_')
+            
+            value = dxreader.read_hdf5(file_name,  fp.name)[0]
+            if  (value.dtype.kind == 'S'):
+                value = value.decode(encoding="utf-8")
+            meta.update( {name : value} )
+    elif isinstance(fp, h5py.Group):
+        logger.debug('Group: %s' % fp.name)
+
+    else :
+        logger.error('WARNING: UNKNOWN ITEM IN HDF5 FILE', fp.name)
+        sys.exit( "EXECUTION IS TERMINATED" )
+ 
+    if isinstance(fp, h5py.File) or isinstance(fp, h5py.Group) :
+        for key,val in dict(fp).items() :
+            subg = val
+            logger.debug(offset, key )
+            read_hdf5_item_structure(meta, subg, file_name, offset + '    ')
+
 
 def read_hdf5(fname, dataset, slc=None, dtype=None, shared=False):
     """
