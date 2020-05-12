@@ -60,7 +60,6 @@ import os.path
 import re
 import fnmatch
 import logging
-import glob
 import numpy as np
 import dxchange.reader as dxreader
 
@@ -645,15 +644,15 @@ def read_aps_13bm(fname, file_format, proj=None, sino=None):
         3D tomographic data.
     """
     if file_format == 'netcdf4':
-        files = glob.glob(fname[0:-5] + '*[1-3].nc')
-        tomo = dxreader.read_netcdf4(files[1], 'array_data', slc=(proj, sino))
+        base_name = fname[0:-4]
+        tomo = dxreader.read_netcdf4(base_name + '2.nc', 'array_data', slc=(proj, sino))
 
-        flat1 = dxreader.read_netcdf4(files[0], 'array_data', slc=(proj, sino))
-        flat2 = dxreader.read_netcdf4(files[2], 'array_data', slc=(proj, sino))
+        flat1 = dxreader.read_netcdf4(base_name + '1.nc', 'array_data', slc=(proj, sino))
+        flat2 = dxreader.read_netcdf4(base_name + '3.nc', 'array_data', slc=(proj, sino))
         flat = np.concatenate((flat1, flat2), axis = 0)
         del flat1, flat2
-        setup = glob.glob(fname[0:-5] + '*.setup')
-        setup = open(setup[0], 'r')
+        setup = base_name + '.setup'
+        setup = open(setup, 'r')
         setup_data = setup.readlines()
         result = {}
         for line in setup_data:
