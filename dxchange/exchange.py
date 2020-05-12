@@ -82,6 +82,7 @@ __all__ = ['read_als_832',
            'read_aps_32id',
            'read_aus_microct',
            'read_diamond_l12',
+           'read_dx',
            'read_elettra_syrmep',
            'read_esrf_id19',
            'read_lnls_imx',
@@ -873,7 +874,75 @@ def read_aps_tomoscan_hdf5(fname, exchange_rank=0, proj=None, sino=None, dtype=N
     return tomo, flat, dark, theta
 
 
+def read_dx(fname, exchange_rank=0, proj=None, sino=None, dtype=None):
+    """
+    Read data exchange standard data format.
 
+    Parameters
+    ----------
+    fname : str
+        Path to hdf5 file.
+
+    exchange_rank : int, optional
+        exchange_rank is added to "exchange" to point tomopy to the data
+        to reconstruct. if rank is not set then the data are raw from the
+        detector and are located under exchange = "exchange/...", to process
+        data that are the result of some intemedite processing step then
+        exchange_rank = 1, 2, ... will direct tomopy to process
+        "exchange1/...",
+
+    proj : {sequence, int}, optional
+        Specify projections to read. (start, end, step)
+
+    sino : {sequence, int}, optional
+        Specify sinograms to read. (start, end, step)
+
+    dtype : numpy datatype, optional
+        Convert data to this datatype on read if specified.
+
+    Returns
+    -------
+    ndarray
+        3D tomographic data.
+
+    ndarray
+        3D flat field data.
+
+    ndarray
+        3D dark field data.
+
+    ndarray
+        1D theta in radian.
+
+    meta
+        dictionary containing the experiment meta data
+    """
+    if exchange_rank > 0:
+        exchange_base = 'exchange{:d}'.format(int(exchange_rank))
+    else:
+        exchange_base = "exchange"
+
+    tomo_grp = '/'.join([exchange_base, 'data'])
+    flat_grp = '/'.join([exchange_base, 'data_white'])
+    dark_grp = '/'.join([exchange_base, 'data_dark'])
+    theta_grp = '/'.join([exchange_base, 'theta'])
+    tomo = dxreader.read_hdf5(fname, tomo_grp, slc=(proj, sino), dtype=dtype)
+    flat = dxreader.read_hdf5(fname, flat_grp, slc=(None, sino), dtype=dtype)
+    dark = dxreader.read_hdf5(fname, dark_grp, slc=(None, sino), dtype=dtype)
+    theta = dxreader.read_hdf5(fname, theta_grp, slc=None)
+
+    if (theta is None):
+        theta_size = dxreader.read_dx_dims(fname, 'data')[0]
+        logger.warn('Generating "%s" [0-180] deg angles for missing "exchange/theta" dataset' % (str(theta_size)))
+        theta = np.linspace(0. , np.pi, theta_size)
+    else:
+        theta = np.deg2rad(theta)
+
+    meta = dxreader.read_dx_meta(fname)
+
+    return tomo, flat, dark, theta, meta
+
+  
 def read_aus_microct(fname, ind_tomo, ind_flat, ind_dark, proj=None, sino=None):
     """
     Read Australian Synchrotron micro-CT standard data format.
