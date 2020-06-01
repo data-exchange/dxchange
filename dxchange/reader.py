@@ -669,7 +669,7 @@ def read_hdf5_item_structure(meta, fp, file_name, offset='    ', label1='/measur
             s = fp.name.split('/')
             name = s[-1].replace('-', '_')
             
-            value = dxreader.read_hdf5(file_name,  fp.name)[0]
+            value = read_hdf5(file_name,  fp.name)[0]
             if  (value.dtype.kind == 'S'):
                 value = value.decode(encoding="utf-8")
             meta.update( {name : value} )
