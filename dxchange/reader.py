@@ -685,6 +685,7 @@ def read_hdf5_item_structure(meta, fp, file_name, offset='    ', label1='/measur
     if isinstance(fp, h5py.File) or isinstance(fp, h5py.Group) :
         for key,val in dict(fp).items() :
             subg = val
+            logger.debug(offset, key )
             read_hdf5_item_structure(meta, subg, file_name, offset + '    ')
 
 
