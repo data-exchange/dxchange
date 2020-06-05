@@ -674,7 +674,7 @@ def read_hdf5_item_structure(meta, fp, file_name, offset='    ', label1='/measur
                 value = value.decode(encoding="utf-8")
             if  (attr != None):
                 attr = attr.decode('UTF-8')
-            meta.update( {name : (value, attr) } )
+            meta.update( {name : [value, attr] } )
     elif isinstance(fp, h5py.Group):
         logger.debug('Group: %s' % fp.name)
 
