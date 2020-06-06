@@ -661,18 +661,20 @@ def read_dx_meta(file_name) :
 def read_hdf5_item_structure(meta, fp, file_name, offset='    ', label1='/measurement/', label2='/process/'):
     """
     Access the input file/group/dataset(fp) name and begin iterations on its content
-
     """
 
     if isinstance(fp, h5py.Dataset):
         if (label1 in fp.name) or  (label2 in fp.name):
             s = fp.name.split('/')
             name = s[-1].replace('-', '_')
-            
-            value = read_hdf5(file_name,  fp.name)[0]
+
+            ndvalue, attr = read_hdf5_with_attribute(file_name,  fp.name)
+            value = ndvalue[0]
             if  (value.dtype.kind == 'S'):
                 value = value.decode(encoding="utf-8")
-            meta.update( {name : value} )
+            if  (attr != None):
+                attr = attr.decode('UTF-8')
+            meta.update( {name : [value, attr] } )
     elif isinstance(fp, h5py.Group):
         logger.debug('Group: %s' % fp.name)
 
@@ -685,6 +687,39 @@ def read_hdf5_item_structure(meta, fp, file_name, offset='    ', label1='/measur
             subg = val
             logger.debug(offset, key )
             read_hdf5_item_structure(meta, subg, file_name, offset + '    ')
+
+
+def read_hdf5_with_attribute(fname, dataset):
+    """
+    Read data from hdf5 file from a specific group.
+
+    Parameters
+    ----------
+    fname : str
+        String defining the path of file or file name.
+    dataset : str
+        Path to the dataset inside hdf5 file where data is located.
+
+    Returns
+    -------
+    ndarray, str
+        Data, attribute
+    """
+    try:
+        fname = _check_read(fname)
+        with h5py.File(fname, "r") as f:
+            try:
+                data = f[dataset]
+                attr = data.attrs.get('units')
+                # if attr != None:
+                #     print(data.name, data[()][0], attr.decode('UTF-8'))
+                arr = data[()]
+            except KeyError:
+                logger.error('Unrecognized hdf5 dataset: "%s"' % (str(dataset)))
+                return None, None
+    except KeyError:
+        return None, None
+    return arr, attr
 
 
 def read_hdf5(fname, dataset, slc=None, dtype=None, shared=False):
