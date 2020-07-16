@@ -50,8 +50,11 @@
 Module for describing beamline/experiment specific data recipes.
 """
 
-from __future__ import (absolute_import, division, print_function,
-                        unicode_literals)
+from __future__ import (absolute_import, 
+                        division, 
+                        print_function,
+                        unicode_literals,
+                        )
 
 import numpy as np
 import os.path
@@ -59,6 +62,7 @@ import re
 import fnmatch
 import logging
 import dxchange.reader as dxreader
+import glob
 
 __authors__ = "Doga Gursoy, Luis Barroso-Luque, Francesco De Carlo"
 __copyright__ = "Copyright (c) 2015-2016, UChicago Argonne, LLC."
@@ -81,6 +85,7 @@ __all__ = ['read_als_832',
            'read_elettra_syrmep',
            'read_esrf_id19',
            'read_lnls_imx',
+           'read_nsls2_fxi18_h5',
            'read_petraIII_p05',
            'read_sls_tomcat']
 
@@ -376,7 +381,7 @@ def read_anka_topotomo(
     return tomo, flat, dark
 
 
-def read_aps_1id(fname, ind_tomo=None, proj=None, sino=None):
+def read_aps_1id(fname, ind_tomo=None, proj=None, sino=None, layer=0):
     """
     Read APS 1-ID standard data format.
 
@@ -394,6 +399,9 @@ def read_aps_1id(fname, ind_tomo=None, proj=None, sino=None):
     sino : {sequence, int}, optional
         Specify sinograms to read. (start, end, step)
 
+    layer: int, optional
+        Specify the layer to reconstruct 
+
     Returns
     -------
     ndarray
@@ -410,24 +418,29 @@ def read_aps_1id(fname, ind_tomo=None, proj=None, sino=None):
     _fname = fname + '000001.tif'
     log_file = fname + 'TomoStillScan.dat'
 
-    # Read APS 1-ID log file data
-    contents = open(log_file, 'r')
-    for line in contents:
-        ls = line.split()
-        if len(ls) > 1:
-            if ls[0] == "Tomography" and ls[1] == "scan":
-                prj_start = int(ls[6])
-            elif ls[0] == "Number" and ls[2] == "scan":
-                nprj = int(ls[4])
-            elif ls[0] == "Dark" and ls[1] == "field":
-                dark_start = int(ls[6])
-            elif ls[0] == "Number" and ls[2] == "dark":
-                ndark = int(ls[5])
-            elif ls[0] == "White" and ls[1] == "field":
-                flat_start = int(ls[6])
-            elif ls[0] == "Number" and ls[2] == "white":
-                nflat = int(ls[5])
-    contents.close()
+    # parse the log/metadata file
+    _metadf = dxreader.read_aps_1id_metafile(log_file)
+
+    # meta data for layer to reconstruct
+    try:
+        _layerdf = _metadf[_metadf['layerID'] == layer]
+    except:
+        print("Valid layers for reconstruction are: {}".format(_metadf['layerID'].unique()))
+
+    # -- queery image data meta for given layer
+    # still/projection images
+    prj_start = _layerdf.loc[_layerdf['type'] == 'still', 'nSeq'].values[0]
+    nprj      = _layerdf.loc[_layerdf['type'] == 'still', 'nSeq'].shape[0]
+    # dark field images
+    dark_start = _layerdf.loc[_layerdf['type'] == 'post_dark', 'nSeq'].values[0]
+    ndark      = _layerdf.loc[_layerdf['type'] == 'post_dark', 'nSeq'].shape[0]
+    # white/flat field images (only use pre_white)
+    # NOTE: The beam condition might change overtime, therefore flat field 
+    #       images are taken both before and after the experiment.
+    #       The implementation here assumes the beam is stable throughout the
+    #       experiment
+    flat_start = _layerdf.loc[_layerdf['type'] == 'pre_white', 'nSeq'].values[0]
+    nflat      = _layerdf.loc[_layerdf['type'] == 'pre_white', 'nSeq'].shape[0]
 
     if ind_tomo is None:
         ind_tomo = list(range(prj_start, prj_start + nprj))
@@ -608,7 +621,8 @@ def read_aps_8bm(image_directory, ind_tomo, ind_flat,
 
 def read_aps_13bm(fname, format, proj=None, sino=None):
     """
-    Read APS 13-BM standard data format.
+    Read APS 13-BM standard data format. Searches directory for all necessary
+    files, and then combines the separate flat fields.
 
     Parameters
     ----------
@@ -632,8 +646,28 @@ def read_aps_13bm(fname, format, proj=None, sino=None):
     if format == 'spe':
         tomo = dxreader.read_spe(fname, slc=(None, sino))
     elif format == 'netcdf4':
-        tomo = dxreader.read_netcdf4(fname, 'array_data', slc=(proj, sino))
-    return tomo
+        files = glob.glob(fname[0:-5] + '*[1-3].nc')
+        tomo = dxreader.read_netcdf4(files[1], 'array_data', slc=(proj, sino))
+
+        flat1 = dxreader.read_netcdf4(files[0], 'array_data', slc=(proj, sino))
+        flat2 = dxreader.read_netcdf4(files[2], 'array_data', slc=(proj, sino))
+        flat = np.concatenate((flat1, flat2), axis = 0)
+        del flat1, flat2
+
+        setup = glob.glob(fname[0:-5] + '*.setup')
+        setup = open(setup[0], 'r')
+        setup_data = setup.readlines()
+        result = {}
+        for line in setup_data:
+            words = line[:-1].split(':',1)
+            result[words[0].lower()] = words[1]
+
+        dark = float(result['dark_current'])
+        dark = flat*0+dark
+
+        theta = np.linspace(0.0, np.pi, tomo.shape[0])
+
+    return tomo, flat, dark, theta
 
 
 def read_aps_13id(
@@ -728,7 +762,7 @@ def read_aps_32id(fname, exchange_rank=0, proj=None, sino=None, dtype=None):
         Specify sinograms to read. (start, end, step)
 
     dtype : numpy datatype, optional
-        Convert data to this datatype on read if specified.    
+        Convert data to this datatype on read if specified.
 
     Returns
     -------
@@ -763,7 +797,7 @@ def read_aps_32id(fname, exchange_rank=0, proj=None, sino=None, dtype=None):
         logger.warn('Generating "%s" [0-180] deg angles for missing "exchange/theta" dataset' % (str(theta_size)))
         theta = np.linspace(0. , np.pi, theta_size)
     else:
-        theta = theta * np.pi / 180.
+        theta = np.deg2rad(theta)
     return tomo, flat, dark, theta
 
 
@@ -974,6 +1008,44 @@ def read_lnls_imx(folder, proj=None, sino=None):
     flat = dxreader.read_hdf5(flat_name, 'flats', slc=(None, sino))
     dark = dxreader.read_hdf5(dark_name, 'darks', slc=(None, sino))
     return tomo, flat, dark
+
+
+def read_nsls2_fxi18_h5(fname, proj=None, sino=None):
+    """
+    Read LNLS IMX standard data format.
+
+    Parameters
+    ----------
+    fname : str
+        Path to h5 file.
+
+    proj : {sequence, int}, optional
+        Specify projections to read. (start, end, step)
+
+    sino : {sequence, int}, optional
+        Specify sinograms to read. (start, end, step)
+
+    Returns
+    -------
+    ndarray
+        3D tomographic data.
+
+    ndarray
+        3D flat field data.
+
+    ndarray
+        3D dark field data.
+
+    ndarray
+        1D theta in radian.
+
+    """
+    tomo = dxreader.read_hdf5(fname, 'img_tomo', slc=(proj, sino))
+    flats = dxreader.read_hdf5(fname, 'img_bkg', slc=(None, sino))
+    darks = dxreader.read_hdf5(fname, 'img_dark', slc=(None, sino))
+    theta = dxreader.read_hdf5(fname, 'angle', slc=(proj,))
+    theta = np.deg2rad(theta)
+    return tomo, flats, darks, theta
 
 
 def read_petraIII_p05(

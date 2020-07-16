@@ -1,4 +1,3 @@
-python
 numpy    
 scipy
 h5py    
@@ -9,3 +8,4 @@ edffile
 tifffile    
 dxfile
 fnmatch
+pandas
