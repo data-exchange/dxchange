@@ -917,27 +917,8 @@ def read_dx(fname, exchange_rank=0, proj=None, sino=None, dtype=None):
     meta
         dictionary containing the experiment meta data
     """
-    if exchange_rank > 0:
-        exchange_base = 'exchange{:d}'.format(int(exchange_rank))
-    else:
-        exchange_base = "exchange"
-
-    tomo_grp = '/'.join([exchange_base, 'data'])
-    flat_grp = '/'.join([exchange_base, 'data_white'])
-    dark_grp = '/'.join([exchange_base, 'data_dark'])
-    theta_grp = '/'.join([exchange_base, 'theta'])
-    tomo = dxreader.read_hdf5(fname, tomo_grp, slc=(proj, sino), dtype=dtype)
-    flat = dxreader.read_hdf5(fname, flat_grp, slc=(None, sino), dtype=dtype)
-    dark = dxreader.read_hdf5(fname, dark_grp, slc=(None, sino), dtype=dtype)
-    theta = dxreader.read_hdf5(fname, theta_grp, slc=None)
-
-    if (theta is None):
-        theta_size = dxreader.read_dx_dims(fname, 'data')[0]
-        logger.warn('Generating "%s" [0-180] deg angles for missing "exchange/theta" dataset' % (str(theta_size)))
-        theta = np.linspace(0. , np.pi, theta_size)
-    else:
-        theta = np.deg2rad(theta)
-
+    
+    tomo, flat, dark, theta =  read_aps_tomoscan_hdf5(fname, proj=proj, sino=sino)
     meta = dxreader.read_dx_meta(fname)
 
     return tomo, flat, dark, theta, meta
