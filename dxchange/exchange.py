@@ -648,8 +648,8 @@ def read_aps_13bm(fname, file_format, proj=None, sino=None):
         base_name = fname[0:-4]
         tomo = dxreader.read_netcdf4(base_name + '2.nc', 'array_data', slc=(proj, sino))
 
-        flat1 = dxreader.read_netcdf4(base_name + '1.nc', 'array_data', slc=(proj, sino))
-        flat2 = dxreader.read_netcdf4(base_name + '3.nc', 'array_data', slc=(proj, sino))
+        flat1 = dxreader.read_netcdf4(base_name + '1.nc', 'array_data', slc=(None, sino))
+        flat2 = dxreader.read_netcdf4(base_name + '3.nc', 'array_data', slc=(None, sino))
         flat = np.concatenate((flat1, flat2), axis = 0)
         del flat1, flat2
         setup = base_name + '.setup'

@@ -68,6 +68,7 @@ __version__ = "0.1.0"
 __docformat__ = 'restructuredtext en'
 __all__ = ['write_dxf',
            'write_hdf5',
+           'write_netcdf4',
            'write_npy',
            'write_tiff',
            'write_tiff_stack',
@@ -86,6 +87,7 @@ def _check_import(modname):
         return None
 
 dxfile = _check_import('dxfile')
+netCDF4 = _check_import('netCDF4')
 
 
 def get_body(fname):
@@ -258,6 +260,29 @@ def write_hdf5(
         _write_hdf5_dataset(f[gname], data, dname,
                             appendaxis, maxshape)
 
+def write_netcdf4(
+        data, fname='tmp/data.nc', dname='VOLUME',
+        dtype=None, overwrite=False, appendaxis=None, maxsize=None):
+    """
+    Write data to netCDF file.
+
+    Parameters
+    ----------
+    data : ndarray
+        Array data to be saved.
+    fname : str
+        File name to which the data is saved. 
+    """
+    mode = 'w' if overwrite else 'a'
+
+    ncfile = netCDF4.Dataset(fname,mode='w',format='NETCDF3_64BIT') 
+    x_dim = ncfile.createDimension('NX', data.shape[0])
+    y_dim = ncfile.createDimension('NY', data.shape[1])
+    z_dim = ncfile.createDimension('NZ', data.shape[2])
+    d = ncfile.createVariable(dname, data.dtype, ('NX', 'NY', 'NZ'))
+    d[:,:,:] = data
+    ncfile.close()
+    
 
 def write_dxf(
         data, fname='tmp/data.h5', axes='theta:y:x',
