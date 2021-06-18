@@ -635,7 +635,7 @@ def read_dx_dims(fname, dataset):
     return shape
 
 
-def read_dx_meta(file_name) :
+def read_dx_meta(file_name, label1='/measurement/', label2='/process/') :
     """
     Read Data Exchange meta data.
 
@@ -650,19 +650,18 @@ def read_dx_meta(file_name) :
         DX file meta data.
     """
     meta = {}
-    
+
     fp = h5py.File(file_name, 'r') 
-    read_hdf5_item_structure(meta, fp, file_name)
+    read_hdf5_item_structure(meta, fp, file_name, label1, label2)
     fp.close()
 
     return meta
 
 
-def read_hdf5_item_structure(meta, fp, file_name, offset='    ', label1='/measurement/', label2='/process/'):
+def read_hdf5_item_structure(meta, fp, file_name, label1, label2, offset='    '):
     """
     Access the input file/group/dataset(fp) name and begin iterations on its content
     """
-
     if isinstance(fp, h5py.Dataset):
         if (label1 in fp.name) or  (label2 in fp.name):
             s = fp.name.split('/')
@@ -686,7 +685,7 @@ def read_hdf5_item_structure(meta, fp, file_name, offset='    ', label1='/measur
         for key,val in dict(fp).items() :
             subg = val
             logger.debug(offset, key )
-            read_hdf5_item_structure(meta, subg, file_name, offset + '    ')
+            read_hdf5_item_structure(meta, subg, file_name, label1, label2, offset + '    ')
 
 
 def read_hdf5_with_attribute(fname, dataset):
