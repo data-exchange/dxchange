@@ -124,7 +124,7 @@ def _check_read(fname):
     return os.path.abspath(fname)
 
 
-def read_tiff(fname, slc=None, angle=None):
+def read_tiff(fname, slc=None, angle=None, mblur=None):
     """
     Read data from tiff file.
 
@@ -136,8 +136,9 @@ def read_tiff(fname, slc=None, angle=None):
         Range of values for slicing data in each axis.
         ((start_1, end_1, step_1), ... , (start_N, end_N, step_N))
         defines slicing parameters for each axis of the data matrix.
-    angle: angle in degree(+ ccw), optional
-        angle of rotation after open the image.   
+    angle : angle in degree(+ ccw), optional
+        angle of rotation after open the image.
+    mblur : size of median filter (currently do nothing)
 
     Returns
     -------
@@ -157,19 +158,18 @@ def read_tiff(fname, slc=None, angle=None):
         # grab the dimensions of the image and then determine the center
         (h, w) = _arr.shape[:2]
         (cX, cY) = (w // 2, h // 2)
-        # grab the rotation matrix, then grab the sine and cosine
-        # (i.e., the rotation components of the matrix)
+        # grab the rotation matrix
         M = cv2.getRotationMatrix2D((cX, cY), angle, scaling)
         # perform the actual rotation and return the image
         arr = cv2.warpAffine(_arr, M, (w, h))
-
+        # slice it
         arr = _slice_array(arr, slc)
 
     _log_imported_data(fname, arr)
     return arr
 
 
-def read_tiff_stack(fname, ind, digit=None, slc=None, angle=None):
+def read_tiff_stack(fname, ind, digit=None, slc=None, angle=None, mblur=None):
     """
     Read data from stack of tiff files in a folder.
 
@@ -185,7 +185,8 @@ def read_tiff_stack(fname, ind, digit=None, slc=None, angle=None):
         Range of values for slicing data in each axis.
         ((start_1, end_1, step_1), ... , (start_N, end_N, step_N))
         defines slicing parameters for each axis of the data matrix.
-    angle: angle to rotate after reading the tiff image
+    angle : angle to rotate after reading the tiff image
+    mblue : median filter
 
     Returns
     -------
@@ -197,7 +198,7 @@ def read_tiff_stack(fname, ind, digit=None, slc=None, angle=None):
 
     arr = _init_arr_from_stack(list_fname[0], len(ind), slc)
     for m, fname in enumerate(list_fname):
-        arr[m] = read_tiff(fname, slc, angle)
+        arr[m] = read_tiff(fname, slc, angle, mblur)
     _log_imported_data(fname, arr)
     return arr
 
