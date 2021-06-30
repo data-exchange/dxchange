@@ -661,13 +661,40 @@ def read_dx_meta(file_name, label1='/measurement/', label2='/process/'):
     return meta
 
 
-def create_standard_meta(file_name):
-    pass
+def create_standard_dx_meta(file_name):
+    """
+    Create meta data dict for files written in standard dxfile format
+
+    :param file_name: file name of the HDF5 input file that follows dxfile standard file structure
+    :return meta: meta data dictionary using standard names for keys
+    """
+
+    h5file = h5py.File(file_name, 'r')
+
+    # TODO the paths to data could eventually be replaced by projections to handle various dataformats more generally
+    # TODO separate fields for units or rather using tuples/arrays for (value, units)?
+    meta = dict(pixel_size=h5file.get('/measurement/instrument/detector/pixel_size')[()],
+                pixel_size_units=h5file.get('/measurement/instrument/detector/pixel_size').attrs.get('units')
+                                            .decode(encoding='utf-8'),
+                binning_x=h5file.get('/measurement/instrument/detector/binning_x')[()],
+                binning_y=h5file.get('/measurement/instrument/detector/binning_y')[()],
+                distance=h5file.get('/measurement/instrument/camera_motor_stack/setup/camera_distance')[()],
+                distance_units=h5file.get('/measurement/instrument/camera_motor_stack/setup/camera_distance')
+                                          .attrs.get('units').decode(encoding='utf-8'),
+                energy=h5file.get('/measurement/instrument/monochromator/energy')[()],
+                energy_units=h5file.get('/measurement/instrument/monochromator/energy').attrs.get('units')
+                                        .decode(encoding='utf-8'),
+                exposure_time=h5file.get('/measurement/instrument/detector/exposure_time')[()],
+                time_stamp=h5file.get('/measurement/instrument/time_stamp')[()],
+                uuid=h5file.get('/measurement/sample/uuid')[()],
+                )
+    return meta
 
 
 def read_hdf5_item_structure(meta, fp, file_name, label1, label2, offset='    '):
     """
-    Access the input file/group/dataset(fp) name and begin iterations on its content
+    Access the input file/group/dataset(fp) name and begin iterations on its content.
+    Once dataset level is reached, i.e. fp is of type h5py.Dataset, values and attributes are added to the meta dict
     """
     if isinstance(fp, h5py.Dataset):
         if (label1 in fp.name) or (label2 in fp.name):
