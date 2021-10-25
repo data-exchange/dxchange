@@ -1151,7 +1151,7 @@ def _read_ole_image(ole, label, metadata, datatype=None):
     data_type = _get_ole_data_type(metadata, datatype)
     data_type = data_type.newbyteorder('<')
     image = np.reshape(
-        np.fromstring(data, data_type),
+        np.frombuffer(data, data_type),
         (metadata["image_height"], metadata["image_width"], )
     )
     return image
