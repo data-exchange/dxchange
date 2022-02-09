@@ -14,4 +14,5 @@
       write_hdf5
       write_npy
       write_tiff
-      write_tiff_stack      
+      write_tiff_stack
+      write_netcdf4
