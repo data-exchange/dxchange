@@ -42,7 +42,7 @@ bibtex_bibfiles = [
     'source/bibtex/cite.bib',
     'source/bibtex/ref.bib',
     ]
-    
+
 # Napoleon settings
 napoleon_google_docstring = True
 napoleon_numpy_docstring = True
@@ -342,7 +342,8 @@ MOCK_MODULES = ['h5py',
                 'scipy.misc',
                 'fnmatch',
                 'glob',
-                'collections']
+                'collections',
+                'socks']
 
 for mod_name in MOCK_MODULES:
     sys.modules[mod_name] = Mock()
