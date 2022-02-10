@@ -329,8 +329,6 @@ class Mock(object):
 
 MOCK_MODULES = ['h5py',
                 'numpy',
-                'numpy.random'
-                'numpy.fft',
                 'tifffile',
                 'spefile',
                 'netCDF4',
@@ -340,10 +338,12 @@ MOCK_MODULES = ['h5py',
                 'pandas',
                 'scipy',
                 'scipy.misc',
-                'fnmatch',
-                'glob',
-                'collections',
-                'socks']
+                # 'fnmatch',
+                # 'glob',
+                # 'collections',
+                # 'ssl',
+                # 'urllib3'
+                ]
 
 for mod_name in MOCK_MODULES:
     sys.modules[mod_name] = Mock()
