@@ -71,12 +71,13 @@ import scipy.misc as sm
 import pandas as pd
 from itertools import cycle
 from io import StringIO
+from collections import deque
 
 __author__ = "Doga Gursoy, Francesco De Carlo"
 __copyright__ = "Copyright (c) 2015-2016, UChicago Argonne, LLC."
 __version__ = "0.1.0"
 __docformat__ = 'restructuredtext en'
-__all__ = ['read_dx_meta',
+__all__ = ['read_hdf_meta',
            'read_edf',
            'read_hdf5',
            'read_netcdf4',
@@ -94,6 +95,11 @@ __all__ = ['read_dx_meta',
 
 logger = logging.getLogger(__name__)
 
+PIPE = "│"
+ELBOW = "└──"
+TEE = "├──"
+PIPE_PREFIX = "│   "
+SPACE_PREFIX = "    "
 
 def _check_import(modname):
     try:
@@ -637,122 +643,165 @@ def read_dx_dims(fname, dataset):
 
     return shape
 
-
-def read_dx_meta(file_name, label1='/measurement/', label2='/process/'):
+def read_hdf_meta(fname, add_shape=True):
     """
-    Read Data Exchange meta data.
+    Get the tree view of a hdf/nxs file.
 
     Parameters
     ----------
-    fname : str
-        String defining file name.
+    file_path : str
+        Path to the file.
+    add_shape : bool
+        Including the shape of a dataset to the tree if True.
 
     Returns
     -------
-    dictionary
-        DX file meta data.
+    list of string
     """
+
+    tree = deque()
     meta = {}
 
-    fp = h5py.File(file_name, 'r')
-    read_hdf5_item_structure(meta, fp, file_name, label1, label2)
-    fp.close()
+    with h5py.File(fname, 'r') as hdf_object:
+        _extract_hdf(tree, meta, hdf_object, add_shape=add_shape)
+    # for entry in tree:
+    #     print(entry)
+    return tree, meta
 
-    return meta
-
-
-def create_standard_dx_meta(file_name):
+def _get_subgroups(hdf_object, key=None):
     """
-    Create meta data dict for files written in standard dxfile format
-
-    :param file_name: file name of the HDF5 input file that follows dxfile standard file structure
-    :return meta: meta data dictionary using standard names for keys
+    Supplementary method for building the tree view of a hdf5 file.
+    Return the name of subgroups.
     """
+    list_group = []
+    if key is None:
+        for group in hdf_object.keys():
+            list_group.append(group)
+        if len(list_group) == 1:
+            key = list_group[0]
+        else:
+            key = ""
+    else:
+        if key in hdf_object:
+            try:
+                obj = hdf_object[key]
+                if isinstance(obj, h5py.Group):
+                    for group in hdf_object[key].keys():
+                        list_group.append(group)
+            except KeyError:
+                pass
+    if len(list_group) > 0:
+        list_group = sorted(list_group)
+    return list_group, key
 
-    h5file = h5py.File(file_name, 'r')
+def _add_branches(tree, meta, hdf_object, key, key1, index, last_index, prefix,
+                  connector, level, add_shape):
+    """
+    Supplementary method for building the tree view of a hdf5 file.
+    Add branches to the tree.
+    """
+    shape = None
+    key_comb = key + "/" + key1
+    if add_shape is True:
+        if key_comb in hdf_object:
+            try:
+                obj = hdf_object[key_comb]
+                if isinstance(obj, h5py.Dataset):
+                    shape = str(obj.shape)
+                    if obj.shape[0]==1:
+                        s = obj.name.split('/')
+                        name = "_".join(s)[1:]
+                        # print(s)
+                        # print(name)
+                        value = obj[()][0]
+                        attr = obj.attrs.get('units')
+                        if attr != None:
+                            attr = attr.decode('UTF-8')
+                            # log.info(">>>>>> %s: %s %s" % (obj.name, value, attr))
+                        if  (value.dtype.kind == 'S'):
+                            value = value.decode(encoding="utf-8")
+                            # log.info(">>>>>> %s: %s" % (obj.name, value))
+                        meta.update( {name : [value, attr] } )
+            except KeyError:
+                shape = str("-> ???External-link???")
+    if shape is not None:
+        tree.append(f"{prefix}{connector} {key1} {shape}")
+    else:
+        tree.append(f"{prefix}{connector} {key1}")
+    if index != last_index:
+        prefix += PIPE_PREFIX
+    else:
+        prefix += SPACE_PREFIX
+    _extract_hdf(tree, meta, hdf_object, prefix=prefix, key=key_comb,
+                    level=level, add_shape=add_shape)
+
+def _extract_hdf(tree, meta, hdf_object, prefix="", key=None, level=0,
+                    add_shape=True):
+    """
+    Supplementary method for extracting from a generic hdf file the meta data 
+    tree view and the 1D meta data values/units.
+    Create the tree body and a meta dictionary 
+    """
+    entries, key = _get_subgroups(hdf_object, key)
+    num_ent = len(entries)
+    last_index = num_ent - 1
+    level = level + 1
+    if num_ent > 0:
+        if last_index == 0:
+            key = "" if level == 1 else key
+            if num_ent > 1:
+                connector = PIPE
+            else:
+                connector = ELBOW if level > 1 else ""
+            _add_branches(tree, meta, hdf_object, key, entries[0], 0, 0, prefix,
+                          connector, level, add_shape)
+        else:
+            for index, key1 in enumerate(entries):
+                connector = ELBOW if index == last_index else TEE
+                if index == 0:
+                    tree.append(prefix + PIPE)
+                _add_branches(tree, meta, hdf_object, key, key1, index, last_index,
+                              prefix, connector, level, add_shape)
+
+
+def create_standard_meta(file_name, file_format='dx'):
+    """
+    Create a standard meta data dict from different hdf formats
+
+    Parameters
+    ----------
+    file_name : str
+        File name of the HDF5 input file
+
+    file_format : str
+        Defines a specific hdf layout
+
+    Returns
+    -------
+    meta
+        Standardized meta data dictionary
+    """
 
     # TODO the paths to data could eventually be replaced by projections to handle various dataformats more generally
     # TODO separate fields for units or rather using tuples/arrays for (value, units)?
-    meta = dict(pixel_size=h5file.get('/measurement/instrument/detector/pixel_size')[()],
-                pixel_size_units=h5file.get('/measurement/instrument/detector/pixel_size').attrs.get('units')
-                                            .decode(encoding='utf-8'),
-                binning_x=h5file.get('/measurement/instrument/detector/binning_x')[()],
-                binning_y=h5file.get('/measurement/instrument/detector/binning_y')[()],
-                distance=h5file.get('/measurement/instrument/camera_motor_stack/setup/camera_distance')[()],
-                distance_units=h5file.get('/measurement/instrument/camera_motor_stack/setup/camera_distance')
-                                          .attrs.get('units').decode(encoding='utf-8'),
-                energy=h5file.get('/measurement/instrument/monochromator/energy')[()],
-                energy_units=h5file.get('/measurement/instrument/monochromator/energy').attrs.get('units')
-                                        .decode(encoding='utf-8'),
-                exposure_time=h5file.get('/measurement/instrument/detector/exposure_time')[()],
-                time_stamp=h5file.get('/measurement/instrument/time_stamp')[()],
-                uuid=h5file.get('/measurement/sample/uuid')[()],
-                )
-    return meta
+    std_meta = {}
 
+    tree, meta = read_hdf_meta(file_name)
 
-def read_hdf5_item_structure(meta, fp, file_name, label1, label2, offset='    '):
-    """
-    Access the input file/group/dataset(fp) name and begin iterations on its content.
-    Once dataset level is reached, i.e. fp is of type h5py.Dataset, values and attributes are added to the meta dict
-    """
-    if isinstance(fp, h5py.Dataset):
-        if (label1 in fp.name) or (label2 in fp.name):
-            s = fp.name.split('/')
-            name = s[-1].replace('-', '_')
+    if file_format == 'dx':
 
-            ndvalue, attr = read_hdf5_with_attribute(file_name, fp.name)
-            value = ndvalue[0]
-            if value.dtype.kind == 'S':
-                value = value.decode(encoding="utf-8")
-            if attr is not None:
-                attr = attr.decode('UTF-8')
-            meta.update({name: [value, attr]})
-    elif isinstance(fp, h5py.Group):
-        logger.debug('Group: %s' % fp.name)
-
+        std_meta['pixel_size']    = meta['measurement_instrument_detector_pixel_size']
+        std_meta['binning_x']     = meta['measurement_instrument_detector_binning_x']
+        std_meta['binning_y']     = meta['measurement_instrument_detector_binning_y']
+        std_meta['distance']      = meta['measurement_instrument_camera_motor_stack_setup_camera_distance']
+        std_meta['energy']        = meta['measurement_instrument_monochromator_energy']
+        std_meta['exposure_time'] = meta['measurement_instrument_detector_exposure_time']
+        std_meta['time_stamp']    = meta['measurement_instrument_time_stamp']
+        std_meta['uuid']          = meta['measurement_sample_uuid']
     else:
-        logger.error('WARNING: UNKNOWN ITEM IN HDF5 FILE', fp.name)
-        sys.exit("EXECUTION IS TERMINATED")
+        logger.error('HDF file layout not supported')
 
-    if isinstance(fp, h5py.File) or isinstance(fp, h5py.Group):
-        for key, val in dict(fp).items():
-            subg = val
-            logger.debug(offset, key)
-            read_hdf5_item_structure(meta, subg, file_name, label1, label2, offset + '    ')
-
-
-def read_hdf5_with_attribute(fname, dataset):
-    """
-    Read data from hdf5 file from a specific group.
-
-    Parameters
-    ----------
-    fname : str
-        String defining the path of file or file name.
-    dataset : str
-        Path to the dataset inside hdf5 file where data is located.
-
-    Returns
-    -------
-    ndarray, str
-        Data, attribute
-    """
-    try:
-        fname = _check_read(fname)
-        with h5py.File(fname, "r") as f:
-            try:
-                data = f[dataset]
-                attr = data.attrs.get('units')
-                # if attr != None:
-                #     print(data.name, data[()][0], attr.decode('UTF-8'))
-                arr = data[()]
-            except KeyError:
-                logger.error('Unrecognized hdf5 dataset: "%s"' % (str(dataset)))
-                return None, None
-    except KeyError:
-        return None, None
-    return arr, attr
+    return std_meta
 
 
 def read_hdf5(fname, dataset, slc=None, dtype=None, shared=False):
