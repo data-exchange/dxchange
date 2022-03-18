@@ -13,3 +13,4 @@ API reference
    :members:
    :undoc-members:
    :show-inheritance: 
+   :noindex:
