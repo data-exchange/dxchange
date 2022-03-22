@@ -82,7 +82,6 @@ __all__ = ['read_als_832',
            'read_aps_32id',
            'read_aus_microct',
            'read_diamond_l12',
-           'read_dx',
            'read_elettra_syrmep',
            'read_esrf_id19',
            'read_lnls_imx',
@@ -872,63 +871,6 @@ def read_aps_tomoscan_hdf5(fname, exchange_rank=0, proj=None, sino=None, dtype=N
             theta = np.linspace(0. , 180, theta_size)
     theta = np.deg2rad(theta)
     return tomo, flat, dark, theta
-
-
-def read_dx(fname, exchange_rank=0, proj=None, sino=None, dtype=None, metadata='standard'):
-    """
-    Read data exchange standard data format.
-
-    Parameters
-    ----------
-    fname : str
-        Path to hdf5 file.
-
-    exchange_rank : int, optional
-        exchange_rank is added to "exchange" to point tomopy to the data
-        to reconstruct. if rank is not set then the data are raw from the
-        detector and are located under exchange = "exchange/...", to process
-        data that are the result of some intemedite processing step then
-        exchange_rank = 1, 2, ... will direct tomopy to process
-        "exchange1/...",
-
-    proj : {sequence, int}, optional
-        Specify projections to read. (start, end, step)
-
-    sino : {sequence, int}, optional
-        Specify sinograms to read. (start, end, step)
-
-    dtype : numpy datatype, optional
-        Convert data to this datatype on read if specified.
-
-    metadata : str
-        determines how meta data dictionary is return 'all' returns all datasets from the dxfile or
-        'standard' returns only standardized values required for the tomo reconstruction. Default is 'standard'
-
-    Returns
-    -------
-    ndarray
-        3D tomographic data.
-
-    ndarray
-        3D flat field data.
-
-    ndarray
-        3D dark field data.
-
-    ndarray
-        1D theta in radian.
-
-    meta
-        dictionary containing the experiment meta data
-    """
-    
-    tomo, flat, dark, theta =  read_aps_tomoscan_hdf5(fname, proj=proj, sino=sino)
-    if metadata == 'all':
-        meta = dxreader.read_dx_meta(fname)
-    elif metadata == 'standard':
-        meta = dxreader.create_standard_dx_meta(fname)
-
-    return tomo, flat, dark, theta, meta
 
   
 def read_aus_microct(fname, ind_tomo, ind_flat, ind_dark, proj=None, sino=None):
