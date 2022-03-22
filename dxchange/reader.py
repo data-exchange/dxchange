@@ -71,12 +71,13 @@ import scipy.misc as sm
 import pandas as pd
 from itertools import cycle
 from io import StringIO
+from collections import deque
 
 __author__ = "Doga Gursoy, Francesco De Carlo"
 __copyright__ = "Copyright (c) 2015-2016, UChicago Argonne, LLC."
 __version__ = "0.1.0"
 __docformat__ = 'restructuredtext en'
-__all__ = ['read_dx_meta',
+__all__ = ['read_hdf_meta',
            'read_edf',
            'read_hdf5',
            'read_netcdf4',
@@ -94,6 +95,11 @@ __all__ = ['read_dx_meta',
 
 logger = logging.getLogger(__name__)
 
+PIPE = "│"
+ELBOW = "└──"
+TEE = "├──"
+PIPE_PREFIX = "│   "
+SPACE_PREFIX = "    "
 
 def _check_import(modname):
     try:
@@ -102,12 +108,14 @@ def _check_import(modname):
         logger.warn(modname + ' module not found')
         return None
 
+
 # Optional dependencies.
 spefile = _check_import('spefile')
 netCDF4 = _check_import('netCDF4')
 EdfFile = _check_import('EdfFile')
 astropy = _check_import('astropy')
 olefile = _check_import('olefile')
+
 
 # FIXME: raise exception would make more sense, also not sure an extension check
 # is very useful, unless we are automatically mapping an extension to a
@@ -235,6 +243,7 @@ def read_xrm(fname, slice_range=None):
     ole.close()
     return arr, metadata
 
+
 #  Should slc just take over what ind is doing here?
 def read_xrm_stack(fname, ind, slc=None):
     """
@@ -299,12 +308,12 @@ def read_aps_1id_metafile(metafn):
     # locate each layer
     # - each layer much have a head start with "Beginning of tomography"
     # - failed layer does not contain "End of the full scan"
-    scan_head_ln = [i for i, line in enumerate(rawlines) 
-                      if "Beginning of tomography" in line] + [len(rawlines)]
+    scan_head_ln = [i for i, line in enumerate(rawlines)
+                    if "Beginning of tomography" in line] + [len(rawlines)]
     layers_lns = list(zip(scan_head_ln[0:-1], scan_head_ln[1:]))
-    layers_isValid = [ ( "End of the full scan" in "".join(rawlines[lns[0]:lns[1]]) ) 
-                       for i, lns in enumerate(layers_lns)]
-    
+    layers_isValid = [("End of the full scan" in "".join(rawlines[lns[0]:lns[1]]))
+                      for i, lns in enumerate(layers_lns)]
+
     # parse each layer into DataFrames
     dfs = []
     for layerID, lns in enumerate(layers_lns):
@@ -323,9 +332,9 @@ def read_aps_1id_metafile(metafn):
 
         # prep for current layer
         layer_rawlines = rawlines[lns[0]:lns[1]]
-        cycled_imgtypes = cycle(['pre_white', 
-                                 'still', 
-                                 'post_white', 
+        cycled_imgtypes = cycle(['pre_white',
+                                 'still',
+                                 'post_white',
                                  'post_dark',
                                  ])
 
@@ -358,8 +367,8 @@ def read_aps_1id_metafile(metafn):
             else:
                 # this is the start of an image meta info block
                 block_start = i
-                while(True):
-                    i = i+1
+                while (True):
+                    i = i + 1
                     if layer_rawlines[i] == "\n":
                         block_end = i
                         break
@@ -368,7 +377,7 @@ def read_aps_1id_metafile(metafn):
                 #    makes it impossible to directly use white space as the 
                 #    delimenator.  Here we replace all 2+ white space with 
                 #    tab so that later Pandas can easily identify each column
-                image_block = [re.sub("  +", "\t", line.strip()) 
+                image_block = [re.sub("  +", "\t", line.strip())
                                for line in layer_rawlines[block_start:block_end]]
 
                 # construct the dataframe
@@ -376,19 +385,19 @@ def read_aps_1id_metafile(metafn):
                 # -- having layerID makes it easier to see what went wrong 
                 #    during the experiment by directly locating the corrupted 
                 #    layer
-                df['layerID']     = layerID  
-                df['path']        = path
+                df['layerID'] = layerID
+                df['path'] = path
                 df['energy(kev)'] = energy
-                df['prefix']      = prefix
-                df['type']        = image_type
-                df['metastr']     = tomo_metastr
+                df['prefix'] = prefix
+                df['type'] = image_type
+                df['metastr'] = tomo_metastr
                 # now convert the time to datetime object
-                df['Date'] = pd.to_datetime(df['Date'], 
+                df['Date'] = pd.to_datetime(df['Date'],
                                             infer_datetime_format=True,
-                                           )
+                                            )
 
                 dfs.append(df)
-                
+
     return pd.concat(dfs, ignore_index=True)
 
 
@@ -505,7 +514,7 @@ def read_ole_metadata(ole):
         'number_of_images': number_of_images,
         'pixel_size': _read_ole_value(ole, 'ImageInfo/pixelsize', '<f'),
         'reference_filename': _read_ole_value(ole, 'ImageInfo/referencefile', '<260s'),
-        'reference_data_type': _read_ole_value(ole, 'referencedata/DataType', '<1I'),   
+        'reference_data_type': _read_ole_value(ole, 'referencedata/DataType', '<1I'),
         # NOTE: converting theta to radians from degrees
         'thetas': _read_ole_arr(
             ole, 'ImageInfo/Angles', "<{0}f".format(number_of_images)) * np.pi / 180.,
@@ -525,7 +534,7 @@ def read_ole_metadata(ole):
     if reference_filename is not None:
         for i in range(len(reference_filename)):
             if reference_filename[i] == '\x00':
-                #null terminate
+                # null terminate
                 reference_filename = reference_filename[:i]
                 break
     metadata['reference_filename'] = reference_filename
@@ -634,91 +643,165 @@ def read_dx_dims(fname, dataset):
 
     return shape
 
-
-def read_dx_meta(file_name, label1='/measurement/', label2='/process/') :
+def read_hdf_meta(fname, add_shape=True):
     """
-    Read Data Exchange meta data.
+    Get the tree view of a hdf/nxs file.
 
     Parameters
     ----------
-    fname : str
-        String defining file name.
+    file_path : str
+        Path to the file.
+    add_shape : bool
+        Including the shape of a dataset to the tree if True.
 
     Returns
     -------
-    dictionary
-        DX file meta data.
+    list of string
     """
+
+    tree = deque()
     meta = {}
 
-    fp = h5py.File(file_name, 'r') 
-    read_hdf5_item_structure(meta, fp, file_name, label1, label2)
-    fp.close()
+    with h5py.File(fname, 'r') as hdf_object:
+        _extract_hdf(tree, meta, hdf_object, add_shape=add_shape)
+    # for entry in tree:
+    #     print(entry)
+    return tree, meta
 
-    return meta
-
-
-def read_hdf5_item_structure(meta, fp, file_name, label1, label2, offset='    '):
+def _get_subgroups(hdf_object, key=None):
     """
-    Access the input file/group/dataset(fp) name and begin iterations on its content
+    Supplementary method for building the tree view of a hdf5 file.
+    Return the name of subgroups.
     """
-    if isinstance(fp, h5py.Dataset):
-        if (label1 in fp.name) or  (label2 in fp.name):
-            s = fp.name.split('/')
-            name = s[-1].replace('-', '_')
+    list_group = []
+    if key is None:
+        for group in hdf_object.keys():
+            list_group.append(group)
+        if len(list_group) == 1:
+            key = list_group[0]
+        else:
+            key = ""
+    else:
+        if key in hdf_object:
+            try:
+                obj = hdf_object[key]
+                if isinstance(obj, h5py.Group):
+                    for group in hdf_object[key].keys():
+                        list_group.append(group)
+            except KeyError:
+                pass
+    if len(list_group) > 0:
+        list_group = sorted(list_group)
+    return list_group, key
 
-            ndvalue, attr = read_hdf5_with_attribute(file_name,  fp.name)
-            value = ndvalue[0]
-            if  (value.dtype.kind == 'S'):
-                value = value.decode(encoding="utf-8")
-            if  (attr != None):
-                attr = attr.decode('UTF-8')
-            meta.update( {name : [value, attr] } )
-    elif isinstance(fp, h5py.Group):
-        logger.debug('Group: %s' % fp.name)
-
-    else :
-        logger.error('WARNING: UNKNOWN ITEM IN HDF5 FILE', fp.name)
-        sys.exit( "EXECUTION IS TERMINATED" )
- 
-    if isinstance(fp, h5py.File) or isinstance(fp, h5py.Group) :
-        for key,val in dict(fp).items() :
-            subg = val
-            logger.debug(offset, key )
-            read_hdf5_item_structure(meta, subg, file_name, label1, label2, offset + '    ')
-
-
-def read_hdf5_with_attribute(fname, dataset):
+def _add_branches(tree, meta, hdf_object, key, key1, index, last_index, prefix,
+                  connector, level, add_shape):
     """
-    Read data from hdf5 file from a specific group.
+    Supplementary method for building the tree view of a hdf5 file.
+    Add branches to the tree.
+    """
+    shape = None
+    key_comb = key + "/" + key1
+    if add_shape is True:
+        if key_comb in hdf_object:
+            try:
+                obj = hdf_object[key_comb]
+                if isinstance(obj, h5py.Dataset):
+                    shape = str(obj.shape)
+                    if obj.shape[0]==1:
+                        s = obj.name.split('/')
+                        name = "_".join(s)[1:]
+                        # print(s)
+                        # print(name)
+                        value = obj[()][0]
+                        attr = obj.attrs.get('units')
+                        if attr != None:
+                            attr = attr.decode('UTF-8')
+                            # log.info(">>>>>> %s: %s %s" % (obj.name, value, attr))
+                        if  (value.dtype.kind == 'S'):
+                            value = value.decode(encoding="utf-8")
+                            # log.info(">>>>>> %s: %s" % (obj.name, value))
+                        meta.update( {name : [value, attr] } )
+            except KeyError:
+                shape = str("-> ???External-link???")
+    if shape is not None:
+        tree.append(f"{prefix}{connector} {key1} {shape}")
+    else:
+        tree.append(f"{prefix}{connector} {key1}")
+    if index != last_index:
+        prefix += PIPE_PREFIX
+    else:
+        prefix += SPACE_PREFIX
+    _extract_hdf(tree, meta, hdf_object, prefix=prefix, key=key_comb,
+                    level=level, add_shape=add_shape)
+
+def _extract_hdf(tree, meta, hdf_object, prefix="", key=None, level=0,
+                    add_shape=True):
+    """
+    Supplementary method for extracting from a generic hdf file the meta data 
+    tree view and the 1D meta data values/units.
+    Create the tree body and a meta dictionary 
+    """
+    entries, key = _get_subgroups(hdf_object, key)
+    num_ent = len(entries)
+    last_index = num_ent - 1
+    level = level + 1
+    if num_ent > 0:
+        if last_index == 0:
+            key = "" if level == 1 else key
+            if num_ent > 1:
+                connector = PIPE
+            else:
+                connector = ELBOW if level > 1 else ""
+            _add_branches(tree, meta, hdf_object, key, entries[0], 0, 0, prefix,
+                          connector, level, add_shape)
+        else:
+            for index, key1 in enumerate(entries):
+                connector = ELBOW if index == last_index else TEE
+                if index == 0:
+                    tree.append(prefix + PIPE)
+                _add_branches(tree, meta, hdf_object, key, key1, index, last_index,
+                              prefix, connector, level, add_shape)
+
+
+def create_standard_meta(file_name, file_format='dx'):
+    """
+    Create a standard meta data dict from different hdf formats
 
     Parameters
     ----------
-    fname : str
-        String defining the path of file or file name.
-    dataset : str
-        Path to the dataset inside hdf5 file where data is located.
+    file_name : str
+        File name of the HDF5 input file
+
+    file_format : str
+        Defines a specific hdf layout
 
     Returns
     -------
-    ndarray, str
-        Data, attribute
+    meta
+        Standardized meta data dictionary
     """
-    try:
-        fname = _check_read(fname)
-        with h5py.File(fname, "r") as f:
-            try:
-                data = f[dataset]
-                attr = data.attrs.get('units')
-                # if attr != None:
-                #     print(data.name, data[()][0], attr.decode('UTF-8'))
-                arr = data[()]
-            except KeyError:
-                logger.error('Unrecognized hdf5 dataset: "%s"' % (str(dataset)))
-                return None, None
-    except KeyError:
-        return None, None
-    return arr, attr
+
+    # TODO the paths to data could eventually be replaced by projections to handle various dataformats more generally
+    # TODO separate fields for units or rather using tuples/arrays for (value, units)?
+    std_meta = {}
+
+    tree, meta = read_hdf_meta(file_name)
+
+    if file_format == 'dx':
+
+        std_meta['pixel_size']    = meta['measurement_instrument_detector_pixel_size']
+        std_meta['binning_x']     = meta['measurement_instrument_detector_binning_x']
+        std_meta['binning_y']     = meta['measurement_instrument_detector_binning_y']
+        std_meta['distance']      = meta['measurement_instrument_camera_motor_stack_setup_camera_distance']
+        std_meta['energy']        = meta['measurement_instrument_monochromator_energy']
+        std_meta['exposure_time'] = meta['measurement_instrument_detector_exposure_time']
+        std_meta['time_stamp']    = meta['measurement_instrument_time_stamp']
+        std_meta['uuid']          = meta['measurement_sample_uuid']
+    else:
+        logger.error('HDF file layout not supported')
+
+    return std_meta
 
 
 def read_hdf5(fname, dataset, slc=None, dtype=None, shared=False):
@@ -908,6 +991,7 @@ def read_fits(fname, fixdtype=True):
     ndarray
         Data.
     """
+
     # NOTE:
     # at astropy 1.0.5, it is necessary to fix the dtype
     # but at 1.1.1, it seems unnecessary
@@ -1017,7 +1101,7 @@ def _list_file_stack(fname, ind, digit=None):
 
     if digit is not None:
         warnings.warn(("The 'digit' argument is deprecated and no longer used."
-                      "  It may be removed completely in a later version."),
+                       "  It may be removed completely in a later version."),
                       FutureWarning)
 
     body = writer.get_body(fname)
@@ -1205,6 +1289,7 @@ def read_hdf5_stack(h5group, dname, ind, digit=4, slc=None, out_ind=None):
 
     return arr
 
+
 def read_file_list(file_list):
     """
     Read data from stack of image files in a folder.
@@ -1215,7 +1300,7 @@ def read_file_list(file_list):
     file_list : list of str
         List of file names to read, in order
     """
-    
+
     f = file_list[0]
     try:
         readfunc = tifffile.imread
@@ -1223,7 +1308,7 @@ def read_file_list(file_list):
     except ValueError:
         readfunc = functools.partial(sm.imread, flatten=True)
         im = readfunc(f)
-    
+
     if len(im.shape) != 2:
         raise ValueError('Only 2D images are supported in read_file_list')
 
@@ -1231,6 +1316,6 @@ def read_file_list(file_list):
 
     arr[0] = im
     for i, fn in enumerate(file_list[1:]):
-        arr[i+1] = readfunc(fn)
-    
+        arr[i + 1] = readfunc(fn)
+
     return arr

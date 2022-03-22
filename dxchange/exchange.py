@@ -874,7 +874,7 @@ def read_aps_tomoscan_hdf5(fname, exchange_rank=0, proj=None, sino=None, dtype=N
     return tomo, flat, dark, theta
 
 
-def read_dx(fname, exchange_rank=0, proj=None, sino=None, dtype=None):
+def read_dx(fname, exchange_rank=0, proj=None, sino=None, dtype=None, metadata='standard'):
     """
     Read data exchange standard data format.
 
@@ -900,6 +900,10 @@ def read_dx(fname, exchange_rank=0, proj=None, sino=None, dtype=None):
     dtype : numpy datatype, optional
         Convert data to this datatype on read if specified.
 
+    metadata : str
+        determines how meta data dictionary is return 'all' returns all datasets from the dxfile or
+        'standard' returns only standardized values required for the tomo reconstruction. Default is 'standard'
+
     Returns
     -------
     ndarray
@@ -919,7 +923,10 @@ def read_dx(fname, exchange_rank=0, proj=None, sino=None, dtype=None):
     """
     
     tomo, flat, dark, theta =  read_aps_tomoscan_hdf5(fname, proj=proj, sino=sino)
-    meta = dxreader.read_dx_meta(fname)
+    if metadata == 'all':
+        meta = dxreader.read_dx_meta(fname)
+    elif metadata == 'standard':
+        meta = dxreader.create_standard_dx_meta(fname)
 
     return tomo, flat, dark, theta, meta
 
