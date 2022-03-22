@@ -38,6 +38,11 @@ extensions = [
     'sphinxcontrib.bibtex',
     'sphinx.ext.viewcode']
 
+bibtex_bibfiles = [
+    'source/bibtex/cite.bib',
+    'source/bibtex/ref.bib',
+    ]
+
 # Napoleon settings
 napoleon_google_docstring = True
 napoleon_numpy_docstring = True
@@ -324,8 +329,6 @@ class Mock(object):
 
 MOCK_MODULES = ['h5py',
                 'numpy',
-                'numpy.random'
-                'numpy.fft',
                 'tifffile',
                 'spefile',
                 'netCDF4',
@@ -335,8 +338,12 @@ MOCK_MODULES = ['h5py',
                 'pandas',
                 'scipy',
                 'scipy.misc',
-                'fnmatch',
-                'glob']
+                # 'fnmatch',
+                # 'glob',
+                # 'collections',
+                # 'ssl',
+                # 'urllib3'
+                ]
 
 for mod_name in MOCK_MODULES:
     sys.modules[mod_name] = Mock()
