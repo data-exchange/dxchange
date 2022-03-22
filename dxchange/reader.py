@@ -645,7 +645,7 @@ def read_dx_dims(fname, dataset):
 
 def read_hdf_meta(fname, add_shape=True):
     """
-    Get the tree view of a hdf/nxs file.
+    Get meta data and tree view of a generic hdf file.
 
     Parameters
     ----------
@@ -656,7 +656,11 @@ def read_hdf_meta(fname, add_shape=True):
 
     Returns
     -------
-    list of string
+    tree : str
+        Graphic rapresentation of the hdf file structure
+    meta : dict
+        Dictionary containing all the hdf file stored dict[key] = list. 
+        list[0] contains the meta data value; list[1] its attribute (e.g. units).
     """
 
     tree = deque()

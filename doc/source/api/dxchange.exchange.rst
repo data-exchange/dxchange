@@ -23,7 +23,6 @@
       read_aps_32id
       read_aus_microct
       read_diamond_l12
-      read_dx
       read_elettra_syrmep
       read_esrf_id19
       read_lnls_imx
