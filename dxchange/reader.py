@@ -728,6 +728,8 @@ def _add_branches(tree, meta, hdf_object, key, key1, index, last_index, prefix,
                         meta.update( {name : [value, attr] } )
             except KeyError:
                 shape = str("-> ???External-link???")
+            except IndexError:
+                shape = "None"
     if shape is not None:
         tree.append(f"{prefix}{connector} {key1} {shape}")
     else:
