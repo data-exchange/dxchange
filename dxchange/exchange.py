@@ -50,19 +50,18 @@
 Module for describing beamline/experiment specific data recipes.
 """
 
-from __future__ import (absolute_import, 
-                        division, 
+from __future__ import (absolute_import,
+                        division,
                         print_function,
                         unicode_literals,
                         )
 
-import numpy as np
 import os.path
 import re
 import fnmatch
 import logging
+import numpy as np
 import dxchange.reader as dxreader
-import glob
 
 __authors__ = "Doga Gursoy, Luis Barroso-Luque, Francesco De Carlo"
 __copyright__ = "Copyright (c) 2015-2016, UChicago Argonne, LLC."
@@ -71,6 +70,7 @@ __docformat__ = "restructuredtext en"
 __all__ = ['read_als_832',
            'read_als_832h5',
            'read_anka_topotomo',
+           'read_aps_tomoscan_hdf5',
            'read_aps_1id',
            'read_aps_2bm',
            'read_aps_5bm',
@@ -400,7 +400,7 @@ def read_aps_1id(fname, ind_tomo=None, proj=None, sino=None, layer=0):
         Specify sinograms to read. (start, end, step)
 
     layer: int, optional
-        Specify the layer to reconstruct 
+        Specify the layer to reconstruct
 
     Returns
     -------
@@ -435,7 +435,7 @@ def read_aps_1id(fname, ind_tomo=None, proj=None, sino=None, layer=0):
     dark_start = _layerdf.loc[_layerdf['type'] == 'post_dark', 'nSeq'].values[0]
     ndark      = _layerdf.loc[_layerdf['type'] == 'post_dark', 'nSeq'].shape[0]
     # white/flat field images (only use pre_white)
-    # NOTE: The beam condition might change overtime, therefore flat field 
+    # NOTE: The beam condition might change overtime, therefore flat field
     #       images are taken both before and after the experiment.
     #       The implementation here assumes the beam is stable throughout the
     #       experiment
@@ -483,7 +483,7 @@ def read_aps_2bm(fname, proj=None, sino=None):
     ndarray
         3D dark field data.
     """
-    return read_aps_32id(fname, proj=proj, sino=sino)
+    return read_aps_tomoscan_hdf5(fname, proj=proj, sino=sino)
 
 
 def read_aps_5bm(fname, sino=None):
@@ -529,7 +529,7 @@ def read_aps_5bm(fname, sino=None):
         tomo[index] = tomo[index].byteswap()
 
     for index in ind_flat:
-         flat[index] = flat[index].byteswap()
+        flat[index] = flat[index].byteswap()
 
     dark = dark.byteswap()
 
@@ -619,7 +619,7 @@ def read_aps_8bm(image_directory, ind_tomo, ind_flat,
     return tomo, flat, metadata
 
 
-def read_aps_13bm(fname, format, proj=None, sino=None):
+def read_aps_13bm(fname, file_format, proj=None, sino=None):
     """
     Read APS 13-BM standard data format. Searches directory for all necessary
     files, and then combines the separate flat fields.
@@ -643,19 +643,16 @@ def read_aps_13bm(fname, format, proj=None, sino=None):
     ndarray
         3D tomographic data.
     """
-    if format == 'spe':
-        tomo = dxreader.read_spe(fname, slc=(None, sino))
-    elif format == 'netcdf4':
-        files = glob.glob(fname[0:-5] + '*[1-3].nc')
-        tomo = dxreader.read_netcdf4(files[1], 'array_data', slc=(proj, sino))
+    if file_format == 'netcdf4':
+        base_name = fname[0:-4]
+        tomo = dxreader.read_netcdf4(base_name + '2.nc', 'array_data', slc=(proj, sino))
 
-        flat1 = dxreader.read_netcdf4(files[0], 'array_data', slc=(proj, sino))
-        flat2 = dxreader.read_netcdf4(files[2], 'array_data', slc=(proj, sino))
+        flat1 = dxreader.read_netcdf4(base_name + '1.nc', 'array_data', slc=(None, sino))
+        flat2 = dxreader.read_netcdf4(base_name + '3.nc', 'array_data', slc=(None, sino))
         flat = np.concatenate((flat1, flat2), axis = 0)
         del flat1, flat2
-
-        setup = glob.glob(fname[0:-5] + '*.setup')
-        setup = open(setup[0], 'r')
+        setup = base_name + '.setup'
+        setup = open(setup, 'r')
         setup_data = setup.readlines()
         result = {}
         for line in setup_data:
@@ -664,10 +661,13 @@ def read_aps_13bm(fname, format, proj=None, sino=None):
 
         dark = float(result['dark_current'])
         dark = flat*0+dark
-
         theta = np.linspace(0.0, np.pi, tomo.shape[0])
+        return tomo, flat, dark, theta
 
-    return tomo, flat, dark, theta
+    if file_format == 'hdf5':
+        return read_aps_tomoscan_hdf5(fname, proj=proj, sino=sino)
+    
+    return None
 
 
 def read_aps_13id(
@@ -778,6 +778,49 @@ def read_aps_32id(fname, exchange_rank=0, proj=None, sino=None, dtype=None):
     ndarray
         1D theta in radian.
     """
+    return read_aps_tomoscan_hdf5(fname, exchange_rank=exchange_rank, proj=proj, sino=sino)
+
+
+def read_aps_tomoscan_hdf5(fname, exchange_rank=0, proj=None, sino=None, dtype=None):
+    """
+    Read APS tomoscan HDF5 format.
+
+    Parameters
+    ----------
+    fname : str
+        Path to hdf5 file.
+
+    exchange_rank : int, optional
+        exchange_rank is added to "exchange" to point tomopy to the data
+        to reconstruct. if rank is not set then the data are raw from the
+        detector and are located under exchange = "exchange/...", to process
+        data that are the result of some intermediate processing step then
+        exchange_rank = 1, 2, ... will direct tomopy to process
+        "exchange1/...",
+
+    proj : {sequence, int}, optional
+        Specify projections to read. (start, end, step)
+
+    sino : {sequence, int}, optional
+        Specify sinograms to read. (start, end, step)
+
+    dtype : numpy datatype, optional
+        Convert data to this datatype on read if specified.
+
+    Returns
+    -------
+    ndarray
+        3D tomographic data.
+
+    ndarray
+        3D flat field data.
+
+    ndarray
+        3D dark field data.
+
+    ndarray
+        1D theta in radian.
+    """
     if exchange_rank > 0:
         exchange_base = 'exchange{:d}'.format(int(exchange_rank))
     else:
@@ -792,15 +835,44 @@ def read_aps_32id(fname, exchange_rank=0, proj=None, sino=None, dtype=None):
     dark = dxreader.read_hdf5(fname, dark_grp, slc=(None, sino), dtype=dtype)
     theta = dxreader.read_hdf5(fname, theta_grp, slc=None)
 
-    if (theta is None):
-        theta_size = dxreader.read_dx_dims(fname, 'data')[0]
-        logger.warn('Generating "%s" [0-180] deg angles for missing "exchange/theta" dataset' % (str(theta_size)))
-        theta = np.linspace(0. , np.pi, theta_size)
-    else:
-        theta = np.deg2rad(theta)
+    if (flat is None) or ((flat.shape[0]==1) and (flat.max() == 0)):
+        try:
+            # See if flat_field_value is in the file
+            flat_field_value = dxreader.read_hdf5(fname,
+                                                  '/process/acquisition/flat_fields/flat_field_value')[0]
+            flat = tomo[0,:,:] * 0 + flat_field_value
+        except:
+            logger.warn('No flat field data or flat_field_value')
+
+    if (dark is None) or ((dark.shape[0]==1) and (dark.max() == 0)):
+        try:
+            # See if dark_field_value is in the file
+            dark_field_value = dxreader.read_hdf5(fname,
+                                                  '/process/acquisition/dark_fields/dark_field_value')[0]
+            dark = tomo[0,:,:] * 0 + dark_field_value
+        except:
+            logger.warn('No dark field data or dark_field_value')
+
+    if theta is None:
+        try:
+            # See if the rotation start, step, num_angles are in the file
+            rotation_start = dxreader.read_hdf5(fname,
+                                                '/process/acquisition/rotation/rotation_start')[0]
+            rotation_step = dxreader.read_hdf5(fname,
+                                               '/process/acquisition/rotation/rotation_step')[0]
+            num_angles = dxreader.read_hdf5(fname,
+                                            '/process/acquisition/rotation/num_angles')[0]
+            if num_angles != tomo.shape[0]:
+                logger.warn('num_angles(%d) is not the same as tomo.shape[0](%d)', num_angles, tomo.shape[0])
+            theta = rotation_start + rotation_step*range(num_angles)
+        except:
+            theta_size = tomo.shape[0]
+            logger.warn('Generating "%s" [0-180] deg angles for missing "exchange/theta" dataset', str(theta_size))
+            theta = np.linspace(0. , 180, theta_size)
+    theta = np.deg2rad(theta)
     return tomo, flat, dark, theta
 
-
+  
 def read_aus_microct(fname, ind_tomo, ind_flat, ind_dark, proj=None, sino=None):
     """
     Read Australian Synchrotron micro-CT standard data format.
