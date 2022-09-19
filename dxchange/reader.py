@@ -151,6 +151,12 @@ def read_tiff(fname, slc=None, angle=None, mblur=None):
     except IOError:
         logger.error('No such file or directory: %s', fname)
         return False
+        
+    if (mblur is not None):
+	    _arr = cv2.medianBlur(_arr, mblur)
+	    # bilateral Filter takes only u8/f32
+	    #_arr = cv2.bilateralFilter(_arr.astype(np.float32), mblur, 75, 75).astype(np.uint16)
+		    
     if (angle is None) or (angle==0.0):
         arr = _slice_array(_arr, slc)
     else:
