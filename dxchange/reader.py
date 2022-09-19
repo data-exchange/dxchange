@@ -68,10 +68,12 @@ import warnings
 import functools
 import tifffile
 import scipy.misc as sm
+import cv2
 import pandas as pd
 from itertools import cycle
 from io import StringIO
 from collections import deque
+
 
 __author__ = "Doga Gursoy, Francesco De Carlo"
 __copyright__ = "Copyright (c) 2015-2016, UChicago Argonne, LLC."
@@ -131,7 +133,7 @@ def _check_read(fname):
     return os.path.abspath(fname)
 
 
-def read_tiff(fname, slc=None):
+def read_tiff(fname, slc=None, angle=None, mblur=None):
     """
     Read data from tiff file.
 
@@ -143,6 +145,9 @@ def read_tiff(fname, slc=None):
         Range of values for slicing data in each axis.
         ((start_1, end_1, step_1), ... , (start_N, end_N, step_N))
         defines slicing parameters for each axis of the data matrix.
+    angle : angle in degree(+ ccw), optional
+        angle of rotation after open the image.
+    mblur : size of median filter (should be positive integer >= 3)
 
     Returns
     -------
@@ -151,16 +156,35 @@ def read_tiff(fname, slc=None):
     """
     fname = _check_read(fname)
     try:
-        arr = tifffile.imread(fname, out='memmap')
+        _arr = tifffile.imread(fname, out='memmap')
     except IOError:
         logger.error('No such file or directory: %s', fname)
         return False
-    arr = _slice_array(arr, slc)
+        
+    if (mblur is not None):
+	    _arr = cv2.medianBlur(_arr, mblur)
+	    # bilateral Filter takes only u8/f32
+	    #_arr = cv2.bilateralFilter(_arr.astype(np.float32), mblur, 75, 75).astype(np.uint16)
+		    
+    if (angle is None) or (angle==0.0):
+        arr = _slice_array(_arr, slc)
+    else:
+        scaling = 1
+        # grab the dimensions of the image and then determine the center
+        (h, w) = _arr.shape[:2]
+        (cX, cY) = (w // 2, h // 2)
+        # grab the rotation matrix
+        M = cv2.getRotationMatrix2D((cX, cY), angle, scaling)
+        # perform the actual rotation and return the image
+        arr = cv2.warpAffine(_arr, M, (w, h))
+        # slice it
+        arr = _slice_array(arr, slc)
+
     _log_imported_data(fname, arr)
     return arr
 
 
-def read_tiff_stack(fname, ind, digit=None, slc=None):
+def read_tiff_stack(fname, ind, digit=None, slc=None, angle=None, mblur=None):
     """
     Read data from stack of tiff files in a folder.
 
@@ -176,6 +200,8 @@ def read_tiff_stack(fname, ind, digit=None, slc=None):
         Range of values for slicing data in each axis.
         ((start_1, end_1, step_1), ... , (start_N, end_N, step_N))
         defines slicing parameters for each axis of the data matrix.
+    angle : angle to rotate after reading the tiff image
+    mblue : median filter
 
     Returns
     -------
@@ -187,7 +213,7 @@ def read_tiff_stack(fname, ind, digit=None, slc=None):
 
     arr = _init_arr_from_stack(list_fname[0], len(ind), slc)
     for m, fname in enumerate(list_fname):
-        arr[m] = read_tiff(fname, slc)
+        arr[m] = read_tiff(fname, slc, angle, mblur)
     _log_imported_data(fname, arr)
     return arr
 
