@@ -147,7 +147,7 @@ def read_tiff(fname, slc=None, angle=None, mblur=None):
         defines slicing parameters for each axis of the data matrix.
     angle : angle in degree(+ ccw), optional
         angle of rotation after open the image.
-    mblur : size of median filter (currently do nothing)
+    mblur : size of median filter (should be positive integer >= 3)
 
     Returns
     -------
