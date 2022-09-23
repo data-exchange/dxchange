@@ -1,6 +1,6 @@
 numpy    
 scipy
-h5py    
+h5py>3.7
 six    
 netcdf4
 spefile    
