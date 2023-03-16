@@ -754,7 +754,12 @@ def _add_branches(tree, meta, hdf_object, key, key1, index, last_index, prefix,
                         meta.update( {name : [value, attr] } )
             except KeyError:
                 shape = str("-> ???External-link???")
-            except IndexError:
+            except IndexError: # This is when the obj type is () (ESRF and DLS) instead of (1,) (DESY, APS)
+                value = obj[()]
+                if isinstance(value, bytes):
+                    value = value.decode("utf-8")
+                attr = obj.attrs.get('units')
+                meta.update( {obj.name : [value, attr] } )
                 shape = "None"
     if shape is not None:
         tree.append(f"{prefix}{connector} {key1} {shape}")
