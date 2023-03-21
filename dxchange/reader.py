@@ -97,11 +97,6 @@ __all__ = ['read_hdf_meta',
 
 logger = logging.getLogger(__name__)
 
-PIPE = "│"
-ELBOW = "└──"
-TEE = "├──"
-PIPE_PREFIX = "│   "
-SPACE_PREFIX = "    "
 
 def _check_import(modname):
     try:
@@ -124,7 +119,7 @@ olefile = _check_import('olefile')
 # function.
 def _check_read(fname):
     known_extensions = ['.edf', '.tiff', '.tif', '.h5', '.hdf', '.npy', '.nc', '.xrm',
-                        '.txrm', '.txm', '.xmt']
+                        '.txrm', '.txm', '.xmt''.nxs']
     if not isinstance(fname, six.string_types):
         logger.error('File name must be a string')
     else:
