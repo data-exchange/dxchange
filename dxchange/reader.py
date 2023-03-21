@@ -119,7 +119,7 @@ olefile = _check_import('olefile')
 # function.
 def _check_read(fname):
     known_extensions = ['.edf', '.tiff', '.tif', '.h5', '.hdf', '.npy', '.nc', '.xrm',
-                        '.txrm', '.txm', '.xmt''.nxs']
+                        '.txrm', '.txm', '.xmt', '.nxs']
     if not isinstance(fname, six.string_types):
         logger.error('File name must be a string')
     else:
