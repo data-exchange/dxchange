@@ -15,8 +15,8 @@ We kindly request that you cite the following article
 Code from `algotom <https://github.com/algotom/algotom>`_ :cite:`Vo:21` was used in the reader read_hdf_meta to generate an hdf file tree
 
 
-References
-==========
+Reference
+---------
 
 .. bibliography:: bibtex/ref.bib
    :style: plain
