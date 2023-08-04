@@ -97,11 +97,6 @@ __all__ = ['read_hdf_meta',
 
 logger = logging.getLogger(__name__)
 
-PIPE = "│"
-ELBOW = "└──"
-TEE = "├──"
-PIPE_PREFIX = "│   "
-SPACE_PREFIX = "    "
 
 def _check_import(modname):
     try:
@@ -124,7 +119,7 @@ olefile = _check_import('olefile')
 # function.
 def _check_read(fname):
     known_extensions = ['.edf', '.tiff', '.tif', '.h5', '.hdf', '.npy', '.nc', '.xrm',
-                        '.txrm', '.txm', '.xmt']
+                        '.txrm', '.txm', '.xmt', '.nxs']
     if not isinstance(fname, six.string_types):
         logger.error('File name must be a string')
     else:
@@ -689,111 +684,11 @@ def read_hdf_meta(fname, add_shape=True):
         list[0] contains the meta data value; list[1] its attribute (e.g. units).
     """
 
-    tree = deque()
-    meta = {}
+    mp = Hdf5MetadataReader(fname)
+    meta = mp.readMetadata()
+    mp.close()
 
-    with h5py.File(fname, 'r') as hdf_object:
-        _extract_hdf(tree, meta, hdf_object, add_shape=add_shape)
-    # for entry in tree:
-    #     print(entry)
-    return tree, meta
-
-def _get_subgroups(hdf_object, key=None):
-    """
-    Supplementary method for building the tree view of a hdf5 file.
-    Return the name of subgroups.
-    """
-    list_group = []
-    if key is None:
-        for group in hdf_object.keys():
-            list_group.append(group)
-        if len(list_group) == 1:
-            key = list_group[0]
-        else:
-            key = ""
-    else:
-        if key in hdf_object:
-            try:
-                obj = hdf_object[key]
-                if isinstance(obj, h5py.Group):
-                    for group in hdf_object[key].keys():
-                        list_group.append(group)
-            except KeyError:
-                pass
-    if len(list_group) > 0:
-        list_group = sorted(list_group)
-    return list_group, key
-
-def _add_branches(tree, meta, hdf_object, key, key1, index, last_index, prefix,
-                  connector, level, add_shape):
-    """
-    Supplementary method for building the tree view of a hdf5 file.
-    Add branches to the tree.
-    """
-    shape = None
-    key_comb = key + "/" + key1
-    if add_shape is True:
-        if key_comb in hdf_object:
-            try:
-                obj = hdf_object[key_comb]
-                if isinstance(obj, h5py.Dataset):
-                    shape = str(obj.shape)
-                    if obj.shape[0]==1:
-                        s = obj.name.split('/')
-                        name = "_".join(s)[1:]
-                        # print(s)
-                        # print(name)
-                        value = obj[()][0]
-                        attr = obj.attrs.get('units')
-                        if attr != None:
-                            attr = attr.decode('UTF-8')
-                            # log.info(">>>>>> %s: %s %s" % (obj.name, value, attr))
-                        if  (value.dtype.kind == 'S'):
-                            value = value.decode(encoding="utf-8")
-                            # log.info(">>>>>> %s: %s" % (obj.name, value))
-                        meta.update( {name : [value, attr] } )
-            except KeyError:
-                shape = str("-> ???External-link???")
-            except IndexError:
-                shape = "None"
-    if shape is not None:
-        tree.append(f"{prefix}{connector} {key1} {shape}")
-    else:
-        tree.append(f"{prefix}{connector} {key1}")
-    if index != last_index:
-        prefix += PIPE_PREFIX
-    else:
-        prefix += SPACE_PREFIX
-    _extract_hdf(tree, meta, hdf_object, prefix=prefix, key=key_comb,
-                    level=level, add_shape=add_shape)
-
-def _extract_hdf(tree, meta, hdf_object, prefix="", key=None, level=0,
-                    add_shape=True):
-    """
-    Supplementary method for extracting from a generic hdf file the meta data 
-    tree view and the 1D meta data values/units.
-    Create the tree body and a meta dictionary 
-    """
-    entries, key = _get_subgroups(hdf_object, key)
-    num_ent = len(entries)
-    last_index = num_ent - 1
-    level = level + 1
-    if num_ent > 0:
-        if last_index == 0:
-            key = "" if level == 1 else key
-            if num_ent > 1:
-                connector = PIPE
-            else:
-                connector = ELBOW if level > 1 else ""
-            _add_branches(tree, meta, hdf_object, key, entries[0], 0, 0, prefix,
-                          connector, level, add_shape)
-        else:
-            for index, key1 in enumerate(entries):
-                connector = ELBOW if index == last_index else TEE
-                if index == 0:
-                    tree.append(prefix + PIPE)
-                _add_branches(tree, meta, hdf_object, key, key1, index, last_index,
-                              prefix, connector, level, add_shape)
+    return meta
 
 
 def create_standard_meta(file_name, file_format='dx'):
@@ -814,24 +709,35 @@ def create_standard_meta(file_name, file_format='dx'):
         Standardized meta data dictionary
     """
 
-    # TODO the paths to data could eventually be replaced by projections to handle various dataformats more generally
-    # TODO separate fields for units or rather using tuples/arrays for (value, units)?
     std_meta = {}
 
-    tree, meta = read_hdf_meta(file_name)
+    meta = read_hdf_meta(file_name)
 
-    if file_format == 'dx':
-
-        std_meta['pixel_size']    = meta['measurement_instrument_detector_pixel_size']
-        std_meta['binning_x']     = meta['measurement_instrument_detector_binning_x']
-        std_meta['binning_y']     = meta['measurement_instrument_detector_binning_y']
-        std_meta['distance']      = meta['measurement_instrument_camera_motor_stack_setup_camera_distance']
-        std_meta['energy']        = meta['measurement_instrument_monochromator_energy']
-        std_meta['exposure_time'] = meta['measurement_instrument_detector_exposure_time']
-        std_meta['time_stamp']    = meta['measurement_instrument_time_stamp']
-        std_meta['uuid']          = meta['measurement_sample_uuid']
-    else:
-        logger.error('HDF file layout not supported')
+    try:
+        if file_format == 'dx':
+            std_meta['resolution']               = meta['/measurement/instrument/detection_system/objective/resolution']
+            std_meta['sample_detector_distance'] = meta['/measurement/instrument/detector_motor_stack/setup/z']
+            std_meta['energy']                   = meta['/measurement/instrument/monochromator/energy']
+            std_meta['end_time']                 = meta['/process/acquisition/end_date']
+        elif file_format == 'nexus-esrf':
+            std_meta['resolution']               = meta['/entry0000/instrument/detector/real_x_pixel_size']
+            std_meta['sample_detector_distance'] = meta['/entry0000/instrument/detector/distance']
+            std_meta['energy']                   = meta['/entry0000/instrument/beam/incident_energy']
+            std_meta['end_time']                 = meta['/entry0000/end_time']
+        elif file_format == 'nexus-dls':
+            std_meta['resolution']               = meta['/entry1/tomo_entry/instrument/detector/x_pixel_size']
+            std_meta['sample_detector_distance'] = meta['/entry1/tomo_entry/instrument/detector/distance']
+            # std_meta['energy']                   = meta['/entry0000/instrument/beam/incident_energy']
+            std_meta['end_time']                 = meta['/entry1/end_time']
+        elif file_format == 'nexus-desy':
+            std_meta['resolution']               = meta['/entry/hardware/camera1/resolution']
+            std_meta['sample_detector_distance'] = meta['/entry/scan/setup/pos_o_ccd_dist']
+            std_meta['energy']                   = meta['/entry/scan/setup/p07_energy']
+            # std_meta['end_time']                 = meta['/entry1/end_time']
+        else:
+            logger.error('HDF file layout not supported')
+    except Exception as e:
+        logger.error('File: %s of data-type = %s is missing the definition of %s' % (file_name, file_format, e))
 
     return std_meta
 
@@ -1351,3 +1257,63 @@ def read_file_list(file_list):
         arr[i + 1] = readfunc(fn)
 
     return arr
+
+
+class Hdf5MetadataReader:
+
+    def __init__(self, filePath, excludedSections=['exchange', 'defaults'], readOnOpen=True):
+        self.file = h5py.File(filePath, 'r')
+        self.metadataDict = {}
+        self.excludedSections = excludedSections
+        if readOnOpen:
+            self.readMetadata()
+
+    def readMetadata(self):
+        self.file.visititems(self.__readMetadata)
+        return self.metadataDict
+
+    def getMetadata(self):
+        return self.metadataDict
+
+    def __readMetadata(self, name, obj):
+        if isinstance(obj, h5py.Dataset):
+            rootName = name.split('/')[0]
+            if rootName not in self.excludedSections:
+                try:
+                    # This is when the obj shape is (1,) (DESY, APS)
+                    if obj[()].shape[0] == 1:
+                        value = obj[()][0]
+                        if isinstance(value, bytes):
+                            value = value.decode("utf-8")
+                        elif  (value.dtype.kind == 'S'):
+                            value = value.decode(encoding="utf-8")
+                            # print("0>>>>>>>>>>>> %s: %s" % (obj.name, value))
+                        attr = obj.attrs.get('units')
+                        if attr != None:
+                            attr = attr.decode('UTF-8')
+                            # print("1>>>>>> %s: %s %s" % (obj.name, value, attr))
+                        self.metadataDict.update( {obj.name : [value, attr] } )
+                except AttributeError: # This is when the obj is byte so has no attribute 'shape'
+                    value = obj[()] 
+                    if isinstance(value, bytes):
+                        value = value.decode("utf-8")
+                    attr = obj.attrs.get('units')
+                    if attr != None:
+                        attr = attr.decode('UTF-8')
+                    self.metadataDict.update( {obj.name : [value, attr] } )
+                    # print("2>>>>>> %s: %s %s" % (obj.name, value, attr))
+                except IndexError: # This is when the obj shape is () (ESRF and DLS) instead of (1,) (DESY, APS)
+                    attr = obj.attrs.get('units')
+                    if attr != None:
+                        if isinstance(attr, str): 
+                            pass
+                        else:
+                            attr = attr.decode('UTF-8')
+                    value = obj[()]
+                    # print("3>>>>>> %s: %s %s" % (obj.name, value, attr))
+                    self.metadataDict.update( {obj.name : [value, attr] } )
+    
+    def close(self):
+        if self.file:
+            self.file.close()
+            self.file = None

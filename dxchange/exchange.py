@@ -87,7 +87,8 @@ __all__ = ['read_als_832',
            'read_lnls_imx',
            'read_nsls2_fxi18_h5',
            'read_petraIII_p05',
-           'read_sls_tomcat']
+           'read_sls_tomcat',
+           'read_nexus']
 
 logger = logging.getLogger(__name__)
 
@@ -872,7 +873,81 @@ def read_aps_tomoscan_hdf5(fname, exchange_rank=0, proj=None, sino=None, dtype=N
     theta = np.deg2rad(theta)
     return tomo, flat, dark, theta
 
-  
+
+def read_nexus(fname, 
+               proj=None, 
+               sino=None, 
+               dtype=None,
+               data_path="/entry1/tomo_entry/data/", 
+               angle_path="/entry1/tomo_entry/data/",
+               image_key_path="/entry1/instrument/image_key/image_key"):
+    """
+    Read NeXus tomo HDF5 format.
+
+    Parameters
+    ----------
+    fname : str
+        Path to hdf5 file.
+
+    proj : {sequence, int}, optional
+        Specify projections to read. (start, end, step)
+
+    sino : {sequence, int}, optional
+        Specify sinograms to read. (start, end, step)
+
+    dtype : numpy datatype, optional
+        Convert data to this datatype on read if specified.
+
+    data_path : string, optional
+        hdf file path location of the data
+
+    image_key_path : string, optional
+        hdf file path location of the image type keys. 0 = projection, 1 = flat, 2 = dark
+
+    Returns
+    -------
+    ndarray
+        3D tomographic data.
+
+    ndarray
+        3D flat field data.
+
+    ndarray
+        3D dark field data.
+
+    ndarray
+        1D theta in radian.
+    """
+
+    dataset_grp = '/'.join([data_path, 'data'])
+    theta_grp   = '/'.join([data_path, 'rotation_angle'])
+
+    dataset = read_hdf5(fname, dataset_grp, slc=(proj, sino), dtype=dtype)
+    angles   = read_hdf5(fname, theta_grp, slc=None)
+
+    # Get the indices of where the data, flat and dark are the dataset
+    with h5.File(fname, "r") as file:
+        data_indices  = []
+        darks_indices = []
+        flats_indices = []
+
+        for i, key in enumerate(file[image_key_path]):
+            if int(key) == 0:
+                data_indices.append(i)
+            elif int(key) == 1:
+                flats_indices.append(i)
+            elif int(key) == 2:
+                darks_indices.append(i)
+
+        darks = [dataset[x] for x in darks_indices]
+        flats = [dataset[x] for x in flats_indices]
+        tomo  = [dataset[x] for x in data_indices]
+        theta = [angles[x] for x in data_indices]
+
+    theta = np.deg2rad(theta)
+    return tomo, flat, dark, theta
+
+
 def read_aus_microct(fname, ind_tomo, ind_flat, ind_dark, proj=None, sino=None):
     """
     Read Australian Synchrotron micro-CT standard data format.
