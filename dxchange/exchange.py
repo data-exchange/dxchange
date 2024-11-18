@@ -88,6 +88,7 @@ __all__ = ['read_als_832',
            'read_nsls2_fxi18_h5',
            'read_petraIII_p05',
            'read_sls_tomcat',
+           'read_sesame_beats',
            'read_nexus']
 
 logger = logging.getLogger(__name__)
@@ -1317,3 +1318,51 @@ def read_sls_tomcat(fname, ind_tomo=None, proj=None, sino=None):
         _fname, ind=ind_dark, slc=(sino, None))
 
     return tomo, flat, dark
+
+
+def read_sesame_beats(fname, exchange_rank=0, proj=None, sino=None, dtype=None):
+    """
+    Read SESAME ID10-BEATS standard data format.
+
+    Parameters
+    ----------
+    fname : str
+        Path to hdf5 file.
+
+    exchange_rank : int, optional
+        exchange_rank is added to "exchange" to point tomopy to the data
+        to reconstruct. if rank is not set then the data are raw from the
+        detector and are located under exchange = "exchange/...", to process
+        data that are the result of some intemedite processing step then
+        exchange_rank = 1, 2, ... will direct tomopy to process
+        "exchange1/...",
+
+    proj : {sequence, int}, optional
+        Specify projections to read. (start, end, step)
+
+    sino : {sequence, int}, optional
+        Specify sinograms to read. (start, end, step)
+
+    dtype : numpy datatype, optional
+        Convert data to this datatype on read if specified.
+
+    Returns
+    -------
+    ndarray
+        3D tomographic data.
+
+    ndarray
+        3D flat field data.
+
+    ndarray
+        3D dark field data.
+
+    ndarray
+        1D theta in radian.
+    """
+
+    # read projections, darks, flats and angles
+    projs, flats, darks, _ = read_aps_32id(fname, exchange_rank=0, proj=proj, sino=sino)
+    theta = np.radians(dxreader.read_hdf5(fname, 'exchange/theta', slc=(proj,)))
+
+    return projs, flats, darks, theta
