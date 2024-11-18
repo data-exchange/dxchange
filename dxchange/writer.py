@@ -50,13 +50,9 @@
 Module for data exporting data files.
 """
 
-from __future__ import (absolute_import, division, print_function,
-                        unicode_literals)
-
 import dxchange.dtype as dt
 import numpy as np
 import os
-import six
 import h5py
 import logging
 import re
@@ -163,7 +159,7 @@ def _suggest_new_fname(fname, digit):
 
 
 def _init_write(arr, fname, ext, dtype, overwrite):
-    if not (isinstance(fname, six.string_types)):
+    if not (isinstance(fname, str)):
         fname = 'tmp/data' + ext
     else:
         if not fname.endswith(ext):
