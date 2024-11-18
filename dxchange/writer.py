@@ -102,7 +102,7 @@ def get_extension(fname):
 
 
 def remove_trailing_digits(text):
-    digit_string = re.search('\d+$', text)
+    digit_string = re.search(r'\d+$', text)
     if digit_string is not None:
         number_of_digits = len(digit_string.group())
         text = ''.join(text[:-number_of_digits])
