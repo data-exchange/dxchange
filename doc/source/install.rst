@@ -20,7 +20,7 @@ from `GitHub <https://github.com>`_ repository::
 then::
 
     cd dxchange
-    python setup.py install
+    pip install .
 
 DXchange is dependent on other libraries, listed in the requirements.txt and
 meta.yaml files.
