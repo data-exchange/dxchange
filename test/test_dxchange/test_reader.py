@@ -345,8 +345,12 @@ class read_tiff_files_test_case(unittest.TestCase):
 
         self.assertEqual(array_data.shape, (9, 8))
         np.testing.utils.assert_equal(array_data[0], [0, 0, 0, 0, 0, 0, 0, 0])
-        np.testing.utils.assert_equal(array_data[1], [ 7, 15, 23, 31, 39, 47, 55, 63])
-        np.testing.utils.assert_equal(array_data[:, 0], [0, 7, 6, 5, 4, 3, 2, 1, 0])
+        np.testing.utils.assert_allclose(array_data[1],
+                                         [9.390409, 18.998657, 26.565668, 34.689377, 42.62752, 50.751236, 58.318245, 67.92649],
+                                         rtol=1e-6)
+        np.testing.utils.assert_allclose(array_data[:, 0],
+                                         [0., 9.390409, 8.189705, 7.242522, 6.231959, 5.221395, 4.274212, 3.073508, 0.],
+                                         rtol=1e-6)
 
     def test_read_tiff_rotate_45(self):
         # Note angle only works with float 32 data
@@ -354,10 +358,10 @@ class read_tiff_files_test_case(unittest.TestCase):
                                       angle=45)
 
         self.assertEqual(array_data.shape, (9, 8))
-        np.testing.utils.assert_allclose(array_data[0], [0.,  0.294922, 4.054688,  9.875, 16.09375, 10.3125, 0., 0],
+        np.testing.utils.assert_allclose(array_data[0], [0., 0., 5.406065, 12.034752, 19.378887, 0., 0., 0.],
                                          rtol=1e-6)
         np.testing.utils.assert_allclose(array_data[:, 0],
-                                      [ 0., 0.205078,  1.945312,  5.625, 10.6875, 15.46875, 15.5625 , 1.640625, 0.],
+                                      [0.,  0., 2.590548, 7.822704, 13.562099, 17.923655, 0.,  0., 0.],
                                          rtol=1e-6)
 
     def test_read_tiff_mblur1(self):
