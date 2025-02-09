@@ -52,6 +52,7 @@ from __future__ import (absolute_import, division, print_function,
 import unittest
 from dxchange import reader
 import numpy as np
+from numpy.testing.utils import assert_equal
 import os
 
 TEST_DIR = os.path.dirname(os.path.dirname(__file__))
@@ -321,3 +322,59 @@ class list_file_stack_test_case(unittest.TestCase):
         self.assertEqual(
             file_stack,
             ["someFile/otherFile/image_1.xrm", "someFile/otherFile/image_2.xrm"])
+
+class read_tiff_files_test_case(unittest.TestCase):
+    def test_simple_read_tiff(self):
+        array_data = reader.read_tiff(os.path.join(TEST_DIR, "test_data/test_0001.tiff"))
+
+        self.assertEqual(array_data.shape, (9, 8))
+        np.testing.utils.assert_equal(array_data[0], [0, 1, 2, 3, 4, 5, 6, 7])
+        np.testing.utils.assert_equal(array_data[:,0], [0, 8, 16, 24, 32, 40, 48, 56, 64])
+
+    def test_read_tiff_slice(self):
+        array_data = reader.read_tiff(os.path.join(TEST_DIR, "test_data/test_0001.tiff"),
+                                      slc=((0, 5, 1),(6, 0, -1)))
+        self.assertEqual(array_data.shape, (5, 6))
+        np.testing.utils.assert_equal(array_data[0], [6, 5, 4, 3, 2, 1])
+        np.testing.utils.assert_equal(array_data[:, 0], [6, 14, 22, 30, 38])
+
+    def test_read_tiff_rotate_90(self):
+        # Note angle only works with float 32 data
+        array_data = reader.read_tiff(os.path.join(TEST_DIR, "test_data/test_f32_0001.tiff"),
+                                      angle=90)
+
+        self.assertEqual(array_data.shape, (9, 8))
+        np.testing.utils.assert_equal(array_data[0], [0, 0, 0, 0, 0, 0, 0, 0])
+        np.testing.utils.assert_equal(array_data[1], [ 7, 15, 23, 31, 39, 47, 55, 63])
+        np.testing.utils.assert_equal(array_data[:, 0], [0, 7, 6, 5, 4, 3, 2, 1, 0])
+
+    def test_read_tiff_rotate_45(self):
+        # Note angle only works with float 32 data
+        array_data = reader.read_tiff(os.path.join(TEST_DIR, "test_data/test_f32_0001.tiff"),
+                                      angle=45)
+
+        self.assertEqual(array_data.shape, (9, 8))
+        np.testing.utils.assert_allclose(array_data[0], [0.,  0.294922, 4.054688,  9.875, 16.09375, 10.3125, 0., 0],
+                                         rtol=1e-6)
+        np.testing.utils.assert_allclose(array_data[:, 0],
+                                      [ 0., 0.205078,  1.945312,  5.625, 10.6875, 15.46875, 15.5625 , 1.640625, 0.],
+                                         rtol=1e-6)
+
+    def test_read_tiff_mblur1(self):
+        # Note mblur only works with float 32 data
+        array_data = reader.read_tiff(os.path.join(TEST_DIR, "test_data/test_spots_0001.tiff"),
+                                      mblur=1)
+
+        self.assertEqual(array_data.shape, (10, 10))
+        np.testing.utils.assert_equal(array_data[0], [0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+        np.testing.utils.assert_equal(array_data[2, 3], 25)
+        np.testing.utils.assert_equal(array_data[5:7, 6:8], [[26, 26], [26, 26]])
+
+    def test_read_tiff_mblur3(self):
+        array_data = reader.read_tiff(os.path.join(TEST_DIR, "test_data/test_spots_0001.tiff"),
+                                      mblur=3)
+
+        self.assertEqual(array_data.shape, (10, 10))
+        np.testing.utils.assert_equal(array_data[0], [0, 1, 2, 3, 4, 5, 6, 7, 8, 9])
+        np.testing.utils.assert_equal(array_data[2, 3], 3)
+        np.testing.utils.assert_equal(array_data[5:7, 6:8], [[7, 8], [7, 8]])
