@@ -372,5 +372,4 @@ autodoc_mock_imports = [
     'olefile',
     'pandas',
     'scipy',
-    'scipy.misc',
-    'cv2',]
+    'scipy.misc',]

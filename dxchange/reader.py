@@ -64,7 +64,6 @@ import warnings
 import functools
 import tifffile
 import scipy.misc as sm
-import cv2
 import pandas as pd
 from itertools import cycle
 from io import StringIO
