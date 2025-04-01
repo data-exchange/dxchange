@@ -61,16 +61,17 @@ from itertools import cycle
 __author__ = "Doga Gursoy, Francesco De Carlo"
 __copyright__ = "Copyright (c) 2015-2016, UChicago Argonne, LLC."
 __version__ = "0.1.0"
-__docformat__ = 'restructuredtext en'
-__all__ = ['write_dxf',
-           'write_hdf5',
-           'write_netcdf4',
-           'write_npy',
-           'write_tiff',
-           'write_tiff_stack',
-           'write_vtr',
-           'write_aps_1id_report',
-           ]
+__docformat__ = "restructuredtext en"
+__all__ = [
+    "write_dxf",
+    "write_hdf5",
+    "write_netcdf4",
+    "write_npy",
+    "write_tiff",
+    "write_tiff_stack",
+    "write_vtr",
+    "write_aps_1id_report",
+]
 
 logger = logging.getLogger(__name__)
 
@@ -79,11 +80,12 @@ def _check_import(modname):
     try:
         return __import__(modname)
     except ImportError:
-        logger.warn('Warning: ' + modname + ' module not found')
+        logger.warn("Warning: " + modname + " module not found")
         return None
 
-dxfile = _check_import('dxfile')
-netCDF4 = _check_import('netCDF4')
+
+dxfile = _check_import("dxfile")
+netCDF4 = _check_import("netCDF4")
 
 
 def get_body(fname):
@@ -98,14 +100,14 @@ def get_extension(fname):
     """
     Get file extension.
     """
-    return '.' + fname.split(".")[-1]
+    return "." + fname.split(".")[-1]
 
 
 def remove_trailing_digits(text):
-    digit_string = re.search(r'\d+$', text)
+    digit_string = re.search(r"\d+$", text)
     if digit_string is not None:
         number_of_digits = len(digit_string.group())
-        text = ''.join(text[:-number_of_digits])
+        text = "".join(text[:-number_of_digits])
         return (text, number_of_digits)
     else:
         return (text, 0)
@@ -150,7 +152,7 @@ def _suggest_new_fname(fname, digit):
         indq = 1
         file_exist = False
         while not file_exist:
-            fname = body + '-' + '{0:0={1}d}'.format(indq, digit) + ext
+            fname = body + "-" + "{0:0={1}d}".format(indq, digit) + ext
             if not os.path.isfile(fname):
                 file_exist = True
             else:
@@ -160,7 +162,7 @@ def _suggest_new_fname(fname, digit):
 
 def _init_write(arr, fname, ext, dtype, overwrite):
     if not (isinstance(fname, str)):
-        fname = 'tmp/data' + ext
+        fname = "tmp/data" + ext
     else:
         if not fname.endswith(ext):
             fname = fname + ext
@@ -195,15 +197,16 @@ def _write_hdf5_dataset(h5object, data, dname, appendaxis, maxshape):
     """
     if appendaxis is not None:
         if dname not in h5object:
-            h5object.create_dataset(dname, data=data,
-                                    maxshape=maxshape)
+            h5object.create_dataset(dname, data=data, maxshape=maxshape)
         else:
             size = h5object[dname].shape
             newsize = list(size)
             newsize[appendaxis] += data.shape[appendaxis]
             h5object[dname].resize(newsize)
 
-            slices = 3 * [slice(None, None, None), ]
+            slices = 3 * [
+                slice(None, None, None),
+            ]
             slices[appendaxis] = slice(size[appendaxis], None, None)
             h5object[dname][tuple(slices)] = data
     else:
@@ -211,8 +214,15 @@ def _write_hdf5_dataset(h5object, data, dname, appendaxis, maxshape):
 
 
 def write_hdf5(
-        data, fname='tmp/data.h5', gname='exchange', dname='data',
-        dtype=None, overwrite=False, appendaxis=None, maxsize=None):
+    data,
+    fname="tmp/data.h5",
+    gname="exchange",
+    dname="data",
+    dtype=None,
+    overwrite=False,
+    appendaxis=None,
+    maxsize=None,
+):
     """
     Write data to hdf5 file in a specific group.
 
@@ -238,7 +248,7 @@ def write_hdf5(
         Maximum size that the dataset can be resized to along the
         given axis.
     """
-    mode = 'w' if overwrite else 'a'
+    mode = "w" if overwrite else "a"
 
     if appendaxis is not None:
         overwrite = True  # True if appending to file so fname is not changed
@@ -246,19 +256,25 @@ def write_hdf5(
         maxshape[appendaxis] = maxsize
     else:
         maxshape = maxsize
-    fname, data = _init_write(data, fname, '.h5', dtype, overwrite)
+    fname, data = _init_write(data, fname, ".h5", dtype, overwrite)
 
     with h5py.File(fname, mode=mode) as f:
-        if 'implements' not in f:
-            f.create_dataset('implements', data=gname)
+        if "implements" not in f:
+            f.create_dataset("implements", data=gname)
         if gname not in f:
             f.create_group(gname)
-        _write_hdf5_dataset(f[gname], data, dname,
-                            appendaxis, maxshape)
+        _write_hdf5_dataset(f[gname], data, dname, appendaxis, maxshape)
+
 
 def write_netcdf4(
-        data, fname='tmp/data.nc', dname='VOLUME',
-        dtype=None, overwrite=False, appendaxis=None, maxsize=None):
+    data,
+    fname="tmp/data.nc",
+    dname="VOLUME",
+    dtype=None,
+    overwrite=False,
+    appendaxis=None,
+    maxsize=None,
+):
     """
     Write data to netCDF file.
 
@@ -267,22 +283,20 @@ def write_netcdf4(
     data : ndarray
         Array data to be saved.
     fname : str
-        File name to which the data is saved. 
+        File name to which the data is saved.
     """
-    mode = 'w' if overwrite else 'a'
+    mode = "w" if overwrite else "a"
 
-    ncfile = netCDF4.Dataset(fname,mode='w',format='NETCDF3_64BIT') 
-    x_dim = ncfile.createDimension('NX', data.shape[0])
-    y_dim = ncfile.createDimension('NY', data.shape[1])
-    z_dim = ncfile.createDimension('NZ', data.shape[2])
-    d = ncfile.createVariable(dname, data.dtype, ('NX', 'NY', 'NZ'))
-    d[:,:,:] = data
+    ncfile = netCDF4.Dataset(fname, mode="w", format="NETCDF3_64BIT")
+    x_dim = ncfile.createDimension("NX", data.shape[0])
+    y_dim = ncfile.createDimension("NY", data.shape[1])
+    z_dim = ncfile.createDimension("NZ", data.shape[2])
+    d = ncfile.createVariable(dname, data.dtype, ("NX", "NY", "NZ"))
+    d[:, :, :] = data
     ncfile.close()
-    
 
-def write_dxf(
-        data, fname='tmp/data.h5', axes='theta:y:x',
-        dtype=None, overwrite=False):
+
+def write_dxf(data, fname="tmp/data.h5", axes="theta:y:x", dtype=None, overwrite=False):
     """
     Write data to a data exchange hdf5 file.
 
@@ -300,16 +314,22 @@ def write_dxf(
     overwrite: bool, optional
         if True, overwrites the existing file if the file exists.
     """
-    fname, data = _init_write(data, fname, '.h5', dtype, overwrite)
-    f = dxfile.dxtomo.File(fname, mode='w')
-    f.add_entry(dxfile.dxtomo.Entry.data(data={
-                'value': data, 'units': 'counts',
-                'description': 'transmission', 'axes': axes}))
+    fname, data = _init_write(data, fname, ".h5", dtype, overwrite)
+    f = dxfile.dxtomo.File(fname, mode="w")
+    f.add_entry(
+        dxfile.dxtomo.Entry.data(
+            data={
+                "value": data,
+                "units": "counts",
+                "description": "transmission",
+                "axes": axes,
+            }
+        )
+    )
     f.close()
 
 
-def write_npy(
-        data, fname='tmp/data.npy', dtype=None, overwrite=False):
+def write_npy(data, fname="tmp/data.npy", dtype=None, overwrite=False):
     """
     Write data to a binary file in NumPy ``.npy`` format.
 
@@ -321,12 +341,11 @@ def write_npy(
         File name to which the data is saved. ``.npy`` extension
         will be appended if it does not already have one.
     """
-    fname, data = _init_write(data, fname, '.npy', dtype, overwrite)
+    fname, data = _init_write(data, fname, ".npy", dtype, overwrite)
     np.save(fname, data)
 
 
-def write_tiff(
-        data, fname='tmp/data.tiff', dtype=None, overwrite=False):
+def write_tiff(data, fname="tmp/data.tiff", dtype=None, overwrite=False):
     """
     Write image data to a tiff file.
 
@@ -342,14 +361,15 @@ def write_tiff(
     overwrite: bool, optional
         if True, overwrites the existing file if the file exists.
     """
-    fname, data = _init_write(data, fname, '.tiff', dtype, overwrite)
+    fname, data = _init_write(data, fname, ".tiff", dtype, overwrite)
     import tifffile
-    tifffile.imsave(fname, data)
+
+    tifffile.imwrite(fname, data)
 
 
 def write_tiff_stack(
-        data, fname='tmp/data.tiff', dtype=None, axis=0, digit=5,
-        start=0, overwrite=False):
+    data, fname="tmp/data.tiff", dtype=None, axis=0, digit=5, start=0, overwrite=False
+):
     """
     Write data to stack of tiff file.
 
@@ -371,18 +391,18 @@ def write_tiff_stack(
     overwrite: bool, optional
         if True, overwrites the existing file if the file exists.
     """
-    fname, data = _init_write(data, fname, '.tiff', dtype, True)
+    fname, data = _init_write(data, fname, ".tiff", dtype, True)
     body = get_body(fname)
     ext = get_extension(fname)
     _data = np.swapaxes(data, 0, axis)
     for m in range(start, start + data.shape[axis]):
-        _fname = body + '_' + '{0:0={1}d}'.format(m, digit) + ext
+        _fname = body + "_" + "{0:0={1}d}".format(m, digit) + ext
         if not overwrite:
             _fname = _suggest_new_fname(_fname, digit=1)
         write_tiff(_data[m - start], _fname, overwrite=overwrite)
 
 
-def write_vtr(data, fname='tmp/data.vtr', down_sampling=(5, 5, 5)):
+def write_vtr(data, fname="tmp/data.vtr", down_sampling=(5, 5, 5)):
     """
     Write the reconstructed data (img stackes) to vtr file (retangular grid)
 
@@ -392,7 +412,7 @@ def write_vtr(data, fname='tmp/data.vtr', down_sampling=(5, 5, 5)):
         reconstructed 3D image stacks with axis=0 as the omega
     fname         :  str
         file name of the output vtr file
-    down_sampling :  tuple 
+    down_sampling :  tuple
         down sampling steps along three axes
 
     Returns
@@ -402,52 +422,64 @@ def write_vtr(data, fname='tmp/data.vtr', down_sampling=(5, 5, 5)):
     # vtk is only used here, therefore doing an in module import
     import vtk
     from vtk.util import numpy_support
-    
+
     # convert to unit8 can significantly reduce the output vtr file
     # size, or just do a severe down-sampling
-    data = _normalize_imgstacks(data[::down_sampling[0], 
-                                     ::down_sampling[1], 
-                                     ::down_sampling[2],]) * 255
-    
+    data = (
+        _normalize_imgstacks(
+            data[
+                :: down_sampling[0],
+                :: down_sampling[1],
+                :: down_sampling[2],
+            ]
+        )
+        * 255
+    )
+
     # --init rectangular grid
     rGrid = vtk.vtkRectilinearGrid()
-    coordArray = [vtk.vtkDoubleArray(),
-                  vtk.vtkDoubleArray(),
-                  vtk.vtkDoubleArray(),
-                 ]
+    coordArray = [
+        vtk.vtkDoubleArray(),
+        vtk.vtkDoubleArray(),
+        vtk.vtkDoubleArray(),
+    ]
     coords = np.array([np.arange(data.shape[i]) for i in range(3)])
-    coords = [0.5 * np.array([3.0 * coords[i][0] - coords[i][0 + int(len(coords[i]) > 1)]] + \
-                             [coords[i][j-1] + coords[i][j] for j in range(1,len(coords[i]))] + \
-                             [3.0 * coords[i][-1] - coords[i][-1 - int(len(coords[i]) > 1)]]
-                            ) 
-              for i in range(3)
-             ]
-    grid = np.array(list(map(len,coords)),'i')
+    coords = [
+        0.5
+        * np.array(
+            [3.0 * coords[i][0] - coords[i][0 + int(len(coords[i]) > 1)]]
+            + [coords[i][j - 1] + coords[i][j] for j in range(1, len(coords[i]))]
+            + [3.0 * coords[i][-1] - coords[i][-1 - int(len(coords[i]) > 1)]]
+        )
+        for i in range(3)
+    ]
+    grid = np.array(list(map(len, coords)), "i")
     rGrid.SetDimensions(*grid)
-    for i,points in enumerate(coords):
+    for i, points in enumerate(coords):
         for point in points:
             coordArray[i].InsertNextValue(point)
 
     rGrid.SetXCoordinates(coordArray[0])
     rGrid.SetYCoordinates(coordArray[1])
     rGrid.SetZCoordinates(coordArray[2])
-    
+
     # vtk requires x to be the fast axis
     # NOTE:
-    #    Proper coordinate transformation is required to connect the 
+    #    Proper coordinate transformation is required to connect the
     #    tomography data with other down-stream analysis (such as FF-HEDM
     #    and NF-HEDM).
     imgstacks = np.swapaxes(data, 0, 2)
-    
-    VTKarray = numpy_support.numpy_to_vtk(num_array=imgstacks.flatten().astype(np.uint8),
-                                          deep=True,
-                                          array_type=vtk.VTK_UNSIGNED_CHAR,
-                                         )
-    VTKarray.SetName('img')
+
+    VTKarray = numpy_support.numpy_to_vtk(
+        num_array=imgstacks.flatten().astype(np.uint8),
+        deep=True,
+        array_type=vtk.VTK_UNSIGNED_CHAR,
+    )
+    VTKarray.SetName("img")
     rGrid.GetCellData().AddArray(VTKarray)
-    
+
     rGrid.Modified()
-    if vtk.VTK_MAJOR_VERSION <= 5: 
+    if vtk.VTK_MAJOR_VERSION <= 5:
         rGrid.Update()
 
     # output to file
@@ -455,16 +487,16 @@ def write_vtr(data, fname='tmp/data.vtr', down_sampling=(5, 5, 5)):
     writer.SetFileName(fname)
     writer.SetDataModeToBinary()
     writer.SetCompressorTypeToZLib()
-    if vtk.VTK_MAJOR_VERSION <= 5: 
+    if vtk.VTK_MAJOR_VERSION <= 5:
         writer.SetInput(rGrid)
-    else:                          
+    else:
         writer.SetInputData(rGrid)
     writer.Write()
 
 
 def write_aps_1id_report(df_scanmeta, reportfn):
     """
-    Generate report of beam conditions based on given DataFrame of the 
+    Generate report of beam conditions based on given DataFrame of the
     metadata
 
     Parameters
@@ -484,61 +516,68 @@ def write_aps_1id_report(df_scanmeta, reportfn):
 
     # add calculation of four beam quality
     # -- Temporal Beam Stability
-    df_scanmeta['TBS'] = df_scanmeta['IC-E3']/df_scanmeta['IC-E3'].values[0]
+    df_scanmeta["TBS"] = df_scanmeta["IC-E3"] / df_scanmeta["IC-E3"].values[0]
     # -- Vertical Beam Stability
-    df_scanmeta['VBS'] = df_scanmeta['IC-E1']/df_scanmeta['IC-E2']
+    df_scanmeta["VBS"] = df_scanmeta["IC-E1"] / df_scanmeta["IC-E2"]
     # -- Beam Loss at Slit
-    df_scanmeta['BLS'] = (df_scanmeta['IC-E1'] + df_scanmeta['IC-E2'])/df_scanmeta['IC-E3']
-    # -- Beam Loss during Travel 
-    df_scanmeta['BLT'] = df_scanmeta['IC-E5']/df_scanmeta['IC-E3']
+    df_scanmeta["BLS"] = (df_scanmeta["IC-E1"] + df_scanmeta["IC-E2"]) / df_scanmeta[
+        "IC-E3"
+    ]
+    # -- Beam Loss during Travel
+    df_scanmeta["BLT"] = df_scanmeta["IC-E5"] / df_scanmeta["IC-E3"]
     # -- corresponding color code
-    pltlbs  = ['TBS',  'VBS',     'BLS', 'BLT' ]
-    pltclrs = ['red', 'blue', 'magenta', 'cyan']
+    pltlbs = ["TBS", "VBS", "BLS", "BLT"]
+    pltclrs = ["red", "blue", "magenta", "cyan"]
 
     # start plot
-    fig = plt.figure(figsize=(8,3))
-    ax  = fig.add_subplot(111)
-    lnclrs = cycle(['gray', 'lime', 'gray', 'black'])
+    fig = plt.figure(figsize=(8, 3))
+    ax = fig.add_subplot(111)
+    lnclrs = cycle(["gray", "lime", "gray", "black"])
     # -- plot one segment at a time
     for lb, clr in zip(pltlbs, pltclrs):
-        addlabel=True
-        for layerID in df_scanmeta['layerID'].unique():
-            tmpdf = df_scanmeta[df_scanmeta['layerID'] == layerID]
-            for imgtype in tmpdf['type'].unique():
+        addlabel = True
+        for layerID in df_scanmeta["layerID"].unique():
+            tmpdf = df_scanmeta[df_scanmeta["layerID"] == layerID]
+            for imgtype in tmpdf["type"].unique():
                 # plot the main curve
-                currentSlice = tmpdf[tmpdf['type'] == imgtype]
+                currentSlice = tmpdf[tmpdf["type"] == imgtype]
 
-                ax.plot(currentSlice['Date'], currentSlice[lb], 
-                        linewidth=0.2, 
-                        color=clr,
-                        label=lb if addlabel else '_nolegend_',
-                        alpha=0.5,
-                        )
+                ax.plot(
+                    currentSlice["Date"],
+                    currentSlice[lb],
+                    linewidth=0.2,
+                    color=clr,
+                    label=lb if addlabel else "_nolegend_",
+                    alpha=0.5,
+                )
                 addlabel = False
                 # add the vertical guard
-                tmpx = currentSlice['Date'].values
+                tmpx = currentSlice["Date"].values
                 tmpclr = next(lnclrs)
                 for x in [tmpx[0], tmpx[-1]]:
-                    ax.plot([x, x], [1e-4, 1e2], 
-                            color=tmpclr,
-                            linewidth=0.05,
-                            linestyle='dashed',
-                            alpha=0.1,
-                           )
+                    ax.plot(
+                        [x, x],
+                        [1e-4, 1e2],
+                        color=tmpclr,
+                        linewidth=0.05,
+                        linestyle="dashed",
+                        alpha=0.1,
+                    )
     # -- set canvas property
-    ax.set_yscale('log')
+    ax.set_yscale("log")
     plt.legend(loc=0)
     plt.ylim([0.9, 2.0])  # 10% as cut range
     plt.xticks(rotation=45)
     # -- save the figure (both pdf and png)
-    plt.savefig(reportfn, 
-                transparent=True, 
-                bbox_inches='tight', 
-                pad_inches=0.1,
-               )
+    plt.savefig(
+        reportfn,
+        transparent=True,
+        bbox_inches="tight",
+        pad_inches=0.1,
+    )
     # -- clear/close figure
     plt.close()
-    
+
     return df_scanmeta
 
 
@@ -550,14 +589,16 @@ def _normalize_imgstacks(img):
     ----------
     img  :  np.3darray
         img stacks to be normalized
-    
+
     Returns
     -------
     np.3darray
         normalized image stacks
     """
-    return img/np.amax(img.reshape(img.shape[0], 
-                                   img.shape[1]*img.shape[2],
-                                  ), 
-                       axis=1,
-                      ).reshape(img.shape[0],1,1)
+    return img / np.amax(
+        img.reshape(
+            img.shape[0],
+            img.shape[1] * img.shape[2],
+        ),
+        axis=1,
+    ).reshape(img.shape[0], 1, 1)
