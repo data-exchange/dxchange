@@ -60,14 +60,12 @@ from dxchange.writer import *
 logging.getLogger(__name__).addHandler(logging.NullHandler())
 
 try:
-    import pkg_resources
-    __version__ = pkg_resources.working_set.require("dxchange")[0].version
-except:
-    pass
+    from importlib.metadata import version
+except ImportError:
+    # For Python < 3.8, fallback to backport
+    from importlib_metadata import version
 
-if sys.version_info < (3,):
-    warnings.warn(
-        'DXchange will drop support for Python 2 before 1 January 2020.'
-        ' For more information, visit https://python3statement.org/.',
-        UserWarning,
-    )
+try:
+    __version__ = version("dxchange")
+except Exception:
+    __version__ = "unknown"
