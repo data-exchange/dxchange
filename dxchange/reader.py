@@ -1150,9 +1150,13 @@ def _read_ole_arr(ole, label, struct_fmt):
     """
     Reads the numpy array associated with label in an ole file
     """
-    arr = _read_ole_struct(ole, label, struct_fmt)
-    if arr is not None:
-        arr = np.array(arr)
+    if not ole.exists(label):
+        return None
+
+    stream = ole.openstream(label)
+    data = stream.read()
+    arr = np.frombuffer(data, dtype=np.dtype(struct_fmt))[0]
+
     return arr
 
 
